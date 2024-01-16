@@ -1,0 +1,11 @@
+/* Footer.css */
+
+.footerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Đặt z-index cao hơn nếu cần thiết */
+}
+
+/* Add styles as needed */

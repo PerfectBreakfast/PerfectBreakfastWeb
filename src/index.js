@@ -1,10 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import Login from "./pages/User/Signin/Signin";
+import Signup from "./pages/User/Signup/Signup";
+import UserHeader from "./pages/Header/Header";
+import MobileNavigation from "./pages/Footer/Footer";
+import Homepage from "./pages/User/Homepage/Homepage";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />

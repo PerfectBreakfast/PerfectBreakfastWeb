@@ -1,0 +1,34 @@
+#iconAvatar {
+  width: 3em;
+  height: 3em;
+  color: #0cbf66;
+}
+#userSettingBtn {
+  border-radius: 15px;
+  justify-content: space-between;
+  border-color: #0cbf66;
+  color: black;
+  height: 55px;
+}
+.userSettings {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+#logoutBtn {
+  background-color: #fa4a0c;
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 5px;
+}
+.logoutUser {
+  margin-bottom: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+}
+.userSettingContainer {
+  position: relative;
+}

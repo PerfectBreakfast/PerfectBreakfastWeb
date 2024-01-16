@@ -1,0 +1,42 @@
+/* Header.css */
+@media screen and (max-width: 768px) {
+  .userHeader {
+    height: 90px;
+    display: flex;
+    align-items: center;
+  }
+
+  .userHeaderLogo {
+    width: 130px;
+    height: 90px;
+  }
+
+  /* Lớp mới cho chữ "Perfect" */
+  .brandName {
+    color: #0cbf66;
+    margin-right: 5px;
+  }
+}
+
+/* Header.css */
+@media screen and (min-width: 768px) {
+  .userHeader {
+    height: 90px;
+    display: flex;
+    align-items: center;
+  }
+
+  .userHeaderLogo {
+    width: 150px;
+    height: 100px;
+  }
+
+  /* Lớp mới cho chữ "Perfect" */
+  .brandName {
+    color: #0cbf66;
+    margin-right: 5px;
+  }
+}
+.userHeader {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle box-shadow */
+}

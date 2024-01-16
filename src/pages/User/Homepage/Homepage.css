@@ -1,0 +1,46 @@
+.menu {
+  height: 100px;
+}
+.menuDate {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.contentCombo {
+  padding-top: 5px;
+}
+.combo {
+  width: 100%;
+  display: flex;
+  border: 1px solid rgb(223, 211, 211);
+  border-radius: 25px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+.contentCombo {
+  width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .contentCombo {
+    width: 100%;
+  }
+  .detailcontentCombo {
+    max-width: 175px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .userHeaderLogo {
+    width: 100px;
+    height: 100%;
+  }
+}
+
+.order {
+  padding-top: 5px;
+  padding-right: 15px;
+}
+#orderButton {
+  background-color: transparent;
+  box-shadow: none;
+}
