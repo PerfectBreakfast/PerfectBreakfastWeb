@@ -1,0 +1,40 @@
+/* Signin.css */
+
+.containerRegister {
+  text-align: center;
+}
+
+.logo {
+  width: 80%;
+  max-width: 150px;
+}
+
+.formRegister {
+  margin-top: 16px;
+}
+#registerButton {
+  border-radius: 20px;
+  margin-top: 20px;
+  background-color: #0cbf66;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+#registerButton:hover {
+  background-color: #1c7e4d;
+}
+
+.forgotPassword {
+  margin-top: 5px;
+  text-align: start;
+}
+#forgotPasswordLink {
+  text-decoration: none;
+}
+.registerLink {
+  margin-top: 15px;
+}
+.errorMessage {
+  color: red;
+  margin-top: 8px;
+}
