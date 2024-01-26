@@ -18,6 +18,7 @@
   border: 1px solid rgb(223, 211, 211);
   border-radius: 25px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
 }
 .cartContent {
   display: flex;

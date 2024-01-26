@@ -127,7 +127,10 @@ function Cart() {
                     </IconButton>
                   </div>
                   <Typography className="priceItem" variant="h6">
-                    {item.price * item.quantity} đ
+                    {(item.price * item.quantity).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </Typography>
                 </div>
               </div>
@@ -144,7 +147,10 @@ function Cart() {
               Tổng cộng
             </Typography>
             <Typography className="totalPriceOrder" variant="h5" gutterBottom>
-              {totalAmount} đ
+              {totalAmount.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}{" "}
             </Typography>
           </div>
 

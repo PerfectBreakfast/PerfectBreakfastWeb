@@ -89,13 +89,20 @@ function ComboDetail() {
           <CardMedia
             id="imgDetail"
             component="img"
-            height="130"
-            image={food}
+            height="250"
+            image={comboData.image}
             alt={comboData.name}
           />
           <div className="detailContent">
-            <Typography variant="h5">{comboData.name}</Typography>
-            <Typography variant="h6">{comboData.comboPrice} đ</Typography>
+            <Typography gutterBottom variant="h4">
+              {comboData.name}
+            </Typography>
+            <Typography gutterBottom variant="h6">
+              {comboData.comboPrice.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </Typography>
             <Typography variant="body1">{comboData.content}</Typography>
 
             <div className="actionDetail">

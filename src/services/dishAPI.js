@@ -2,29 +2,19 @@ import axios from "axios";
 
 const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 
-const comboAPI = {
-  getAllCombo: async () => {
+const dishAPI = {
+  getDishAll: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/combos`);
+      const response = await axios.get(`${BASE_URL}/api/v1/foods`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
     }
   },
-
-  getComboById: async (comboId) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/v1/combos/${comboId}`);
-      return response.data;
-    } catch (error) {
-      throw error.response ? error.response.data : error.message;
-    }
-  },
-
-  getComboByPagination: async (pageIndex) => {
+  getDishByPagination: async (pageIndex) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/v1/combos/pagination?pageIndex=${pageIndex}&pageSize=10`
+        `${BASE_URL}/api/v1/foods/pagination?pageIndex=${pageIndex}&pageSize=15`
       );
       return response.data;
     } catch (error) {
@@ -32,12 +22,20 @@ const comboAPI = {
     }
   },
 
-  createCombo: async (newComboData) => {
+  createDish: async (newDishData) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/v1/combos`,
-        newComboData
+        `${BASE_URL}/api/v1/foods`,
+        newDishData
       );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getDishById: async (dishId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/v1/foods/${dishId}`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -45,4 +43,4 @@ const comboAPI = {
   },
 };
 
-export default comboAPI;
+export default dishAPI;
