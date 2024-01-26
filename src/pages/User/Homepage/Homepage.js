@@ -54,7 +54,7 @@ const Homepage = () => {
                   <img src={combo.image} alt="" className="img-combo-detail" />
                 </div>
                 <div className="contentCombo">
-                  <h5>Combo {combo.name}</h5>
+                  <h5>{combo.name}</h5>
                   <p className="detailcontentCombo">{combo.foods}</p>
                 </div>
                 <div className="order">

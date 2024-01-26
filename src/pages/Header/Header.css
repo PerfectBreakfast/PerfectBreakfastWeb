@@ -6,8 +6,8 @@
     align-items: center;
   }
 
-  .userHeaderLogo {
-    width: 130px;
+  .userHeaderLogoSvg {
+    width: 150px;
     height: 90px;
   }
 
@@ -26,7 +26,7 @@
     align-items: center;
   }
 
-  .userHeaderLogo {
+  .userHeaderLogoSvg {
     width: 150px;
     height: 100px;
   }

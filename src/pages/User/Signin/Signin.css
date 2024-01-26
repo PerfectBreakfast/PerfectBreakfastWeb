@@ -5,10 +5,11 @@
 }
 
 .logo {
-  width: 80%;
-  max-width: 150px;
+  height: 80px;
+  width: 90px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
-
 .formLogin {
   margin-top: 16px;
 }
