@@ -40,7 +40,7 @@ const Homepage = () => {
       <UserHeader />
       <div className="container">
         <div className="menuDate">
-          <h6>Thực đơn ngày 08/03/2024</h6>
+          <h6>Thực đơn ngày 19/01/2024</h6>
         </div>
         <div className="menu">
           {menuData &&
@@ -51,14 +51,19 @@ const Homepage = () => {
                 onClick={() => handleComboClick(combo.id)}
               >
                 <div className="imageCombo">
-                  <img src={food} alt="" className="userHeaderLogo" />
+                  <img src={combo.image} alt="" className="img-combo-detail" />
                 </div>
                 <div className="contentCombo">
-                  <h5>{combo.name}</h5>
+                  <h5>Combo {combo.name}</h5>
                   <p className="detailcontentCombo">{combo.foods}</p>
                 </div>
                 <div className="order">
-                  <h5>{combo.price}đ</h5>
+                  <h5>
+                    {combo.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </h5>
                   {/* <div className="btnOrder">
                     <Button
                       id="orderButton"

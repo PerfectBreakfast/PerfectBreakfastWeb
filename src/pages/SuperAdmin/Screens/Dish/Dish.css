@@ -1,0 +1,10 @@
+.create-btn-modal {
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
+}
+#btn-update-detail {
+  background-color: #0cbf66;
+  margin-top: 10px;
+  border-radius: 15px;
+}

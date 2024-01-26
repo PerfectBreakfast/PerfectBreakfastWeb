@@ -1,0 +1,23 @@
+.form-create-combo {
+  display: grid;
+}
+#text-field-form {
+  height: 10px;
+}
+.label-form-create {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #5f666d;
+}
+#create-combo-btn {
+  background-color: #0cbf66;
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#cancel-combo-btn {
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+}

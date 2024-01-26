@@ -22,6 +22,7 @@
 
 @media screen and (max-width: 767px) {
   .contentCombo {
+    margin-left: 5px;
     width: 100%;
   }
   .detailcontentCombo {
@@ -34,10 +35,44 @@
     width: 100px;
     height: 100%;
   }
+  .imageCombo {
+    height: 80px;
+    border-radius: 20px;
+  }
+  .img-combo-detail {
+    height: 100%;
+    width: 100px;
+    border-radius: 25px;
+    padding: 5px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .contentCombo {
+    width: 100%;
+    margin-left: 15px;
+  }
+  .detailcontentCombo {
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .imageCombo {
+    height: 150px;
+    border-radius: 20px;
+  }
+  .img-combo-detail {
+    height: 100%;
+    width: 230px;
+    border-radius: 25px;
+    padding: 5px;
+  }
 }
 
 .order {
-  padding-top: 5px;
+  padding-top: 7px;
   padding-right: 15px;
 }
 #orderButton {

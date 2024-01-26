@@ -6,7 +6,28 @@ const menuAPI = {
   getMenu: async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/v1/menus/08dc1121-1194-4deb-8af6-696fe2e5f1b3`
+        `${BASE_URL}/api/v1/menus/menu-is-selected`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getMenuByPagination: async (pageIndex) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/v1/menus/pagination?pageIndex=${pageIndex}&pageSize=10`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  createMenu: async (newMenuData) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/menus`,
+        newMenuData
       );
       return response.data;
     } catch (error) {

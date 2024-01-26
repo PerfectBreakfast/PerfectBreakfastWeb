@@ -1,0 +1,13 @@
+.table-selecting {
+  width: 100%;
+  height: 300px; /* Chiều cao 100% của dishes-container */
+  overflow-y: auto; /* Cho phép cuộn theo chiều dọc nếu nó lớn hơn dishes-container */
+  padding: 20px;
+}
+.create-menu-form {
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+#create-menu-title {
+  font-weight: bold;
+}
