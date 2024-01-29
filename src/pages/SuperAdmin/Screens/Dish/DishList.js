@@ -31,7 +31,8 @@ const Dishes = () => {
   const [dishes, setDishes] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [newDishData, setNewDishData] = useState({
     name: "",
@@ -56,10 +57,10 @@ const Dishes = () => {
       }
     };
     fetchCategories();
-  }, [pageIndex]);
+  }, [pageIndex, searchTerm]);
   const fetchDish = async () => {
     try {
-      const result = await dishAPI.getDishByPagination(pageIndex);
+      const result = await dishAPI.getDishByPagination(searchTerm, pageIndex);
       setDishes(result.items);
       setTotalPages(result.totalPagesCount);
     } catch (error) {
@@ -78,13 +79,6 @@ const Dishes = () => {
     setModalOpen(false);
   };
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewDishData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -102,25 +96,6 @@ const Dishes = () => {
       }));
     }
   };
-
-  // const handleCreateDish = async () => {
-  //   try {
-  //     const selectedCategory = categories.find(
-  //       (cat) => cat.id === newDishData.categoryId
-  //     );
-  //     await dishAPI.createDish({
-  //       ...newDishData,
-  //       categoryId: selectedCategory ? selectedCategory.id : "",
-  //     });
-  //     toast.success("Thêm món ăn thành công!");
-  //     setModalOpen(false);
-  //     setPageIndex(0);
-
-  //     fetchDish();
-  //   } catch (error) {
-  //     console.error("Error creating new dish:", error);
-  //   }
-  // };
 
   const handleCreateDish = async () => {
     try {
@@ -149,6 +124,11 @@ const Dishes = () => {
     navigate(`/admin/food/${dishId}`);
   };
 
+  const handleSearch = async () => {
+    setSearchTerm(searchInput); // Update searchTerm with searchInput
+    setPageIndex(0); // Reset pageIndex to 0]
+  };
+
   return (
     <>
       <div className="table-content-container container">
@@ -158,7 +138,17 @@ const Dishes = () => {
             Thêm món ăn
           </Button>
         </div>
-
+        <div className="search-container">
+          <TextField
+            label="Tìm kiếm"
+            variant="outlined"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          <Button variant="contained" onClick={handleSearch}>
+            Tìm kiếm
+          </Button>
+        </div>
         <div className="table-container">
           <Paper className="table">
             <Table>

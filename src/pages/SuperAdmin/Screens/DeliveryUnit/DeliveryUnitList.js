@@ -96,6 +96,10 @@ const DeliveryUnitList = () => {
       toast.error("Error creating delivery unit");
     }
   };
+  const handleAddEmployeeClick = (id) => {
+    navigate("create-delivery-user", { state: { deliveryUnitId: id } });
+    console.log(id);
+  };
   return (
     <>
       <div className="table-content-container container">
@@ -126,6 +130,7 @@ const DeliveryUnitList = () => {
                   <StyledTableCell>Tên công ty</StyledTableCell>
                   <StyledTableCell>Địa chỉ</StyledTableCell>
                   <StyledTableCell>Nhân viên</StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -135,6 +140,20 @@ const DeliveryUnitList = () => {
                     <StyledTableCell>{deliveryUnit.address}</StyledTableCell>
                     <StyledTableCell>
                       {deliveryUnit.memberCount}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {deliveryUnit.owners.length === 0 ? (
+                        <Button
+                          onClick={() =>
+                            handleAddEmployeeClick(deliveryUnit.id)
+                          }
+                        >
+                          Thêm nhân viên
+                        </Button>
+                      ) : (
+                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
+                        <span>{deliveryUnit.owners}</span>
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

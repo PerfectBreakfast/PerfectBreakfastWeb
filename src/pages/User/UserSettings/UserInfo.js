@@ -30,8 +30,8 @@ function UserInfo() {
         setUserData(user);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        // toast.error("Vui lòng đăng nhập lại!");
-        // navigate("/login");
+        toast.error("Vui lòng đăng nhập lại!");
+        navigate("/login");
       }
     };
 

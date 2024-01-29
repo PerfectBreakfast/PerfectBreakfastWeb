@@ -13,6 +13,7 @@ import {
   Select,
   Modal,
   Box,
+  MenuItem,
 } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,6 +26,7 @@ import {
 import "../Table/Table.css";
 import { useNavigate } from "react-router-dom";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
+import managementUnitAPI from "../../../../services/managementUnitAPI";
 
 const SupplierUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -34,13 +36,21 @@ const SupplierUnitList = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Set the default value to an empty string
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
+  const [managementUnits, setManagementUnits] = useState([]);
   const [newSupplierData, setNewSupplierData] = useState({
     name: "",
     address: "",
   });
+  const [isAssignManagerModalOpen, setAssignManagerModalOpen] = useState(false);
+  const [
+    selectedSupplierUnitForAssignment,
+    setSelectedSupplierUnitForAssignment,
+  ] = useState(null);
+  const [selectedManagementUnit, setSelectedManagementUnit] = useState("");
 
   useEffect(() => {
     fetchSupplierUnits();
+    fetchManagementUnits();
   }, [pageIndex, searchTerm]); // Dependency on pageIndex and searchTerm
 
   const fetchSupplierUnits = async () => {
@@ -54,6 +64,16 @@ const SupplierUnitList = () => {
     } catch (error) {
       console.error("Error fetching supplier units:", error);
       toast.error("Error fetching supplier units");
+    }
+  };
+
+  const fetchManagementUnits = async () => {
+    try {
+      const response = await managementUnitAPI.getAllManagementUnit();
+      setManagementUnits(response);
+    } catch (error) {
+      console.error("Error fetching units:", error);
+      toast.error("Error fetching units");
     }
   };
 
@@ -71,6 +91,7 @@ const SupplierUnitList = () => {
   };
 
   const handleCloseModal = () => {
+    setAssignManagerModalOpen(false);
     setModalOpen(false);
   };
   const handleInputChange = (e) => {
@@ -106,6 +127,42 @@ const SupplierUnitList = () => {
       toast.error("Error creating supplier unit");
     }
   };
+
+  const handleOpenAssignManagerModal = (supplierUnit) => {
+    setAssignManagerModalOpen(true);
+    setSelectedSupplierUnitForAssignment(supplierUnit);
+    console.log("test", selectedSupplierUnitForAssignment);
+  };
+
+  const handleAssignManager = async () => {
+    try {
+      // Validate selected management unit
+      if (!selectedManagementUnit) {
+        toast.error("Vui lòng chọn một quản lý.");
+        return;
+      }
+
+      // Make the API call to assign a manager to the supplier unit
+      await supplierUnitAPI.supplyAssigment({
+        supplierId: selectedSupplierUnitForAssignment.id,
+        managementUnitId: selectedManagementUnit,
+      });
+      // setAssignManagerModalOpen(false);
+      // Display a success message
+      toast.success("Gán quản lý thành công!");
+
+      // Close the modal and refresh the list of supplier units
+      handleCloseModal();
+      fetchSupplierUnits();
+    } catch (error) {
+      console.error("Error assigning manager:", error);
+      toast.error("Error assigning manager");
+    }
+  };
+  const handleAddEmployeeClick = (id) => {
+    navigate("create-supplier-user", { state: { supplierUnitId: id } });
+    console.log(id);
+  };
   return (
     <>
       <div className="table-content-container container">
@@ -136,6 +193,7 @@ const SupplierUnitList = () => {
                   <StyledTableCell>Tên công ty</StyledTableCell>
                   <StyledTableCell>Địa chỉ</StyledTableCell>
                   <StyledTableCell>Nhân viên</StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -145,6 +203,32 @@ const SupplierUnitList = () => {
                     <StyledTableCell>{supplierUnit.address}</StyledTableCell>
                     <StyledTableCell>
                       {supplierUnit.memberCount}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {supplierUnit.owners.length === 0 ? (
+                        <Button
+                          onClick={() =>
+                            handleAddEmployeeClick(supplierUnit.id)
+                          }
+                        >
+                          Thêm nhân viên
+                        </Button>
+                      ) : (
+                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
+                        <span>{supplierUnit.owners}</span>
+                      )}
+                      {supplierUnit.managementUnitName.length === 0 ? (
+                        <Button
+                          onClick={() =>
+                            handleOpenAssignManagerModal(supplierUnit)
+                          }
+                        >
+                          Gán quản lý
+                        </Button>
+                      ) : (
+                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
+                        <span>Chỉ hiển thị khi có quản lý quản lý</span>
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -198,6 +282,49 @@ const SupplierUnitList = () => {
               onClick={handleCreateData}
             >
               Tạo mới
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={isAssignManagerModalOpen}
+        onClose={() => setAssignManagerModalOpen(false)}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <h2>Gán quản lý cho {selectedSupplierUnitForAssignment?.name}</h2>
+          {/* Similar to the previous Modal, include a Select for choosing the management unit */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="managementUnitSelectLabel">Chọn quản lý</InputLabel>
+            <Select
+              labelId="managementUnitSelectLabel"
+              id="managementUnitSelect"
+              value={selectedManagementUnit}
+              onChange={(e) => setSelectedManagementUnit(e.target.value)}
+            >
+              {managementUnits.map((managementUnit) => (
+                <MenuItem key={managementUnit.id} value={managementUnit.id}>
+                  {managementUnit.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <div className="create-btn-modal">
+            <Button
+              id="create-btn"
+              variant="contained"
+              onClick={handleAssignManager}
+            >
+              Gán quản lý
             </Button>
           </div>
         </Box>

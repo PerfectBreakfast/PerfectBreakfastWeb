@@ -11,10 +11,10 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getDishByPagination: async (pageIndex) => {
+  getDishByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/v1/foods/pagination?pageIndex=${pageIndex}&pageSize=15`
+        `${BASE_URL}/api/v1/foods/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=15`
       );
       return response.data;
     } catch (error) {

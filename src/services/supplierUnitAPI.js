@@ -24,6 +24,25 @@ const supplierUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  supplyAssigment: async (supplyAssigmentData) => {
+    try {
+      const response = await axios.post(
+        `${api}/api/v1/supplyassigments`,
+        supplyAssigmentData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  createManagementUnitUser: async (newUserData) => {
+    try {
+      const response = await axios.post(`${api}/api/v1/users`, newUserData);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default supplierUnitAPI;

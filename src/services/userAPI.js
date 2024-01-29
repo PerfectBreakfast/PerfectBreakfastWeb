@@ -55,6 +55,18 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+
+  createUnitUser: async (newUserData) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/users`,
+        newUserData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
