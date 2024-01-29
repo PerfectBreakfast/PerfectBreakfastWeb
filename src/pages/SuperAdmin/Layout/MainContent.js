@@ -11,6 +11,11 @@ import ComboDetail from "../Screens/Combo/ComboDetail";
 import SupplierUnitList from "../Screens/SupplierUnit/SupplierUnitList";
 import DeliveryUnitList from "../Screens/DeliveryUnit/DeliveryUnitList";
 import ManagementUnitList from "../Screens/ManagementUnit/ManagementUnitList";
+import CompanyList from "../Screens/Company/CompanyList";
+import CreateCompany from "../Screens/Company/CreateCompany";
+import CreateManagementUser from "../Screens/ManagementUnit/CreateManagementUser";
+import CreateSupplierUser from "../Screens/SupplierUnit/CreateSupplierUser";
+import CreateDeliveryUser from "../Screens/DeliveryUnit/CreateDeliveryUser";
 
 const MainContent = () => {
   return (
@@ -25,6 +30,20 @@ const MainContent = () => {
       <Route path="suppliers" element={<SupplierUnitList />} />
       <Route path="deliveries" element={<DeliveryUnitList />} />
       <Route path="partners" element={<ManagementUnitList />} />
+      <Route path="companies" element={<CompanyList />} />
+      <Route path="companies/create" element={<CreateCompany />} />
+      <Route
+        path="partners/create-management-user"
+        element={<CreateManagementUser />}
+      />
+      <Route
+        path="suppliers/create-supplier-user"
+        element={<CreateSupplierUser />}
+      />
+      <Route
+        path="deliveries/create-delivery-user"
+        element={<CreateDeliveryUser />}
+      />
     </Routes>
   );
 };

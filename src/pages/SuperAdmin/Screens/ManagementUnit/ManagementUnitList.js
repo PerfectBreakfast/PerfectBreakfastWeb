@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import {
   Box,
@@ -95,6 +95,10 @@ const ManagementUnitList = () => {
       toast.error("Error creating management unit");
     }
   };
+  const handleAddEmployeeClick = (id) => {
+    navigate("create-management-user", { state: { managementUnitId: id } });
+    console.log(id);
+  };
   return (
     <>
       <div className="table-content-container container">
@@ -125,6 +129,7 @@ const ManagementUnitList = () => {
                   <StyledTableCell>Tên công ty</StyledTableCell>
                   <StyledTableCell>Địa chỉ</StyledTableCell>
                   <StyledTableCell>Nhân viên</StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -134,6 +139,20 @@ const ManagementUnitList = () => {
                     <StyledTableCell>{managementUnit.address}</StyledTableCell>
                     <StyledTableCell>
                       {managementUnit.memberCount}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {managementUnit.owners.length === 0 ? (
+                        <Button
+                          onClick={() =>
+                            handleAddEmployeeClick(managementUnit.id)
+                          }
+                        >
+                          Thêm nhân viên
+                        </Button>
+                      ) : (
+                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
+                        <span>Chỉ hiển thị khi có owners</span>
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

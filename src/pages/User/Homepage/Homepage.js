@@ -38,7 +38,7 @@ const Homepage = () => {
   return (
     <>
       <UserHeader />
-      <div className="container">
+      <div className="user-homepage container">
         <div className="menuDate">
           <h6>Thực đơn ngày 19/01/2024</h6>
         </div>

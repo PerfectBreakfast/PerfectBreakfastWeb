@@ -32,13 +32,6 @@ const CreateMenu = () => {
   const navigate = useNavigate();
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
-  const [newCombo, setNewCombo] = useState({
-    name: "",
-    content: "",
-    image: "",
-    comboFoodRequests: [],
-  });
-
   useEffect(() => {
     const fetchData = async () => {
       try {

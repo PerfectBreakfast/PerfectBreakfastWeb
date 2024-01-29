@@ -79,6 +79,12 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Danh sách ĐVVC" />
         </ListItem>
+        <ListItem button component={Link} to="/admin/companies">
+          <ListItemIcon>
+            <RestaurantMenu />
+          </ListItemIcon>
+          <ListItemText primary="Danh sách công ty" />
+        </ListItem>
       </List>
 
       <div className="sidebar-logout">
