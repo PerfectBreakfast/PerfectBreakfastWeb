@@ -10,9 +10,7 @@ import MobileNavigation from "../../Footer/Footer";
 
 const Homepage = () => {
   const navigate = useNavigate();
-  const iconStyle = {
-    color: "#0CBF66",
-  };
+
   const [menuData, setMenuData] = useState(null);
   const handleComboClick = (comboId) => {
     // Chuyển hướng đến trang chi tiết sản phẩm với id của combo
@@ -38,39 +36,39 @@ const Homepage = () => {
   return (
     <>
       <UserHeader />
-      <div className="user-homepage container">
-        <div className="menuDate">
-          <h6>Thực đơn ngày 19/01/2024</h6>
+      <div style={{ paddingBottom: "4rem" }} className="container mx-auto p-4">
+        <div className="menuDate text-left text-2xl font-bold">
+          <h6>Thực đơn ngày 08/03/2024</h6>
         </div>
-        <div className="menu">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className=" grid grid-cols-1 gap-4"
+        >
           {menuData &&
             menuData.comboFoodResponses.map((combo) => (
               <div
-                className="combo"
+                className=" flex flex-row items-center p-3 shadow-lg rounded-lg"
                 key={combo.id}
                 onClick={() => handleComboClick(combo.id)}
               >
-                <div className="imageCombo">
-                  <img src={combo.image} alt="" className="img-combo-detail" />
+                <div className=" flex-shrink-0">
+                  <img
+                    src={combo.image}
+                    alt={combo.name}
+                    className="h-12 w-12 rounded-xl"
+                  />
                 </div>
-                <div className="contentCombo">
-                  <h5>{combo.name}</h5>
-                  <p className="detailcontentCombo">{combo.foods}</p>
+                <div className=" flex-grow px-4">
+                  <h5 className="text-lg font-bold">{combo.name}</h5>
+                  <p className="text-gray-600">{combo.foods}</p>
                 </div>
-                <div className="order">
+                <div className=" text-lg font-bold">
                   <h5>
                     {combo.price.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                   </h5>
-                  {/* <div className="btnOrder">
-                    <Button
-                      id="orderButton"
-                      disableRipple
-                      startIcon={<AddCircleOutlinedIcon style={iconStyle} />}
-                    />
-                  </div> */}
                 </div>
               </div>
             ))}
