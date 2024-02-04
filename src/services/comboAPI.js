@@ -21,10 +21,10 @@ const comboAPI = {
     }
   },
 
-  getComboByPagination: async (pageIndex) => {
+  getComboByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/v1/combos/pagination?pageIndex=${pageIndex}&pageSize=10`
+        `${BASE_URL}/api/v1/combos/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {

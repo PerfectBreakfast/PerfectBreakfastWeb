@@ -5,16 +5,16 @@ const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 const managementUnitAPI = {
   getAllManagementUnit: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/managementunits`);
+      const response = await axios.get(`${BASE_URL}/api/v1/partners`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getManagementUnitByPagination: async (pageIndex) => {
+  getManagementUnitByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/v1/managementunits/pagination?pageIndex=${pageIndex}&pageSize=10`
+        `${BASE_URL}/api/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {
@@ -24,7 +24,7 @@ const managementUnitAPI = {
   createManagementUnit: async (newManagementData) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/v1/managementunits`,
+        `${BASE_URL}/api/v1/partners`,
         newManagementData
       );
       return response.data;
