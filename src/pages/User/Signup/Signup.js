@@ -17,16 +17,19 @@ import logo from "../../../assets/images/logo.png";
 import "./Signup.css"; // Import CSS file
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Signup = () => {
   const [userData, setUserData] = useState({
     email: "",
+    name: "",
     password: "",
     phoneNumber: "",
     companyId: "",
   });
 
   const [companies, setCompanies] = useState([]);
+  const [showPassword, setShowPassword] = useState(false); // Thêm trạng thái mới
 
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -64,111 +67,111 @@ const Signup = () => {
     try {
       const data = await userAPI.register(userData);
       console.log("Registration successful", data);
-      // toast.error("Email hoặc mật khẩu không chính xác");
+      toast.success("Đăng ký tại khoản thành công");
     } catch (error) {
       // setErrorMessage(error.errors);
       toast.error("Đăng ký thất bại");
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Cập nhật trạng thái hiển thị mật khẩu
+  };
 
   return (
-    <Container component="main" maxWidth="xs" className="containerRegister">
-      <CssBaseline />
-      <div>
-        <img src={logo} alt="Logo" className="logo" />
+    <div className="max-w-xs mx-auto text-center">
+      <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />
 
-        <Typography component="h2" variant="h6">
+      <h2 className="text-lg font-semibold mt-4">Đăng ký</h2>
+
+      <form onSubmit={handleRegister} className="space-y-4 mt-4">
+        <div className="space-y-4">
+          <input
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            placeholder="Email"
+            value={userData.email}
+            onChange={handleInputChange}
+            className="input input-bordered w-full rounded-3xl p-2 border-2"
+          />
+
+          <input
+            type="text"
+            name="name"
+            required
+            autoComplete="name"
+            placeholder="Tên người dùng"
+            value={userData.name}
+            onChange={handleInputChange}
+            className="input input-bordered w-full rounded-3xl p-2 border-2"
+          />
+
+          <div className="input-group rounded-3xl p-2 border-2">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              required
+              autoComplete="current-password"
+              placeholder="Mật khẩu"
+              value={userData.password}
+              onChange={handleInputChange}
+              className="input input-bordered w-full"
+            />
+            <span
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </span>
+          </div>
+
+          <input
+            type="number"
+            name="phoneNumber"
+            required
+            placeholder="SDT"
+            value={userData.phoneNumber}
+            onChange={handleInputChange}
+            className="input input-bordered w-full rounded-3xl p-2 border-2"
+          />
+
+          <div className="relative">
+            <select
+              name="companyId"
+              required
+              value={userData.companyId}
+              onChange={handleCompanySelect}
+              className="select select-bordered w-full rounded-3xl p-2 border-2"
+            >
+              <option value="" disabled selected>
+                Chọn công ty
+              </option>
+              {companies.map((company) => (
+                <option key={company.id} value={company.id}>
+                  {company.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary w-full rounded-full bg-green-600 text-white transition-colors duration-300 hover:bg-green-700 mt-4 border-none"
+        >
           Đăng ký
-        </Typography>
+        </button>
+      </form>
 
-        <form onSubmit={handleRegister} className="formRegister">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Email"
-                type="email"
-                name="email"
-                autoComplete="email"
-                value={userData.email}
-                onChange={handleInputChange}
-                size="small"
-                className="inputField"
-                InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Mật khẩu"
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                value={userData.password}
-                onChange={handleInputChange}
-                size="small"
-                className="inputField"
-                InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="SDT"
-                type="number"
-                name="phoneNumber"
-                value={userData.phoneNumber}
-                onChange={handleInputChange}
-                size="small"
-                className="inputField"
-                InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel id="companyId-label">Tên công ty</InputLabel>
-                <Select
-                  labelId="companyId-label"
-                  id="companyId"
-                  required
-                  fullWidth
-                  value={userData.companyId}
-                  onChange={handleCompanySelect}
-                  label="Tên công ty"
-                  className="inputField"
-                  size="small"
-                  style={{ borderRadius: 20 }}
-                >
-                  {companies.map((company) => (
-                    <MenuItem key={company.id} value={company.id}>
-                      {company.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            id="registerButton"
-          >
-            Đăng ký
-          </Button>
-        </form>
-      </div>
-      <div className="registerLink">
-        Đã có tài khoản? <Link href="/login">Đăng nhập ngay</Link>
+      <div className="mt-4">
+        Đã có tài khoản?{" "}
+        <a href="/login" className="text-blue-600 hover:underline">
+          Đăng nhập ngay
+        </a>
       </div>
       <ToastContainer />
-    </Container>
+    </div>
   );
 };
 
