@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Hidden from "@mui/material/Hidden";
 import logo from "../../../assets/images/logo.png";
 import { Button, Divider, ListItemIcon } from "@mui/material";
+import PaymentIcon from "@mui/icons-material/Payment";
 import {
   EmojiFoodBeverage,
   Fastfood,
@@ -72,7 +73,7 @@ const PartnerSidebar = () => {
         </ListItem>
         <ListItem button component={Link} to="/admin/companies">
           <ListItemIcon>
-            <LocationCity />
+            <PaymentIcon />
           </ListItemIcon>
           <ListItemText primary="Lịch sử GD" />
         </ListItem>

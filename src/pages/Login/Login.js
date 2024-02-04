@@ -46,16 +46,18 @@ const AdminLogin = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" className="containerLogin">
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div>
-        <img src={logo} alt="Logo" className="logo" />
+      <div className="flex flex-col items-center">
+        <div className="flex justify-center">
+          <img src={logo} alt="Admin Logo" className="mb-4 w-20 mt-5" />
+        </div>
 
         <Typography component="h2" variant="h6">
-          Đăng nhập
+          Đăng Nhập
         </Typography>
 
-        <form onSubmit={handleLogin} className="formLogin">
+        <form onSubmit={handleLogin} className="w-full max-w-lg mt-2">
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -69,7 +71,7 @@ const AdminLogin = () => {
                 value={credentials.email}
                 onChange={handleInputChange}
                 size="small"
-                className="inputField"
+                className="inputField "
                 InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
               />
             </Grid>
@@ -85,23 +87,20 @@ const AdminLogin = () => {
                 value={credentials.password}
                 onChange={handleInputChange}
                 size="small"
-                className="inputField"
+                className="inputField mb-2"
                 InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
               />
             </Grid>
           </Grid>
-          <div className="forgotPassword">
-            <Link href="#" variant="body2" id="forgotPasswordLink">
-              Quên mật khẩu
-            </Link>
-          </div>
-          <Button type="submit" fullWidth variant="contained" id="loginButton">
+          <button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline w-full rounded-3xl"
+          >
             Đăng nhập
-          </Button>
+          </button>
         </form>
-      </div>
-      <div className="registerLink">
-        Bạn chưa có tài khoản? <Link href="/register">Đăng ký ngay</Link>
       </div>
       <ToastContainer />
     </Container>
