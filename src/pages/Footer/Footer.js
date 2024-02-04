@@ -24,7 +24,7 @@ const MobileNavigation = () => {
         navigate("/cart");
         break;
       case 2:
-        navigate("/history");
+        navigate("/order-history");
         break;
       case 3:
         navigate("/notifications");
