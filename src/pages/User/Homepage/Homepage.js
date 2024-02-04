@@ -12,6 +12,7 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   const [menuData, setMenuData] = useState(null);
+  const [formattedMenuDate, setFormattedMenuDate] = useState("");
   const handleComboClick = (comboId) => {
     // Chuyển hướng đến trang chi tiết sản phẩm với id của combo
     // Thông qua các phương tiện chuyển hướng bạn đã sử dụng trong ứng dụng của mình
@@ -24,7 +25,16 @@ const Homepage = () => {
     const fetchMenu = async () => {
       try {
         const menu = await menuAPI.getMenu();
+
         setMenuData(menu);
+        if (menu && menu.menuDate) {
+          // Chuyển đổi định dạng ngày
+          const date = new Date(menu.menuDate);
+          const formattedDate = `${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getFullYear()}`;
+          setFormattedMenuDate(formattedDate);
+        }
       } catch (error) {
         console.error("Error fetching menu:", error);
       }
@@ -38,7 +48,7 @@ const Homepage = () => {
       <UserHeader />
       <div className="container mx-auto p-2">
         <div className="menuDate text-left text-xl font-bold">
-          <h6>Thực đơn ngày 08/03/2024</h6>
+          <h6>Thực đơn ngày {formattedMenuDate}</h6>
         </div>
         <div className=" grid grid-cols-1 gap-4 mb-16">
           {menuData &&
