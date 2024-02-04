@@ -21,11 +21,10 @@ import {
   LocalShipping,
   LocationCity,
 } from "@mui/icons-material";
-import "../Layout/Sidebar.css";
+import "../../SuperAdmin/Layout/Sidebar.css";
 
 const drawerWidth = 240;
-
-const Sidebar = () => {
+const PartnerSidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -47,29 +46,11 @@ const Sidebar = () => {
 
       {/* Menu Items */}
       <List style={{ flexGrow: 1 }}>
-        <ListItem button component={Link} to="/admin/foods">
+        <ListItem button component={Link} to="/partner/order">
           <ListItemIcon>
             <LunchDining />
           </ListItemIcon>
-          <ListItemText primary="Danh sách món ăn" />
-        </ListItem>
-        <ListItem button component={Link} to="/admin/combo">
-          <ListItemIcon>
-            <Fastfood />
-          </ListItemIcon>
-          <ListItemText primary="Danh sách combo" />
-        </ListItem>
-        <ListItem button component={Link} to="/admin/menu">
-          <ListItemIcon>
-            <RestaurantMenu />
-          </ListItemIcon>
-          <ListItemText primary="Danh sách menu" />
-        </ListItem>
-        <ListItem button component={Link} to="/admin/partners">
-          <ListItemIcon>
-            <SettingsApplications />
-          </ListItemIcon>
-          <ListItemText primary="Danh sách đối tác" />
+          <ListItemText primary="Đơn hàng" />
         </ListItem>
         <ListItem button component={Link} to="/admin/suppliers">
           <ListItemIcon>
@@ -88,6 +69,12 @@ const Sidebar = () => {
             <LocationCity />
           </ListItemIcon>
           <ListItemText primary="Danh sách công ty" />
+        </ListItem>
+        <ListItem button component={Link} to="/admin/companies">
+          <ListItemIcon>
+            <LocationCity />
+          </ListItemIcon>
+          <ListItemText primary="Lịch sử GD" />
         </ListItem>
       </List>
 
@@ -154,4 +141,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default PartnerSidebar;

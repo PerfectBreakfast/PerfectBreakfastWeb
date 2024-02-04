@@ -1,4 +1,5 @@
 .menu {
+  padding-bottom: 100px;
   height: 100px;
 }
 .menuDate {
@@ -78,7 +79,4 @@
 #orderButton {
   background-color: transparent;
   box-shadow: none;
-}
-.menu {
-  margin-bottom: 65px;
 }

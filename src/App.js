@@ -24,6 +24,9 @@ import PageLayout from "./pages/SuperAdmin/Layout/PageLayout";
 import Dishes from "./pages/SuperAdmin/Screens/Dish/DishList";
 import Combos from "./pages/SuperAdmin/Screens/Combo/ComboList";
 import Menu from "./pages/SuperAdmin/Screens/Menu/MenuList";
+import PartnerPageLayout from "./pages/Partner/Layout/PartnerPageLayout";
+import OrderHistoryList from "./pages/User/OrderHistory/OrderHistoryList";
+import OrderDetail from "./pages/User/OrderHistory/OrderDetail";
 
 function App() {
   return (
@@ -38,6 +41,11 @@ function App() {
             <Route path="/combo/:id" element={<ComboDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-history" element={<OrderHistoryList />} />
+            <Route
+              path="/order-history/detail/:orderId"
+              element={<OrderDetail />}
+            />
             <Route path="/success" element={<PaymentSuccess />} />
             <Route path="/cancel" element={<CancelPayment />} />
             <Route path="/user" element={<UserInfo />} />
@@ -48,6 +56,7 @@ function App() {
             {/* <Route path="/admin/foods" element={<Dishes />} />
             <Route path="/admin/combos" element={<Combos />} />
             <Route path="/admin/menu" element={<Menu />} /> */}
+            <Route path="/partner/*" element={<PartnerPageLayout />} />
           </Routes>
         </CartProvider>
       </Router>

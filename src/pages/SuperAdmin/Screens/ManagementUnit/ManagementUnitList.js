@@ -18,6 +18,8 @@ import {
   StyledTableRow,
 } from "../Table/StyledTableComponents";
 import managementUnitAPI from "../../../../services/managementUnitAPI";
+import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+
 const ManagementUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -38,7 +40,7 @@ const ManagementUnitList = () => {
   const fetchManagementUnits = async () => {
     try {
       const response = await managementUnitAPI.getManagementUnitByPagination(
-        // searchTerm,
+        searchTerm,
         pageIndex
       );
       setManagementUnits(response.items);
@@ -86,7 +88,7 @@ const ManagementUnitList = () => {
       );
 
       // Display a success message
-      toast.success("Thêm nhà cung cấp thành công!");
+      toast.success("Thêm đối tác thành công!");
 
       handleCloseModal();
       fetchManagementUnits();
@@ -96,81 +98,96 @@ const ManagementUnitList = () => {
     }
   };
   const handleAddEmployeeClick = (id) => {
-    navigate("create-management-user", { state: { managementUnitId: id } });
+    navigate("create-management-user", { state: { partnerId: id } });
     console.log(id);
   };
   return (
     <>
-      <div className="table-content-container container">
-        <h2 className="table-title">Danh sách đối tác</h2>
-        <div className="create-btn">
-          <Button id="create-btn" variant="contained" onClick={handleOpenModal}>
+      <div className="container mx-auto p-4">
+        <h2 className="text-2xl font-semibold mb-4">Danh sách đối tác</h2>
+
+        <div className="flex justify-between items-center mb-4">
+          <button
+            id="create-btn"
+            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            onClick={handleOpenModal}
+          >
             Thêm đối tác
-          </Button>
+          </button>
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              placeholder="Tìm kiếm"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+              onClick={handleSearch}
+            >
+              <Search />
+            </button>
+          </div>
         </div>
+        <div className="bg-white shadow-md my-6">
+          <table className="min-w-max w-full table-auto">
+            <thead>
+              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-6">Tên công ty</th>
+                <th className="py-3 px-6">Địa chỉ</th>
+                <th className="py-3 px-6">Quản trị viên</th>
+                <th className="py-3 px-6"></th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {managementUnits.map((managementUnit) => (
+                <tr
+                  key={managementUnit.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 px-6 text-left">{managementUnit.name}</td>
+                  <td className="py-3 px-6 text-left">
+                    {managementUnit.address}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <ul>
+                      {managementUnit.owners.map((owner, index) => (
+                        <li key={index}>{owner}</li>
+                      ))}
+                    </ul>
+                  </td>
 
-        <div className="search-container">
-          <TextField
-            label="Tìm kiếm"
-            variant="outlined"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-          <Button variant="contained" onClick={handleSearch}>
-            Tìm kiếm
-          </Button>
-        </div>
+                  <td className="py-3 px-6 text-left">
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                      onClick={() => handleAddEmployeeClick(managementUnit.id)}
+                    >
+                      Thêm QTV
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div className="table-container">
-          <Paper className="table">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Tên công ty</StyledTableCell>
-                  <StyledTableCell>Địa chỉ</StyledTableCell>
-                  <StyledTableCell>Nhân viên</StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {managementUnits.map((managementUnit) => (
-                  <StyledTableRow key={managementUnit.id}>
-                    <StyledTableCell>{managementUnit.name}</StyledTableCell>
-                    <StyledTableCell>{managementUnit.address}</StyledTableCell>
-                    <StyledTableCell>
-                      {managementUnit.memberCount}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {managementUnit.owners.length === 0 ? (
-                        <Button
-                          onClick={() =>
-                            handleAddEmployeeClick(managementUnit.id)
-                          }
-                        >
-                          Thêm nhân viên
-                        </Button>
-                      ) : (
-                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
-                        <span>Chỉ hiển thị khi có owners</span>
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="pagination-container">
-              <Pagination
-                componentName="div"
-                count={totalPages}
-                page={pageIndex + 1}
-                onChange={handlePageChange}
-              />
-            </div>
-          </Paper>
+          <div className="pagination-container mt-4">
+            <Pagination
+              componentName="div"
+              count={totalPages}
+              page={pageIndex + 1}
+              onChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
+
       {/* Modal */}
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
+      <Modal
+        className="rounded-3xl"
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -182,7 +199,7 @@ const ManagementUnitList = () => {
             p: 4,
           }}
         >
-          <h2>Tạo mới nhà cung cấp</h2>
+          <h2>Tạo mới đối tác</h2>
           <TextField
             label="Tên công ty"
             name="name"

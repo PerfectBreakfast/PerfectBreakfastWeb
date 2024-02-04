@@ -28,19 +28,6 @@ const CreateCombo = () => {
   const navigate = useNavigate();
   const [mainFoodId, setMainFoodId] = useState([]);
   const [sideFoodId, setSideFoodId] = useState([]);
-  // const [comboData, setComboData] = useState({
-  //   name: "",
-  //   content: "",
-  //   comboFoodRequests: [
-  //     {
-  //       foodId: null,
-  //     },
-  //     {
-  //       foodId: null,
-  //     },
-  //   ],
-  //   selectedImage: null,
-  // });
 
   const [comboData, setComboData] = useState({
     name: "",
@@ -90,58 +77,6 @@ const CreateCombo = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     // Create a FormData object to handle file upload
-  //     const formData = new FormData();
-  //     formData.append("name", comboData.name);
-  //     formData.append("content", comboData.content);
-  //     formData.append("image", comboData.selectedImage);
-
-  //     // Append other form data properties
-  //     comboData.comboFoodRequests.forEach((request, index) => {
-  //       formData.append(`comboFoodRequests[${index}].foodId`, request.foodId);
-  //     });
-  //     // Use formData instead of comboData for the API call
-  //     const newCombo = await comboAPI.createCombo(formData);
-  //     console.log("New Combo:", newCombo);
-  //     toast.success("Thêm combo thành công!");
-  //     navigate(-1);
-  //   } catch (error) {
-  //     console.error("Error creating combo:", error);
-  //     toast.error("Thêm combo thất bại!");
-  //   }
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     // Create a FormData object to handle file upload
-  //     const formData = new FormData();
-  //     formData.append("name", comboData.name);
-  //     formData.append("content", comboData.content);
-  //     formData.append("image", comboData.selectedImage);
-
-  //     // Create an array of foodIds
-  //     const foodIds = comboData.comboFoodRequests.map(
-  //       (request) => request.foodId
-  //     );
-  //     formData.append("foodIds", JSON.stringify(foodIds));
-
-  //     // Use formData instead of comboData for the API call
-  //     const newCombo = await comboAPI.createCombo(formData);
-  //     console.log("New Combo:", newCombo);
-  //     toast.success("Thêm combo thành công!");
-  //     navigate(-1);
-  //   } catch (error) {
-  //     console.error("Error creating combo:", error);
-  //     toast.error("Thêm combo thất bại!");
-  //   }
-  // };
-
   const openCancelDialog = () => {
     setIsCancelDialogOpen(true);
   };
@@ -166,20 +101,6 @@ const CreateCombo = () => {
       console.error("Error fetching dishes:", error);
     }
   };
-
-  // const handleDishChange = (dishId, setType) => {
-  //   setComboData((prevData) => {
-  //     const updatedComboFoodRequests = [...prevData.comboFoodRequests];
-  //     updatedComboFoodRequests[setType === setMainFoodId ? 0 : 1].foodId =
-  //       dishId;
-
-  //     return {
-  //       ...prevData,
-  //       comboFoodRequests: updatedComboFoodRequests,
-  //     };
-  //   });
-  //   setType(dishId);
-  // };
 
   const handleDishChange = (dishId, setType) => {
     setComboData((prevData) => ({
@@ -220,40 +141,38 @@ const CreateCombo = () => {
 
   console.log("chính", comboData);
   return (
-    <Container sx={{ padding: 3 }}>
-      <Typography variant="h5" gutterBottom>
-        Tạo mới combo
-      </Typography>
-      <Paper className="container">
+    <div className="container mx-auto p-6">
+      <h5 className="text-xl font-bold mb-4">Tạo mới combo</h5>
+      <div className="bg-white shadow-md rounded-lg p-4">
         <form onSubmit={handleSubmit}>
           <div className="form-create-combo">
-            <Typography className="label-form-create" gutterBottom>
-              Tên combo
-            </Typography>
-            <TextField
+            <p className="text-md mb-2">Tên combo</p>
+            <input
+              className="placeholder-gray-500 border-2 rounded-md p-4 w-full mb-4"
               placeholder="Thêm tên của combo"
-              variant="outlined"
+              type="text"
               id="text-field-form"
               name="name"
               value={comboData.name}
               onChange={handleInputChange}
               required
             />
-            <Typography className="label-form-create" gutterBottom>
-              Nội dung
-            </Typography>
-            <TextField
+
+            <p className="text-md mb-2">Nội dung</p>
+            <input
+              className="placeholder-gray-500 border-2 rounded-md p-4 w-full mb-4"
               placeholder="Mô tả combo"
+              type="text"
               id="text-field-form"
               name="content"
               value={comboData.content}
               onChange={handleInputChange}
               required
             />
-            <Typography className="label-form-create" gutterBottom>
-              Hình ảnh
-            </Typography>
+
+            <p className="text-md mb-2">Hình ảnh</p>
             <input
+              className="border-2 rounded-md p-2 w-full mb-4"
               type="file"
               accept="image/*"
               id="image-upload"
@@ -263,118 +182,131 @@ const CreateCombo = () => {
             />
 
             <div>
-              <Typography className="label-form-create" gutterBottom>
-                Món chính
-              </Typography>
-              <RadioGroup
-                value={mainCategory}
-                onChange={(e) =>
-                  handleCategoryChange(e.target.value, setMainCategory)
-                }
-              >
+              <p className="text-md mb-2">Món chính</p>
+              <div className="mb-4">
                 {categoryResponses.map((category) => (
-                  <FormControlLabel
+                  <label
                     key={category.id}
-                    value={category.id.toString()}
-                    control={<Radio />}
-                    label={category.name}
-                  />
+                    className="inline-flex items-center mr-2"
+                  >
+                    <input
+                      type="radio"
+                      name="mainCategory"
+                      value={category.id.toString()}
+                      onChange={(e) =>
+                        handleCategoryChange(e.target.value, setMainCategory)
+                      }
+                      checked={mainCategory === category.id.toString()}
+                      className="form-radio"
+                    />
+                    <span className="ml-2">{category.name}</span>
+                  </label>
                 ))}
-              </RadioGroup>
+              </div>
               {mainCategory && (
-                <Select
+                <select
+                  className="border-2 rounded-md p-2 w-full mb-4"
                   value={mainFoodId}
                   onChange={(e) =>
                     handleDishChange(e.target.value, setMainFoodId)
                   }
-                  label="Chọn món ăn"
                 >
                   {mainDishes.map((dish) => (
-                    <MenuItem key={dish.id} value={dish.id}>
+                    <option key={dish.id} value={dish.id}>
                       {dish.name}
-                    </MenuItem>
+                    </option>
                   ))}
-                </Select>
+                </select>
               )}
             </div>
 
             <div>
-              <Typography className="label-form-create" gutterBottom>
-                Món phụ
-              </Typography>
-              <RadioGroup
-                value={sideCategory}
-                onChange={(e) =>
-                  handleCategoryChange(e.target.value, setSideCategory)
-                }
-              >
+              <p className="text-md mb-2">Món phụ</p>
+              <div className="mb-4">
                 {categoryResponses.map((category) => (
-                  <FormControlLabel
+                  <label
                     key={category.id}
-                    value={category.id.toString()}
-                    control={<Radio />}
-                    label={category.name}
-                  />
+                    className="inline-flex items-center  mr-2"
+                  >
+                    <input
+                      type="radio"
+                      name="sideCategory"
+                      value={category.id.toString()}
+                      onChange={(e) =>
+                        handleCategoryChange(e.target.value, setSideCategory)
+                      }
+                      checked={sideCategory === category.id.toString()}
+                      className="form-radio"
+                    />
+                    <span className="ml-2">{category.name}</span>
+                  </label>
                 ))}
-              </RadioGroup>
+              </div>
               {sideCategory && (
-                <Select
+                <select
+                  className="border-2 rounded-md p-2 w-full mb-4"
                   value={sideFoodId}
                   onChange={(e) =>
                     handleDishChange(e.target.value, setSideFoodId)
                   }
-                  label="Chọn món ăn"
                 >
                   {sideDishes.map((dish) => (
-                    <MenuItem key={dish.id} value={dish.id}>
+                    <option key={dish.id} value={dish.id}>
                       {dish.name}
-                    </MenuItem>
+                    </option>
                   ))}
-                </Select>
+                </select>
               )}
             </div>
-          </div>
-          <div>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              id="create-combo-btn"
-            >
-              Tạo mới
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              id="cancel-combo-btn"
-              onClick={openCancelDialog}
-            >
-              Hủy
-            </Button>
+
+            <div className="flex justify-between mt-4">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="submit"
+                id="create-combo-btn"
+              >
+                Tạo mới
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                type="button"
+                id="cancel-combo-btn"
+                onClick={openCancelDialog}
+              >
+                Hủy
+              </button>
+            </div>
           </div>
         </form>
-      </Paper>
-      <Dialog
-        open={isCancelDialogOpen}
-        onClose={closeCancelDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Bạn có chắc chắn muốn hủy thêm combo không?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeCancelDialog} color="primary">
-            Không
-          </Button>
-          <Button onClick={() => navigate(-1)} color="error" autoFocus>
-            Có
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+      </div>
+
+      {/* Dialog */}
+      {isCancelDialogOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <p className="text-md leading-relaxed">
+                Bạn có chắc chắn muốn hủy thêm combo không?
+              </p>
+              <div className="items-center px-4 py-3">
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-auto"
+                  onClick={closeCancelDialog}
+                >
+                  Không
+                </button>
+                <button
+                  className="px-4 py-2 ml-3 bg-red-500 text-white text-base font-medium rounded-md w-auto"
+                  onClick={() => navigate(-1)}
+                >
+                  Có
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

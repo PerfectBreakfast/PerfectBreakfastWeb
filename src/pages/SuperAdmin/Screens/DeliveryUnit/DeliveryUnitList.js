@@ -18,6 +18,7 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from "../Table/StyledTableComponents";
+import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 
 const DeliveryUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -30,6 +31,7 @@ const DeliveryUnitList = () => {
   const [newDeliveryData, setNewDeliveryData] = useState({
     name: "",
     address: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const DeliveryUnitList = () => {
   const fetchDeliveryUnits = async () => {
     try {
       const response = await deliveryUnitAPI.getDeliveryUnitByPagination(
-        // searchTerm,
+        searchTerm,
         pageIndex
       );
       setDeliveryUnits(response.items);
@@ -102,74 +104,91 @@ const DeliveryUnitList = () => {
   };
   return (
     <>
-      <div className="table-content-container container">
-        <h2 className="table-title">Danh sách đơn vị vận chuyển</h2>
-        <div className="create-btn">
-          <Button id="create-btn" variant="contained" onClick={handleOpenModal}>
+      <div className="container mx-auto p-4">
+        <h2 className="text-2xl font-semibold mb-4">
+          Danh sách đơn vị vận chuyển
+        </h2>
+
+        <div className="flex justify-between items-center mb-4">
+          <button
+            id="create-btn"
+            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            onClick={handleOpenModal}
+          >
             Thêm đơn vị vận chuyển
-          </Button>
+          </button>
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              placeholder="Tìm kiếm"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+              onClick={handleSearch}
+            >
+              <Search />
+            </button>
+          </div>
         </div>
 
-        <div className="search-container">
-          <TextField
-            label="Tìm kiếm"
-            variant="outlined"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-          <Button variant="contained" onClick={handleSearch}>
-            Tìm kiếm
-          </Button>
-        </div>
+        <div className="bg-white shadow-md my-6">
+          <table className=" w-full table-auto">
+            <thead>
+              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-6 w-1/6 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-2/6 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
+                <th className="py-3 px-6 w-1/6 break-words">Nhân viên</th>
+                <th className="py-3 px-6 w-1/6 break-words"></th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {deliveryUnits.map((deliveryUnit) => (
+                <tr
+                  key={deliveryUnit.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 px-6 text-left">{deliveryUnit.name}</td>
+                  <td className="py-3 px-6 text-left">
+                    {deliveryUnit.address}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {deliveryUnit.phoneNumber}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <ul>
+                      {deliveryUnit.owners.map((owner, index) => (
+                        <li key={index}>{owner}</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                      onClick={() => handleAddEmployeeClick(deliveryUnit.id)}
+                    >
+                      Thêm QTV
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div className="table-container">
-          <Paper className="table">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Tên công ty</StyledTableCell>
-                  <StyledTableCell>Địa chỉ</StyledTableCell>
-                  <StyledTableCell>Nhân viên</StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {deliveryUnits.map((deliveryUnit) => (
-                  <StyledTableRow key={deliveryUnit.id}>
-                    <StyledTableCell>{deliveryUnit.name}</StyledTableCell>
-                    <StyledTableCell>{deliveryUnit.address}</StyledTableCell>
-                    <StyledTableCell>
-                      {deliveryUnit.memberCount}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {deliveryUnit.owners.length === 0 ? (
-                        <Button
-                          onClick={() =>
-                            handleAddEmployeeClick(deliveryUnit.id)
-                          }
-                        >
-                          Thêm nhân viên
-                        </Button>
-                      ) : (
-                        // Hiển thị một thông báo hoặc không hiển thị gì cả nếu owners không rỗng
-                        <span>{deliveryUnit.owners}</span>
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="pagination-container">
-              <Pagination
-                componentName="div"
-                count={totalPages}
-                page={pageIndex + 1}
-                onChange={handlePageChange}
-              />
-            </div>
-          </Paper>
+          <div className="pagination-container mt-4">
+            <Pagination
+              componentName="div"
+              count={totalPages}
+              page={pageIndex + 1}
+              onChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
+
       {/* Modal */}
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <Box
@@ -196,6 +215,14 @@ const DeliveryUnitList = () => {
             label="Địa chỉ"
             name="address"
             value={newDeliveryData.address}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Số điện thoại"
+            name="phoneNumber"
+            value={newDeliveryData.phoneNumber}
             onChange={handleInputChange}
             fullWidth
             margin="normal"

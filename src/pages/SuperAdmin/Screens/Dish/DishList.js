@@ -14,6 +14,8 @@ import {
   TextField,
   Box,
   Modal,
+  InputAdornment,
+  Typography,
 } from "@mui/material";
 import dishAPI from "../../../../services/dishAPI";
 import categoryAPI from "../../../../services/categoryAPI";
@@ -26,6 +28,10 @@ import {
 } from "../Table/StyledTableComponents";
 import "../Table/Table.css";
 import { useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
+
+import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 
 const Dishes = () => {
   const [dishes, setDishes] = useState([]);
@@ -131,91 +137,93 @@ const Dishes = () => {
 
   return (
     <>
-      <div className="table-content-container container">
-        <h2 className="table-title">Danh sách món ăn</h2>
-        <div className="create-btn">
-          <Button id="create-btn" variant="contained" onClick={handleOpenModal}>
+      <div className="container mx-auto p-4">
+        <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
+
+        <div className="flex justify-between items-center mb-4">
+          <button
+            id="create-btn"
+            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+            onClick={handleOpenModal}
+          >
             Thêm món ăn
-          </Button>
+          </button>
+
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              placeholder="Tìm kiếm"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+              onClick={handleSearch}
+            >
+              <Search />
+            </button>
+          </div>
         </div>
-        <div className="search-container">
-          <TextField
-            label="Tìm kiếm"
-            variant="outlined"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+
+        <div className="bg-white shadow-md my-6">
+          <table className=" min-w-max w-full table-auto">
+            <thead>
+              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-6 rounded-l">Hình ảnh</th>
+                <th className="py-3 px-6">Tên món ăn</th>
+                <th className="py-3 px-6 rounded-r">Giá</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {dishes.map((dish) => (
+                <tr
+                  key={dish.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 px-6 text-left">
+                    <img
+                      src={dish.image}
+                      alt={dish.name}
+                      className="w-16 h-16 rounded-full"
+                    />
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <span
+                      className="font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => handleDishClick(dish.id)}
+                    >
+                      {dish.name}
+                    </span>
+                  </td>
+                  <td className="py-3 px-6 ">
+                    {dish.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="pagination-container" style={{ marginTop: "20px" }}>
+          <Pagination
+            componentName="div"
+            count={totalPages}
+            page={pageIndex + 1}
+            onChange={handlePageChange}
+            color="primary"
           />
-          <Button variant="contained" onClick={handleSearch}>
-            Tìm kiếm
-          </Button>
         </div>
-        <div className="table-container">
-          <Paper className="table">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Hình ảnh</StyledTableCell>
-                  <StyledTableCell>Tên món ăn</StyledTableCell>
-                  <StyledTableCell>Giá</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dishes.map((dish) => (
-                  <StyledTableRow key={dish.id}>
-                    <StyledTableCell>
-                      <img
-                        src={dish.image}
-                        alt={dish.name}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <span
-                        style={{
-                          cursor: "pointer",
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                        }}
-                        onClick={() => handleDishClick(dish.id)}
-                      >
-                        {dish.name}
-                      </span>
-                    </StyledTableCell>
-
-                    <StyledTableCell>
-                      {dish.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="pagination-container">
-              <Pagination
-                componentName="div"
-                count={totalPages}
-                page={pageIndex + 1}
-                onChange={handlePageChange}
-              />
-            </div>
-          </Paper>
-        </div>
-
-        {/* <Pagination
-          count={totalPages}
-          page={pageIndex + 1}
-          onChange={handlePageChange}
-        /> */}
       </div>
+
       {/* Modal */}
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <Box
+          className="rounded-3xl"
           sx={{
             position: "absolute",
             top: "50%",
@@ -261,16 +269,7 @@ const Dishes = () => {
               ))}
             </Select>
           </FormControl>
-          {/* <TextField
-            label="Hình ảnh"
-            name="image"
-            value={newDishData.image}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          /> */}
           <TextField
-            // label="Hình ảnh"
             name="image"
             type="file"
             onChange={handleInputChange}

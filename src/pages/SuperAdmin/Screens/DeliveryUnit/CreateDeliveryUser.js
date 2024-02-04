@@ -14,6 +14,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import userAPI from "../../../../services/userAPI";
+import { toast } from "react-toastify";
 const CreateDeliveryUser = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,66 +59,103 @@ const CreateDeliveryUser = () => {
 
     try {
       await userAPI.createUnitUser(data);
-      navigate("/success"); // Or wherever you want to redirect after success
+      toast.success("Thêm quản trị viên thành công!");
+      navigate(-1); // Or wherever you want to redirect after success
     } catch (error) {
       console.error("Error creating user:", error);
     }
   };
 
   return (
-    <Container>
-      <Typography variant="h6">Create Management User</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Phone Number"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Role</InputLabel>
-          <Select
-            value={formData.roleName}
-            label="Role"
+    <div className="container mx-auto p-4">
+      <h6 className="text-xl font-bold mb-4">
+        Tạo quản trị viên đơn vị giao hàng
+      </h6>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-4">
+          <input
+            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full px-3 py-2"
+            placeholder="Tên người dùng"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="mb-4">
+          <input
+            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full px-3 py-2"
+            placeholder="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="mb-4">
+          <input
+            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full px-3 py-2"
+            placeholder="Số điện thoại"
+            name="phoneNumber"
+            type="text"
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="mb-4 w-full">
+          <select
+            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full px-3 py-2"
             name="roleName"
+            value={formData.roleName}
             onChange={handleInputChange}
           >
             {roles.map((role, index) => (
-              <MenuItem key={index} value={role.name}>
-                {role.name}
-              </MenuItem>
+              <>
+                <option value="">Chọn chức năng</option>
+                <option key={index} value={role.name}>
+                  {role.name}
+                </option>
+              </>
             ))}
-          </Select>
-        </FormControl>
-        <input
-          type="file"
-          ref={imageRef}
-          accept="image/*"
-          style={{ margin: "10px 0" }}
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Create User
-        </Button>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <input
+            type="file"
+            ref={imageRef}
+            accept="image/*"
+            className="w-full"
+          />
+        </div>
+        {/* <div className="mb-4">
+  <label className="block">
+    {selectedImage 
+      ? <img src={selectedImage} alt="Preview" className="w-full h-auto" />
+      : <span className="text-gray-700">Chưa có hình ảnh</span>
+    }
+  </label>
+  <input
+    type="file"
+    accept="image/*"
+    className="w-full"
+    onChange={handleImageChange}
+  />
+</div> */}
+
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+          >
+            Tạo mới
+          </button>
+        </div>
       </form>
-    </Container>
+    </div>
   );
 };
 
