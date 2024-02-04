@@ -97,7 +97,7 @@ const Combos = () => {
                 <th className="py-3 px-6 rounded-l">Hình ảnh</th>
                 <th className="py-3 px-6">Tên Combo</th>
                 <th className="py-3 px-6">Món ăn</th>
-                <th className="py-3 px-6 rounded-r">Giá</th>
+                <th className="py-3 px-6 rounded-r">Đơn giá</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">

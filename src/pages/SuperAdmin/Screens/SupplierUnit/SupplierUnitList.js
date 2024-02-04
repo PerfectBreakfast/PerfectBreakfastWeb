@@ -199,11 +199,12 @@ const SupplierUnitList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/5 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-1/5 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/5 break-words">Nhân viên</th>
-                <th className="py-3 px-6 w-1/5 break-words">Đối tác</th>
-                <th className="py-3 px-6 w-1/5 break-words"></th>
+                <th className="py-3 px-6 w-1/6 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-1/6 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
+                <th className="py-3 px-6 w-1/6 break-words">Quản trị viên</th>
+                <th className="py-3 px-6 w-1/6 break-words">Đối tác</th>
+                <th className="py-3 px-6 w-1/6 break-words"></th>
               </tr>
             </thead>
 
@@ -216,6 +217,9 @@ const SupplierUnitList = () => {
                   <td className="py-3 px-6 text-left">{supplierUnit.name}</td>
                   <td className="py-3 px-6 text-left whitespace-normal break-words">
                     {supplierUnit.address}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {supplierUnit.phoneNumber}
                   </td>
 
                   <td className="py-3 px-6 text-left">

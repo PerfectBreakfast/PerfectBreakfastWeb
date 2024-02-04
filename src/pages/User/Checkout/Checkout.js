@@ -120,7 +120,7 @@ function Checkout() {
         <button onClick={handleGoBack} className="flex items-center">
           <ArrowBackIosIcon />
         </button>
-        <p className="contents align-middle text-lg mb-2">Thanh toán</p>
+        <h6 className="text-lg font-bold">Thanh toán</h6>
       </div>
       <div className="container">
         {/* ... */}
@@ -141,7 +141,7 @@ function Checkout() {
             </div>
           )}
           <textarea
-            className="placeholder-gray-500 multiline rows-4 border-0 rounded-none w-full p-4 mt-4 bg-green-100"
+            className="placeholder-gray-500 multiline rows-4 border-0 rounded-none w-full p-4 mt-2 bg-green-100"
             placeholder="Ghi chú"
             value={note}
             onChange={handleNoteChange}

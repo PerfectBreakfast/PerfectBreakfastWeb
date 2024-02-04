@@ -72,7 +72,20 @@ const OrderHistoryList = () => {
             <div className="flex ">
               <img src={comboImg} alt="Combo" className="w-16 h-16 mr-4" />
               <div className="flex-1">
-                <h2 className="font-bold text-lg">{order.companyName}</h2>
+                <div className="flex">
+                  <h2 className="font-medium text-lg mr-2">
+                    {order.companyName}
+                  </h2>
+                  <div className=" text-right ">
+                    <span className=" font-medium">
+                      {order.totalPrice.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </span>
+                  </div>
+                </div>
+
                 <p
                   className={`${getStatusColor(
                     order.orderStatus
@@ -92,14 +105,6 @@ const OrderHistoryList = () => {
                   <span className="mx-2">•</span>
                   <p>{order.comboCount} món</p>
                 </div>
-              </div>
-              <div className=" text-right ">
-                <span className="text-lg font-semibold">
-                  {order.totalPrice.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
-                </span>
               </div>
             </div>
           </div>
