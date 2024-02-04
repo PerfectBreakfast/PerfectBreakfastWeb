@@ -115,115 +115,124 @@ function Checkout() {
   };
 
   return (
-    <div className="checkoutContainer">
-      <div className="paymentManagement">
-        <IconButton onClick={handleGoBack}>
-          <ArrowBackIosIcon />{" "}
-        </IconButton>
-        <Typography className="paymentText" variant="h6" gutterBottom>
-          Thanh toán
-        </Typography>
+    <div className="relative">
+      <div className="flex items-center m-2.5">
+        <button onClick={handleGoBack} className="flex items-center">
+          <ArrowBackIosIcon />
+        </button>
+        <p className="contents align-middle text-lg mb-2">Thanh toán</p>
       </div>
       <div className="container">
-        <Typography
-          className="paymentText"
-          fontWeight={"bold"}
-          variant="h6"
-          gutterBottom
-        >
+        {/* ... */}
+        <p className="contents align-middle text-lg mb-2 font-bold">
           Thông tin người dùng
-        </Typography>
+        </p>
         <div className="container">
-          {/* Hiển thị thông tin người dùng */}
+          {/* User information will be displayed here */}
           {userData && (
             <div>
-              <Typography variant="h6" gutterBottom>
-                Địa chỉ: {userData.companyName}
-              </Typography>
-              <Divider className="custom-divider" />
-              <Typography variant="h6" gutterBottom>
+              <p className="text-lg mb-2">Tên người dùng: {userData.name}</p>
+              <p className="text-lg mb-2">Địa chỉ: {userData.companyName}</p>
+              <div className="bg-gray-400"> {/* Custom Divider */}</div>
+              <p className="text-lg mb-2">
                 Số điện thoại: {userData.phoneNumber}
-              </Typography>
-              <Divider className="custom-divider" />
+              </p>
+              <div className="bg-gray-400"> {/* Custom Divider */}</div>
             </div>
           )}
-          <TextField
+          <textarea
+            className="placeholder-gray-500 multiline rows-4 border-0 rounded-none w-full p-4 mt-4 bg-green-100"
             placeholder="Ghi chú"
-            multiline
-            rows={4}
-            variant="outlined"
-            fullWidth
             value={note}
             onChange={handleNoteChange}
-            margin="normal"
-            color="success"
           />
         </div>
-        <div>
-          <FormControl component="fieldset" margin="normal">
-            <Typography
-              id="paymentContent"
-              fontWeight={"bold"}
-              variant="h6"
-              gutterBottom
-            >
-              Phương thức thanh toán
-            </Typography>
-            <div className="container">
-              <RadioGroup
-                className="paymentControl"
-                aria-label="payment-method"
-                name="paymentMethod"
-                value={paymentMethod}
-                onChange={handlePaymentMethodChange}
-              >
-                <FormControlLabel
-                  value="banking"
-                  control={<Radio style={{ color: "#0CBF66" }} />}
-                  label={
-                    <div className="paymentMethod">
-                      <div className="bankingIcon">
-                        {" "}
-                        <AccountBalanceIcon
-                          id="paymentIconColor"
-                          fontSize="large"
-                        />{" "}
-                      </div>
-                      <div className="paymentName">
-                        <Typography variant="h6">Ngân hàng</Typography>
-                      </div>
-                    </div>
-                  }
-                />
 
-                <FormControlLabel
-                  value="wallet"
-                  control={<Radio style={{ color: "#0CBF66" }} />}
-                  label={
-                    <div className="paymentMethod">
-                      <div className="WalletIcon">
-                        <WalletIcon id="paymentIconColor" fontSize="large" />{" "}
-                      </div>
-                      <div className="paymentName">
-                        <Typography variant="h6">Ví điện tử</Typography>
-                      </div>
+        <div className="mt-4">
+          <form className="space-y-4">
+            <fieldset>
+              <legend className="text-lg font-bold mb-3">
+                Phương thức thanh toán
+              </legend>
+              <div className="flex flex-col space-y-4">
+                {/* Radio option for banking */}
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    value="banking"
+                    name="paymentMethod"
+                    className="form-radio h-5 w-5 text-green-500"
+                    checked={paymentMethod === "banking"}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div className="ml-3 flex items-center">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full mr-2">
+                      {/* AccountBalanceIcon here with classes */}
+
+                      {/* <svg className="w-full h-full text-white" /> */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                        />
+                      </svg>
                     </div>
-                  }
-                />
-              </RadioGroup>
-            </div>
-          </FormControl>
+                    <span className="text-lg">Ngân hàng</span>
+                  </div>
+                </label>
+
+                {/* Radio option for e-wallet */}
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    value="wallet"
+                    name="paymentMethod"
+                    className="form-radio h-5 w-5 text-green-500"
+                    checked={paymentMethod === "wallet"}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div className="ml-3 flex items-center">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full mr-2">
+                      {/* WalletIcon here with classes */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-lg">Ví điện tử</span>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+          </form>
         </div>
-        <div className="orderBtn">
-          <Button
-            id="confirmBtn"
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={handleCheckout}
-          >
-            Đặt hàng
-          </Button>
+        <div className="fixed bottom-0 left-0 right-0 w-full">
+          <div className="flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
+            <button
+              className="bg-green-500 text-white p-2 mb-2 rounded-3xl hover:bg-green-600 transition-colors"
+              onClick={handleCheckout}
+            >
+              Thanh toán
+            </button>
+          </div>
         </div>
       </div>
     </div>

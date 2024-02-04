@@ -60,6 +60,7 @@ function ComboDetail() {
     const itemToAdd = {
       id: comboData.id,
       name: comboData.name,
+      image: comboData.image,
       quantity,
       price: comboData.comboPrice,
     };
@@ -96,7 +97,7 @@ function ComboDetail() {
               />
             </svg>
           </button>
-          <h1 className="text-xl font-semibold mb-4">Chi tiết đơn hàng</h1>
+          <h1 className="text-xl font-semibold mb-4">Chi tiết món ăn</h1>
         </div>
       </div>
 
@@ -121,7 +122,7 @@ function ComboDetail() {
           </h6>
           <p class="text-base">{comboData.content}</p>
 
-          <div class="mb-5 fixed bottom-0 left-0 w-full bg-white p-2.5">
+          <div class="mb-5 fixed bottom-0 left-0 w-full bg-white ">
             <div class="flex items-center justify-center py-2.5 space-x-2">
               <button
                 aria-label="remove"
@@ -144,7 +145,7 @@ function ComboDetail() {
 
             <button
               onClick={handleAddToCart}
-              class="bg-green-500 text-white py-2 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-3/4 rounded-3xl"
+              class="bg-green-500 text-white py-2 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-5/6 rounded-3xl"
             >
               Thêm vào giỏ hàng
             </button>

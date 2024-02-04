@@ -65,130 +65,175 @@ function Cart() {
   };
 
   return (
-    <div className="container orderContent">
-      <div className="cartManagement">
-        <IconButton onClick={handleGoBack}>
-          <ArrowBackIosIcon />{" "}
-        </IconButton>
-        <Typography className="cartText" variant="h6" gutterBottom>
-          Giỏ hàng
-        </Typography>
+    <div className="container mx-auto p-4">
+      <div className="flex items-center mb-4">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center text-gray-600"
+        >
+          {/* Replace this with a Tailwind-friendly back icon or image */}
+          <ArrowBackIosIcon />
+        </button>
+        <h6 className="text-lg font-bold">Giỏ hàng</h6>
       </div>
 
       {cart.length === 0 ? (
-        <div className="emptyOrder">
-          <RemoveShoppingCartIcon color="error" id="iconEmptyCart" />
-          <h2>Không có món nào!</h2>
-          <p>Không có bát kỳ món ăn nào, vui lòng kiểm tra lại. </p>
+        <div className="flex flex-col items-center justify-center h-full">
+          <span className="material-icons text-red-500 text-6xl">
+            <RemoveShoppingCartIcon className="" />
+          </span>
+          <h2 className="text-2xl font-bold mt-4">Không có món nào!</h2>
+          <p className="mt-2">
+            Không có bát kỳ món ăn nào, vui lòng kiểm tra lại.
+          </p>
         </div>
       ) : (
-        <div>
+        <div className="mb-28">
           {cart.map((item) => (
-            <React.Fragment key={item.id}>
-              <div className="cartItem">
-                <div className="cartContent">
-                  <div>
-                    <img src={food} alt="" className="imgItem" />
-                  </div>
+            <div
+              key={item.id}
+              className="flex justify-between mb-4 p-4 shadow-lg rounded-lg bg-white"
+            >
+              {/* Image */}
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-24 h-24 object-cover rounded-lg"
+              />
 
-                  <div>
-                    <Typography variant="h6">{item.name}</Typography>
-
-                    <div className="updateItem">
-                      <IconButton
-                        aria-label="remove"
-                        color="error"
-                        onClick={() => handleDecreaseQuantity(item.id)}
-                      >
-                        <RemoveIcon />
-                      </IconButton>
-                      <Typography variant="h6" id="updateItemQuantity">
-                        {item.quantity}
-                      </Typography>
-                      <IconButton
-                        color="success"
-                        aria-label="add"
-                        onClick={() => handleIncreaseQuantity(item.id)}
-                      >
-                        <AddIcon />
-                      </IconButton>
-                    </div>
-                  </div>
-                </div>
-                <div className="totalItem">
-                  <div className="actionItem">
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      color="error"
-                      onClick={() => handleRemoveItem(item.id)}
+              {/* Name and Price */}
+              <div className="flex flex-col flex-1 mx-4">
+                <span className="text-lg font-bold mb-2">{item.name}</span>
+                <div className="flex items-center">
+                  <button
+                    onClick={() => handleDecreaseQuantity(item.id)}
+                    className="text-white bg-red-500 hover:bg-red-600 p-2 rounded-full"
+                  >
+                    {/* Replace with Tailwind-friendly icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-2 w-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      <ClearIcon />
-                    </IconButton>
-                  </div>
-                  <Typography className="priceItem" variant="h6">
-                    {(item.price * item.quantity).toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </Typography>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M18 12H6"
+                      />
+                    </svg>
+                  </button>
+                  <span className="mx-2 text-lg">{item.quantity}</span>
+                  <button
+                    onClick={() => handleIncreaseQuantity(item.id)}
+                    className="text-white bg-green-500 hover:bg-green-600 p-2 rounded-full"
+                  >
+                    {/* Replace with Tailwind-friendly icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-2 w-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </React.Fragment>
+
+              {/* Quantity Adjustments */}
+
+              {/* Remove Item */}
+              <div className="flex flex-col items-end">
+                {" "}
+                <button
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="text-red-500 hover:text-red-600 mb-2"
+                >
+                  {/* Replace with Tailwind-friendly icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+                <p className="text-lg font-bold">
+                  {(item.price * item.quantity).toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       )}
-      {cart.length === 0 ? (
-        <></>
-      ) : (
-        <div className="confirmOrder">
-          <div className="totalOrder">
-            <Typography variant="h6" gutterBottom>
-              Tổng cộng
-            </Typography>
-            <Typography className="totalPriceOrder" variant="h5" gutterBottom>
-              {totalAmount.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}{" "}
-            </Typography>
-          </div>
 
-          <Button
-            variant="contained"
-            component={Link}
-            to="/checkout"
-            id="confirmBtn"
-            size="large"
-          >
-            Tiến hành thanh toán
-          </Button>
+      {cart.length === 0 ? null : (
+        <div className="fixed bottom-0 left-0 right-0 w-full ">
+          <div className="flex flex-col mt-4 p-2 shadow-lg bg-white rounded-t-2xl">
+            <div className="flex justify-between items-center mb-3 m-1">
+              <h6 className="text-lg font-bold">Tổng cộng</h6>
+              <span className="text-lg font-bold">
+                {totalAmount.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </span>
+            </div>
+
+            <button
+              className="bg-green-500 text-white p-2 mb-2 rounded-3xl hover:bg-green-600 transition-colors"
+              onClick={() => navigate("/checkout")}
+            >
+              Tiến hành thanh toán
+            </button>
+          </div>
         </div>
       )}
-      <Dialog
-        open={showConfirmation}
-        onClose={cancelRemoveItem}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className="customDialog"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Xác nhận xóa sản phẩm?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={cancelRemoveItem} color="error">
-            Hủy
-          </Button>
-          <Button onClick={confirmRemoveItem} color="primary" autoFocus>
-            Xác nhận
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      {/* Confirmation Dialog */}
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h5 className="text-lg font-bold mb-4">Xác nhận xóa sản phẩm?</h5>
+            <p className="mb-4">
+              Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={cancelRemoveItem}
+                className="text-red-500 bg-transparent hover:bg-red-100 p-3 rounded mr-4"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmRemoveItem}
+                className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
