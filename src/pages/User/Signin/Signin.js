@@ -14,6 +14,7 @@ import "./Signin.css"; // Import CSS file
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false); // Thêm trạng thái mới
 
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -44,67 +46,71 @@ const Login = () => {
       toast.error("Email hoặc mật khẩu không chính xác");
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Cập nhật trạng thái hiển thị mật khẩu
+  };
 
   return (
-    <Container component="main" maxWidth="xs" className="containerLogin">
-      <CssBaseline />
-      <div>
-        <img src={logo} alt="Logo" className="logo" />
+    <div className="max-w-xs mx-auto text-center">
+      <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />
 
-        <Typography component="h2" variant="h6">
-          Đăng nhập
-        </Typography>
+      <h2 className="text-lg font-semibold mt-4">Đăng nhập</h2>
 
-        <form onSubmit={handleLogin} className="formLogin">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Email"
-                type="email"
-                name="email"
-                autoComplete="email"
-                value={credentials.email}
-                onChange={handleInputChange}
-                size="small"
-                className="inputField"
-                InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Mật khẩu"
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                value={credentials.password}
-                onChange={handleInputChange}
-                size="small"
-                className="inputField"
-                InputProps={{ fullWidth: true, style: { borderRadius: 20 } }}
-              />
-            </Grid>
-          </Grid>
-          <div className="forgotPassword">
-            <Link href="#" variant="body2" id="forgotPasswordLink">
-              Quên mật khẩu
-            </Link>
+      <form onSubmit={handleLogin} className="space-y-4 mt-4">
+        <div className="space-y-4">
+          <input
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            placeholder="Email"
+            value={credentials.email}
+            onChange={handleInputChange}
+            className="input input-bordered w-full rounded-3xl p-2 border-2"
+          />
+
+          <div className="input-group rounded-3xl p-2 border-2">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              required
+              autoComplete="current-password"
+              placeholder="Mật khẩu"
+              value={credentials.password}
+              onChange={handleInputChange}
+              className="input input-bordered w-full"
+            />
+            <span
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </span>
           </div>
-          <Button type="submit" fullWidth variant="contained" id="loginButton">
-            Đăng nhập
-          </Button>
-        </form>
-      </div>
-      <div className="registerLink">
-        Bạn chưa có tài khoản? <Link href="/register">Đăng ký ngay</Link>
+        </div>
+
+        <div className="mt-2 text-left">
+          <a href="#" className="text-red-600 hover:underline">
+            Quên mật khẩu?
+          </a>
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary w-full rounded-full bg-green-600 text-white transition-colors duration-300 hover:bg-green-700 mt-2 border-none"
+        >
+          Đăng nhập
+        </button>
+      </form>
+
+      <div className="mt-4">
+        Bạn chưa có tài khoản?{" "}
+        <a href="/register" className="text-blue-600 hover:underline">
+          Đăng ký ngay
+        </a>
       </div>
       <ToastContainer />
-    </Container>
+    </div>
   );
 };
 
