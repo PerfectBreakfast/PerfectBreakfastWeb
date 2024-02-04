@@ -31,6 +31,7 @@ const ManagementUnitList = () => {
   const [newManagementData, setNewManagementData] = useState({
     name: "",
     address: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -136,6 +137,7 @@ const ManagementUnitList = () => {
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th className="py-3 px-6">Tên công ty</th>
                 <th className="py-3 px-6">Địa chỉ</th>
+                <th className="py-3 px-6">Số điện thoại</th>
                 <th className="py-3 px-6">Quản trị viên</th>
                 <th className="py-3 px-6"></th>
               </tr>
@@ -149,6 +151,9 @@ const ManagementUnitList = () => {
                   <td className="py-3 px-6 text-left">{managementUnit.name}</td>
                   <td className="py-3 px-6 text-left">
                     {managementUnit.address}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {managementUnit.phoneNumber}
                   </td>
                   <td className="py-3 px-6 text-left">
                     <ul>
@@ -212,6 +217,14 @@ const ManagementUnitList = () => {
             label="Địa chỉ"
             name="address"
             value={newManagementData.address}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Số điện thoại"
+            name="phoneNumber"
+            value={newManagementData.phoneNumber}
             onChange={handleInputChange}
             fullWidth
             margin="normal"

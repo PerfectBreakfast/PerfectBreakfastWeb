@@ -141,7 +141,7 @@ const DeliveryUnitList = () => {
                 <th className="py-3 px-6 w-1/6 break-words">Tên công ty</th>
                 <th className="py-3 px-6 w-2/6 break-words">Địa chỉ</th>
                 <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
-                <th className="py-3 px-6 w-1/6 break-words">Nhân viên</th>
+                <th className="py-3 px-6 w-1/6 break-words">Quản trị viên</th>
                 <th className="py-3 px-6 w-1/6 break-words"></th>
               </tr>
             </thead>

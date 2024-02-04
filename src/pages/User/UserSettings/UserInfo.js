@@ -66,7 +66,7 @@ function UserInfo() {
             {userData && (
               <div>
                 <Typography variant="h6" gutterBottom>
-                  {userData.email}
+                  {userData.name}
                 </Typography>
 
                 <Typography variant="body1" gutterBottom>

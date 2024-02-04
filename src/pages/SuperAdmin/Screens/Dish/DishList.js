@@ -173,7 +173,7 @@ const Dishes = () => {
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th className="py-3 px-6 rounded-l">Hình ảnh</th>
                 <th className="py-3 px-6">Tên món ăn</th>
-                <th className="py-3 px-6 rounded-r">Giá</th>
+                <th className="py-3 px-6 rounded-r">Đơn giá</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">

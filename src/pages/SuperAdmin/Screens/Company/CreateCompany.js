@@ -28,7 +28,7 @@ const CreateCompany = () => {
     // Cập nhật companyData
     setCompanyData((prevData) => ({
       ...prevData,
-      managementUnitId: selectedManagementUnitId,
+      PartnerId: selectedManagementUnitId,
     }));
   };
 
@@ -39,7 +39,7 @@ const CreateCompany = () => {
     // Cập nhật companyData
     setCompanyData((prevData) => ({
       ...prevData,
-      deliveryUnitId: selectedDeliveryUnitId,
+      DeliveryId: selectedDeliveryUnitId,
     }));
   };
 
