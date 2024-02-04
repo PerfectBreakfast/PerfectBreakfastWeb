@@ -77,79 +77,81 @@ function ComboDetail() {
   }
 
   return (
-    <div className="comboDetail">
-      <div>
-        <IconButton onClick={handleGoBack} style={{ left: 10, top: 10 }}>
-          <ArrowBackIosIcon />
-        </IconButton>
+    <div class="relative">
+      <div className="mt-2 flex justify-between">
+        <div className="container flex items-center">
+          <button onClick={handleGoBack} className="mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <h1 className="text-xl font-semibold mb-4">Chi tiết đơn hàng</h1>
+        </div>
       </div>
 
-      <div className="container" item xs={12}>
-        <div>
-          <CardMedia
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg">
+        <div class="max-h-64 w-full mt-2 border-2 border-white rounded-xl shadow-md overflow-hidden">
+          <img
             id="imgDetail"
-            component="img"
+            class="w-full object-cover"
             height="250"
-            image={comboData.image}
+            src={comboData.image}
             alt={comboData.name}
           />
-          <div className="detailContent">
-            <Typography gutterBottom variant="h4">
-              {comboData.name}
-            </Typography>
-            <Typography gutterBottom variant="h6">
-              {comboData.comboPrice.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}
-            </Typography>
-            <Typography variant="body1">{comboData.content}</Typography>
+        </div>
 
-            <div className="actionDetail">
-              <div className="updateQuantityDetail">
-                {/* <Button variant="outlined" onClick={handleDecrement}>
-                  -
-                </Button> */}
-                <div className="updateQuantity">
-                  <IconButton
-                    aria-label="remove"
-                    color="error"
-                    onClick={handleDecrement}
-                  >
-                    <RemoveIcon />
-                  </IconButton>
+        <div class="text-center mt-5">
+          <h4 class="text-2xl font-bold mb-2">{comboData.name}</h4>
+          <h6 class="text-xl font-semibold mb-2">
+            {comboData.comboPrice.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </h6>
+          <p class="text-base">{comboData.content}</p>
 
-                  <Typography className="quantityOrder" variant="body1">
-                    {quantity}
-                  </Typography>
-                  {/* <Button variant="outlined" onClick={handleIncrement}>
-                  +
-                </Button> */}
-
-                  <IconButton
-                    color="success"
-                    aria-label="add"
-                    onClick={handleIncrement}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </div>
-              </div>
-
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddToCart}
-                id="confirmBtn"
-                size="large"
+          <div class="mb-5 fixed bottom-0 left-0 w-full bg-white p-2.5">
+            <div class="flex items-center justify-center py-2.5 space-x-2">
+              <button
+                aria-label="remove"
+                class="text-red-500"
+                onClick={handleDecrement}
               >
-                Thêm vào giỏ hàng
-              </Button>
+                <RemoveIcon />
+              </button>
+
+              <span class="px-1 text-base">{quantity}</span>
+
+              <button
+                class="text-green-500"
+                aria-label="add"
+                onClick={handleIncrement}
+              >
+                <AddIcon />
+              </button>
             </div>
+
+            <button
+              onClick={handleAddToCart}
+              class="bg-green-500 text-white py-2 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-3/4 rounded-3xl"
+            >
+              Thêm vào giỏ hàng
+            </button>
           </div>
         </div>
       </div>
-      <ToastContainer position="top-center" theme="colored" autoClose={250} />
+      <ToastContainer />
     </div>
   );
 }

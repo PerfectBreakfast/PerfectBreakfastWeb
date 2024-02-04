@@ -36,14 +36,11 @@ const Homepage = () => {
   return (
     <>
       <UserHeader />
-      <div style={{ paddingBottom: "4rem" }} className="container mx-auto p-4">
-        <div className="menuDate text-left text-2xl font-bold">
+      <div className="container mx-auto p-2">
+        <div className="menuDate text-left text-xl font-bold">
           <h6>Thực đơn ngày 08/03/2024</h6>
         </div>
-        <div
-          style={{ paddingBottom: "4rem" }}
-          className=" grid grid-cols-1 gap-4"
-        >
+        <div className=" grid grid-cols-1 gap-4 mb-16">
           {menuData &&
             menuData.comboFoodResponses.map((combo) => (
               <div
@@ -55,7 +52,7 @@ const Homepage = () => {
                   <img
                     src={combo.image}
                     alt={combo.name}
-                    className="h-12 w-12 rounded-xl"
+                    className="h-16 w-16 rounded-xl"
                   />
                 </div>
                 <div className=" flex-grow px-4">
