@@ -18,9 +18,9 @@ const CancelPayment = () => {
         <h2>Thanh toán thất bại</h2>
         <p>Đơn hàng của quý khách không thể hoàn tất thanh toán. </p>
         <Link to="/home">
-          <Button id="confirmBtn" variant="contained" color="primary">
+          <button className="bg-red-500 text-white p-2 rounded-3xl hover:bg-red-600 transition-colors mt-2">
             Quay về trang chủ
-          </Button>
+          </button>
         </Link>
       </div>
     </>
