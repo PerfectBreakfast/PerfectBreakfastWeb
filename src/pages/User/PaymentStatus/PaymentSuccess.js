@@ -21,9 +21,9 @@ const PaymentSuccess = () => {
           hàng.{" "}
         </p>
         <Link to="/home">
-          <Button id="confirmBtn" variant="contained" color="primary">
+          <button className="bg-green-500 text-white p-2 rounded-3xl hover:bg-green-600 transition-colors mt-2">
             Quay về trang chủ
-          </Button>
+          </button>
         </Link>
       </div>
     </>
