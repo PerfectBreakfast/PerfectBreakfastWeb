@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import orderAPI from "../../../services/orderAPI";
 import QRCode from "qrcode.react";
+import OrderDetailSkeleton from "./OrderDetailSkeleton";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -22,6 +23,15 @@ const OrderDetail = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+  if (!orderData) {
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 1 }, (_, index) => (
+          <OrderDetailSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col max-w-md mx-auto px-4 py-4">
       {orderData && (
@@ -79,11 +89,6 @@ const OrderDetail = () => {
                     })}
                   </span>
                 </div>
-                {/* If you have a list of foods to display, uncomment and modify this part
-              <div className="mt-2">
-                <p>Foods: {detail.foods.join(', ')}</p>
-              </div>
-              */}
               </div>
             ))}
           </div>

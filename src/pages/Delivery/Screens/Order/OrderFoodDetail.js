@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import DailyOrderAPI from "../../../../services/DailyOrderAPI";
 
-const OrderDetailByCompany = () => {
+const OrderFoodDetail = () => {
   const { companyId } = useParams();
   const [searchParams] = useSearchParams();
   const bookingDate = searchParams.get("bookingDate");
@@ -99,4 +99,4 @@ const OrderDetailByCompany = () => {
   );
 };
 
-export default OrderDetailByCompany;
+export default OrderFoodDetail;

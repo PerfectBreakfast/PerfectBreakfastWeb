@@ -1,13 +1,4 @@
 import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  Typography,
-  Container,
-  CssBaseline,
-  Grid,
-  Link,
-} from "@mui/material";
 import userAPI from "../../../services/userAPI";
 import logo from "../../../assets/images/logo.png";
 import "./Signin.css"; // Import CSS file
@@ -15,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ClipLoader } from "react-spinners";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,7 +15,7 @@ const Login = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false); // Thêm trạng thái mới
-
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleInputChange = (e) => {
@@ -36,18 +28,20 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
     try {
       const userData = await userAPI.login(credentials);
       localStorage.setItem("accessToken", userData.accessToken);
       navigate("/home");
     } catch (error) {
-      // setErrorMessage(error.errors);
-      // setErrorMessage("Email hoặc mật khẩu chưa chính xác!");
       toast.error("Email hoặc mật khẩu không chính xác");
+    } finally {
+      setIsLoading(false); // Kết thúc quá trình tải, set isLoading = false
     }
   };
+
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword); // Cập nhật trạng thái hiển thị mật khẩu
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -97,9 +91,12 @@ const Login = () => {
 
         <button
           type="submit"
-          className="btn btn-primary w-full rounded-full bg-green-600 text-white transition-colors duration-300 hover:bg-green-700 mt-2 border-none"
+          disabled={isLoading}
+          className={`btn btn-primary w-full rounded-full transition-colors duration-300 mt-2 border-none ${
+            isLoading ? "bg-green-600" : "bg-green-600 hover:bg-green-700"
+          }`}
         >
-          Đăng nhập
+          {isLoading ? <ClipLoader color="#ffffff" size={24} /> : "Đăng nhập"}
         </button>
       </form>
 

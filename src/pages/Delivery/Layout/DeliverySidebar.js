@@ -1,4 +1,3 @@
-// Sidebar.js
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
@@ -14,11 +13,9 @@ import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 
 import logo from "../../../assets/images/logo.png";
 
-import "../../SuperAdmin/Layout/Sidebar.css";
-
 const navigation = [
-  { name: "Danh sách đơn hàng", href: "/partner/order", icon: FoodIcon },
-  { name: "Danh sách phân phối", href: "/partner/food", icon: ComboIcon },
+  { name: "Danh sách đơn hàng", href: "/delivery/order", icon: FoodIcon },
+  // { name: "Danh sách combo", href: "/admin/combo", icon: ComboIcon },
   // { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
   // { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
   // { name: "Danh sách NCC", href: "/admin/suppliers", icon: SupplierIcon },
@@ -29,13 +26,14 @@ const navigation = [
   //   icon: CompanyIcon,
   // },
 ];
-const PartnerSidebar = () => {
+
+const DeliverySidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/partner/login");
+    navigate("/delivery/login");
   };
   const isActive = (href) => {
     return location.pathname === href;
@@ -127,4 +125,5 @@ const PartnerSidebar = () => {
     </div>
   );
 };
-export default PartnerSidebar;
+
+export default DeliverySidebar;

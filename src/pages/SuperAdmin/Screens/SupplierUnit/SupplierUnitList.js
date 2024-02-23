@@ -214,7 +214,9 @@ const SupplierUnitList = () => {
                   key={supplierUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <td className="py-3 px-6 text-left">{supplierUnit.name}</td>
+                  <td className="py-3 px-6 text-left font-bold">
+                    {supplierUnit.name}
+                  </td>
                   <td className="py-3 px-6 text-left whitespace-normal break-words">
                     {supplierUnit.address}
                   </td>

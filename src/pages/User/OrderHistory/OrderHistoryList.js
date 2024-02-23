@@ -2,40 +2,50 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import orderAPI from "../../../services/orderAPI";
 import { toast } from "react-toastify";
-import { Card, CardContent, IconButton, Typography } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+
 import comboImg from "../../../assets/images/combo.png";
+import OrderHistoryListSkeleton from "./OrderHistoryListSkeleton";
 
 const OrderHistoryList = () => {
   const [historyData, setHistoryData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading as true
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
         const data = await orderAPI.getOrderHistory();
-        setHistoryData(data);
+        if (data && data.length > 0) {
+          setHistoryData(data);
+        } else {
+          setHistoryData([]); // Set historyData as an empty array if data is empty
+        }
+        setIsLoading(false); // Set isLoading to false after fetching data
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setIsLoading(false);
       }
     };
 
     fetchOrderHistory();
   }, []);
+
   const handleGoBack = () => {
     navigate(-1);
   };
+
   const getStatusColor = (status) => {
     switch (status) {
-      case "Đang xử lý":
-        return "text-yellow-500";
       case "Paid":
+        return "text-yellow-500";
+      case "Complete":
         return "text-green-500";
       default:
         return "text-gray-500";
     }
   };
+
   const handleOrderClick = (orderId) => {
-    // Assuming your detail page route is '/detail/:orderId'
     const detailPageUrl = `detail/${orderId}`;
     navigate(detailPageUrl);
   };
@@ -61,23 +71,26 @@ const OrderHistoryList = () => {
         </button>
         <h1 className="text-xl font-semibold mb-4">Lịch sử đơn hàng</h1>
       </div>
-
-      {historyData &&
+      {isLoading ? (
+        // Show skeleton when loading
+        <OrderHistoryListSkeleton />
+      ) : historyData && historyData.length > 0 ? (
+        // Show order history if data exists
         historyData.map((order) => (
           <div
             key={order.id}
             className="mb-4 p-4 bg-white rounded-lg shadow cursor-pointer"
             onClick={() => handleOrderClick(order.id)}
           >
-            <div className="flex ">
+            <div className="flex">
               <img src={comboImg} alt="Combo" className="w-16 h-16 mr-4" />
               <div className="flex-1">
                 <div className="flex">
                   <h2 className="font-medium text-lg mr-2">
                     {order.companyName}
                   </h2>
-                  <div className=" text-right ">
-                    <span className=" font-medium">
+                  <div className="text-right">
+                    <span className="font-medium">
                       {order.totalPrice.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
@@ -108,7 +121,13 @@ const OrderHistoryList = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        // Show message when there is no data
+        <div className="text-center mt-2 font-bold">
+          <p>Bạn chưa đặt món ăn nào!</p>
+        </div>
+      )}
     </div>
   );
 };
