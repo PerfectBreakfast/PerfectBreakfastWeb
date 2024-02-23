@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function UserInfo() {
   const [userData, setUserData] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,6 +45,12 @@ function UserInfo() {
 
   const handleGoBack = () => {
     navigate(-1);
+  };
+  const handleLogoutConfirm = () => {
+    setShowConfirmation(true);
+  };
+  const cancelRemoveItem = () => {
+    setShowConfirmation(false);
   };
   return (
     <div className="userSettingContainer">
@@ -107,11 +114,35 @@ function UserInfo() {
           id="logoutBtn"
           variant="contained"
           size="large"
-          onClick={handleLogout}
+          onClick={handleLogoutConfirm}
         >
           Đăng xuất
         </Button>
       </div>
+
+      {/* Confirmation Dialog */}
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h5 className="text-lg font-bold mb-6">Bạn có muốn đăng xuất?</h5>
+            <div className="flex justify-end mt-3">
+              <button
+                onClick={cancelRemoveItem}
+                className="text-red-500 bg-transparent hover:bg-red-100 p-3 rounded mr-4"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleLogout}
+                className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastContainer position="top-center" theme="colored" autoClose={250} />
     </div>
   );

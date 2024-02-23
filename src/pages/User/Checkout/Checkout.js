@@ -20,6 +20,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Divider from "@mui/material/Divider";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import WalletIcon from "@mui/icons-material/Wallet";
+import CheckoutSkeleton from "./CheckoutSkeleton";
 
 function Checkout() {
   const [note, setNote] = useState("");
@@ -129,7 +130,7 @@ function Checkout() {
         </p>
         <div className="container">
           {/* User information will be displayed here */}
-          {userData && (
+          {userData ? (
             <div>
               <p className="text-lg mb-2">Tên người dùng: {userData.name}</p>
               <p className="text-lg mb-2">Địa chỉ: {userData.companyName}</p>
@@ -139,6 +140,8 @@ function Checkout() {
               </p>
               <div className="bg-gray-400"> {/* Custom Divider */}</div>
             </div>
+          ) : (
+            <CheckoutSkeleton />
           )}
           <textarea
             className="placeholder-gray-500 multiline rows-4 border-0 rounded-none w-full p-4 mt-2 bg-green-100"

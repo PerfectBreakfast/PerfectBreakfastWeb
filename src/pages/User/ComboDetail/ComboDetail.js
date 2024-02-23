@@ -20,11 +20,13 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ComboDetailSkeleton from "./ComboDetailSkeleton";
 
 function ComboDetail() {
   const { id } = useParams();
   const [comboData, setComboData] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
   const navigate = useNavigate();
   const { addToCart } = useCart(); // Add this line
 
@@ -74,7 +76,13 @@ function ComboDetail() {
   };
 
   if (!comboData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 1 }, (_, index) => (
+          <ComboDetailSkeleton key={index} />
+        ))}
+      </div>
+    );
   }
 
   return (

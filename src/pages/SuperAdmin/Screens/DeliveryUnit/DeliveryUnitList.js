@@ -153,7 +153,9 @@ const DeliveryUnitList = () => {
                   key={deliveryUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <td className="py-3 px-6 text-left">{deliveryUnit.name}</td>
+                  <td className="py-3 px-6 text-left font-bold">
+                    {deliveryUnit.name}
+                  </td>
                   <td className="py-3 px-6 text-left">
                     {deliveryUnit.address}
                   </td>

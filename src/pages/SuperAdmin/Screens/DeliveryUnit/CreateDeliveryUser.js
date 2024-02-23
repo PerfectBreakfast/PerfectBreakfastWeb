@@ -55,8 +55,8 @@ const CreateDeliveryUser = () => {
     if (imageRef.current.files[0]) {
       data.append("image", imageRef.current.files[0]);
     }
-    data.append("deliveryUnitId", deliveryUnitId);
-
+    data.append("deliveryId", deliveryUnitId);
+    console.log("test data", data);
     try {
       await userAPI.createUnitUser(data);
       toast.success("Thêm quản trị viên thành công!");

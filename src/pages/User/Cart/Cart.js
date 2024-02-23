@@ -84,7 +84,7 @@ function Cart() {
           </span>
           <h2 className="text-2xl font-bold mt-4">Không có món nào!</h2>
           <p className="mt-2">
-            Không có bát kỳ món ăn nào, vui lòng kiểm tra lại.
+            Không có bất kỳ món ăn nào, vui lòng kiểm tra lại.
           </p>
         </div>
       ) : (

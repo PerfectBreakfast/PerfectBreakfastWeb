@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import OrderList from "../Screens/Order/OrderList";
 import OrderDetailByCompany from "../Screens/Order/OrderDetailByCompany";
 import TotalOrderFood from "../Screens/Order/TotalOrderFood";
+import FoodByCompany from "../Screens/Order/FoodByCompany";
 
 const PartnerContent = () => {
   return (
@@ -13,6 +14,7 @@ const PartnerContent = () => {
         element={<OrderDetailByCompany />}
       />
       <Route path="order/total-food" element={<TotalOrderFood />} />
+      <Route path="food" element={<FoodByCompany />} />
     </Routes>
   );
 };

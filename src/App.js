@@ -27,6 +27,11 @@ import Menu from "./pages/SuperAdmin/Screens/Menu/MenuList";
 import PartnerPageLayout from "./pages/Partner/Layout/PartnerPageLayout";
 import OrderHistoryList from "./pages/User/OrderHistory/OrderHistoryList";
 import OrderDetail from "./pages/User/OrderHistory/OrderDetail";
+import SupplierPageLayout from "./pages/Supplier/Layout/SupplierPageLayout";
+import DeliveryPageLayout from "./pages/Delivery/Layout/DeliveryPageLayout";
+import PartnerLogin from "./pages/Partner/Screens/Login/Login";
+import SupplierLogin from "./pages/Supplier/Screens/Login/Login";
+import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
 
 function App() {
   return (
@@ -57,6 +62,11 @@ function App() {
             <Route path="/admin/combos" element={<Combos />} />
             <Route path="/admin/menu" element={<Menu />} /> */}
             <Route path="/partner/*" element={<PartnerPageLayout />} />
+            <Route path="/supplier/*" element={<SupplierPageLayout />} />
+            <Route path="/delivery/*" element={<DeliveryPageLayout />} />
+            <Route path="/partner/login" element={<PartnerLogin />} />
+            <Route path="/supplier/login" element={<SupplierLogin />} />
+            <Route path="/delivery/login" element={<DeliveryLogin />} />
           </Routes>
         </CartProvider>
       </Router>

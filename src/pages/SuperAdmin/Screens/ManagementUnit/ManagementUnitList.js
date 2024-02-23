@@ -150,7 +150,9 @@ const ManagementUnitList = () => {
                   key={managementUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <td className="py-3 px-6 text-left">{managementUnit.name}</td>
+                  <td className="py-3 px-6 text-left font-bold">
+                    {managementUnit.name}
+                  </td>
                   <td className="py-3 px-6 text-left">
                     {managementUnit.address}
                   </td>

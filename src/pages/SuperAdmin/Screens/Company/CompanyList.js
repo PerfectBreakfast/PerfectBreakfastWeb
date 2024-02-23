@@ -90,12 +90,16 @@ const CompanyList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/6 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-1/6 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
-                <th className="py-3 px-6 w-1/6 break-words">Email</th>
-                <th className="py-3 px-6 w-1/6 break-words">Giờ làm việc</th>
-                <th className="py-3 px-6 w-1/6 break-words">Nhân viên</th>
+                <th className="py-3 px-6 w-1/8 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-1/8 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/8 break-words">Số điện thoại</th>
+                <th className="py-3 px-6 w-1/8 break-words">Email</th>
+                <th className="py-3 px-6 w-1/8 break-words">Giờ làm việc</th>
+                <th className="py-3 px-6 w-1/8 break-words">Đối tác</th>
+                <th className="py-3 px-6 w-1/8 break-words">
+                  Đơn vị vận chuyển
+                </th>
+                <th className="py-3 px-6 w-1/8 break-words">Nhân viên</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -104,7 +108,9 @@ const CompanyList = () => {
                   key={companyUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <td className="py-3 px-6 text-left">{companyUnit.name}</td>
+                  <td className="py-3 px-6 text-left font-bold">
+                    {companyUnit.name}
+                  </td>
                   <td className="py-3 px-6 text-left">{companyUnit.address}</td>
                   <td className="py-3 px-6 text-left">
                     {companyUnit.phoneNumber}
@@ -112,6 +118,12 @@ const CompanyList = () => {
                   <td className="py-3 px-6 text-left">{companyUnit.email}</td>
                   <td className="py-3 px-6 text-left">
                     {companyUnit.startWorkHour}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {companyUnit.managementUnit}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {companyUnit.deliveryUnit}
                   </td>
                   <td className="py-3 px-6 text-left">
                     {companyUnit.memberCount}
