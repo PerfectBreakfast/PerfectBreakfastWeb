@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosConfig";
 
 const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 
@@ -13,7 +14,7 @@ const dishAPI = {
   },
   getDishByPagination: async (searchTerm, pageIndex) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${BASE_URL}/api/v1/foods/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=5`
       );
       return response.data;
@@ -24,7 +25,7 @@ const dishAPI = {
 
   createDish: async (newDishData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${BASE_URL}/api/v1/foods`,
         newDishData
       );
@@ -35,7 +36,9 @@ const dishAPI = {
   },
   getDishById: async (dishId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/foods/${dishId}`);
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/foods/${dishId}`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -43,19 +46,9 @@ const dishAPI = {
   },
   getOrderFoodForPartner: async () => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key bạn đã sử dụng để lưu token
-
-      // Kiểm tra xem token có tồn tại hay không
-      if (!token) {
-        throw new Error("Token not found in Local Storage");
-      }
-      console.log("tk", token);
-      const response = await axios.get(`${BASE_URL}/api/v1/foods/partner`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/foods/partner`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;

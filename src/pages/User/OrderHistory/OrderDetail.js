@@ -113,7 +113,7 @@ const OrderDetail = () => {
           <div>
             <div className="flex justify-center">
               {" "}
-              <QRCode value={orderData.id} />
+              <QRCode value={`pb#${orderData.id}`} />
             </div>
 
             <div className="flex justify-center">

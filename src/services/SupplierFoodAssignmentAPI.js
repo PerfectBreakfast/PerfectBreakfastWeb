@@ -7,13 +7,13 @@ const SupplierFoodAssignmentAPI = {
     try {
       // Lấy token từ Local Storage
       const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key bạn đã sử dụng để lưu token
-
+      console.log("test data", foodAssignments);
       // Kiểm tra xem token có tồn tại hay không
       if (!token) {
         throw new Error("Token not found in Local Storage");
       }
       const response = await axios.post(
-        `${BASE_URL}/api/v1/supplierfoodassigments`,
+        `${BASE_URL}/api/v1/supplierfoodassigments/supplierFoodAssignment`,
         foodAssignments,
         {
           headers: {

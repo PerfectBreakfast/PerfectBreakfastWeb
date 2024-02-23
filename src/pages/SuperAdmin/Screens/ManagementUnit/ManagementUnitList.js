@@ -32,6 +32,7 @@ const ManagementUnitList = () => {
     name: "",
     address: "",
     phoneNumber: "",
+    commissionRate: "",
   });
 
   useEffect(() => {
@@ -138,6 +139,7 @@ const ManagementUnitList = () => {
                 <th className="py-3 px-6">Tên công ty</th>
                 <th className="py-3 px-6">Địa chỉ</th>
                 <th className="py-3 px-6">Số điện thoại</th>
+                <th className="py-3 px-6">Tỷ lệ doanh thu </th>
                 <th className="py-3 px-6">Quản trị viên</th>
                 <th className="py-3 px-6"></th>
               </tr>
@@ -154,6 +156,9 @@ const ManagementUnitList = () => {
                   </td>
                   <td className="py-3 px-6 text-left">
                     {managementUnit.phoneNumber}
+                  </td>
+                  <td className="py-3 px-6 text-center">
+                    {managementUnit.commissionRate}%
                   </td>
                   <td className="py-3 px-6 text-left">
                     <ul>
@@ -225,6 +230,14 @@ const ManagementUnitList = () => {
             label="Số điện thoại"
             name="phoneNumber"
             value={newManagementData.phoneNumber}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Hoa hồng"
+            name="commissionRate"
+            value={newManagementData.commissionRate}
             onChange={handleInputChange}
             fullWidth
             margin="normal"

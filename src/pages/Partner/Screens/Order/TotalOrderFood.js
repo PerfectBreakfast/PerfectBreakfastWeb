@@ -6,10 +6,10 @@ import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignme
 const TotalOrderFood = () => {
   const [orderFoodData, setOrderFoodData] = useState(null);
   const [supplierData, setSupplierData] = useState(null);
-  const [foodData, setFoodData] = useState(null);
 
   // New state for tracking food assignments
   const [foodAssignments, setFoodAssignments] = useState([]);
+  const [tempAssignments, setTempAssignments] = useState({});
 
   useEffect(() => {
     const fetchOrderFoodData = async () => {
@@ -30,84 +30,82 @@ const TotalOrderFood = () => {
       }
     };
 
-    const fetchFood = async () => {
-      try {
-        const data = await dishAPI.getDishAll();
-        setFoodData(data);
-      } catch (error) {
-        console.error("Error fetching dish data:", error);
-      }
-    };
-
-    fetchFood();
     fetchSupplier();
     fetchOrderFoodData();
   }, []);
+  const handleSelectChange = (foodId, event) => {
+    const amount = event.target.nextSibling.value;
+    const supplierId = event.target.value;
+    const newAssignment = {
+      supplierId,
+      foodId,
+      amountCooked: Number(amount),
+    };
+    setFoodAssignments((prevAssignments) => {
+      // Remove any existing assignment for this foodId
+      const filteredAssignments = prevAssignments.filter(
+        (assignment) => assignment.foodId !== foodId
+      );
+      return [...filteredAssignments, newAssignment];
+    });
+  };
 
-  // Function to handle food assignment changes
-  // const handleFoodAssignmentChange = (index, supplierId, amountCooked) => {
-  //   const updatedAssignments = [...foodAssignments];
-  //   updatedAssignments[index] = {
-  //     supplierId,
-  //     amountCooked,
-  //     foodId: orderFoodData[index].id, // Assuming you have a unique identifier for food
-  //   };
-  //   setFoodAssignments(updatedAssignments);
-  // };
-  // Function to handle food assignment changes
-  const handleFoodAssignmentChange = (index, supplierId, amountCooked) => {
-    const updatedAssignments = [...foodAssignments];
-    const foodId = orderFoodData[index].id;
+  const handleAmountChange = (foodId, event) => {
+    const amount = event.target.value;
+    const supplierSelect = event.target.previousSibling;
+    const supplierId = supplierSelect.value;
+    if (supplierId) {
+      const newAssignment = {
+        supplierId,
+        foodId,
+        amountCooked: Number(amount),
+      };
+      setFoodAssignments((prevAssignments) => {
+        const filteredAssignments = prevAssignments.filter(
+          (assignment) => assignment.foodId !== foodId
+        );
+        return [...filteredAssignments, newAssignment];
+      });
+    }
+  };
 
-    // Find if there is an existing assignment for the selected supplier
-    const existingIndex = updatedAssignments.findIndex(
-      (assignment) => assignment.supplierId === supplierId
+  const submitAssignments = async () => {
+    // Chuyển tempAssignments thành một mảng của các assignments với foodId
+    const assignmentsToSubmit = Object.entries(tempAssignments).flatMap(
+      ([foodId, assignments]) =>
+        assignments.map((assignment) => ({
+          ...assignment,
+          foodId,
+        }))
     );
 
-    if (existingIndex !== -1) {
-      // If the supplier already exists, update the foodAssignmentRequests
-      updatedAssignments[existingIndex].foodAssignmentRequests.push({
-        amountCooked,
-        foodId,
-      });
-    } else {
-      // If the supplier doesn't exist, create a new assignment
-      updatedAssignments.push({
-        supplierId,
-        foodAssignmentRequests: [
-          {
-            amountCooked,
-            foodId,
-          },
-        ],
-      });
-    }
-
-    setFoodAssignments(updatedAssignments);
-  };
-
-  // Function to handle submitting the assignments
-  const handleSubmitAssignments = async () => {
     try {
-      const assignmentsPayload = foodAssignments.map((assignment) => ({
-        supplierId: assignment.supplierId,
-        foodAssignmentRequests: [
-          {
-            amountCooked: assignment.amountCooked,
-            foodId: assignment.foodId,
-          },
-        ],
-      }));
-      // API call to submit assignments
-      await SupplierFoodAssignmentAPI.FoodAssigment(assignmentsPayload);
-      // Optionally, you can reset the state after successful submission
-      console.log("end", assignmentsPayload);
-      setFoodAssignments([]);
+      await SupplierFoodAssignmentAPI.FoodAssigment(assignmentsToSubmit);
+      alert("Assignments submitted successfully!");
     } catch (error) {
-      console.error("Error submitting food assignments:", error);
+      console.error("Error submitting assignments:", error);
     }
   };
-  console.log("data", foodAssignments);
+
+  const addSupplierSelection = (foodId) => {
+    setTempAssignments((prev) => {
+      const existingAssignments = prev[foodId] || [];
+      return {
+        ...prev,
+        [foodId]: [...existingAssignments, { supplierId: "", amountCooked: 0 }],
+      };
+    });
+  };
+
+  const handleAssignmentChange = (foodId, index, field, value) => {
+    setTempAssignments((prev) => {
+      const assignments = [...(prev[foodId] || [])];
+      if (assignments[index]) {
+        assignments[index] = { ...assignments[index], [field]: value };
+      }
+      return { ...prev, [foodId]: assignments };
+    });
+  };
 
   return (
     <div>
@@ -123,42 +121,48 @@ const TotalOrderFood = () => {
           </thead>
           <tbody>
             {orderFoodData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.quantity}</td>
-                <td>
-                  {/* Supplier select and amount input */}
-                  <select
-                    value={foodAssignments[index]?.supplierId || ""}
-                    onChange={(e) =>
-                      handleFoodAssignmentChange(
-                        index,
-                        e.target.value,
-                        foodAssignments[index]?.amountCooked || 0
-                      )
-                    }
-                  >
-                    <option value="">Select Supplier</option>
-                    {supplierData &&
-                      supplierData.map((supplier) => (
+              <div key={index}>
+                <div>
+                  {item.name} - {item.quantity} units
+                </div>
+                {(tempAssignments[item.id] || []).map((assignment, idx) => (
+                  <div key={idx}>
+                    <select
+                      value={assignment.supplierId}
+                      onChange={(e) =>
+                        handleAssignmentChange(
+                          item.id,
+                          idx,
+                          "supplierId",
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="">Select a supplier</option>
+                      {supplierData.map((supplier) => (
                         <option key={supplier.id} value={supplier.id}>
                           {supplier.name}
                         </option>
                       ))}
-                  </select>
-                  <input
-                    type="number"
-                    value={foodAssignments[index]?.amountCooked || 0}
-                    onChange={(e) =>
-                      handleFoodAssignmentChange(
-                        index,
-                        foodAssignments[index]?.supplierId || "",
-                        e.target.value
-                      )
-                    }
-                  />
-                </td>
-              </tr>
+                    </select>
+                    <input
+                      type="number"
+                      value={assignment.amountCooked}
+                      placeholder="Amount"
+                      min="0"
+                      onChange={(e) =>
+                        handleAssignmentChange(
+                          item.id,
+                          idx,
+                          "amountCooked",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
+                ))}
+                <button onClick={() => addSupplierSelection(item.id)}>+</button>
+              </div>
             ))}
           </tbody>
         </table>
@@ -166,7 +170,7 @@ const TotalOrderFood = () => {
         <p>Loading...</p>
       )}
       {/* Button to submit assignments */}
-      <button onClick={handleSubmitAssignments}>Submit Assignments</button>
+      <button onClick={submitAssignments}>Submit Assignments</button>
     </div>
   );
 };

@@ -1,28 +1,15 @@
 import axios from "axios";
+import axiosInstance from "./axiosConfig";
 
 const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 
 const orderAPI = {
   orderFood: async (details) => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key thực của token
-
-      // Kiểm tra xem token có tồn tại không
-      if (!token) {
-        // Xử lý khi không có token
-        throw new Error("Token not found in Local Storage");
-      }
-
-      // Thêm token vào header của yêu cầu
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Thêm các headers khác nếu cần
-      };
-
-      const response = await axios.post(`${BASE_URL}/api/v1/orders`, details, {
-        headers,
-      });
+      const response = await axiosInstance.post(
+        `${BASE_URL}/api/v1/orders`,
+        details
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -30,24 +17,9 @@ const orderAPI = {
   },
   getOrderHistory: async () => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key thực của token
-
-      // Kiểm tra xem token có tồn tại không
-      if (!token) {
-        // Xử lý khi không có token
-        throw new Error("Token not found in Local Storage");
-      }
-
-      // Thêm token vào header của yêu cầu
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Thêm các headers khác nếu cần
-      };
-
-      const response = await axios.get(`${BASE_URL}/api/v1/orders/history`, {
-        headers,
-      });
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/orders/history`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -55,24 +27,9 @@ const orderAPI = {
   },
   getOrderDetail: async (orderId) => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key thực của token
-
-      // Kiểm tra xem token có tồn tại không
-      if (!token) {
-        // Xử lý khi không có token
-        throw new Error("Token not found in Local Storage");
-      }
-
-      // Thêm token vào header của yêu cầu
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Thêm các headers khác nếu cần
-      };
-
-      const response = await axios.get(`${BASE_URL}/api/v1/orders/${orderId}`, {
-        headers,
-      });
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/orders/${orderId}`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
