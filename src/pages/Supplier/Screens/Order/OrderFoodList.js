@@ -45,7 +45,7 @@ const OrderFoodList = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">
-        Danh sách món ăn đã phân phối
+        Danh sách món ăn được phân phối
       </h2>
 
       <div className="bg-white shadow-md my-6">

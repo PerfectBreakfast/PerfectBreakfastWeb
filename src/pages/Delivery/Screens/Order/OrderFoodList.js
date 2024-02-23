@@ -51,13 +51,13 @@ const DeliveryOrderFoodList = () => {
         <table className="min-w-max w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 rounded-l">Ngày giao hàng</th>
-              <th className="py-3 px-6">Tên công ty</th>
-              <th className="py-3 px-6">Địa chỉ</th>
-              <th className="py-3 px-6">Giờ làm việc</th>
-              <th className="py-3 px-6">Số lượng đơn hàng</th>
+              <th className="py-3 px-2">Ngày giao hàng</th>
+              <th className="py-3 px-2">Tên công ty</th>
+              <th className="py-3 px-2">Địa chỉ</th>
+              <th className="py-3 px-2">Giờ làm việc</th>
+              <th className="py-3 px-2">Số lượng đơn hàng</th>
 
-              <th className="py-3 px-6 rounded-r">Trạng thái</th>
+              <th className="py-3 px-2">Trạng thái</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
@@ -71,12 +71,12 @@ const DeliveryOrderFoodList = () => {
                     0 && (
                     <td
                       rowSpan={order.dailyOrderModelResponses.length}
-                      className="py-3 px-6"
+                      className="py-3 px-2"
                     >
                       {order.bookingDate}
                     </td>
                   )}
-                  <td className="py-3 px-6">
+                  <td className="py-3 px-2">
                     {/* Wrap company name in a button */}
                     <button
                       className="text-blue-500 hover:underline"
@@ -90,13 +90,15 @@ const DeliveryOrderFoodList = () => {
                       {companyOrder.company.name}
                     </button>
                   </td>
-                  <td className="py-3 px-6">{companyOrder.company.address}</td>
-                  <td className="py-3 px-6">
+                  <td className="py-3 px-2 ">{companyOrder.company.address}</td>
+                  <td className="py-3 px-2">
                     {companyOrder.company.startWorkHour}
                   </td>
-                  <td className="py-3 px-6">{companyOrder.orderQuantity}</td>
+                  <td className="py-3 px-2 text-center">
+                    {companyOrder.orderQuantity}
+                  </td>
 
-                  <td className="py-3 px-6">{companyOrder.status}</td>
+                  <td className="py-3 px-2">{companyOrder.status}</td>
                 </tr>
               ))
             )}

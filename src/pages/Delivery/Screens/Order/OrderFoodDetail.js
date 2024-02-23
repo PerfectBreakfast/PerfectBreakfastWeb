@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import DailyOrderAPI from "../../../../services/DailyOrderAPI";
+import userAPI from "../../../../services/userAPI";
+import ShipperSelectModal from "./ShipperSelectModal";
+import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
+import { toast } from "react-toastify";
 
 const OrderFoodDetail = () => {
   const { companyId } = useParams();
@@ -8,6 +12,9 @@ const OrderFoodDetail = () => {
   const bookingDate = searchParams.get("bookingDate");
 
   const [orderData, setOrderData] = useState(null);
+  const [shipperData, setShipperData] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchOrderDetail = async () => {
@@ -22,8 +29,34 @@ const OrderFoodDetail = () => {
       }
     };
 
+    const fetchShipper = async () => {
+      try {
+        const data = await userAPI.getDeliveryStaff();
+        setShipperData(data);
+      } catch (error) {
+        console.error("Error fetching dish data:", error);
+      }
+    };
     fetchOrderDetail();
+    fetchShipper();
   }, [companyId, bookingDate]);
+
+  const handleSubmitShipper = async (shipperId) => {
+    if (orderData && shipperId) {
+      try {
+        await ShippingOrderAPI.assignOrderForShipper({
+          dailyOrderId: orderData.id,
+          shipperId,
+        });
+        toast.success("Thêm người giao hàng thành công!");
+      } catch (error) {
+        console.error("Error submitting shipper:", error);
+        toast.error(error.errors);
+      }
+    }
+    setIsModalOpen(false); // Đóng modal sau khi submit
+  };
+
   const LoadingSkeleton = () => (
     <div className="animate-pulse">
       <div className="bg-gray-300 h-6 w-3/4 mb-4 rounded"></div>
@@ -60,9 +93,23 @@ const OrderFoodDetail = () => {
             Số điện thoại:{" "}
             <span className="font-bold"> {orderData.phoneNumber}</span>
           </p>
-          <p className="mb-4">
+          <p className="mb-2">
             Trạng thái: <span className="font-bold"> {orderData.status}</span>
           </p>
+
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+          >
+            Chọn người giao hàng
+          </button>
+          {isModalOpen && (
+            <ShipperSelectModal
+              shipperData={shipperData}
+              onClose={() => setIsModalOpen(false)}
+              onSubmit={handleSubmitShipper}
+            />
+          )}
           <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>
           {orderData.totalFoodResponses.length > 0 ? (
             <table className="min-w-full table-auto">
