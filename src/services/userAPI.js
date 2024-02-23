@@ -58,6 +58,19 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getDeliveryStaff: async () => {
+    try {
+      // Gọi API với header Authorization chứa token
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/users/deliverystaff`
+      );
+
+      return response.data;
+    } catch (error) {
+      // Xử lý lỗi và ném lại thông báo lỗi
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
