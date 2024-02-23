@@ -1,11 +1,12 @@
 import axios from "axios";
+import axiosInstance from "./axiosConfig";
 
 const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 
 const managementUnitAPI = {
   getAllManagementUnit: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/partners`);
+      const response = await axiosInstance.get(`${BASE_URL}/api/v1/partners`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -13,7 +14,7 @@ const managementUnitAPI = {
   },
   getManagementUnitByPagination: async (searchTerm, pageIndex) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${BASE_URL}/api/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
@@ -23,7 +24,7 @@ const managementUnitAPI = {
   },
   createManagementUnit: async (newManagementData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${BASE_URL}/api/v1/partners`,
         newManagementData
       );
@@ -34,7 +35,7 @@ const managementUnitAPI = {
   },
   createManagementUnitUser: async (newUserData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${BASE_URL}/api/v1/users`,
         newUserData
       );

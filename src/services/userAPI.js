@@ -1,24 +1,15 @@
 import axios from "axios";
+import axiosInstance from "./axiosConfig";
 
 const BASE_URL = "https://pb-dev-api.azurewebsites.net";
 
 const userAPI = {
   getUser: async () => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key bạn đã sử dụng để lưu token
-
-      // Kiểm tra xem token có tồn tại hay không
-      if (!token) {
-        throw new Error("Token not found in Local Storage");
-      }
-
       // Gọi API với header Authorization chứa token
-      const response = await axios.get(`${BASE_URL}/account/current-user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get(
+        `${BASE_URL}/account/current-user`
+      );
 
       return response.data;
     } catch (error) {
@@ -58,7 +49,7 @@ const userAPI = {
 
   createUnitUser: async (newUserData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${BASE_URL}/api/v1/users`,
         newUserData
       );

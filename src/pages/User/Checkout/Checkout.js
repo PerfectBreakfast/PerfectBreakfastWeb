@@ -90,7 +90,7 @@ function Checkout() {
           comboId: item.id,
         })),
       };
-
+      console.log("orderDetails", orderDetails);
       // Gọi hàm orderFood từ orderAPI
       const result = await orderAPI.orderFood(orderDetails);
 

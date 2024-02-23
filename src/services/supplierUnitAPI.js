@@ -1,10 +1,11 @@
 import axios from "axios";
 import api from "./api";
+import axiosInstance from "./axiosConfig";
 
 const supplierUnitAPI = {
   getSupplierUnitByPagination: async (searchTerm, pageIndex) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${api}/api/v1/suppliers/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=3`
       );
       return response.data;
@@ -15,7 +16,7 @@ const supplierUnitAPI = {
 
   createSupplierUnit: async (newSupplierData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${api}/api/v1/suppliers`,
         newSupplierData
       );
@@ -26,7 +27,7 @@ const supplierUnitAPI = {
   },
   supplyAssigment: async (supplyAssigmentData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${api}/api/v1/supplyassigments`,
         supplyAssigmentData
       );
@@ -37,7 +38,10 @@ const supplierUnitAPI = {
   },
   createManagementUnitUser: async (newUserData) => {
     try {
-      const response = await axios.post(`${api}/api/v1/users`, newUserData);
+      const response = await axiosInstance.post(
+        `${api}/api/v1/users`,
+        newUserData
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -45,24 +49,9 @@ const supplierUnitAPI = {
   },
   getSupplierByPartner: async () => {
     try {
-      // Lấy token từ Local Storage
-      const token = localStorage.getItem("accessToken"); // Thay "your_token_key" bằng key thực của token
-
-      // Kiểm tra xem token có tồn tại không
-      if (!token) {
-        // Xử lý khi không có token
-        throw new Error("Token not found in Local Storage");
-      }
-
-      // Thêm token vào header của yêu cầu
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Thêm các headers khác nếu cần
-      };
-
-      const response = await axios.get(`${api}/api/v1/suppliers/partner`, {
-        headers,
-      });
+      const response = await axiosInstance.get(
+        `${api}/api/v1/suppliers/partner`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;

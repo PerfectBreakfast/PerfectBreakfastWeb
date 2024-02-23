@@ -32,6 +32,7 @@ const DeliveryUnitList = () => {
     name: "",
     address: "",
     phoneNumber: "",
+    commissionRate: "",
   });
 
   useEffect(() => {
@@ -138,11 +139,12 @@ const DeliveryUnitList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/6 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/6 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
-                <th className="py-3 px-6 w-1/6 break-words">Quản trị viên</th>
-                <th className="py-3 px-6 w-1/6 break-words"></th>
+                <th className="py-3 px-6 w-1/7 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-2/7 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/7 break-words">Số điện thoại</th>
+                <th className="py-3 px-6 w-1/7 break-words">Tỷ lệ doanh thu</th>
+                <th className="py-3 px-6 w-1/7 break-words">Quản trị viên</th>
+                <th className="py-3 px-6 w-1/7 break-words"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -157,6 +159,9 @@ const DeliveryUnitList = () => {
                   </td>
                   <td className="py-3 px-6 text-left">
                     {deliveryUnit.phoneNumber}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {deliveryUnit.commissionRate}
                   </td>
                   <td className="py-3 px-6 text-left">
                     <ul>
@@ -223,6 +228,14 @@ const DeliveryUnitList = () => {
             label="Số điện thoại"
             name="phoneNumber"
             value={newDeliveryData.phoneNumber}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Hoa hồng"
+            name="commissionRate"
+            value={newDeliveryData.commissionRate}
             onChange={handleInputChange}
             fullWidth
             margin="normal"
