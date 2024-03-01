@@ -47,6 +47,17 @@ const comboAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editCombo: async (comboId, newComboData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/combos/${comboId}`,
+        newComboData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default comboAPI;

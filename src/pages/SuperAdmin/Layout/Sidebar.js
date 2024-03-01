@@ -19,7 +19,7 @@ const navigation = [
   { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
   { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
   { name: "Danh sách NCC", href: "/admin/suppliers", icon: SupplierIcon },
-  { name: "Danh sách ĐVVC", href: "/admin/deliveries", icon: DeliveryIcon },
+  { name: "Danh sách ĐVVC", href: "/admin/delivery", icon: DeliveryIcon },
   {
     name: "Danh sách công ty",
     href: "/admin/companies",

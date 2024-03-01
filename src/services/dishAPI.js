@@ -54,6 +54,27 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editFood: async (foodId, foodName, foodPrice, editFoodData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/foods/${foodId}?Name=${foodName}&Price=${foodPrice}`,
+        editFoodData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  deleteDishById: async (dishId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/api/v1/foods/${dishId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default dishAPI;

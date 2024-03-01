@@ -32,6 +32,7 @@ import DeliveryPageLayout from "./pages/Delivery/Layout/DeliveryPageLayout";
 import PartnerLogin from "./pages/Partner/Screens/Login/Login";
 import SupplierLogin from "./pages/Supplier/Screens/Login/Login";
 import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
+import Loading from "./pages/Loading/Loading";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
             <Route path="/partner/login" element={<PartnerLogin />} />
             <Route path="/supplier/login" element={<SupplierLogin />} />
             <Route path="/delivery/login" element={<DeliveryLogin />} />
+            <Route path="/loading" element={<Loading />} />
           </Routes>
         </CartProvider>
       </Router>

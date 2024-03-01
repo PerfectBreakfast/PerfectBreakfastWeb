@@ -16,6 +16,17 @@ import CreateCompany from "../Screens/Company/CreateCompany";
 import CreateManagementUser from "../Screens/ManagementUnit/CreateManagementUser";
 import CreateSupplierUser from "../Screens/SupplierUnit/CreateSupplierUser";
 import CreateDeliveryUser from "../Screens/DeliveryUnit/CreateDeliveryUser";
+import EditFood from "../Screens/Dish/EditFood";
+import EditCombo from "../Screens/Combo/EditCombo";
+import MenuDetail from "../Screens/Menu/MenuDetail";
+import EditMenu from "../Screens/Menu/EditMenu";
+import PartnerDetail from "../Screens/ManagementUnit/PartnerDetail";
+import EditPartner from "../Screens/ManagementUnit/EditPartner";
+import SupplierDetail from "../Screens/SupplierUnit/SupplierDetail";
+import EditSupplier from "../Screens/SupplierUnit/EditSupplier";
+import DeliveryDetail from "../Screens/DeliveryUnit/DeliveryDetail";
+import EditDelivery from "../Screens/DeliveryUnit/EditDelivery";
+import CreateFood from "../Screens/Dish/CreateFood";
 
 const MainContent = () => {
   return (
@@ -25,11 +36,22 @@ const MainContent = () => {
       <Route path="menu" element={<Menu />} />
       <Route path="combo/create" element={<CreateCombo />} />
       <Route path="menu/create" element={<CreateMenu />} />
+      <Route path="menu/:id" element={<MenuDetail />} />
+      <Route path="menu/:id/edit" element={<EditMenu />} />
       <Route path="food/:id" element={<DishDetail />} />
+      <Route path="food/create" element={<CreateFood />} />
+      <Route path="food/:id/edit" element={<EditFood />} />
       <Route path="combo/:id" element={<ComboDetail />} />
+      <Route path="combo/:id/edit" element={<EditCombo />} />
       <Route path="suppliers" element={<SupplierUnitList />} />
-      <Route path="deliveries" element={<DeliveryUnitList />} />
+      <Route path="supplier/:id" element={<SupplierDetail />} />
+      <Route path="supplier/:id/edit" element={<EditSupplier />} />
+      <Route path="delivery" element={<DeliveryUnitList />} />
+      <Route path="delivery/:id" element={<DeliveryDetail />} />
+      <Route path="delivery/:id/edit" element={<EditDelivery />} />
       <Route path="partners" element={<ManagementUnitList />} />
+      <Route path="partner/:id" element={<PartnerDetail />} />
+      <Route path="partner/:id/edit" element={<EditPartner />} />
       <Route path="companies" element={<CompanyList />} />
       <Route path="companies/create" element={<CreateCompany />} />
       <Route

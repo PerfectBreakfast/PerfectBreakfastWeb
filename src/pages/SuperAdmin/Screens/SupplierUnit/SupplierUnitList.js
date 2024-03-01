@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
 import managementUnitAPI from "../../../../services/managementUnitAPI";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
 
 const SupplierUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -165,6 +166,14 @@ const SupplierUnitList = () => {
     navigate("create-supplier-user", { state: { supplierUnitId: id } });
     console.log("id", id);
   };
+  const handleDetailClick = (supplierId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/supplier/${supplierId}`);
+  };
+  const handleEditClick = (supplierId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/supplier/${supplierId}/edit`);
+  };
   return (
     <>
       <div className="container mx-auto p-4">
@@ -185,6 +194,11 @@ const SupplierUnitList = () => {
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
@@ -215,7 +229,12 @@ const SupplierUnitList = () => {
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
                   <td className="py-3 px-6 text-left font-bold">
-                    {supplierUnit.name}
+                    <span
+                      className="font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => handleDetailClick(supplierUnit.id)}
+                    >
+                      {supplierUnit.name}
+                    </span>
                   </td>
                   <td className="py-3 px-6 text-left whitespace-normal break-words">
                     {supplierUnit.address}
@@ -252,6 +271,10 @@ const SupplierUnitList = () => {
                     >
                       Gán quản lý
                     </button>
+                    <Edit
+                      onClick={() => handleEditClick(supplierUnit.id)}
+                      className="size-5"
+                    />
                   </td>
                 </tr>
               ))}

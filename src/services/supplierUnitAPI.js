@@ -57,6 +57,27 @@ const supplierUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getSupplierById: async (supplierId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/api/v1/suppliers/${supplierId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  editSupplier: async (supplierId, newSupplierData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/api/v1/suppliers/${supplierId}`,
+        newSupplierData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default supplierUnitAPI;
