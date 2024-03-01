@@ -33,6 +33,27 @@ const deliveryUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getDeliveryById: async (deliveryId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/deliveries/${deliveryId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  editDelivery: async (deliveryId, newDeliveryData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/deliveries/${deliveryId}`,
+        newDeliveryData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default deliveryUnitAPI;

@@ -76,6 +76,11 @@ const CompanyList = () => {
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"

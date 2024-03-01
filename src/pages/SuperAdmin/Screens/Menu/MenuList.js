@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Pagination } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import menuAPI from "../../../../services/menuAPI";
 import "../Table/Table.css";
 
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
+
 const Menu = () => {
   const [menus, setMenus] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     fetchMenu();
   }, [pageIndex, searchTerm]);
@@ -57,6 +60,14 @@ const Menu = () => {
       toast.error("Failed to update menu");
     }
   };
+  const handleDetailClick = (menuId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/menu/${menuId}`);
+  };
+  const handleEditClick = (menuId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/menu/${menuId}/edit`);
+  };
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Danh sách menu</h2>
@@ -77,6 +88,11 @@ const Menu = () => {
             placeholder="Tìm kiếm"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
           />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
@@ -91,7 +107,6 @@ const Menu = () => {
         <table className="min-w-max w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6">ID</th>
               <th className="py-3 px-6">Tên menu</th>
               <th className="py-3 px-6">Ngày tạo</th>
               <th className="py-3 px-6"></th>
@@ -103,8 +118,15 @@ const Menu = () => {
                 key={menu.id}
                 className="border-b border-gray-200 hover:bg-gray-100"
               >
-                <td className="py-3 px-6 text-left">{menu.id}</td>
-                <td className="py-3 px-6 text-left">{menu.name}</td>
+                <td className="py-3 px-6 text-left">
+                  {" "}
+                  <span
+                    className="font-medium cursor-pointer hover:text-blue-500"
+                    onClick={() => handleDetailClick(menu.id)}
+                  >
+                    {menu.name}
+                  </span>
+                </td>
                 <td className="py-3 px-6 text-left">
                   {formatDate(menu.creationDate)}
                 </td>
@@ -116,6 +138,10 @@ const Menu = () => {
                       <VisibilityOffIcon />
                     </button>
                   )}
+                  <Edit
+                    onClick={() => handleEditClick(menu.id)}
+                    className="size-5"
+                  />
                 </td>
               </tr>
             ))}

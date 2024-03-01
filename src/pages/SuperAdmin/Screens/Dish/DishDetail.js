@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import dishAPI from "../../../../services/dishAPI";
 import {
   Card,
@@ -101,67 +101,70 @@ const DishDetail = () => {
   }
 
   return (
-    <Container className="mt-3">
-      <Typography gutterBottom variant="h5" component="div">
-        Chi tiết món ăn
-      </Typography>
-      <Card>
-        <Container style={{ position: "relative", padding: "20px" }}>
-          <IconButton
-            style={{
-              color: " red",
-              position: "absolute",
-              top: 10,
-              right: 10,
-              zIndex: 1,
+    <div className="mt-3 max-w-full mx-auto">
+      <div className="text-2xl font-bold mb-4">Chi tiết món ăn</div>
+      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="relative p-5">
+          <button
+            className="text-red-500 absolute top-2.5 right-2.5 z-10"
+            onClick={() => {
+              /* function to clear or close */
             }}
           >
-            <ClearIcon />
-          </IconButton>
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} md={6}>
-              <CardMedia
-                component="img"
-                style={{
-                  width: "80%",
-                  aspectRatio: "1/1",
-                  margin: "auto",
-                  borderRadius: "20px",
-                }}
-                image={dishData.image}
-                alt={dishData.name}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CardContent>
-                <Typography gutterBottom variant="body2" color="text.secondary">
+            {/* Replace ClearIcon with your own close icon */}
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <div className="flex flex-wrap -mx-2 justify-center">
+            <div className="px-2 w-full md:w-1/2">
+              <div className="aspect-w-1 aspect-h-1 w-4/5 mx-auto rounded-lg overflow-hidden">
+                <img
+                  src={dishData.image}
+                  alt={dishData.name}
+                  className="w-full h-full object-center object-cover"
+                />
+              </div>
+            </div>
+            <div className="px-2 w-full md:w-1/2">
+              <div className="mb-4">
+                <div className="text-sm text-gray-500">
                   {dishData.categoryResponse.name}
-                </Typography>
-                <Typography gutterBottom variant="h4" component="div">
-                  {dishData.name}
-                </Typography>
-                <Typography variant="subtitle1" component="div"></Typography>
-                <Typography gutterBottom variant="h6" color="text.secondary">
+                </div>
+                <div className="text-xl font-bold">{dishData.name}</div>
+                <div className="text-md"></div>
+                <div className="text-lg text-gray-500">
                   {dishData.price.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
-                </Typography>
-                <Typography gutterBottom variant="body2" color="text.secondary">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur ex, dolor fugit accusantium tempore quidem dolorem
-                  dolore, a ea necessitatibus nostrum officia voluptatibus unde
-                  minima, laboriosam eveniet ut nisi commodi.
-                </Typography>
-                <Button id="btn-update-detail" variant="contained" size="large">
-                  Chỉnh sửa món ăn
-                </Button>
-              </CardContent>
-            </Grid>
-          </Grid>
-        </Container>
-      </Card>
-    </Container>
+                </div>
+                <Link to={"edit"}>
+                  <button
+                    id="btn-update-detail"
+                    className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-base px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                  >
+                    Chỉnh sửa món ăn
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

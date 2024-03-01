@@ -44,6 +44,27 @@ const managementUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getPartnerById: async (partnerId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/partners/${partnerId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  editPartner: async (partnerId, newPartnerData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/partners/${partnerId}`,
+        newPartnerData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default managementUnitAPI;

@@ -19,6 +19,7 @@ import {
   StyledTableRow,
 } from "../Table/StyledTableComponents";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
 
 const DeliveryUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -77,6 +78,15 @@ const DeliveryUnitList = () => {
     }));
   };
 
+  const handleDetailClick = (deliveryId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/delivery/${deliveryId}`);
+  };
+  const handleEditClick = (deliveryId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/delivery/${deliveryId}/edit`);
+  };
+
   const handleCreateData = async () => {
     try {
       // Validate the input data before making the API call
@@ -125,6 +135,11 @@ const DeliveryUnitList = () => {
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
@@ -153,9 +168,12 @@ const DeliveryUnitList = () => {
                   key={deliveryUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <td className="py-3 px-6 text-left font-bold">
+                  <span
+                    className="font-medium cursor-pointer hover:text-blue-500"
+                    onClick={() => handleDetailClick(deliveryUnit.id)}
+                  >
                     {deliveryUnit.name}
-                  </td>
+                  </span>
                   <td className="py-3 px-6 text-left">
                     {deliveryUnit.address}
                   </td>
@@ -179,6 +197,10 @@ const DeliveryUnitList = () => {
                     >
                       Thêm QTV
                     </button>
+                    <Edit
+                      onClick={() => handleEditClick(deliveryUnit.id)}
+                      className="size-5"
+                    />
                   </td>
                 </tr>
               ))}

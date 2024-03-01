@@ -1,37 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Paper,
-  Pagination,
-  Button,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-  TextField,
-  Box,
-  Modal,
-  InputAdornment,
-  Typography,
-} from "@mui/material";
+import { Pagination } from "@mui/material";
 import dishAPI from "../../../../services/dishAPI";
-import categoryAPI from "../../../../services/categoryAPI";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Dish/Dish.css";
-import {
-  StyledTableCell,
-  StyledTableRow,
-} from "../Table/StyledTableComponents";
 import "../Table/Table.css";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
 
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+
+import Modal from "react-modal";
+import Loading from "../../../Loading/Loading";
+
+Modal.setAppElement("#root"); // Tránh warning về accessibility
 
 const Dishes = () => {
   const [dishes, setDishes] = useState([]);
@@ -39,104 +23,107 @@ const Dishes = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [newDishData, setNewDishData] = useState({
-    name: "",
-    price: 0,
-    image: "",
-    categoryId: "",
-    selectedImage: null,
-  });
-
-  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [dishToDelete, setDishToDelete] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchDish();
-    const fetchCategories = async () => {
-      try {
-        const result = await categoryAPI.getCategory();
-        setCategories(result);
-        console.log("categories", result);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchCategories();
   }, [pageIndex, searchTerm]);
   const fetchDish = async () => {
+    setIsLoading(true);
     try {
       const result = await dishAPI.getDishByPagination(searchTerm, pageIndex);
       setDishes(result.items);
       setTotalPages(result.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setIsLoading(false);
     }
   };
 
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
   };
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const handleSearch = async () => {
+    setSearchTerm(searchInput);
+    setPageIndex(0);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "image") {
-      // If the input is for image, update 'selectedImage' property
-      setNewDishData((prevData) => ({
-        ...prevData,
-        selectedImage: files[0],
-      }));
-    } else {
-      // For other inputs, update as usual
-      setNewDishData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleCreateDish = async () => {
-    try {
-      // Create a FormData object to handle file upload
-      const formData = new FormData();
-      formData.append("name", newDishData.name);
-      formData.append("price", newDishData.price);
-      formData.append("categoryId", newDishData.categoryId);
-
-      // Append the selected image file
-      formData.append("image", newDishData.selectedImage);
-
-      // Use formData instead of newDishData for the API call
-      await dishAPI.createDish(formData);
-
-      toast.success("Thêm món ăn thành công!");
-      setModalOpen(false);
-      setPageIndex(0);
-      fetchDish();
-    } catch (error) {
-      console.error("Error creating new dish:", error);
-    }
-  };
   const handleDishClick = (dishId) => {
-    // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/food/${dishId}`);
   };
-
-  const handleSearch = async () => {
-    setSearchTerm(searchInput); // Update searchTerm with searchInput
-    setPageIndex(0); // Reset pageIndex to 0]
+  const handleEditClick = (dishId) => {
+    navigate(`/admin/food/${dishId}/edit`);
   };
+  const handleClickCreate = () => {
+    navigate(`/admin/food/create`);
+  };
+
+  const handleDeleteClick = (dishId) => {
+    setDishToDelete(dishId); // Lưu id món ăn cần xóa vào state
+    openModal(); // Mở modal xác nhận
+  };
+
+  // Hàm xử lý việc xóa món ăn
+  const handleDelete = async () => {
+    if (dishToDelete) {
+      // Kiểm tra nếu có id món ăn cần xóa
+      setLoadingDelete(true); // Hiển thị loader
+      closeModal();
+      try {
+        await dishAPI.deleteDishById(dishToDelete); // Gọi API để xóa
+        toast.success("Món ăn đã được xóa thành công!"); // Thông báo thành công
+        fetchDish(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
+      } catch (error) {
+        console.error("Error deleting dish:", error);
+        toast.error("Có lỗi xảy ra khi xóa món ăn."); // Thông báo lỗi
+      }
+      setLoadingDelete(false); // Ẩn loader
+      // Đóng modal
+    }
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   return (
     <>
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa món ăn này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
       <div className="container mx-auto p-4">
         <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
 
@@ -145,7 +132,8 @@ const Dishes = () => {
             id="create-btn"
             className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
-            onClick={handleOpenModal}
+            // onClick={handleOpenModal}
+            onClick={handleClickCreate}
           >
             Thêm món ăn
           </button>
@@ -157,6 +145,11 @@ const Dishes = () => {
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
@@ -174,37 +167,64 @@ const Dishes = () => {
                 <th className="py-3 px-6 rounded-l">Hình ảnh</th>
                 <th className="py-3 px-6">Tên món ăn</th>
                 <th className="py-3 px-6 rounded-r">Đơn giá</th>
+                <th className="py-3 px-6 rounded-r"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {dishes.map((dish) => (
-                <tr
-                  key={dish.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left">
-                    <img
-                      src={dish.image}
-                      alt={dish.name}
-                      className="w-16 h-16 rounded-full"
-                    />
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <span
-                      className="font-medium cursor-pointer hover:text-blue-500"
-                      onClick={() => handleDishClick(dish.id)}
-                    >
-                      {dish.name}
-                    </span>
-                  </td>
-                  <td className="py-3 px-6 ">
-                    {dish.price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Đang tải...
                   </td>
                 </tr>
-              ))}
+              ) : dishes.length > 0 ? (
+                dishes.map((dish) => (
+                  <tr
+                    key={dish.id}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <td className="py-3 px-6 text-left">
+                      <img
+                        src={dish.image}
+                        alt={dish.name}
+                        className="w-16 h-16 rounded-full"
+                      />
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <span
+                        className="font-medium cursor-pointer hover:text-green-500"
+                        onClick={() => handleDishClick(dish.id)}
+                      >
+                        {dish.name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-6">
+                      {dish.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                    <td className="py-3 px-6">
+                      <div className="flex">
+                        <Write
+                          onClick={() => handleEditClick(dish.id)}
+                          className="size-5 cursor-pointer"
+                        />
+                        <Delete
+                          onClick={() => handleDeleteClick(dish.id)}
+                          className="size-5 cursor-pointer ml-4"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -220,74 +240,6 @@ const Dishes = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
-        <Box
-          className="rounded-3xl"
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <h2>Tạo mới món ăn</h2>
-          <TextField
-            label="Tên món ăn"
-            name="name"
-            value={newDishData.name}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Giá"
-            name="price"
-            value={newDishData.price}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-
-          {/* Thêm Select box cho danh mục */}
-          <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="category-select">Danh mục</InputLabel>
-            <Select
-              labelId="category-select"
-              id="category-select"
-              name="categoryId"
-              value={newDishData.categoryId}
-              onChange={handleInputChange}
-            >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            name="image"
-            type="file"
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-
-          <div className="create-btn-modal">
-            <Button
-              id="create-btn"
-              variant="contained"
-              onClick={handleCreateDish}
-            >
-              Tạo mới
-            </Button>
-          </div>
-        </Box>
-      </Modal>
       <ToastContainer position="top-right" autoClose={2000} />
     </>
   );

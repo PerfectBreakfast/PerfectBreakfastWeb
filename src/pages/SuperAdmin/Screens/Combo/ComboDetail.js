@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import comboAPI from "../../../../services/comboAPI";
 import {
   Button,
@@ -144,14 +144,16 @@ const ComboDetail = () => {
                 </Typography>
                 <Typography gutterBottom variant="body2" color="text.secondary">
                   {comboData.content}
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur ex, dolor fugit accusantium tempore quidem dolorem
-                  dolore, a ea necessitatibus nostrum officia voluptatibus unde
-                  minima, laboriosam eveniet ut nisi commodi.
                 </Typography>
-                <Button id="btn-update-detail" variant="contained" size="large">
-                  Chỉnh sửa combo
-                </Button>
+                <Link to={"edit"}>
+                  <Button
+                    id="btn-update-detail"
+                    variant="contained"
+                    size="large"
+                  >
+                    Chỉnh sửa combo
+                  </Button>
+                </Link>
               </CardContent>
             </Grid>
           </Grid>

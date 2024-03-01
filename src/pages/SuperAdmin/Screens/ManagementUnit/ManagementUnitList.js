@@ -19,6 +19,7 @@ import {
 } from "../Table/StyledTableComponents";
 import managementUnitAPI from "../../../../services/managementUnitAPI";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
 
 const ManagementUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -103,6 +104,14 @@ const ManagementUnitList = () => {
     navigate("create-management-user", { state: { partnerId: id } });
     console.log(id);
   };
+  const handleDetailClick = (partnerId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/partner/${partnerId}`);
+  };
+  const handleEditClick = (partnerId) => {
+    // Use navigate to navigate to the detail page with the dishId parameter
+    navigate(`/admin/partner/${partnerId}/edit`);
+  };
   return (
     <>
       <div className="container mx-auto p-4">
@@ -123,6 +132,11 @@ const ManagementUnitList = () => {
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
@@ -139,7 +153,7 @@ const ManagementUnitList = () => {
                 <th className="py-3 px-6">Tên công ty</th>
                 <th className="py-3 px-6">Địa chỉ</th>
                 <th className="py-3 px-6">Số điện thoại</th>
-                <th className="py-3 px-6">Tỷ lệ doanh thu </th>
+
                 <th className="py-3 px-6">Quản trị viên</th>
                 <th className="py-3 px-6"></th>
               </tr>
@@ -151,7 +165,12 @@ const ManagementUnitList = () => {
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
                   <td className="py-3 px-6 text-left font-bold">
-                    {managementUnit.name}
+                    <span
+                      className="font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => handleDetailClick(managementUnit.id)}
+                    >
+                      {managementUnit.name}
+                    </span>
                   </td>
                   <td className="py-3 px-6 text-left">
                     {managementUnit.address}
@@ -159,9 +178,7 @@ const ManagementUnitList = () => {
                   <td className="py-3 px-6 text-left">
                     {managementUnit.phoneNumber}
                   </td>
-                  <td className="py-3 px-6 text-center">
-                    {managementUnit.commissionRate}%
-                  </td>
+
                   <td className="py-3 px-6 text-left">
                     <ul>
                       {managementUnit.owners.map((owner, index) => (
@@ -177,6 +194,10 @@ const ManagementUnitList = () => {
                     >
                       Thêm QTV
                     </button>
+                    <Edit
+                      onClick={() => handleEditClick(managementUnit.id)}
+                      className="size-5"
+                    />
                   </td>
                 </tr>
               ))}

@@ -45,6 +45,27 @@ const menuAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editMenu: async (menuId, newMenuData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/menus/${menuId}`,
+        newMenuData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getMenuById: async (menuId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/menus/${menuId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default menuAPI;
