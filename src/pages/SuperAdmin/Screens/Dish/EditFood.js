@@ -68,7 +68,7 @@ const EditFood = () => {
         toast.success("Cập nhật món ăn thành công!");
         navigate(-1);
       } catch (error) {
-        alert("Có lỗi xảy ra khi cập nhật món ăn.");
+        toast.error("Có lỗi xảy ra khi cập nhật món ăn.");
         console.error("Error updating food:", error);
       } finally {
         setIsLoading(false); // Ẩn loading
@@ -201,7 +201,7 @@ const EditFood = () => {
           <button
             type="button"
             onClick={handleCreateClick}
-            className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition duration-200"
+            className="btn-submit-form"
           >
             Cập Nhật
           </button>

@@ -58,6 +58,16 @@ const comboAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  deleteComboById: async (comboId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/api/v1/combos/${comboId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default comboAPI;

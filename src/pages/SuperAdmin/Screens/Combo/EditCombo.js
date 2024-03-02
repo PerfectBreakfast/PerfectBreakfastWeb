@@ -2,158 +2,106 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import categoryAPI from "../../../../services/categoryAPI";
 import comboAPI from "../../../../services/comboAPI";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Modal from "react-modal";
+import Loading from "../../../Loading/Loading";
 
 const EditCombo = () => {
   const navigate = useNavigate();
-  const [mainFoodId, setMainFoodId] = useState([]);
-  const [sideFoodId, setSideFoodId] = useState([]);
   const { id } = useParams();
-  const [comboData, setComboData] = useState({
-    name: "",
-    content: "",
-    FoodId: [], // This will hold the IDs of main and side dishes
-    image: null,
-  });
 
-  const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [originalImage, setOriginalImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const fileInputRef = useRef(null);
-
-  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-
-  const [categoryResponses, setCategoryResponses] = useState([]);
-
-  const [mainCategory, setMainCategory] = useState(null);
-  const [sideCategory, setSideCategory] = useState(null);
 
   const [mainDishes, setMainDishes] = useState([]);
   const [sideDishes, setSideDishes] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const [categoryId, setCategoryId] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoriesAndComboData = async () => {
       try {
-        const response = await categoryAPI.getCategory();
-        setCategoryResponses(response);
+        const categoriesResponse = await categoryAPI.getCategory();
+        setCategories(categoriesResponse);
+        const comboData = await comboAPI.getComboById(id);
+        formik.setValues({
+          name: comboData.name,
+          content: comboData.content,
+          mainCategory: comboData.foodResponses[0]?.categoryResponse.id,
+          sideCategory: comboData.foodResponses[1]?.categoryResponse.id,
+          mainFoodId: comboData.foodResponses[0]?.id,
+          sideFoodId: comboData.foodResponses[1]?.id,
+          image: comboData.image,
+        });
+        setOriginalImage(comboData.image);
+        setPreviewImage(comboData.image);
+        fetchDishes(
+          comboData.foodResponses[0]?.categoryResponse.id,
+          setMainDishes
+        );
+        fetchDishes(
+          comboData.foodResponses[1]?.categoryResponse.id,
+          setSideDishes
+        );
       } catch (error) {
-        console.error("Error fetching food responses:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    // const fetchComboData = async () => {
-    //   try {
-    //     const data = await comboAPI.getComboById(id);
-    //     setComboData(data);
-    //     // Giả sử món chính là phần tử đầu tiên và món phụ là phần tử thứ hai
-    //     // trong mảng foodResponses
-    //     if (data.foodResponses.length > 0) {
-    //       setMainCategory(data.foodResponses[0].categoryResponse.id);
-    //       setMainFoodId(data.foodResponses[0].id);
-    //     }
-    //     if (data.foodResponses.length > 1) {
-    //       setSideCategory(data.foodResponses[1].categoryResponse.id);
-    //       setSideFoodId(data.foodResponses[1].id);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching dish data:", error);
-    //   }
-    // };
+    fetchCategoriesAndComboData();
+  }, [id]);
 
-    const fetchComboData = async () => {
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      content: "",
+      mainFoodId: "",
+      sideFoodId: "",
+      image: null,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Tên combo là bắt buộc"),
+      content: Yup.string().required("Nội dung là bắt buộc"),
+      mainFoodId: Yup.string().required("Chọn món chính là bắt buộc"),
+      sideFoodId: Yup.string().required("Chọn món phụ là bắt buộc"),
+    }),
+    onSubmit: async (values) => {
+      setIsOpen(false);
+      setIsLoading(true);
       try {
-        const data = await comboAPI.getComboById(id);
-        setComboData((prev) => ({
-          ...prev,
-          name: data.name,
-          content: data.content,
-          FoodId: [data.foodResponses[0]?.id, data.foodResponses[1]?.id],
-          image: data.image, // Bạn cần cân nhắc làm thế nào để xử lý hình ảnh đã được chọn
-        }));
-        setOriginalImage(data.image);
-        // Đảm bảo rằng món chính và phụ đều được khởi tạo đúng giá trị
-        if (data.foodResponses.length > 0) {
-          setMainCategory(data.foodResponses[0].categoryResponse.id);
-          setMainFoodId(data.foodResponses[0].id);
-          // Fetch và set món chính tại đây
-          fetchDishes(data.foodResponses[0].categoryResponse.id, setMainDishes);
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("content", values.content);
+        // if (fileInputRef.current.files[0]) {
+        //   formData.append("image", fileInputRef.current.files[0]);
+        // }
+        // Bổ sung thêm các field cần thiết
+        if (values.image instanceof File) {
+          formData.append("image", values.image);
         }
-        if (data.foodResponses.length > 1) {
-          setSideCategory(data.foodResponses[1].categoryResponse.id);
-          setSideFoodId(data.foodResponses[1].id);
-          // Fetch và set món phụ tại đây
-          fetchDishes(data.foodResponses[1].categoryResponse.id, setSideDishes);
-        }
+
+        formData.append("foodId", values.mainFoodId);
+        formData.append("foodId", values.sideFoodId);
+
+        await comboAPI.editCombo(id, formData);
+        toast.success("Cập nhật combo thành công!");
+        navigate(-1); // Hoặc địa chỉ bạn muốn chuyển hướng đến
       } catch (error) {
-        console.error("Error fetching dish data:", error);
+        console.error("Error updating combo:", error);
+        toast.error("Cập nhật combo thất bại!");
+      } finally {
+        setIsLoading(false); // Ẩn loading
       }
-    };
+    },
+  });
 
-    fetchComboData();
-    fetchCategories();
-    fetchDishes();
-  }, [id, categoryId]);
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "image") {
-      const file = files[0];
-      setFile(file);
-      if (file) {
-        const newImageURL = URL.createObjectURL(file);
-        setComboData({ ...comboData, image: newImageURL });
-      }
-    } else {
-      // For other inputs, update as usual
-      setComboData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setFile(null);
-    setComboData({ ...comboData, image: originalImage });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const openCancelDialog = () => {
-    setIsCancelDialogOpen(true);
-  };
-  const closeCancelDialog = () => {
-    setIsCancelDialogOpen(false);
-  };
-
-  // const handleCategoryChange = (category, setType) => {
-  //   setType(category);
-  //   // Fetch dishes based on the selected category
-  //   fetchDishes(
-  //     category,
-  //     setType === setMainCategory ? setMainDishes : setSideDishes
-  //   );
-  // };
-
-  const handleCategoryChange = (categoryId, setType, setDishesFunc) => {
-    setType(categoryId);
-    fetchDishes(categoryId, setDishesFunc);
-  };
-
-  // const fetchDishes = async (categoryId, setDishes) => {
-  //   try {
-  //     const response = await categoryAPI.getFoodByCategory(categoryId);
-  //     setDishes(response[0]?.foodResponse || []); // Updated this line
-  //   } catch (error) {
-  //     console.error("Error fetching dishes:", error);
-  //   }
-  // };
-
-  // Cập nhật fetchDishes để không cần truyền categoryId, setDishes vì nó sẽ được gọi từ context phù hợp
+  // Xử lý thay đổi danh mục và món ăn
   const fetchDishes = async (categoryId, setDishesFunc) => {
-    if (!categoryId) return; // Đảm bảo categoryId hợp lệ
+    if (!categoryId) return;
     try {
       const response = await categoryAPI.getFoodByCategory(categoryId);
       setDishesFunc(response[0]?.foodResponse || []);
@@ -162,235 +110,267 @@ const EditCombo = () => {
     }
   };
 
-  const handleDishChange = (dishId, setType) => {
-    setComboData((prevData) => ({
-      ...prevData,
-      FoodId:
-        setType === setMainFoodId
-          ? [dishId, prevData.FoodId[1]]
-          : [prevData.FoodId[0], dishId],
-    }));
-    setType(dishId);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      // Create a FormData object to handle file upload
-      const formData = new FormData();
-      formData.append("name", comboData.name);
-      formData.append("content", comboData.content);
-
-      if (file) {
-        formData.append("image", file);
-      } else {
-        // Xử lý nếu không chọn ảnh mới (ví dụ: gửi thông tin không thay đổi ảnh)
-        // formData.append("image", comboData.image);
-      }
-
-      // Append FoodId array to the formData
-      comboData.FoodId.forEach((id, index) => {
-        formData.append(`FoodId[${index}]`, id);
-      });
-
-      // Use formData for the API call
-      const newCombo = await comboAPI.editCombo(id, formData);
-      console.log("New Combo:", newCombo);
-      toast.success("Thêm combo thành công!");
-      navigate(-1);
-    } catch (error) {
-      console.error("Error creating combo:", error);
-      toast.error("Thêm combo thất bại!");
+  // const handleFileChange = (event) => {
+  //   const file = event.currentTarget.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       formik.setFieldValue("image", reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      formik.setFieldValue("image", file);
+      const newImageURL = URL.createObjectURL(file);
+      setPreviewImage(newImageURL);
     }
   };
 
+  const handleRemoveImage = () => {
+    formik.setFieldValue("image", null);
+    setPreviewImage(originalImage);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleEditClick = async () => {
+    // Đánh dấu tất cả các trường là đã chạm vào, bao gồm cả selectedImage
+    formik.setTouched({
+      name: true,
+      content: true,
+      mainFoodId: true,
+      sideFoodId: true,
+    });
+
+    const errors = await formik.validateForm();
+    formik.setErrors(errors);
+
+    // Kiểm tra xem form có lỗi không
+    if (Object.keys(errors).length === 0) {
+      // Nếu không có lỗi, mở modal xác nhận
+      openModal();
+    }
+  };
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
   return (
-    <div className="container mx-auto p-6">
-      <h5 className="text-xl font-bold mb-4">Sửa combo</h5>
-      <div className="bg-white shadow-md rounded-lg p-4">
-        <form onSubmit={handleSubmit}>
-          <div className="form-create-combo">
-            <p className="text-md mb-2">Tên combo</p>
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+      {isLoading && <Loading />}
+      <ToastContainer />
+
+      <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa combo</h2>
+        <div className="flex flex-col gap-3">
+          <div>
+            <label htmlFor="name" className="label-input">
+              Tên Combo
+            </label>
             <input
-              className="placeholder-gray-500 border-2 rounded-md p-4 w-full mb-4"
-              placeholder="Thêm tên của combo"
-              type="text"
-              id="text-field-form"
+              id="name"
               name="name"
-              value={comboData.name}
-              onChange={handleInputChange}
-              required
-            />
-
-            <p className="text-md mb-2">Nội dung</p>
-            <input
-              className="placeholder-gray-500 border-2 rounded-md p-4 w-full mb-4"
-              placeholder="Mô tả combo"
               type="text"
-              id="text-field-form"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              className=" input-form"
+            />
+            {formik.touched.name && formik.errors.name && (
+              <div className="formik-error-message">{formik.errors.name}</div>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="content" className="label-input">
+              Nội dung
+            </label>
+            <input
+              id="content"
               name="content"
-              value={comboData.content}
-              onChange={handleInputChange}
-              required
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.content}
+              className=" input-form"
+            />
+            {formik.touched.content && formik.errors.content && (
+              <div className="formik-error-message">
+                {formik.errors.content}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="image" className="label-input">
+              Hình ảnh
+            </label>
+            <input
+              ref={fileInputRef}
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="input-file"
             />
 
-            <p className="text-md mb-2">Hình ảnh</p>
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleInputChange}
-                name="image"
-              />
-              {comboData.image && (
-                <div>
-                  <img
-                    src={comboData.image}
-                    alt="Combo Preview"
-                    style={{ width: "100px" }}
-                  />
-                  {file && (
-                    <button onClick={handleRemoveImage}>Xóa Hình Ảnh</button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div>
-              <p className="text-md mb-2">Món chính</p>
-              <div className="mb-4">
-                {categoryResponses.map((category) => (
-                  <label
-                    key={category.id}
-                    className="inline-flex items-center mr-2"
+            {previewImage && (
+              <div className="mt-4 items-center">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="max-h-40 rounded"
+                />
+                {previewImage && previewImage !== originalImage && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="bg-red-500 hover:bg-red-600 mt-2 text-white p-1 rounded"
                   >
-                    <input
-                      type="radio"
-                      name="mainCategory"
-                      value={category.id}
-                      onChange={(e) =>
-                        handleCategoryChange(
-                          e.target.value,
-                          setMainCategory,
-                          setMainDishes
-                        )
-                      }
-                      checked={mainCategory === category.id}
-                      className="form-radio"
-                    />
-                    <span className="ml-2">{category.name}</span>
-                  </label>
-                ))}
+                    Xóa Hình Ảnh
+                  </button>
+                )}
               </div>
-              {mainCategory && (
-                <select
-                  className="border-2 rounded-md p-2 w-full mb-4"
-                  value={mainFoodId}
-                  onChange={(e) =>
-                    handleDishChange(e.target.value, setMainFoodId)
-                  }
-                >
-                  {mainDishes.map((dish) => (
-                    <option key={dish.id} value={dish.id}>
-                      {dish.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-
-            <div>
-              <p className="text-md mb-2">Món phụ</p>
-              <div className="mb-4">
-                {categoryResponses.map((category) => (
-                  <label
-                    key={category.id}
-                    className="inline-flex items-center mr-2"
-                  >
-                    <input
-                      type="radio"
-                      name="sideCategory"
-                      value={category.id}
-                      onChange={(e) =>
-                        handleCategoryChange(
-                          e.target.value,
-                          setSideCategory,
-                          setSideDishes
-                        )
-                      }
-                      checked={sideCategory === category.id}
-                      className="form-radio"
-                    />
-                    <span className="ml-2">{category.name}</span>
-                  </label>
-                ))}
-              </div>
-              {sideCategory && (
-                <select
-                  className="border-2 rounded-md p-2 w-full mb-4"
-                  value={sideFoodId}
-                  onChange={(e) =>
-                    handleDishChange(e.target.value, setSideFoodId)
-                  }
-                >
-                  {sideDishes.map((dish) => (
-                    <option key={dish.id} value={dish.id}>
-                      {dish.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-
-            <div className="flex justify-between mt-4">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                type="submit"
-                id="create-combo-btn"
-              >
-                Tạo mới
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                type="button"
-                id="cancel-combo-btn"
-                onClick={openCancelDialog}
-              >
-                Hủy
-              </button>
-            </div>
+            )}
           </div>
-        </form>
-      </div>
 
-      {/* Dialog */}
-      {isCancelDialogOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <p className="text-md leading-relaxed">
-                Bạn có chắc chắn muốn hủy sửa combo không?
-              </p>
-              <div className="items-center px-4 py-3">
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-auto"
-                  onClick={closeCancelDialog}
-                >
-                  Không
-                </button>
-                <button
-                  className="px-4 py-2 ml-3 bg-red-500 text-white text-base font-medium rounded-md w-auto"
-                  onClick={() => navigate(-1)}
-                >
-                  Có
-                </button>
+          {/* Đoạn code cho việc chọn món chính và món phụ sẽ được thêm vào đây */}
+          {/* Chọn category cho món chính */}
+          <div>
+            <label htmlFor="mainCategory" className="label-input">
+              Category Món Chính
+            </label>
+            <select
+              id="mainCategory"
+              name="mainCategory"
+              onChange={(e) => {
+                const newCategoryId = e.target.value;
+                formik.setFieldValue("mainCategory", newCategoryId); // Cập nhật giá trị cho mainCategory
+                formik.setFieldValue("mainFoodId", ""); // Reset món chính khi thay đổi category
+                fetchDishes(newCategoryId, setMainDishes); // Tải danh sách món chính theo category mới
+              }}
+              className=" input-form"
+              value={formik.values.mainCategory}
+            >
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Chọn món chính dựa vào category đã chọn */}
+          <div>
+            <select
+              id="mainFoodId"
+              name="mainFoodId"
+              onChange={formik.handleChange}
+              value={formik.values.mainFoodId}
+              className=" input-form"
+            >
+              <option value="">Chọn món chính</option>
+              {mainDishes.map((dish) => (
+                <option key={dish.id} value={dish.id}>
+                  {dish.name}
+                </option>
+              ))}
+            </select>
+            {formik.touched.mainFoodId && formik.errors.mainFoodId ? (
+              <div className="formik-error-message">
+                {formik.errors.mainFoodId}
               </div>
-            </div>
+            ) : null}
+          </div>
+
+          {/* Chọn category cho món phụ */}
+          <div>
+            <label htmlFor="sideCategory" className="label-input">
+              Category Món Phụ
+            </label>
+            <select
+              id="sideCategory"
+              name="sideCategory"
+              onChange={(e) => {
+                const newCategoryId = e.target.value;
+                formik.setFieldValue("sideCategory", newCategoryId); // Cập nhật giá trị cho sideCategory
+                formik.setFieldValue("sideFoodId", ""); // Reset món phụ khi thay đổi category
+                fetchDishes(newCategoryId, setSideDishes); // Tải danh sách món phụ theo category mới
+              }}
+              className=" input-form"
+              value={formik.values.sideCategory}
+            >
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Chọn món phụ dựa vào category đã chọn */}
+          <div>
+            <select
+              id="sideFoodId"
+              name="sideFoodId"
+              onChange={formik.handleChange}
+              value={formik.values.sideFoodId}
+              className=" input-form"
+            >
+              <option value="">Chọn món phụ</option>
+              {sideDishes.map((dish) => (
+                <option key={dish.id} value={dish.id}>
+                  {dish.name}
+                </option>
+              ))}
+            </select>
+            {formik.touched.sideFoodId && formik.errors.sideFoodId ? (
+              <div className="formik-error-message">
+                {formik.errors.sideFoodId}
+              </div>
+            ) : null}
+          </div>
+
+          <button
+            type="button"
+            className="btn-submit-form"
+            onClick={handleEditClick}
+          >
+            Cập nhật
+          </button>
+        </div>
+      </form>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận cập nhật"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn cập nhật combo này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              onClick={formik.submitForm}
+            >
+              Xác nhận
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 };

@@ -15,11 +15,13 @@ import "react-toastify/dist/ReactToastify.css";
 import comboAPI from "../../../../services/comboAPI";
 import { Link, useNavigate } from "react-router-dom";
 import "../Combo/Combo.css";
-import {
-  StyledTableCell,
-  StyledTableRow,
-} from "../Table/StyledTableComponents";
+
+import Modal from "react-modal";
+
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import Loading from "../../../Loading/Loading";
 
 const Combos = () => {
   const [combos, setCombos] = useState([]);
@@ -28,28 +30,26 @@ const Combos = () => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [comboToDelete, setComboToDelete] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   useEffect(() => {
-    const fetchCombo = async () => {
-      try {
-        const result = await comboAPI.getComboByPagination(
-          searchTerm,
-          pageIndex
-        );
-        setCombos(result.items);
-        setTotalPages(result.totalPagesCount);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchCombo();
   }, [pageIndex, searchTerm]);
-
+  const fetchCombo = async () => {
+    try {
+      const result = await comboAPI.getComboByPagination(searchTerm, pageIndex);
+      setCombos(result.items);
+      setTotalPages(result.totalPagesCount);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
   };
   const handleDetailClick = (comboId) => {
-    // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/combo/${comboId}`);
   };
 
@@ -57,9 +57,66 @@ const Combos = () => {
     setSearchTerm(searchInput); // Update searchTerm with searchInput
     setPageIndex(0); // Reset pageIndex to 0]
   };
+  const handleEditClick = (comboId) => {
+    navigate(`/admin/combo/${comboId}/edit`);
+  };
+  const handleDeleteClick = (comboId) => {
+    setComboToDelete(comboId);
+    openModal();
+  };
+  const handleDelete = async () => {
+    if (comboToDelete) {
+      // Kiểm tra nếu có id món ăn cần xóa
+      setLoadingDelete(true); // Hiển thị loader
+      closeModal();
+      try {
+        await comboAPI.deleteComboById(comboToDelete); // Gọi API để xóa
+        toast.success("Món ăn đã được xóa thành công!"); // Thông báo thành công
+        fetchCombo(); // Gọi lại hàm fetchCombo để cập nhật danh sách món ăn
+      } catch (error) {
+        console.error("Error deleting combo:", error);
+        toast.error("Có lỗi xảy ra khi xóa món ăn."); // Thông báo lỗi
+      }
+      setLoadingDelete(false); // Ẩn loader
+      // Đóng modal
+    }
+  };
+  function openModal() {
+    setIsOpen(true);
+  }
 
+  function closeModal() {
+    setIsOpen(false);
+  }
   return (
     <>
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa combo này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
       <div className="container mx-auto p-4">
         <h2 className="text-2xl font-semibold mb-4">Danh sách combo</h2>
 
@@ -102,7 +159,8 @@ const Combos = () => {
                 <th className="py-3 px-6 rounded-l">Hình ảnh</th>
                 <th className="py-3 px-6">Tên Combo</th>
                 <th className="py-3 px-6">Món ăn</th>
-                <th className="py-3 px-6 rounded-r">Đơn giá</th>
+                <th className="py-3 px-6 ">Đơn giá</th>
+                <th className="py-3 px-6 rounded-r"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -132,6 +190,18 @@ const Combos = () => {
                       style: "currency",
                       currency: "VND",
                     })}
+                  </td>
+                  <td className="py-3 px-6">
+                    <div className="flex">
+                      <Write
+                        onClick={() => handleEditClick(combo.id)}
+                        className="size-5 cursor-pointer"
+                      />
+                      <Delete
+                        onClick={() => handleDeleteClick(combo.id)}
+                        className="size-5 cursor-pointer ml-4"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
