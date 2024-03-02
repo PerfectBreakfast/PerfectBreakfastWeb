@@ -1,34 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Button,
-  Paper,
-  Pagination,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  Modal,
-  Box,
-  MenuItem,
-} from "@mui/material";
-import axios from "axios";
+import { Pagination } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Dish/Dish.css";
-import {
-  StyledTableCell,
-  StyledTableRow,
-} from "../Table/StyledTableComponents";
+
 import "../Table/Table.css";
 import { useNavigate } from "react-router-dom";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
 import managementUnitAPI from "../../../../services/managementUnitAPI";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
-import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import Modal from "react-modal";
+import Loading from "../../../Loading/Loading";
 
 const SupplierUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -39,17 +23,17 @@ const SupplierUnitList = () => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
   const [managementUnits, setManagementUnits] = useState([]);
-  const [newSupplierData, setNewSupplierData] = useState({
-    name: "",
-    address: "",
-    phoneNumber: "",
-  });
+
   const [isAssignManagerModalOpen, setAssignManagerModalOpen] = useState(false);
   const [
     selectedSupplierUnitForAssignment,
     setSelectedSupplierUnitForAssignment,
   ] = useState(null);
   const [selectedManagementUnit, setSelectedManagementUnit] = useState("");
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [dishToDelete, setDishToDelete] = useState(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   useEffect(() => {
     fetchSupplierUnits();
@@ -89,46 +73,9 @@ const SupplierUnitList = () => {
     setPageIndex(value - 1);
   };
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
-
   const handleCloseModal = () => {
     setAssignManagerModalOpen(false);
     setModalOpen(false);
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewSupplierData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Function to handle the creation of a new supplier unit
-  const handleCreateData = async () => {
-    try {
-      // Validate the input data before making the API call
-      if (!newSupplierData.name || !newSupplierData.address) {
-        toast.error("Please fill in all required fields.");
-        return;
-      }
-
-      // Make the API call to create a new supplier unit
-      const createdSupplier = await supplierUnitAPI.createSupplierUnit(
-        newSupplierData
-      );
-
-      // Display a success message
-      toast.success("Thêm nhà cung cấp thành công!");
-
-      // Close the modal and refresh the list of supplier units
-      handleCloseModal();
-      fetchSupplierUnits();
-    } catch (error) {
-      console.error("Error creating supplier unit:", error);
-      toast.error("Error creating supplier unit");
-    }
   };
 
   const handleOpenAssignManagerModal = (supplierUnit) => {
@@ -174,6 +121,41 @@ const SupplierUnitList = () => {
     // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/supplier/${supplierId}/edit`);
   };
+
+  const handleDeleteClick = (supplierId) => {
+    setDishToDelete(supplierId);
+    openModal();
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const handleDelete = async () => {
+    if (dishToDelete) {
+      // Kiểm tra nếu có id món ăn cần xóa
+      setLoadingDelete(true); // Hiển thị loader
+      closeModal();
+      try {
+        await supplierUnitAPI.deletePartnerById(dishToDelete); // Gọi API để xóa
+        toast.success("Đối tác đã được xóa thành công!"); // Thông báo thành công
+        fetchSupplierUnits(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
+      } catch (error) {
+        console.error("Error deleting dish:", error);
+        toast.error("Có lỗi xảy ra khi xóa đối tác!"); // Thông báo lỗi
+      }
+      setLoadingDelete(false); // Ẩn loader
+      // Đóng modal
+    }
+  };
+  const handleClickCreate = () => {
+    navigate(`/admin/supplier/create`);
+  };
+
   return (
     <>
       <div className="container mx-auto p-4">
@@ -182,11 +164,13 @@ const SupplierUnitList = () => {
         <div className="flex justify-between items-center mb-4">
           <button
             id="create-btn"
+            type="button"
             className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            onClick={handleOpenModal}
+            onClick={handleClickCreate}
           >
             Thêm nhà cung cấp
           </button>
+
           <div className="flex gap-2 items-center">
             <input
               type="text"
@@ -218,6 +202,7 @@ const SupplierUnitList = () => {
                 <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
                 <th className="py-3 px-6 w-1/6 break-words">Quản trị viên</th>
                 <th className="py-3 px-6 w-1/6 break-words">Đối tác</th>
+                <th className="py-3 px-6 w-1/6 break-words"></th>
                 <th className="py-3 px-6 w-1/6 break-words"></th>
               </tr>
             </thead>
@@ -271,10 +256,18 @@ const SupplierUnitList = () => {
                     >
                       Gán quản lý
                     </button>
-                    <Edit
-                      onClick={() => handleEditClick(supplierUnit.id)}
-                      className="size-5"
-                    />
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <div className="flex">
+                      <Write
+                        onClick={() => handleEditClick(supplierUnit.id)}
+                        className="size-5 cursor-pointer"
+                      />
+                      <Delete
+                        onClick={() => handleDeleteClick(supplierUnit.id)}
+                        className="size-5 cursor-pointer ml-4"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -292,99 +285,95 @@ const SupplierUnitList = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <h2>Tạo mới nhà cung cấp</h2>
-          <TextField
-            label="Tên công ty"
-            name="name"
-            value={newSupplierData.name}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Địa chỉ"
-            name="address"
-            value={newSupplierData.address}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Số điện thoại"
-            name="phoneNumber"
-            value={newSupplierData.phoneNumber}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <div className="create-btn-modal">
-            <Button
-              id="create-btn"
-              variant="contained"
-              onClick={handleCreateData}
-            >
-              Tạo mới
-            </Button>
-          </div>
-        </Box>
-      </Modal>
       <Modal
-        open={isAssignManagerModalOpen}
-        onClose={() => setAssignManagerModalOpen(false)}
-      >
-        <Box
-          sx={{
-            position: "absolute",
+        isOpen={isAssignManagerModalOpen}
+        onRequestClose={() => setAssignManagerModalOpen(false)}
+        style={{
+          overlay: { backgroundColor: "rgba(0,0,0,0.5)" },
+          content: {
             top: "50%",
             left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <h2>Gán quản lý cho {selectedSupplierUnitForAssignment?.name}</h2>
-          {/* Similar to the previous Modal, include a Select for choosing the management unit */}
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="managementUnitSelectLabel">Chọn quản lý</InputLabel>
-            <Select
-              labelId="managementUnitSelectLabel"
+            padding: "2rem",
+            borderRadius: "0.5rem",
+            maxWidth: "500px",
+            width: "90%",
+          },
+        }}
+        contentLabel="Assign Manager Modal"
+      >
+        <div className="flex flex-col">
+          <h2 className="text-2xl font-semibold mb-4">
+            Gán quản lý cho {selectedSupplierUnitForAssignment?.name}
+          </h2>
+          <div className="mb-4">
+            <label
+              htmlFor="managementUnitSelect"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Chọn công ty đối tác
+            </label>
+            <select
               id="managementUnitSelect"
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               value={selectedManagementUnit}
               onChange={(e) => setSelectedManagementUnit(e.target.value)}
             >
               {managementUnits.map((managementUnit) => (
-                <MenuItem key={managementUnit.id} value={managementUnit.id}>
+                <option key={managementUnit.id} value={managementUnit.id}>
                   {managementUnit.name}
-                </MenuItem>
+                </option>
               ))}
-            </Select>
-          </FormControl>
-          <div className="create-btn-modal">
-            <Button
-              id="create-btn"
-              variant="contained"
+            </select>
+          </div>
+          <div className="flex justify-end gap-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={() => setAssignManagerModalOpen(false)}
+            >
+              Hủy
+            </button>
+            <button
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded text-white"
               onClick={handleAssignManager}
             >
               Gán quản lý
-            </Button>
+            </button>
           </div>
-        </Box>
+        </div>
       </Modal>
+
       <ToastContainer position="top-right" autoClose={2000} />
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa dữ liệu này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

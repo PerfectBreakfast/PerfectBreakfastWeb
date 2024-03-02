@@ -57,10 +57,6 @@
   @apply bg-green-500 text-white p-2 rounded-2xl hover:bg-green-700 transition duration-200;
 }
 
-/* Tạo class CSS tùy chỉnh */
-.checkbox:checked {
-  /* Màu cho background khi được chọn */
-  background-color: #10b981; /* Green-500 */
-  /* Màu cho viền nếu cần */
-  border-color: #10b981;
+.btn-delete-image {
+  @apply px-4 py-2 rounded-full border-0 text-sm font-semibold bg-red-50 text-red-700 hover:bg-red-100 mt-2;
 }

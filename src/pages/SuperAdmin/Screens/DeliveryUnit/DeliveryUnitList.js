@@ -5,21 +5,16 @@ import { ToastContainer, toast } from "react-toastify";
 import {
   Box,
   Button,
-  Modal,
+  // Modal,
   Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
   TextField,
 } from "@mui/material";
-import {
-  StyledTableCell,
-  StyledTableRow,
-} from "../Table/StyledTableComponents";
+
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
-import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import Loading from "../../../Loading/Loading";
+import Modal from "react-modal";
 
 const DeliveryUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -35,6 +30,10 @@ const DeliveryUnitList = () => {
     phoneNumber: "",
     commissionRate: "",
   });
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [dishToDelete, setDishToDelete] = useState(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   useEffect(() => {
     fetchDeliveryUnits();
@@ -113,6 +112,41 @@ const DeliveryUnitList = () => {
     navigate("create-delivery-user", { state: { deliveryUnitId: id } });
     console.log(id);
   };
+
+  const handleDeleteClick = (deliveryId) => {
+    setDishToDelete(deliveryId);
+    openModal();
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const handleDelete = async () => {
+    if (dishToDelete) {
+      // Kiểm tra nếu có id món ăn cần xóa
+      setLoadingDelete(true); // Hiển thị loader
+      closeModal();
+      try {
+        await deliveryUnitAPI.deleteDeliveryById(dishToDelete); // Gọi API để xóa
+        toast.success("Đối tác đã được xóa thành công!"); // Thông báo thành công
+        fetchDeliveryUnits(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
+      } catch (error) {
+        console.error("Error deleting dish:", error);
+        toast.error("Có lỗi xảy ra khi xóa đối tác!"); // Thông báo lỗi
+      }
+      setLoadingDelete(false); // Ẩn loader
+      // Đóng modal
+    }
+  };
+  const handleClickCreate = () => {
+    navigate(`/admin/delivery/create`);
+  };
+
   return (
     <>
       <div className="container mx-auto p-4">
@@ -123,10 +157,11 @@ const DeliveryUnitList = () => {
         <div className="flex justify-between items-center mb-4">
           <button
             id="create-btn"
+            type="button"
             className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            onClick={handleOpenModal}
+            onClick={handleClickCreate}
           >
-            Thêm đơn vị vận chuyển
+            Thêm dvvc
           </button>
           <div className="flex gap-2 items-center">
             <input
@@ -154,12 +189,13 @@ const DeliveryUnitList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/7 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/7 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/7 break-words">Số điện thoại</th>
-                <th className="py-3 px-6 w-1/7 break-words">Tỷ lệ doanh thu</th>
-                <th className="py-3 px-6 w-1/7 break-words">Quản trị viên</th>
-                <th className="py-3 px-6 w-1/7 break-words"></th>
+                <th className="py-3 px-6 w-1/8 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-2/8 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/8 break-words">Số điện thoại</th>
+                <th className="py-3 px-6 w-1/8 break-words">Tỷ lệ doanh thu</th>
+                <th className="py-3 px-6 w-1/8 break-words">Quản trị viên</th>
+                <th className="py-3 px-6 w-1/8 break-words"></th>
+                <th className="py-3 px-6 w-1/8 break-words"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -168,12 +204,16 @@ const DeliveryUnitList = () => {
                   key={deliveryUnit.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  <span
-                    className="font-medium cursor-pointer hover:text-blue-500"
-                    onClick={() => handleDetailClick(deliveryUnit.id)}
-                  >
-                    {deliveryUnit.name}
-                  </span>
+                  <td className="py-3 px-6 text-left font-bold">
+                    {" "}
+                    <span
+                      className="font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => handleDetailClick(deliveryUnit.id)}
+                    >
+                      {deliveryUnit.name}
+                    </span>
+                  </td>
+
                   <td className="py-3 px-6 text-left">
                     {deliveryUnit.address}
                   </td>
@@ -197,10 +237,18 @@ const DeliveryUnitList = () => {
                     >
                       Thêm QTV
                     </button>
-                    <Edit
-                      onClick={() => handleEditClick(deliveryUnit.id)}
-                      className="size-5"
-                    />
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <div className="flex">
+                      <Write
+                        onClick={() => handleEditClick(deliveryUnit.id)}
+                        className="size-5 cursor-pointer"
+                      />
+                      <Delete
+                        onClick={() => handleDeleteClick(deliveryUnit.id)}
+                        className="size-5 cursor-pointer ml-4"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -275,6 +323,35 @@ const DeliveryUnitList = () => {
           </div>
         </Box>
       </Modal>
+
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa dữ liệu này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <ToastContainer position="top-right" autoClose={2000} />
     </>
   );
