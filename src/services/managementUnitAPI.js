@@ -65,6 +65,16 @@ const managementUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  deletePartnerById: async (partnerId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/api/v1/partners/${partnerId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default managementUnitAPI;

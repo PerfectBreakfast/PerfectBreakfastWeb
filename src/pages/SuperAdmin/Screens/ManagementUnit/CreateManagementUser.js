@@ -139,21 +139,6 @@ const CreateManagementUser = () => {
             className="w-full"
           />
         </div>
-        {/* <div className="mb-4">
-  <label className="block">
-    {selectedImage 
-      ? <img src={selectedImage} alt="Preview" className="w-full h-auto" />
-      : <span className="text-gray-700">Chưa có hình ảnh</span>
-    }
-  </label>
-  <input
-    type="file"
-    accept="image/*"
-    className="w-full"
-    onChange={handleImageChange}
-  />
-</div> */}
-
         <div>
           <button
             type="submit"

@@ -97,33 +97,6 @@ const Dishes = () => {
 
   return (
     <>
-      {loadingDelete && <Loading />}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
-        className="fixed inset-0 flex items-center justify-center"
-        contentLabel="Xác nhận"
-      >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
-          <p>Bạn có chắc chắn muốn xóa món ăn này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
-              Hủy bỏ
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
-              onClick={() => handleDelete()}
-            >
-              Xác nhận
-            </button>
-          </div>
-        </div>
-      </Modal>
       <div className="container mx-auto p-4">
         <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
 
@@ -241,6 +214,33 @@ const Dishes = () => {
       </div>
 
       <ToastContainer position="top-right" autoClose={2000} />
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa món ăn này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

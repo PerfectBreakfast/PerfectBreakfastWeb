@@ -1,40 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import {
-  Box,
-  Button,
-  Modal,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
-import {
-  StyledTableCell,
-  StyledTableRow,
-} from "../Table/StyledTableComponents";
+import { Pagination } from "@mui/material";
+
 import managementUnitAPI from "../../../../services/managementUnitAPI";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
-import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+
+import Modal from "react-modal";
+import Loading from "../../../Loading/Loading";
 
 const ManagementUnitList = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [managementUnits, setManagementUnits] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState(""); // Set the default value to an empty string
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
-  const [newManagementData, setNewManagementData] = useState({
-    name: "",
-    address: "",
-    phoneNumber: "",
-    commissionRate: "",
-  });
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [dishToDelete, setDishToDelete] = useState(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   useEffect(() => {
     fetchManagementUnits();
@@ -63,43 +51,6 @@ const ManagementUnitList = () => {
     setPageIndex(value - 1);
   };
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewManagementData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleCreateData = async () => {
-    try {
-      // Validate the input data before making the API call
-      if (!newManagementData.name || !newManagementData.address) {
-        toast.error("Please fill in all required fields.");
-        return;
-      }
-
-      const createdManagement = await managementUnitAPI.createManagementUnit(
-        newManagementData
-      );
-
-      // Display a success message
-      toast.success("Thêm đối tác thành công!");
-
-      handleCloseModal();
-      fetchManagementUnits();
-    } catch (error) {
-      console.error("Error creating management unit:", error);
-      toast.error("Error creating management unit");
-    }
-  };
   const handleAddEmployeeClick = (id) => {
     navigate("create-management-user", { state: { partnerId: id } });
     console.log(id);
@@ -112,6 +63,41 @@ const ManagementUnitList = () => {
     // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/partner/${partnerId}/edit`);
   };
+  const handleClickCreate = () => {
+    navigate(`/admin/partner/create`);
+  };
+
+  const handleDeleteClick = (partnerId) => {
+    setDishToDelete(partnerId);
+    openModal();
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const handleDelete = async () => {
+    if (dishToDelete) {
+      // Kiểm tra nếu có id món ăn cần xóa
+      setLoadingDelete(true); // Hiển thị loader
+      closeModal();
+      try {
+        await managementUnitAPI.deletePartnerById(dishToDelete); // Gọi API để xóa
+        toast.success("Đối tác đã được xóa thành công!"); // Thông báo thành công
+        fetchManagementUnits(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
+      } catch (error) {
+        console.error("Error deleting dish:", error);
+        toast.error("Có lỗi xảy ra khi xóa đối tác!"); // Thông báo lỗi
+      }
+      setLoadingDelete(false); // Ẩn loader
+      // Đóng modal
+    }
+  };
+
   return (
     <>
       <div className="container mx-auto p-4">
@@ -120,8 +106,9 @@ const ManagementUnitList = () => {
         <div className="flex justify-between items-center mb-4">
           <button
             id="create-btn"
+            type="button"
             className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            onClick={handleOpenModal}
+            onClick={handleClickCreate}
           >
             Thêm đối tác
           </button>
@@ -155,6 +142,7 @@ const ManagementUnitList = () => {
                 <th className="py-3 px-6">Số điện thoại</th>
 
                 <th className="py-3 px-6">Quản trị viên</th>
+                <th className="py-3 px-6"></th>
                 <th className="py-3 px-6"></th>
               </tr>
             </thead>
@@ -194,10 +182,18 @@ const ManagementUnitList = () => {
                     >
                       Thêm QTV
                     </button>
-                    <Edit
-                      onClick={() => handleEditClick(managementUnit.id)}
-                      className="size-5"
-                    />
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    <div className="flex">
+                      <Write
+                        onClick={() => handleEditClick(managementUnit.id)}
+                        className="size-5 cursor-pointer"
+                      />
+                      <Delete
+                        onClick={() => handleDeleteClick(managementUnit.id)}
+                        className="size-5 cursor-pointer ml-4"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -214,69 +210,34 @@ const ManagementUnitList = () => {
           </div>
         </div>
       </div>
-
-      {/* Modal */}
-      <Modal
-        className="rounded-3xl"
-        open={isModalOpen}
-        onClose={handleCloseModal}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <h2>Tạo mới đối tác</h2>
-          <TextField
-            label="Tên công ty"
-            name="name"
-            value={newManagementData.name}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Địa chỉ"
-            name="address"
-            value={newManagementData.address}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Số điện thoại"
-            name="phoneNumber"
-            value={newManagementData.phoneNumber}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Hoa hồng"
-            name="commissionRate"
-            value={newManagementData.commissionRate}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <div className="create-btn-modal">
-            <Button
-              id="create-btn"
-              variant="contained"
-              onClick={handleCreateData}
-            >
-              Tạo mới
-            </Button>
-          </div>
-        </Box>
-      </Modal>
       <ToastContainer position="top-right" autoClose={2000} />
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn xóa dữ liệu này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={() => handleDelete()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

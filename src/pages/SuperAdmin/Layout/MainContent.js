@@ -27,6 +27,7 @@ import EditSupplier from "../Screens/SupplierUnit/EditSupplier";
 import DeliveryDetail from "../Screens/DeliveryUnit/DeliveryDetail";
 import EditDelivery from "../Screens/DeliveryUnit/EditDelivery";
 import CreateFood from "../Screens/Dish/CreateFood";
+import CreatePartner from "../Screens/ManagementUnit/CreatePartner";
 
 const MainContent = () => {
   return (
@@ -50,6 +51,7 @@ const MainContent = () => {
       <Route path="delivery/:id" element={<DeliveryDetail />} />
       <Route path="delivery/:id/edit" element={<EditDelivery />} />
       <Route path="partners" element={<ManagementUnitList />} />
+      <Route path="partner/create" element={<CreatePartner />} />
       <Route path="partner/:id" element={<PartnerDetail />} />
       <Route path="partner/:id/edit" element={<EditPartner />} />
       <Route path="companies" element={<CompanyList />} />

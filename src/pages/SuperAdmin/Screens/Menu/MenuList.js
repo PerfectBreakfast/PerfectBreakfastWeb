@@ -9,7 +9,10 @@ import "../Table/Table.css";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { ReactComponent as Edit } from "../../../../assets/icons/edit.svg";
+import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
+import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import Loading from "../../../Loading/Loading";
+import Modal from "react-modal";
 
 const Menu = () => {
   const [menus, setMenus] = useState([]);
@@ -17,6 +20,9 @@ const Menu = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [modalAction, setModalAction] = useState({ action: "", id: null });
   const navigate = useNavigate();
   useEffect(() => {
     fetchMenu();
@@ -48,18 +54,6 @@ const Menu = () => {
     setSearchTerm(searchInput); // Update searchTerm with searchInput
     setPageIndex(0); // Reset pageIndex to 0]
   };
-  const toggleMenuVisibility = async (menuId) => {
-    try {
-      // Gọi API để cập nhật isSelected của menu
-      await menuAPI.updateMenuVisibility(menuId);
-      // Cập nhật UI, có thể cần gọi lại fetchMenu hoặc cập nhật state tương ứng
-      toast.success("Đã cập nhật menu được hiển thị!");
-      fetchMenu(); // Hoặc cập nhật state nếu bạn không muốn gọi lại API
-    } catch (error) {
-      console.error("Error updating menu visibility:", error);
-      toast.error("Failed to update menu");
-    }
-  };
   const handleDetailClick = (menuId) => {
     // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/menu/${menuId}`);
@@ -68,8 +62,89 @@ const Menu = () => {
     // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/menu/${menuId}/edit`);
   };
+
+  const handleEnableMenu = (menuId) => {
+    openModal("enable", menuId);
+  };
+
+  const handleDeleteClick = (menuId) => {
+    openModal("delete", menuId);
+  };
+
+  function openModal(action, id) {
+    setModalAction({ action, id });
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const confirmAction = async () => {
+    setLoadingDelete(true);
+    closeModal();
+    if (modalAction.action === "delete") {
+      try {
+        await menuAPI.deleteMenuById(modalAction.id); // Gọi API để xóa
+        setLoadingDelete(false);
+        toast.success("Menu đã được xóa thành công!"); // Thông báo thành công
+        fetchMenu(); // Gọi lại hàm fetchMenu để cập nhật danh sách
+      } catch (error) {
+        console.error("Error deleting menu:", error);
+        toast.error("Có lỗi xảy ra khi xóa menu."); // Thông báo lỗi
+      } finally {
+        setLoadingDelete(false); // Ẩn loader
+      }
+    } else if (modalAction.action === "enable") {
+      // Xử lý cập nhật visibility
+      try {
+        await menuAPI.updateMenuVisibility(modalAction.id);
+        setLoadingDelete(false);
+        toast.success("Đã cập nhật menu!");
+        fetchMenu();
+      } catch (error) {
+        console.error("Error updating menu visibility:", error);
+        toast.error("Failed to update menu visibility");
+      } finally {
+        setLoadingDelete(false); // Ẩn loader
+      }
+    }
+    closeModal(); // Đóng modal sau khi xử lý
+  };
+
   return (
     <div className="container mx-auto p-4">
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>
+            Bạn có chắc chắn muốn{" "}
+            {modalAction.action === "delete" ? "xóa" : "cập nhật"} menu này?
+          </p>
+
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              onClick={confirmAction}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
       <h2 className="text-2xl font-semibold mb-4">Danh sách menu</h2>
 
       <div className="flex justify-between items-center mb-4">
@@ -110,6 +185,7 @@ const Menu = () => {
               <th className="py-3 px-6">Tên menu</th>
               <th className="py-3 px-6">Ngày tạo</th>
               <th className="py-3 px-6"></th>
+              <th className="py-3 px-6"></th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
@@ -134,14 +210,22 @@ const Menu = () => {
                   {menu.isSelected ? (
                     <VisibilityIcon />
                   ) : (
-                    <button onClick={() => toggleMenuVisibility(menu.id)}>
+                    <button onClick={() => handleEnableMenu(menu.id)}>
                       <VisibilityOffIcon />
                     </button>
                   )}
-                  <Edit
-                    onClick={() => handleEditClick(menu.id)}
-                    className="size-5"
-                  />
+                </td>
+                <td className="py-3 px-6 text-center">
+                  <div className="flex">
+                    <Write
+                      onClick={() => handleEditClick(menu.id)}
+                      className="size-5 cursor-pointer"
+                    />
+                    <Delete
+                      onClick={() => handleDeleteClick(menu.id)}
+                      className="size-5 cursor-pointer ml-4"
+                    />
+                  </div>
                 </td>
               </tr>
             ))}
