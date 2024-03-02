@@ -54,6 +54,16 @@ const deliveryUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  deleteDeliveryById: async (deliveryId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/api/v1/deliveries/${deliveryId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default deliveryUnitAPI;

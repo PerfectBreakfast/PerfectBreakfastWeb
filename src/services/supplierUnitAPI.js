@@ -14,11 +14,11 @@ const supplierUnitAPI = {
     }
   },
 
-  createSupplierUnit: async (newSupplierData) => {
+  createSupplierUnit: async (values) => {
     try {
       const response = await axiosInstance.post(
         `${api}/api/v1/suppliers`,
-        newSupplierData
+        values
       );
       return response.data;
     } catch (error) {
@@ -72,6 +72,16 @@ const supplierUnitAPI = {
       const response = await axiosInstance.put(
         `${api}/api/v1/suppliers/${supplierId}`,
         newSupplierData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  deletePartnerById: async (supplierId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${api}/api/v1/suppliers/${supplierId}`
       );
       return response.data;
     } catch (error) {
