@@ -20,7 +20,64 @@ const CompanyDetail = () => {
   }, [id]);
 
   if (!companyData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="mt-6 w-5/6 mx-auto animate-pulse">
+        <div className="space-y-4">
+          <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/6"></div>
+            <div className="h-4 bg-gray-200 rounded w-2/6"></div>
+          </div>
+        </div>
+
+        <div className="text-xl font-semibold text-gray-600 text-left mt-8">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+        <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg mt-2 p-6 animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/6"></div>
+        </div>
+
+        <div className="text-xl font-semibold text-gray-600 text-left mt-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+        <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg mt-2 p-6 animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/6"></div>
+        </div>
+
+        <div className="text-xl font-semibold text-gray-600 text-left mt-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+        <div className="overflow-x-auto mt-2 animate-pulse">
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th>
+                  <div className="h-4 bg-gray-200 rounded w-24 mx-auto"></div>
+                </th>
+                <th>
+                  <div className="h-4 bg-gray-200 rounded w-24 mx-auto"></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...Array(5)].map((_, index) => (
+                <tr key={index} className="border-b">
+                  <td className="py-2">
+                    <div className="h-4 bg-gray-200 rounded mx-auto w-3/4"></div>
+                  </td>
+                  <td className="py-2">
+                    <div className="h-4 bg-gray-200 rounded mx-auto w-3/4"></div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   }
 
   const handlePartnerClick = (partnerId) => {
