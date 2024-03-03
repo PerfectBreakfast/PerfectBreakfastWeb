@@ -35,11 +35,14 @@ const DeliveryUnitList = () => {
   const [dishToDelete, setDishToDelete] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchDeliveryUnits();
   }, [pageIndex, searchTerm]); // Dependency on pageIndex and searchTerm
 
   const fetchDeliveryUnits = async () => {
+    setIsLoading(true);
     try {
       const response = await deliveryUnitAPI.getDeliveryUnitByPagination(
         searchTerm,
@@ -47,9 +50,11 @@ const DeliveryUnitList = () => {
       );
       setDeliveryUnits(response.items);
       setTotalPages(response.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching delivery units:", error);
       toast.error("Lỗi khi thêm dvvc");
+      setIsLoading(false);
     }
   };
 
@@ -161,7 +166,7 @@ const DeliveryUnitList = () => {
             className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             onClick={handleClickCreate}
           >
-            Thêm dvvc
+            Thêm đơn vị vận chuyển
           </button>
           <div className="flex gap-2 items-center">
             <input
@@ -189,69 +194,81 @@ const DeliveryUnitList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/8 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/8 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/8 break-words">Số điện thoại</th>
-                <th className="py-3 px-6 w-1/8 break-words">Tỷ lệ doanh thu</th>
-                <th className="py-3 px-6 w-1/8 break-words">Quản trị viên</th>
-                <th className="py-3 px-6 w-1/8 break-words"></th>
-                <th className="py-3 px-6 w-1/8 break-words"></th>
+                <th className="py-3 px-6 w-1/7 break-words">Tên công ty</th>
+                <th className="py-3 px-6 w-2/7 break-words">Địa chỉ</th>
+                <th className="py-3 px-6 w-1/7 break-words">Số điện thoại</th>
+
+                <th className="py-3 px-6 w-1/7 break-words">Quản trị viên</th>
+                <th className="py-3 px-6 w-1/7 break-words"></th>
+                <th className="py-3 px-6 w-1/7 break-words"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {deliveryUnits.map((deliveryUnit) => (
-                <tr
-                  key={deliveryUnit.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left font-bold">
-                    {" "}
-                    <span
-                      className="font-medium cursor-pointer hover:text-blue-500"
-                      onClick={() => handleDetailClick(deliveryUnit.id)}
-                    >
-                      {deliveryUnit.name}
-                    </span>
-                  </td>
-
-                  <td className="py-3 px-6 text-left">
-                    {deliveryUnit.address}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {deliveryUnit.phoneNumber}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {deliveryUnit.commissionRate}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <ul>
-                      {deliveryUnit.owners.map((owner, index) => (
-                        <li key={index}>{owner}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
-                      onClick={() => handleAddEmployeeClick(deliveryUnit.id)}
-                    >
-                      Thêm QTV
-                    </button>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <div className="flex">
-                      <Write
-                        onClick={() => handleEditClick(deliveryUnit.id)}
-                        className="size-5 cursor-pointer"
-                      />
-                      <Delete
-                        onClick={() => handleDeleteClick(deliveryUnit.id)}
-                        className="size-5 cursor-pointer ml-4"
-                      />
-                    </div>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Đang tải...
                   </td>
                 </tr>
-              ))}
+              ) : deliveryUnits.length > 0 ? (
+                deliveryUnits.map((deliveryUnit) => (
+                  <tr
+                    key={deliveryUnit.id}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <td className="py-3 px-6 text-left font-bold">
+                      {" "}
+                      <span
+                        className="font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => handleDetailClick(deliveryUnit.id)}
+                      >
+                        {deliveryUnit.name}
+                      </span>
+                    </td>
+
+                    <td className="py-3 px-6 text-left">
+                      {deliveryUnit.address}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {deliveryUnit.phoneNumber}
+                    </td>
+
+                    <td className="py-3 px-6 text-left">
+                      <ul>
+                        {deliveryUnit.owners.map((owner, index) => (
+                          <li key={index}>{owner}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        onClick={() => handleAddEmployeeClick(deliveryUnit.id)}
+                      >
+                        Thêm QTV
+                      </button>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <div className="flex">
+                        <Write
+                          onClick={() => handleEditClick(deliveryUnit.id)}
+                          className="size-5 cursor-pointer"
+                        />
+                        <Delete
+                          onClick={() => handleDeleteClick(deliveryUnit.id)}
+                          className="size-5 cursor-pointer ml-4"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 

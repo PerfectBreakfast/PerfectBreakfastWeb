@@ -24,11 +24,14 @@ const ManagementUnitList = () => {
   const [dishToDelete, setDishToDelete] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchManagementUnits();
   }, [pageIndex, searchTerm]); // Dependency on pageIndex and searchTerm
 
   const fetchManagementUnits = async () => {
+    setIsLoading(true);
     try {
       const response = await managementUnitAPI.getManagementUnitByPagination(
         searchTerm,
@@ -36,9 +39,10 @@ const ManagementUnitList = () => {
       );
       setManagementUnits(response.items);
       setTotalPages(response.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching management units:", error);
-      toast.error("Lỗi khi thêm dvvc");
+      setIsLoading(false);
     }
   };
 
@@ -140,67 +144,82 @@ const ManagementUnitList = () => {
                 <th className="py-3 px-6">Tên công ty</th>
                 <th className="py-3 px-6">Địa chỉ</th>
                 <th className="py-3 px-6">Số điện thoại</th>
-
                 <th className="py-3 px-6">Quản trị viên</th>
                 <th className="py-3 px-6"></th>
                 <th className="py-3 px-6"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {managementUnits.map((managementUnit) => (
-                <tr
-                  key={managementUnit.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left font-bold">
-                    <span
-                      className="font-medium cursor-pointer hover:text-blue-500"
-                      onClick={() => handleDetailClick(managementUnit.id)}
-                    >
-                      {managementUnit.name}
-                    </span>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {managementUnit.address}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {managementUnit.phoneNumber}
-                  </td>
-
-                  <td className="py-3 px-6 text-left">
-                    <ul>
-                      {managementUnit.owners.map((owner, index) => (
-                        <li key={index}>{owner}</li>
-                      ))}
-                    </ul>
-                  </td>
-
-                  <td className="py-3 px-6 text-left">
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
-                      onClick={() => handleAddEmployeeClick(managementUnit.id)}
-                    >
-                      Thêm QTV
-                    </button>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <div className="flex">
-                      <Write
-                        onClick={() => handleEditClick(managementUnit.id)}
-                        className="size-5 cursor-pointer"
-                      />
-                      <Delete
-                        onClick={() => handleDeleteClick(managementUnit.id)}
-                        className="size-5 cursor-pointer ml-4"
-                      />
-                    </div>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Đang tải...
                   </td>
                 </tr>
-              ))}
+              ) : managementUnits.length > 0 ? (
+                managementUnits.map((managementUnit) => (
+                  <tr
+                    key={managementUnit.id}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <td className="py-3 px-6 text-left font-bold">
+                      <span
+                        className="font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => handleDetailClick(managementUnit.id)}
+                      >
+                        {managementUnit.name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {managementUnit.address}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {managementUnit.phoneNumber}
+                    </td>
+
+                    <td className="py-3 px-6 text-left">
+                      <ul>
+                        {managementUnit.owners.map((owner, index) => (
+                          <li key={index}>{owner}</li>
+                        ))}
+                      </ul>
+                    </td>
+
+                    <td className="py-3 px-6 text-left">
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        onClick={() =>
+                          handleAddEmployeeClick(managementUnit.id)
+                        }
+                      >
+                        Thêm QTV
+                      </button>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <div className="flex">
+                        <Write
+                          onClick={() => handleEditClick(managementUnit.id)}
+                          className="size-5 cursor-pointer"
+                        />
+                        <Delete
+                          onClick={() => handleDeleteClick(managementUnit.id)}
+                          className="size-5 cursor-pointer ml-4"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 
-          <div className="pagination-container mt-4">
+          <div className="pagination-container mt-2">
             <Pagination
               componentName="div"
               count={totalPages}

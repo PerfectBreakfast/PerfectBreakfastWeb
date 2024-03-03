@@ -22,9 +22,17 @@ const CreatePartner = () => {
     validationSchema: Yup.object({
       name: Yup.string().required("Tên công ty không được để trống"),
       address: Yup.string().required("Địa chỉ không được để trống"),
-      phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
-      commissionRate: Yup.string().required("Hoa hồng không được để trống"),
+      phoneNumber: Yup.string()
+        .matches(/^\d+$/, "Chỉ được nhập số")
+        .matches(/^0\d{9}$/, "Số điện thoại phải bắt đầu từ số 0 và có 10 số")
+        .required("Số điện thoại không được để trống"),
+      commissionRate: Yup.number()
+        .typeError("Tỷ lệ hoa hồng phải là số")
+        .positive("Tỷ lệ hoa hồng phải là số dương")
+        .max(100, "Tỷ lệ hoa hồng không được lớn hơn 100")
+        .required("Tỷ lệ hoa hồng không được để trống"),
     }),
+
     onSubmit: async (values) => {
       setIsOpen(false);
       setIsLoading(true);
@@ -77,10 +85,7 @@ const CreatePartner = () => {
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
         {/* Name field */}
         <div>
-          <label
-            htmlFor="name"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="name" className="label-input">
             Tên công ty:
           </label>
           <input
@@ -90,22 +95,17 @@ const CreatePartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.name}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập tên công ty"
           />
           {formik.touched.name && formik.errors.name ? (
-            <div className="text-red-500 text-sm mt-2">
-              {formik.errors.name}
-            </div>
+            <div className="formik-error-message">{formik.errors.name}</div>
           ) : null}
         </div>
 
         {/* Address field */}
         <div>
-          <label
-            htmlFor="address"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="address" className="label-input">
             Địa chỉ:
           </label>
           <input
@@ -115,22 +115,17 @@ const CreatePartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.address}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập địa chỉ"
           />
           {formik.touched.address && formik.errors.address ? (
-            <div className="text-red-500 text-sm mt-2">
-              {formik.errors.address}
-            </div>
+            <div className="formik-error-message">{formik.errors.address}</div>
           ) : null}
         </div>
 
         {/* Phone Number field */}
         <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="phoneNumber" className="label-input">
             Số điện thoại:
           </label>
           <input
@@ -140,11 +135,11 @@ const CreatePartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.phoneNumber}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập số điện thoại"
           />
           {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
-            <div className="text-red-500 text-sm mt-2">
+            <div className="formik-error-message">
               {formik.errors.phoneNumber}
             </div>
           ) : null}
@@ -152,10 +147,7 @@ const CreatePartner = () => {
 
         {/* Commission Rate field */}
         <div>
-          <label
-            htmlFor="commissionRate"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="commissionRate" className="label-input">
             Hoa hồng (%):
           </label>
           <input
@@ -165,11 +157,11 @@ const CreatePartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.commissionRate}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập tỷ lệ hoa hồng"
           />
           {formik.touched.commissionRate && formik.errors.commissionRate ? (
-            <div className="text-red-500 text-sm mt-2">
+            <div className="formik-error-message">
               {formik.errors.commissionRate}
             </div>
           ) : null}
@@ -179,7 +171,7 @@ const CreatePartner = () => {
 
         <button
           type="button"
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+          className="btn-submit-form"
           onClick={handleCreateClick}
         >
           Tạo mới

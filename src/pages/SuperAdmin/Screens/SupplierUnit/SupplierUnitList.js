@@ -35,12 +35,15 @@ const SupplierUnitList = () => {
   const [dishToDelete, setDishToDelete] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchSupplierUnits();
     fetchManagementUnits();
   }, [pageIndex, searchTerm]); // Dependency on pageIndex and searchTerm
 
   const fetchSupplierUnits = async () => {
+    setIsLoading(true);
     try {
       const response = await supplierUnitAPI.getSupplierUnitByPagination(
         searchTerm,
@@ -48,9 +51,11 @@ const SupplierUnitList = () => {
       );
       setSupplierUnits(response.items);
       setTotalPages(response.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching supplier units:", error);
       toast.error("Error fetching supplier units");
+      setIsLoading(false);
     }
   };
 
@@ -142,11 +147,11 @@ const SupplierUnitList = () => {
       closeModal();
       try {
         await supplierUnitAPI.deletePartnerById(dishToDelete); // Gọi API để xóa
-        toast.success("Đối tác đã được xóa thành công!"); // Thông báo thành công
+        toast.success("Nhà cung cấp đã được xóa thành công!"); // Thông báo thành công
         fetchSupplierUnits(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
       } catch (error) {
         console.error("Error deleting dish:", error);
-        toast.error("Có lỗi xảy ra khi xóa đối tác!"); // Thông báo lỗi
+        toast.error("Có lỗi xảy ra khi xóa nhà cung cấp!"); // Thông báo lỗi
       }
       setLoadingDelete(false); // Ẩn loader
       // Đóng modal
@@ -208,69 +213,85 @@ const SupplierUnitList = () => {
             </thead>
 
             <tbody className="text-gray-600 text-sm font-light">
-              {supplierUnits.map((supplierUnit) => (
-                <tr
-                  key={supplierUnit.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left font-bold">
-                    <span
-                      className="font-medium cursor-pointer hover:text-blue-500"
-                      onClick={() => handleDetailClick(supplierUnit.id)}
-                    >
-                      {supplierUnit.name}
-                    </span>
-                  </td>
-                  <td className="py-3 px-6 text-left whitespace-normal break-words">
-                    {supplierUnit.address}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {supplierUnit.phoneNumber}
-                  </td>
-
-                  <td className="py-3 px-6 text-left">
-                    <ul>
-                      {supplierUnit.owners.map((owner, index) => (
-                        <li key={index}>{owner}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <ul>
-                      {supplierUnit.managementUnitName.map((unit, index) => (
-                        <li key={index}>{unit}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="py-3 px-6 text-left flex flex-col gap-y-2">
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
-                      onClick={() => handleAddEmployeeClick(supplierUnit.id)}
-                    >
-                      Thêm QTV
-                    </button>
-
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
-                      onClick={() => handleOpenAssignManagerModal(supplierUnit)}
-                    >
-                      Gán quản lý
-                    </button>
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    <div className="flex">
-                      <Write
-                        onClick={() => handleEditClick(supplierUnit.id)}
-                        className="size-5 cursor-pointer"
-                      />
-                      <Delete
-                        onClick={() => handleDeleteClick(supplierUnit.id)}
-                        className="size-5 cursor-pointer ml-4"
-                      />
-                    </div>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Đang tải...
                   </td>
                 </tr>
-              ))}
+              ) : supplierUnits.length > 0 ? (
+                supplierUnits.map((supplierUnit) => (
+                  <tr
+                    key={supplierUnit.id}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <td className="py-3 px-6 text-left font-bold">
+                      <span
+                        className="font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => handleDetailClick(supplierUnit.id)}
+                      >
+                        {supplierUnit.name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-6 text-left whitespace-normal break-words">
+                      {supplierUnit.address}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {supplierUnit.phoneNumber}
+                    </td>
+
+                    <td className="py-3 px-6 text-left">
+                      <ul>
+                        {supplierUnit.owners.map((owner, index) => (
+                          <li key={index}>{owner}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <ul>
+                        {supplierUnit.managementUnitName.map((unit, index) => (
+                          <li key={index}>{unit}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="py-3 px-6 text-left flex flex-col gap-y-2">
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        onClick={() => handleAddEmployeeClick(supplierUnit.id)}
+                      >
+                        Thêm QTV
+                      </button>
+
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        onClick={() =>
+                          handleOpenAssignManagerModal(supplierUnit)
+                        }
+                      >
+                        Gán quản lý
+                      </button>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <div className="flex">
+                        <Write
+                          onClick={() => handleEditClick(supplierUnit.id)}
+                          className="size-5 cursor-pointer"
+                        />
+                        <Delete
+                          onClick={() => handleDeleteClick(supplierUnit.id)}
+                          className="size-5 cursor-pointer ml-4"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 

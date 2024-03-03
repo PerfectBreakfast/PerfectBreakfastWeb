@@ -39,8 +39,15 @@ const EditPartner = () => {
     validationSchema: Yup.object({
       name: Yup.string().required("Tên công ty không được để trống"),
       address: Yup.string().required("Địa chỉ không được để trống"),
-      phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
-      commissionRate: Yup.string().required("Hoa hồng không được để trống"),
+      phoneNumber: Yup.string()
+        .matches(/^\d+$/, "Chỉ được nhập số")
+        .matches(/^0\d{9}$/, "Số điện thoại phải bắt đầu từ số 0 và có 10 số")
+        .required("Số điện thoại không được để trống"),
+      commissionRate: Yup.number()
+        .typeError("Tỷ lệ hoa hồng phải là số")
+        .positive("Tỷ lệ hoa hồng phải là số dương")
+        .max(100, "Tỷ lệ hoa hồng không được lớn hơn 100")
+        .required("Tỷ lệ hoa hồng không được để trống"),
     }),
     onSubmit: async (values) => {
       setIsOpen(false);
@@ -59,6 +66,25 @@ const EditPartner = () => {
     },
   });
 
+  const handleCreateClick = async () => {
+    // Đánh dấu tất cả các trường là đã chạm vào, bao gồm cả selectedImage
+    formik.setTouched({
+      name: true,
+      address: true,
+      phoneNumber: true,
+      commissionRate: true,
+    });
+
+    const errors = await formik.validateForm();
+    formik.setErrors(errors);
+
+    // Kiểm tra xem form có lỗi không
+    if (Object.keys(errors).length === 0) {
+      // Nếu không có lỗi, mở modal xác nhận
+      openModal();
+    }
+  };
+
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -69,10 +95,7 @@ const EditPartner = () => {
         {/* Dynamic form fields */}
         {/* Name field */}
         <div>
-          <label
-            htmlFor="name"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="name" className="label-input">
             Tên công ty:
           </label>
           <input
@@ -82,20 +105,15 @@ const EditPartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.name}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập tên công ty"
           />
           {formik.touched.name && formik.errors.name && (
-            <div className="text-red-500 text-sm mt-2">
-              {formik.errors.name}
-            </div>
+            <div className="formik-error-message">{formik.errors.name}</div>
           )}
         </div>
         <div>
-          <label
-            htmlFor="address"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="address" className="label-input">
             Địa chỉ:
           </label>
           <input
@@ -105,57 +123,49 @@ const EditPartner = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.address}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập địa chỉ"
           />
           {formik.touched.address && formik.errors.address && (
-            <div className="text-red-500 text-sm mt-2">
-              {formik.errors.address}
-            </div>
+            <div className="formik-error-message">{formik.errors.address}</div>
           )}
         </div>
         <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="phoneNumber" className="label-input">
             Số điện thoại:
           </label>
           <input
             id="phoneNumber"
             name="phoneNumber"
-            type="number"
+            type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.phoneNumber}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập số điện thoại"
           />
           {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-            <div className="text-red-500 text-sm mt-2">
+            <div className="formik-error-message">
               {formik.errors.phoneNumber}
             </div>
           )}
         </div>
         <div>
-          <label
-            htmlFor="commissionRate"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
+          <label htmlFor="commissionRate" className="label-input">
             Hoa hồng (%):
           </label>
           <input
             id="commissionRate"
             name="commissionRate"
-            type="number"
+            type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.commissionRate}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="input-form"
             placeholder="Nhập tỷ lệ hoa hồng"
           />
           {formik.touched.commissionRate && formik.errors.commissionRate && (
-            <div className="text-red-500 text-sm mt-2">
+            <div className="formik-error-message">
               {formik.errors.commissionRate}
             </div>
           )}
@@ -164,8 +174,8 @@ const EditPartner = () => {
         {/* Edit button */}
         <button
           type="button"
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-          onClick={openModal}
+          className="btn-submit-form"
+          onClick={handleCreateClick}
         >
           Lưu thay đổi
         </button>

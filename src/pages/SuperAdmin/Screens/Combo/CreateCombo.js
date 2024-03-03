@@ -44,11 +44,11 @@ const CreateCombo = () => {
       sideCategory: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Tên combo là bắt buộc"),
-      content: Yup.string().required("Nội dung là bắt buộc"),
-      image: Yup.mixed().required("Hình ảnh là bắt buộc"),
-      mainFoodId: Yup.string().required("Chọn món chính là bắt buộc"),
-      sideFoodId: Yup.string().required("Chọn món phụ là bắt buộc"),
+      name: Yup.string().required("Tên combo không được để trống"),
+      content: Yup.string().required("Nội dung không được để trống"),
+      image: Yup.mixed().required("Hình ảnh không được để trống"),
+      mainFoodId: Yup.string().required("Món chính không được để trống"),
+      sideFoodId: Yup.string().required("Món phụ không được để trống"),
     }),
     onSubmit: async (values) => {
       setIsOpen(false);
@@ -72,11 +72,6 @@ const CreateCombo = () => {
       }
     },
   });
-
-  // const handleFileChange = (event) => {
-  //   const { files } = event.target;
-  //   formik.setFieldValue("image", files[0]);
-  // };
 
   const handleFileChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -177,14 +172,10 @@ const CreateCombo = () => {
       </Modal>
 
       <form onSubmit={formik.handleSubmit}>
-        <h2 className="text-2xl font-semibold mb-4">Tạo mới món ăn</h2>
-
+        <h2 className="text-2xl font-semibold mb-4">Tạo mới combo</h2>
         <div className="flex flex-col gap-3">
           <div>
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="name" className="label-input">
               Tên combo:
             </label>
             <input
@@ -198,17 +189,12 @@ const CreateCombo = () => {
               placeholder="Nhập tên combo"
             />
             {formik.touched.name && formik.errors.name ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.name}
-              </div>
+              <div className="formik-error-message">{formik.errors.name}</div>
             ) : null}
           </div>
 
           <div>
-            <label
-              htmlFor="content"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="content" className="label-input">
               Nội dung:
             </label>
             <input
@@ -218,21 +204,18 @@ const CreateCombo = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.content}
-              className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className=" input-form dark:shadow-sm-light"
               placeholder="Nhập mô tả combo"
             />
             {formik.touched.content && formik.errors.content ? (
-              <div className="text-red-500 text-sm mt-2">
+              <div className="formik-error-message">
                 {formik.errors.content}
               </div>
             ) : null}
           </div>
 
           <div>
-            <label
-              htmlFor="image"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="image" className="label-input">
               Hình ảnh:
             </label>
             <input
@@ -246,9 +229,7 @@ const CreateCombo = () => {
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
             />
             {formik.touched.image && formik.errors.image ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.image}
-              </div>
+              <div className="formik-error-message">{formik.errors.image}</div>
             ) : null}
           </div>
 
@@ -262,7 +243,7 @@ const CreateCombo = () => {
                 />
                 <button
                   type="button"
-                  className="bg-red-500 hover:bg-red-600 mt-2 text-white p-1 rounded"
+                  className="btn-delete-image "
                   onClick={handleImageRemove}
                 >
                   Xóa hình ảnh
@@ -271,13 +252,8 @@ const CreateCombo = () => {
             )}
           </div>
 
-          {/* Category and Dishes selection */}
-          {/* Example for Main Category selection: */}
           <div>
-            <label
-              htmlFor="mainCategory"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="mainCategory" className="label-input">
               Món chính:
             </label>
             <select
@@ -286,7 +262,7 @@ const CreateCombo = () => {
               onChange={(e) => handleCategoryChange(e, "main")}
               onBlur={formik.handleBlur}
               value={formik.values.mainCategory}
-              className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className=" input-form dark:shadow-sm-light"
             >
               <option value="">Chọn loại món chính</option>
               {categoryResponses.map((category) => (
@@ -296,14 +272,11 @@ const CreateCombo = () => {
               ))}
             </select>
             {formik.touched.mainCategory && formik.errors.mainCategory ? (
-              <div className="text-red-500 text-sm mt-2">
+              <div className="formik-error-message">
                 {formik.errors.mainCategory}
               </div>
             ) : null}
           </div>
-
-          {/* Dishes selection based on category */}
-          {/* Example for Main Dishes selection: */}
 
           {mainDishes.length > 0 && (
             <div>
@@ -313,7 +286,7 @@ const CreateCombo = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.mainFoodId}
-                className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                className=" input-form dark:shadow-sm-light"
               >
                 <option value="">Chọn món chính</option>
                 {mainDishes.map((dish) => (
@@ -323,21 +296,15 @@ const CreateCombo = () => {
                 ))}
               </select>
               {formik.touched.mainFoodId && formik.errors.mainFoodId ? (
-                <div className="text-red-500 text-sm mt-2">
+                <div className="formik-error-message">
                   {formik.errors.mainFoodId}
                 </div>
               ) : null}
             </div>
           )}
 
-          {/* Similarly add fields for Side Category and Side Dishes with respective change handlers */}
-
-          {/* Side Category Selection */}
           <div>
-            <label
-              htmlFor="sideCategory"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="sideCategory" className="label-input">
               Món phụ:
             </label>
             <select
@@ -346,7 +313,7 @@ const CreateCombo = () => {
               onChange={(e) => handleCategoryChange(e, "side")}
               onBlur={formik.handleBlur}
               value={formik.values.sideCategory}
-              className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className=" input-form dark:shadow-sm-light"
             >
               <option value="">Chọn loại món phụ</option>
               {categoryResponses.map((category) => (
@@ -356,13 +323,12 @@ const CreateCombo = () => {
               ))}
             </select>
             {formik.touched.sideCategory && formik.errors.sideCategory ? (
-              <div className="text-red-500 text-sm mt-2">
+              <div className="formik-error-message">
                 {formik.errors.sideCategory}
               </div>
             ) : null}
           </div>
 
-          {/* Side Dishes Selection based on the Side Category */}
           {sideDishes.length > 0 && (
             <div>
               <select
@@ -371,7 +337,7 @@ const CreateCombo = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.sideFoodId}
-                className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                className=" input-form dark:shadow-sm-light"
               >
                 <option value=""> Chọn món phụ</option>
                 {sideDishes.map((dish) => (
@@ -381,26 +347,20 @@ const CreateCombo = () => {
                 ))}
               </select>
               {formik.touched.sideFoodId && formik.errors.sideFoodId ? (
-                <div className="text-red-500 text-sm mt-2">
+                <div className="formik-error-message">
                   {formik.errors.sideFoodId}
                 </div>
               ) : null}
             </div>
           )}
-          {/* <div className="flex justify-end mt-4">
-              <button type="submit" className="btn btn-primary">
-                Tạo mới
-              </button>
-            </div> */}
-          <div className="flex justify-end mt-4">
-            <button
-              type="button"
-              className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition duration-200"
-              onClick={handleCreateClick}
-            >
-              Tạo mới
-            </button>
-          </div>
+
+          <button
+            type="button"
+            className="btn-submit-form"
+            onClick={handleCreateClick}
+          >
+            Tạo mới
+          </button>
         </div>
       </form>
     </div>

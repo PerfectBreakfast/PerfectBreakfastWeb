@@ -40,11 +40,19 @@ const CreateManagementUser = () => {
       selectedImage: null,
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Tên người dùng không được để trống"),
+      name: Yup.string()
+        .matches(
+          /^[a-zA-ZÀ-ỹ\s]+$/,
+          "Tên người dùng chỉ được phép chứa chữ cái"
+        )
+        .required("Tên người dùng không được để trống"),
       email: Yup.string()
         .email("Email không hợp lệ")
         .required("Email không được để trống"),
-      phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
+      phoneNumber: Yup.string()
+        .matches(/^\d+$/, "Chỉ được nhập số")
+        .matches(/^0\d{9}$/, "Số điện thoại phải bắt đầu từ số 0 và có 10 số")
+        .required("Số điện thoại không được để trống"),
       roleName: Yup.string().required("Chức năng không được để trống"),
       selectedImage: Yup.mixed().required("Bạn phải chọn một hình ảnh"),
     }),
