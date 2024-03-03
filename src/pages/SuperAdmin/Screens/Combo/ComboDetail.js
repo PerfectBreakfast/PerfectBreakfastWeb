@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import comboAPI from "../../../../services/comboAPI";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  Skeleton,
-  Typography,
-} from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
 
 const ComboDetail = () => {
   const { id } = useParams();
@@ -32,134 +20,77 @@ const ComboDetail = () => {
   }, [id]);
   if (!comboData) {
     return (
-      <Container className="mt-3">
-        <Typography gutterBottom variant="h5" component="div"></Typography>
-        <Card>
-          <Container style={{ position: "relative", padding: "20px" }}>
-            <Skeleton
-              variant="rectangular"
-              style={{
-                width: 40,
-                height: 40,
-                position: "absolute",
-                top: 10,
-                right: 10,
-                zIndex: 1,
-              }}
-            />
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} md={6}>
-                <Skeleton
-                  variant="rectangular"
-                  style={{
-                    width: "80%",
-                    aspectRatio: "1/1",
-                    margin: "auto",
-                    borderRadius: "20px",
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    <Skeleton variant="text" width={100} />
-                  </Typography>
-                  <Typography gutterBottom variant="h4" component="div">
-                    <Skeleton variant="text" width={140} />
-                  </Typography>
-                  <Typography variant="subtitle1" component="div">
-                    <Skeleton variant="text" width={120} />
-                  </Typography>
-                  <Typography gutterBottom variant="h6" color="text.secondary">
-                    <Skeleton variant="text" width={80} />
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    <Skeleton variant="text" />
-                    <Skeleton variant="text" />
-                    <Skeleton variant="text" />
-                  </Typography>
-                  <Skeleton variant="rectangular" width={150} height={40} />
-                </CardContent>
-              </Grid>
-            </Grid>
-          </Container>
-        </Card>
-      </Container>
+      <div className="mt-6 w-5/6 mx-auto">
+        <div className="text-2xl font-semibold mb-4">Chi tiết Combo</div>
+        <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+          <div className="p-6">
+            <div className="flex flex-wrap -mx-3 justify-center">
+              {/* Skeleton Image Section */}
+              <div className="px-3 w-full lg:w-1/2 animate-pulse">
+                <div className="aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
+                  <div className="w-96 h-80 bg-gray-300 rounded-2xl"></div>
+                </div>
+              </div>
+              {/* Skeleton Details Section */}
+              <div className="px-2 w-full md:w-1/2">
+                <div>
+                  <div className="h-8 bg-gray-300 rounded mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-gray-300 rounded mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-gray-300 rounded mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-gray-300 rounded mb-2 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
   return (
-    <Container className="mt-3">
-      <Typography gutterBottom variant="h5" component="div">
-        Chi tiết combo
-      </Typography>
-      <Card>
-        <Container style={{ position: "relative", padding: "20px" }}>
-          <IconButton
-            style={{
-              color: " red",
-              position: "absolute",
-              top: 10,
-              right: 10,
-              zIndex: 1,
-            }}
-          >
-            <ClearIcon />
-          </IconButton>
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} md={6}>
-              <CardMedia
-                component="img"
-                style={{
-                  width: "80%",
-                  aspectRatio: "1/1",
-                  margin: "auto",
-                  borderRadius: "20px",
-                }}
-                image={comboData.image}
-                alt={comboData.name}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CardContent>
-                <Typography gutterBottom variant="h4" component="div">
-                  {comboData.name}
-                </Typography>
-                <Typography gutterBottom variant="body2" color="text.secondary">
-                  {comboData.foods}
-                </Typography>
-                <Typography variant="subtitle1" component="div"></Typography>
-                <Typography gutterBottom variant="h6" color="text.secondary">
-                  {comboData.comboPrice.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
-                </Typography>
-                <Typography gutterBottom variant="body2" color="text.secondary">
-                  {comboData.content}
-                </Typography>
-                <Link to={"edit"}>
-                  <Button
-                    id="btn-update-detail"
-                    variant="contained"
-                    size="large"
-                  >
-                    Chỉnh sửa combo
-                  </Button>
-                </Link>
-              </CardContent>
-            </Grid>
-          </Grid>
-        </Container>
-      </Card>
-    </Container>
+    <div className="mt-6 w-5/6 mx-auto">
+      <div className="text-2xl font-semibold mb-4">Chi tiết Combo</div>
+      <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+        <div className="p-6">
+          <div className="flex flex-wrap -mx-3 justify-center">
+            {/* Image Section */}
+            <div className="px-3 w-full lg:w-1/2">
+              <div className="aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
+                <img
+                  src={comboData.image}
+                  alt={comboData.name}
+                  className="w-96 h-80 object-center object-cover rounded-2xl"
+                />
+              </div>
+            </div>
+            {/* Details Section */}
+            <div className="px-2 w-full md:w-1/2">
+              <div>
+                <div className="text-3xl font-bold mb-2">{comboData.name}</div>
+                <div className=" text-base text-gray-600 mb-2">
+                  Món ăn:{" "}
+                  <span className="mb-2 font-semibold">{comboData.foods}</span>
+                </div>{" "}
+                <div className=" text-base text-gray-600 mb-2">
+                  Đơn giá:{" "}
+                  <span className="mb-2 font-semibold">
+                    {comboData.comboPrice.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </span>
+                </div>{" "}
+                <div className=" text-base text-gray-600 mb-2">
+                  Mô tả:{" "}
+                  <span className="mb-2 font-semibold">
+                    {comboData.content}
+                  </span>
+                </div>{" "}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

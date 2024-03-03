@@ -23,6 +23,7 @@ const Menu = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [modalAction, setModalAction] = useState({ action: "", id: null });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     fetchMenu();
@@ -32,12 +33,15 @@ const Menu = () => {
     setPageIndex(value - 1);
   };
   const fetchMenu = async () => {
+    setIsLoading(true);
     try {
       const result = await menuAPI.getMenuByPagination(searchTerm, pageIndex);
       setMenus(result.items);
       setTotalPages(result.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setIsLoading(false);
     }
   };
   const formatDate = (dateString) => {
@@ -104,7 +108,7 @@ const Menu = () => {
         fetchMenu();
       } catch (error) {
         console.error("Error updating menu visibility:", error);
-        toast.error("Failed to update menu visibility");
+        toast.error("Lỗi khi hiển thị menu!");
       } finally {
         setLoadingDelete(false); // Ẩn loader
       }
@@ -114,37 +118,6 @@ const Menu = () => {
 
   return (
     <div className="container mx-auto p-4">
-      {loadingDelete && <Loading />}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
-        className="fixed inset-0 flex items-center justify-center"
-        contentLabel="Xác nhận"
-      >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
-          <p>
-            Bạn có chắc chắn muốn{" "}
-            {modalAction.action === "delete" ? "xóa" : "cập nhật"} menu này?
-          </p>
-
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
-              Hủy bỏ
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
-              onClick={confirmAction}
-            >
-              Xác nhận
-            </button>
-          </div>
-        </div>
-      </Modal>
       <h2 className="text-2xl font-semibold mb-4">Danh sách menu</h2>
 
       <div className="flex justify-between items-center mb-4">
@@ -184,51 +157,65 @@ const Menu = () => {
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               <th className="py-3 px-6">Tên menu</th>
               <th className="py-3 px-6">Ngày tạo</th>
-              <th className="py-3 px-6"></th>
+              <th className="py-3 px-6 text-center">Hiện menu</th>
               <th className="py-3 px-6"></th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {menus.map((menu) => (
-              <tr
-                key={menu.id}
-                className="border-b border-gray-200 hover:bg-gray-100"
-              >
-                <td className="py-3 px-6 text-left">
-                  {" "}
-                  <span
-                    className="font-medium cursor-pointer hover:text-blue-500"
-                    onClick={() => handleDetailClick(menu.id)}
-                  >
-                    {menu.name}
-                  </span>
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {formatDate(menu.creationDate)}
-                </td>
-                <td className="py-3 px-6 text-center">
-                  {menu.isSelected ? (
-                    <VisibilityIcon />
-                  ) : (
-                    <button onClick={() => handleEnableMenu(menu.id)}>
-                      <VisibilityOffIcon />
-                    </button>
-                  )}
-                </td>
-                <td className="py-3 px-6 text-center">
-                  <div className="flex">
-                    <Write
-                      onClick={() => handleEditClick(menu.id)}
-                      className="size-5 cursor-pointer"
-                    />
-                    <Delete
-                      onClick={() => handleDeleteClick(menu.id)}
-                      className="size-5 cursor-pointer ml-4"
-                    />
-                  </div>
+            {isLoading ? (
+              <tr>
+                <td colSpan="4" className="text-center py-3 px-6">
+                  Đang tải...
                 </td>
               </tr>
-            ))}
+            ) : menus.length > 0 ? (
+              menus.map((menu) => (
+                <tr
+                  key={menu.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 px-6 text-left">
+                    {" "}
+                    <span
+                      className="font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => handleDetailClick(menu.id)}
+                    >
+                      {menu.name}
+                    </span>
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {formatDate(menu.creationDate)}
+                  </td>
+                  <td className="py-3 px-6 text-center">
+                    {menu.isSelected ? (
+                      <VisibilityIcon />
+                    ) : (
+                      <button onClick={() => handleEnableMenu(menu.id)}>
+                        <VisibilityOffIcon />
+                      </button>
+                    )}
+                  </td>
+                  <td className="py-3 px-6 text-center">
+                    <div className="flex">
+                      <Write
+                        onClick={() => handleEditClick(menu.id)}
+                        className="size-5 cursor-pointer"
+                      />
+                      <Delete
+                        onClick={() => handleDeleteClick(menu.id)}
+                        className="size-5 cursor-pointer ml-4"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center py-3 px-6">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -243,6 +230,41 @@ const Menu = () => {
       </div>
 
       <ToastContainer position="top-right" autoClose={2000} />
+      {loadingDelete && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>
+            Bạn có chắc chắn muốn{" "}
+            {modalAction.action === "delete" ? "xóa" : "cập nhật"} menu này?
+          </p>
+
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className={`px-4 py-2 rounded text-white ${
+                modalAction.action === "delete"
+                  ? "bg-red-500 hover:bg-red-700"
+                  : "bg-green-500 hover:bg-green-700"
+              }`}
+              onClick={confirmAction}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

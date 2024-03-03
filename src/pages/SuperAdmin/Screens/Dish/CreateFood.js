@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import Loading from "../../../Loading/Loading";
 
-Modal.setAppElement("#root"); // Tránh warning về accessibility
+Modal.setAppElement("#root");
 
 const CreateFood = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -38,9 +38,7 @@ const CreateFood = () => {
       selectedImage: null,
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .matches(/^[a-zA-Z0-9 ]+$/, "Tên món ăn chỉ được chứa chữ cái và số")
-        .required("Tên món ăn không được để trống"),
+      name: Yup.string().required("Tên món ăn không được để trống"),
       price: Yup.number()
         .positive("Đơn giá phải là số dương")
         .required("Đơn giá không được để trống"),
@@ -49,8 +47,8 @@ const CreateFood = () => {
     }),
 
     onSubmit: async (values) => {
-      setIsOpen(false); // Đóng modal
-      setIsLoading(true); // Hiển thị loading
+      setIsOpen(false);
+      setIsLoading(true);
       try {
         const formData = new FormData();
         formData.append("name", values.name);
@@ -67,7 +65,7 @@ const CreateFood = () => {
         console.error("Error creating new dish:", error);
         toast.error("Có lỗi xảy ra khi tạo mới món ăn!");
       } finally {
-        setIsLoading(false); // Ẩn loading
+        setIsLoading(false);
       }
     },
   });
@@ -95,18 +93,15 @@ const CreateFood = () => {
   const handleImageChange = (event) => {
     const file = event.currentTarget.files[0];
     formik.setFieldValue("selectedImage", file);
-
-    // Đánh dấu trường selectedImage là đã được chạm để đảm bảo thông báo lỗi được hiển thị
     formik.setFieldTouched("selectedImage", true, false);
   };
 
   const handleCreateClick = async () => {
-    // Đánh dấu tất cả các trường là đã chạm vào, bao gồm cả selectedImage
     formik.setTouched({
       name: true,
       price: true,
       categoryId: true,
-      selectedImage: true, // Thêm dòng này
+      selectedImage: true,
     });
 
     const errors = await formik.validateForm();
@@ -114,7 +109,6 @@ const CreateFood = () => {
 
     // Kiểm tra xem form có lỗi không
     if (Object.keys(errors).length === 0) {
-      // Nếu không có lỗi, mở modal xác nhận
       openModal();
     }
   };
@@ -125,6 +119,117 @@ const CreateFood = () => {
   };
   return (
     <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+      <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-2xl font-semibold mb-4">Tạo mới món ăn</h2>
+        <div className="flex flex-col gap-3">
+          <div>
+            <label htmlFor="name" className="label-input">
+              Tên món ăn
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              className="input-form"
+              placeholder="Tên món ăn"
+            />
+            {formik.touched.name && formik.errors.name ? (
+              <div className="formik-error-message">{formik.errors.name}</div>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="price" className="label-input">
+              Đơn giá
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="number"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.price}
+              className="input-form"
+              placeholder="Giá"
+            />
+            {formik.touched.price && formik.errors.price ? (
+              <div className="formik-error-message">{formik.errors.price}</div>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="categoryId" className="label-input">
+              Danh mục
+            </label>
+            <select
+              id="categoryId"
+              name="categoryId"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.categoryId}
+              className="input-form"
+            >
+              <option value="">Chọn danh mục</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            {formik.touched.categoryId && formik.errors.categoryId ? (
+              <div className="formik-error-message">
+                {formik.errors.categoryId}
+              </div>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="selectedImage" className="label-input">
+              Hình ảnh
+            </label>
+            <input
+              key={imageInputKey} // Sử dụng key để reset input
+              id="selectedImage"
+              name="selectedImage"
+              type="file"
+              onChange={handleImageChange}
+              className="input-file"
+            />
+            {imagePreview && (
+              <div className="mt-4 items-center">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="max-h-40 rounded"
+                />
+                <button
+                  type="button"
+                  className="btn-delete-image "
+                  onClick={handleImageRemove}
+                >
+                  Xóa hình ảnh
+                </button>
+              </div>
+            )}
+            {formik.touched.selectedImage && formik.errors.selectedImage ? (
+              <div className="formik-error-message">
+                {formik.errors.selectedImage}
+              </div>
+            ) : null}
+          </div>
+
+          <button
+            type="button"
+            className="btn-submit-form"
+            onClick={handleCreateClick}
+          >
+            Tạo mới
+          </button>
+        </div>
+      </form>
       {isLoading && <Loading />}
       <Modal
         isOpen={modalIsOpen}
@@ -152,139 +257,6 @@ const CreateFood = () => {
           </div>
         </div>
       </Modal>
-
-      <form onSubmit={formik.handleSubmit}>
-        <h2 className="text-2xl font-semibold mb-4">Tạo mới món ăn</h2>
-        <div className="flex flex-col gap-3">
-          {/* Tên món ăn */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Tên món ăn
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-              placeholder="Tên món ăn"
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.name}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Đơn giá */}
-          <div>
-            <label
-              htmlFor="price"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Đơn giá
-            </label>
-            <input
-              id="price"
-              name="price"
-              type="number"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.price}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-              placeholder="Giá"
-            />
-            {formik.touched.price && formik.errors.price ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.price}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Danh mục */}
-          <div>
-            <label
-              htmlFor="categoryId"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Danh mục
-            </label>
-            <select
-              id="categoryId"
-              name="categoryId"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.categoryId}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-            >
-              <option value="">Chọn danh mục</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            {formik.touched.categoryId && formik.errors.categoryId ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.categoryId}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Hình ảnh */}
-          <div>
-            <label
-              htmlFor="selectedImage"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Hình ảnh
-            </label>
-            <input
-              key={imageInputKey} // Sử dụng key để reset input
-              id="selectedImage"
-              name="selectedImage"
-              type="file"
-              onChange={handleImageChange}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-            />
-            {imagePreview && (
-              <div className="mt-4 items-center">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="max-h-40 rounded"
-                />
-                <button
-                  type="button"
-                  className="bg-red-500 hover:bg-red-600 mt-2 text-white p-1 rounded"
-                  onClick={handleImageRemove}
-                >
-                  Xóa hình ảnh
-                </button>
-              </div>
-            )}
-            {formik.touched.selectedImage && formik.errors.selectedImage ? (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.selectedImage}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Nút tạo mới */}
-          <button
-            type="button"
-            className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition duration-200"
-            onClick={handleCreateClick}
-          >
-            Tạo mới
-          </button>
-        </div>
-      </form>
     </div>
   );
 };

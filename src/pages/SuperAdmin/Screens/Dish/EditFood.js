@@ -46,9 +46,7 @@ const EditFood = () => {
       image: null,
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .matches(/^[a-zA-Z0-9 ]+$/, "Tên món ăn chỉ được chứa chữ cái và số")
-        .required("Tên món ăn không được để trống"),
+      name: Yup.string().required("Tên món ăn không được để trống"),
       price: Yup.number()
         .required("Giá không được để trống")
         .positive("Giá phải là số dương"),
@@ -120,15 +118,12 @@ const EditFood = () => {
         <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa món ăn</h2>
         <div className="flex flex-col gap-3">
           <div>
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="name" className="label-input">
               Tên món ăn
             </label>
             <input
               id="name"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="input-form"
               type="text"
               name="name"
               onChange={formik.handleChange}
@@ -143,15 +138,12 @@ const EditFood = () => {
             )}
           </div>
           <div>
-            <label
-              htmlFor="price"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="price" className="label-input">
               Đơn giá
             </label>
             <input
               id="price"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="input-form"
               placeholder="Nhập đơn giá"
               type="number"
               name="price"
@@ -166,15 +158,12 @@ const EditFood = () => {
             )}
           </div>
           <div>
-            <label
-              htmlFor="selectedImage"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="selectedImage" className="label-input">
               Hình ảnh
             </label>
             <input
               id="selectedImage"
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              className="input-file"
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
@@ -190,7 +179,7 @@ const EditFood = () => {
                   <button
                     type="button"
                     onClick={handleRemoveImage}
-                    className="bg-red-500 hover:bg-red-600 mt-2 text-white p-1 rounded"
+                    className="btn-delete-image "
                   >
                     Xóa Hình Ảnh
                   </button>

@@ -229,7 +229,7 @@ const EditCombo = () => {
                   <button
                     type="button"
                     onClick={handleRemoveImage}
-                    className="bg-red-500 hover:bg-red-600 mt-2 text-white p-1 rounded"
+                    className="btn-delete-image"
                   >
                     Xóa Hình Ảnh
                   </button>

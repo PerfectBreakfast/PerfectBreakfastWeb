@@ -30,6 +30,8 @@ import CreateFood from "../Screens/Dish/CreateFood";
 import CreatePartner from "../Screens/ManagementUnit/CreatePartner";
 import CreateSupplier from "../Screens/SupplierUnit/CreateSupplier";
 import CreateDelivery from "../Screens/DeliveryUnit/CreateDelivery";
+import EditCompany from "../Screens/Company/EditCompany";
+import CompanyDetail from "../Screens/Company/CompanyDetail";
 
 const MainContent = () => {
   return (
@@ -64,6 +66,8 @@ const MainContent = () => {
       <Route path="partner/:id/edit" element={<EditPartner />} />
       <Route path="companies" element={<CompanyList />} />
       <Route path="companies/create" element={<CreateCompany />} />
+      <Route path="company/:id/edit" element={<EditCompany />} />
+      <Route path="company/:id" element={<CompanyDetail />} />
       <Route
         path="partners/create-management-user"
         element={<CreateManagementUser />}

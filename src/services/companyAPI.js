@@ -25,6 +25,26 @@ const companyAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getCompanyById: async (companyId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/companies/${companyId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  deleteCompanyById: async (companyId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/api/v1/companies/${companyId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default companyAPI;
