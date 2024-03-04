@@ -60,11 +60,17 @@ const CompanyDetail = () => {
                 <th>
                   <div className="h-4 bg-gray-200 rounded w-24 mx-auto"></div>
                 </th>
+                <th>
+                  <div className="h-4 bg-gray-200 rounded w-24 mx-auto"></div>
+                </th>
               </tr>
             </thead>
             <tbody>
               {[...Array(5)].map((_, index) => (
                 <tr key={index} className="border-b">
+                  <td className="py-2">
+                    <div className="h-4 bg-gray-200 rounded mx-auto w-3/4"></div>
+                  </td>
                   <td className="py-2">
                     <div className="h-4 bg-gray-200 rounded mx-auto w-3/4"></div>
                   </td>
@@ -146,15 +152,17 @@ const CompanyDetail = () => {
         <table className="w-full table-auto mb-4">
           <thead className="bg-gray-200 sticky top-0">
             <tr className="text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6">Mã món ăn</th>
-              <th className="py-3 px-6">Loại món ăn</th>
+              <th className="py-3 px-6">Bữa ăn</th>
+              <th className="py-3 px-6">Thời gian bắt đầu</th>
+              <th className="py-3 px-6">Thời gian kết thúc</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
             {companyData.meals.map((meal) => (
               <tr key={meal.id} className="border-b">
-                <td className="py-3 px-6 text-left">{meal.id}</td>
                 <td className="py-3 px-6 text-left">{meal.mealType}</td>
+                <td className="py-3 px-6 text-left">{meal.startTime}</td>
+                <td className="py-3 px-6 text-left">{meal.endTime}</td>
               </tr>
             ))}
           </tbody>

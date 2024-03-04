@@ -1,30 +1,38 @@
-import React, { useState } from "react";
-import {
-  IconButton,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import React, { useEffect, useState } from "react";
+
 import { useCart } from "../../../services/CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import food from "../../../assets/images/logo.png";
+
 import "../Cart/Cart.css";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import MealAPI from "../../../services/MealAPI";
 
 function Cart() {
   const { cart, dispatch } = useCart();
   const navigate = useNavigate();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
+  const [mealData, setMealData] = useState(null);
+  const [selectedMealId, setSelectedMealId] = useState("");
 
+  useEffect(() => {
+    const fetchMealData = async () => {
+      try {
+        const data = await MealAPI.getMealByCustomer();
+        setMealData(data);
+        // Set default selected meal ID (optional)
+        if (data.length > 0) {
+          setSelectedMealId(data[0].id);
+        }
+      } catch (error) {
+        console.error("Error fetching meal data:", error);
+        alert("Error fetching meal data. Please try again later.");
+      }
+    };
+
+    fetchMealData();
+  }, []);
   // const handleRemoveItem = (itemId) => {
   //   dispatch({ type: "REMOVE_FROM_CART", payload: itemId });
   // };
@@ -64,6 +72,11 @@ function Cart() {
     navigate(-1);
   };
 
+  const handleGoToCheckout = () => {
+    // Include the selectedMealId when navigating
+    navigate("/checkout", { state: { selectedMealId } });
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex items-center mb-4">
@@ -89,6 +102,29 @@ function Cart() {
         </div>
       ) : (
         <div className="mb-28">
+          {mealData && (
+            <div className="mb-4">
+              <label
+                htmlFor="mealSelect"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Chọn bữa ăn
+              </label>
+              <select
+                id="mealSelect"
+                value={selectedMealId}
+                onChange={(e) => setSelectedMealId(e.target.value)}
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              >
+                {mealData.map((meal) => (
+                  <option key={meal.id} value={meal.id}>
+                    {meal.mealType}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {cart.map((item) => (
             <div
               key={item.id}
@@ -201,7 +237,7 @@ function Cart() {
 
             <button
               className="bg-green-500 text-white p-2 mb-2 rounded-3xl hover:bg-green-600 transition-colors"
-              onClick={() => navigate("/checkout")}
+              onClick={handleGoToCheckout}
             >
               Tiến hành thanh toán
             </button>

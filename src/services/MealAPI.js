@@ -13,6 +13,17 @@ const MealAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getMealByCustomer: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/api/v1/meals/customer`
+      );
+      return response.data;
+    } catch (error) {
+      // Xử lý lỗi và ném lại thông báo lỗi
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default MealAPI;

@@ -59,12 +59,21 @@ const CreateCompany = () => {
       address: Yup.string().required("Địa chỉ không được để trống"),
       partnerId: Yup.string().required("Vui lòng chọn đối tác"),
       deliveryId: Yup.string().required("Vui lòng chọn đơn vị vận chuyển"),
-      // Validate selectedMeals as an object, ensuring at least one meal is selected
-      selectedMeals: Yup.object().test(
-        "at-least-one-meal",
-        "Vui lòng chọn ít nhất một bữa",
-        (selectedMeals) => Object.keys(selectedMeals).length > 0
-      ),
+      selectedMeals: Yup.object()
+        .test(
+          "at-least-one-meal",
+          "Vui lòng chọn ít nhất một bữa",
+          (selectedMeals) => Object.keys(selectedMeals).length > 0
+        )
+        .test(
+          "meal-times-filled",
+          "Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc cho mỗi bữa ăn đã chọn",
+          (selectedMeals) => {
+            return Object.values(selectedMeals).every(
+              (meal) => meal.startTime && meal.endTime
+            );
+          }
+        ),
     }),
     onSubmit: async (values) => {
       setIsOpen(false);
