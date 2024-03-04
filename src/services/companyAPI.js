@@ -45,6 +45,17 @@ const companyAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editCompanyById: async (companyId, newCompanyData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/api/v1/companies/${companyId}`,
+        newCompanyData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default companyAPI;

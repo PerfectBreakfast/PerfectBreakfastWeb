@@ -15,7 +15,7 @@ import orderAPI from "../../../services/orderAPI";
 import { useCart } from "../../../services/CartContext";
 import "../Checkout/Checkout.css";
 import userAPI from "../../../services/userAPI";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Divider from "@mui/material/Divider";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -23,11 +23,13 @@ import WalletIcon from "@mui/icons-material/Wallet";
 import CheckoutSkeleton from "./CheckoutSkeleton";
 
 function Checkout() {
+  const location = useLocation();
   const [note, setNote] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("banking");
   const { cart } = useCart();
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const { selectedMealId } = location.state || {};
 
   useEffect(() => {
     // Gọi hàm getUser từ userAPI khi component được mount
@@ -86,6 +88,7 @@ function Checkout() {
       const orderDetails = {
         note,
         payment: paymentMethod,
+        mealId: selectedMealId,
         orderDetails: cart.map((item) => ({
           quantity: item.quantity,
           comboId: item.id,
