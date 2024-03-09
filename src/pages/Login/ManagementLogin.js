@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import userAPI from "../../services/userAPI";
 import { encryptToken } from "../../services/CryptoService";
 
-const AdminLogin = () => {
+const ManagementLogin = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -38,8 +38,11 @@ const AdminLogin = () => {
     try {
       const userData = await userAPI.login(credentials);
 
+      const roles = userData.roles;
+
       const accessToken = userData.accessToken;
       const refreshToken = userData.refreshToken;
+
       // Mã hóa tokens
       const encryptedAccessToken = encryptToken(accessToken);
       const encryptedRefreshToken = encryptToken(refreshToken);
@@ -48,10 +51,19 @@ const AdminLogin = () => {
       localStorage.setItem("accessToken", encryptedAccessToken);
       localStorage.setItem("refreshToken", encryptedRefreshToken);
 
-      navigate("/admin/foods");
+      // Kiểm tra và điều hướng dựa trên vai trò
+      if (roles.includes("SUPER ADMIN")) {
+        navigate("/admin/foods");
+      } else if (roles.includes("PARTNER ADMIN")) {
+        navigate("/partner/order");
+      } else if (roles.includes("SUPPLIER ADMIN")) {
+        navigate("/supplier/foods");
+      } else if (roles.includes("DELIVERY ADMIN")) {
+        navigate("/delivery/order");
+      } else {
+        toast.error("Email hoặc mật khẩu không chính xác");
+      }
     } catch (error) {
-      // setErrorMessage(error.errors);
-      // setErrorMessage("Email hoặc mật khẩu chưa chính xác!");
       toast.error("Email hoặc mật khẩu không chính xác");
     }
   };
@@ -118,4 +130,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default ManagementLogin;

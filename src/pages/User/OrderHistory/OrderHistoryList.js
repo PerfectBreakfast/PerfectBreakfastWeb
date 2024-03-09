@@ -34,14 +34,18 @@ const OrderHistoryList = () => {
     navigate(-1);
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColorAndText = (status) => {
     switch (status) {
+      case "Pending":
+        return { color: "text-gray-500", text: "Chờ thanh toán" };
       case "Paid":
-        return "text-yellow-500";
-      case "Complete":
-        return "text-green-500";
+        return { color: "text-yellow-500", text: "Đã thanh toán" };
+      case "Completed":
+        return { color: "text-green-500", text: "Đã giao thành công" };
+      case "Cancel":
+        return { color: "text-red-500", text: "Đã hủy" };
       default:
-        return "text-gray-500";
+        return { color: "text-gray-500", text: "Chưa xác định" };
     }
   };
 
@@ -76,6 +80,7 @@ const OrderHistoryList = () => {
         <OrderHistoryListSkeleton />
       ) : historyData && historyData.length > 0 ? (
         // Show order history if data exists
+
         historyData.map((order) => (
           <div
             key={order.id}
@@ -100,11 +105,11 @@ const OrderHistoryList = () => {
                 </div>
 
                 <p
-                  className={`${getStatusColor(
-                    order.orderStatus
-                  )} font-semibold`}
+                  className={`${
+                    getStatusColorAndText(order.orderStatus).color
+                  } font-semibold`}
                 >
-                  {order.orderStatus}
+                  {getStatusColorAndText(order.orderStatus).text}
                 </p>
                 <div className="flex items-center text-sm text-gray-500">
                   <p>

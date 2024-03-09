@@ -33,6 +33,8 @@ import PartnerLogin from "./pages/Partner/Screens/Login/Login";
 import SupplierLogin from "./pages/Supplier/Screens/Login/Login";
 import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
 import Loading from "./pages/Loading/Loading";
+import Notification from "./pages/User/Notification/Notification";
+import ManagementLogin from "./pages/Login/ManagementLogin";
 
 function App() {
   return (
@@ -42,12 +44,15 @@ function App() {
           <Routes>
             {/* User */}
             <Route path="/login" element={<Login />} />
+            {/* login cho QTV */}
+            <Route path="/management/login" element={<ManagementLogin />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/home" element={<Homepage />} />
             <Route path="/combo/:id" element={<ComboDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-history" element={<OrderHistoryList />} />
+            <Route path="/notifications" element={<Notification />} />
             <Route
               path="/order-history/detail/:orderId"
               element={<OrderDetail />}

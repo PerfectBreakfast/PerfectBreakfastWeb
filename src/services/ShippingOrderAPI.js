@@ -1,12 +1,12 @@
 import React from "react";
 import axiosInstance from "./axiosConfig";
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
+import api from "./api";
 
 const ShippingOrderAPI = {
   assignOrderForShipper: async (assignData) => {
     try {
       const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/shippingorders/deliveryadmin`,
+        `${api}/v1/shippingorders/deliveryadmin`,
         assignData
       );
       return response.data;

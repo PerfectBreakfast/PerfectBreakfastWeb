@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignmentAPI";
 import { ToastContainer, toast } from "react-toastify";
 import { Pagination } from "@mui/material";
+import Modal from "react-modal";
 
 const OrderFoodList = () => {
-  const [foods, setFoods] = useState([]);
+  const [foodData, setFoodData] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [confirmFoodId, setConfirmFoodId] = useState(null);
   useEffect(() => {
     fetchFoodList();
   }, [pageIndex]);
@@ -19,27 +22,69 @@ const OrderFoodList = () => {
         await SupplierFoodAssignmentAPI.getSupplierFoodAssignmentBySupplier(
           pageIndex
         );
-      setFoods(result.items);
+      setFoodData(result.items);
       setTotalPages(result.totalPagesCount);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const handleConfirm = async (foodFoodId) => {
-    try {
-      await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentBySupplier(
-        foodFoodId
-      );
-      toast.success("Đơn hàng đã được xác nhận!");
-      fetchFoodList(); // Refetch the food list to update the UI
-    } catch (error) {
-      console.error("Error confirming order:", error);
-      toast.error("Có lỗi xảy ra khi xác nhận đơn hàng.");
+  const handleConfirm = async () => {
+    if (confirmFoodId) {
+      try {
+        await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentBySupplier(
+          confirmFoodId
+        );
+        toast.success("Đơn hàng đã được xác nhận!");
+        fetchFoodList(); // Refetch the food list to update the UI
+        closeModal(); // Đóng modal sau khi xác nhận thành công
+      } catch (error) {
+        console.error("Error confirming order:", error);
+        toast.error("Có lỗi xảy ra khi xác nhận đơn hàng.");
+      }
     }
   };
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
+  };
+  console.log("order food", foodData);
+  const renderOrderStatus = (status) => {
+    let statusText;
+    let colorClass;
+
+    switch (status) {
+      case "Pending":
+        statusText = "Chờ xác nhận";
+        colorClass = "text-gray-500"; // Màu xám
+        break;
+      case "Confirmed":
+        statusText = "Đã xác nhận";
+        colorClass = "text-yellow-500"; // Màu vàng
+        break;
+      case "Completed":
+        statusText = "Hoàn thành";
+        colorClass = "text-green-500"; // Màu xanh lá
+        break;
+      default:
+        statusText = "Không xác định";
+        colorClass = "text-gray-500";
+    }
+
+    return <span className={`${colorClass}`}>{statusText}</span>;
+  };
+
+  const openModal = (foodId) => {
+    setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setConfirmFoodId(null); // Reset ID sau khi đóng modal
+  };
+  const formatTime = (time) => {
+    // Cắt bỏ phần giây, lấy từ ký tự đầu tiên đến ký tự thứ 5
+    return time.slice(0, 5);
   };
 
   return (
@@ -49,70 +94,93 @@ const OrderFoodList = () => {
       </h2>
 
       <div className="bg-white shadow-md my-6">
-        <table className="min-w-max w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 rounded-l text-center">Ngày cung cấp</th>
-              <th className="py-3 px-6 ">Tên món ăn</th>
-              <th className="py-3 px-6 text-center">Số lượng</th>
-              <th className="py-3 px-6 text-center">Đối tác</th>
-              <th className="py-3 px-6 rounded-r text-center">Trạng thái</th>
-              <th className="py-3 px-6 rounded-r text-center">
-                Xác nhận đơn hàng
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {foods.map((food) =>
-              food.foodAssignmentForSuppliers.map((foodFood) => (
-                <tr
-                  key={foodFood.id}
-                  className="bfood-b bfood-gray-200 hover:bg-gray-100"
-                >
-                  {food.foodAssignmentForSuppliers.indexOf(foodFood) === 0 && (
-                    <td
-                      rowSpan={food.foodAssignmentForSuppliers.length}
-                      className="py-3 px-6 text-center"
-                    >
-                      {food.dateCooked}
-                    </td>
-                  )}
-                  <td className="py-3 px-6 ">{foodFood.foodName}</td>
-                  <td className="py-3 px-6 text-center">
-                    {foodFood.amountCooked}
-                  </td>
-                  <td className="py-3 px-6 text-center">
-                    {foodFood.partnerName}
-                  </td>
+        {foodData.map((dayData) => (
+          <div key={dayData.date}>
+            <h3 className="text-lg font-semibold my-2">Ngày: {dayData.date}</h3>
+            {dayData.foodAssignmentGroupByPartners.map((partnerData) => (
+              <div key={partnerData.supplierName}>
+                <h4 className="text-md font-semibold my-2">
+                  Đối tác: {partnerData.partnerName}
+                </h4>
+                {partnerData.supplierDeliveryTimes.map((mealData, index) => (
+                  <div key={index}>
+                    <h5 className="text-md font-semibold my-2">
+                      Thời gian hoàn thành: {formatTime(mealData.deliveryTime)}
+                    </h5>
 
-                  <td className="py-3 px-6 text-center">{foodFood.status}</td>
-
-                  <td className="py-3 px-6 text-center">
-                    {foodFood.status === "Pending" && (
-                      <button
-                        className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600"
-                        onClick={() => handleConfirm(foodFood.id)}
-                      >
-                        Xác nhận
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </div>
+                    <table className="min-w-max w-full table-auto mb-6">
+                      <thead>
+                        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                          <th className="py-3 px-6">Tên món ăn</th>
+                          <th className="py-3 px-6 text-center">Số lượng</th>
+                          <th className="py-3 px-6 text-center">Trạng thái</th>
+                          <th className="py-3 px-6 text-center">
+                            Xác nhận đơn hàng
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-gray-600 text-sm font-light">
+                        {mealData.foodAssignmentResponses.map((foodItem) => (
+                          <tr
+                            key={foodItem.id}
+                            className="border-b border-gray-200 hover:bg-gray-100"
+                          >
+                            <td className="py-3 px-6 font-bold">
+                              {foodItem.foodName}
+                            </td>
+                            <td className="py-3 px-6 text-center">
+                              {foodItem.amountCooked}
+                            </td>
+                            <td className="py-3 px-6 text-center font-semibold">
+                              {renderOrderStatus(foodItem.status)}
+                            </td>
+                            <td className="py-3 px-6 text-center">
+                              {foodItem.status === "Pending" && (
+                                <button
+                                  className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600"
+                                  onClick={() => openModal(foodItem.id)}
+                                >
+                                  Xác nhận
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
-
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận cập nhật"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn xác nhận đơn hàng này?</p>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              onClick={handleConfirm}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );

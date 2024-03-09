@@ -40,23 +40,11 @@ const MobileNavigation = () => {
   return (
     <div className="footerContainer">
       <BottomNavigation value={value} onChange={handleChange} showLabels>
-        <BottomNavigationAction label="Home" icon={<HomeOutlinedIcon />} />
-        <BottomNavigationAction
-          label="Cart"
-          icon={<ShoppingCartOutlinedIcon />}
-        />
-        <BottomNavigationAction
-          label="History"
-          icon={<HistoryOutlinedIcon />}
-        />
-        <BottomNavigationAction
-          label="Notifications"
-          icon={<NotificationsNoneOutlinedIcon />}
-        />
-        <BottomNavigationAction
-          label="User"
-          icon={<AccountCircleOutlinedIcon />}
-        />
+        <BottomNavigationAction icon={<HomeOutlinedIcon />} />
+        <BottomNavigationAction icon={<ShoppingCartOutlinedIcon />} />
+        <BottomNavigationAction icon={<HistoryOutlinedIcon />} />
+        <BottomNavigationAction icon={<NotificationsNoneOutlinedIcon />} />
+        <BottomNavigationAction icon={<AccountCircleOutlinedIcon />} />
       </BottomNavigation>
     </div>
   );

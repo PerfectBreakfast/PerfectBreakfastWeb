@@ -1,13 +1,12 @@
 import axios from "axios";
 import axiosInstance from "./axiosConfig";
-
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
+import api from "./api";
 
 const companyAPI = {
   getCompanyUnitByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/companies/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
+        `${api}/v1/companies/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {
@@ -17,7 +16,7 @@ const companyAPI = {
   createCompanyUnit: async (newCompanyData) => {
     try {
       const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/companies`,
+        `${api}/v1/companies`,
         newCompanyData
       );
       return response.data;
@@ -28,7 +27,7 @@ const companyAPI = {
   getCompanyById: async (companyId) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/companies/${companyId}`
+        `${api}/v1/companies/${companyId}`
       );
       return response.data;
     } catch (error) {
@@ -38,7 +37,7 @@ const companyAPI = {
   deleteCompanyById: async (companyId) => {
     try {
       const response = await axiosInstance.delete(
-        `${BASE_URL}/api/v1/companies/${companyId}`
+        `${api}/v1/companies/${companyId}`
       );
       return response.data;
     } catch (error) {
@@ -48,8 +47,28 @@ const companyAPI = {
   editCompanyById: async (companyId, newCompanyData) => {
     try {
       const response = await axiosInstance.put(
-        `${BASE_URL}/api/v1/companies/${companyId}`,
+        `${api}/v1/companies/${companyId}`,
         newCompanyData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getCompanyUnitByPaginationForDelivery: async (searchTerm, pageIndex) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/companies/pagination/delivery?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getCompanyUnitByPaginationForPartner: async (searchTerm, pageIndex) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/companies/pagination/partner?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {

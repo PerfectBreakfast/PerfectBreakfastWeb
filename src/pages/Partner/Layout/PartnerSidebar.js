@@ -21,13 +21,13 @@ const navigation = [
   { name: "Danh sách phân phối", href: "/partner/food", icon: ComboIcon },
   // { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
   // { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
-  // { name: "Danh sách NCC", href: "/admin/suppliers", icon: SupplierIcon },
+  { name: "Danh sách NCC", href: "/partner/supplier", icon: SupplierIcon },
   // { name: "Danh sách ĐVVC", href: "/admin/deliveries", icon: DeliveryIcon },
-  // {
-  //   name: "Danh sách công ty",
-  //   href: "/admin/companies",
-  //   icon: CompanyIcon,
-  // },
+  {
+    name: "Danh sách công ty",
+    href: "/partner/company",
+    icon: CompanyIcon,
+  },
 ];
 const PartnerSidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -35,7 +35,8 @@ const PartnerSidebar = () => {
   const location = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/partner/login");
+    localStorage.removeItem("refreshToken");
+    navigate("/management/login");
   };
   const isActive = (href) => {
     return location.pathname === href;

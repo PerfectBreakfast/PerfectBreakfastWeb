@@ -1,12 +1,11 @@
 import axios from "axios";
 import axiosInstance from "./axiosConfig";
-
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
+import api from "./api";
 
 const MealAPI = {
   getMealByAdmin: async () => {
     try {
-      const response = await axiosInstance.get(`${BASE_URL}/api/v1/meals`);
+      const response = await axiosInstance.get(`${api}/v1/meals`);
       return response.data;
     } catch (error) {
       // Xử lý lỗi và ném lại thông báo lỗi
@@ -15,9 +14,7 @@ const MealAPI = {
   },
   getMealByCustomer: async () => {
     try {
-      const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/meals/customer`
-      );
+      const response = await axiosInstance.get(`${api}/v1/meals/customer`);
       return response.data;
     } catch (error) {
       // Xử lý lỗi và ném lại thông báo lỗi

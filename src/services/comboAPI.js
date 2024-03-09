@@ -32,6 +32,7 @@ const comboAPI = {
       );
       return response.data;
     } catch (error) {
+      console.log("loi", error.response);
       throw error.response ? error.response.data : error.message;
     }
   },

@@ -10,6 +10,7 @@ import MealAPI from "../../../services/MealAPI";
 import { ReactComponent as Decrease } from "../../../assets/icons/decrease.svg";
 import { ReactComponent as Increase } from "../../../assets/icons/increase.svg";
 import { ReactComponent as Remove } from "../../../assets/icons/remove.svg";
+import Loading from "../../Loading/Loading";
 
 function Cart() {
   const { cart, dispatch } = useCart();
@@ -79,6 +80,9 @@ function Cart() {
     // Include the selectedMealId when navigating
     navigate("/checkout", { state: { selectedMealId } });
   };
+  if (!mealData) {
+    return <Loading />;
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -202,7 +206,7 @@ function Cart() {
             </div>
 
             <button
-              className="bg-green-500 text-white p-2 mb-2 rounded-3xl hover:bg-green-600 transition-colors"
+              className="bg-green-500 text-white py-2.5 mb-2 rounded-3xl hover:bg-green-600 "
               onClick={handleGoToCheckout}
             >
               Tiến hành thanh toán

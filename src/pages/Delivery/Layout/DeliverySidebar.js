@@ -4,7 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { ReactComponent as MenuIconHero } from "../../../assets/icons/menu.svg";
 import { ReactComponent as MenuIcon } from "../../../assets/icons/menu-food.svg";
 import { ReactComponent as FoodIcon } from "../../../assets/icons/burger-svgrepo-com.svg";
-import { ReactComponent as ComboIcon } from "../../../assets/icons/fork-and-knife-meal-2-svgrepo-com.svg";
+import { ReactComponent as Staff } from "../../../assets/icons/staff.svg";
 import { ReactComponent as PartnerIcon } from "../../../assets/icons/partner.svg";
 import { ReactComponent as SupplierIcon } from "../../../assets/icons/supplier.svg";
 import { ReactComponent as DeliveryIcon } from "../../../assets/icons/delivery.svg";
@@ -15,7 +15,7 @@ import logo from "../../../assets/images/logo.png";
 
 const navigation = [
   { name: "Danh sách đơn hàng", href: "/delivery/order", icon: FoodIcon },
-  // { name: "Danh sách combo", href: "/admin/combo", icon: ComboIcon },
+  { name: "Danh sách nhân viên", href: "/delivery/staff", icon: Staff },
   // { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
   // { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
   // { name: "Danh sách NCC", href: "/admin/suppliers", icon: SupplierIcon },
@@ -25,6 +25,11 @@ const navigation = [
   //   href: "/admin/companies",
   //   icon: CompanyIcon,
   // },
+  {
+    name: "Danh sách công ty",
+    href: "/delivery/company",
+    icon: CompanyIcon,
+  },
 ];
 
 const DeliverySidebar = () => {
@@ -33,7 +38,8 @@ const DeliverySidebar = () => {
   const location = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/delivery/login");
+    localStorage.removeItem("refreshToken");
+    navigate("/management/login");
   };
   const isActive = (href) => {
     return location.pathname === href;
