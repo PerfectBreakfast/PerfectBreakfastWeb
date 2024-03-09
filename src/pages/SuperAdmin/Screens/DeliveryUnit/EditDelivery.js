@@ -156,11 +156,7 @@ const EditDelivery = () => {
         </div>
         {/* Other fields like address, phoneNumber, commissionRate with similar structure */}
         {/* Edit button */}
-        <button
-          type="button"
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-          onClick={openModal}
-        >
+        <button type="button" className="btn-submit-form" onClick={openModal}>
           Lưu thay đổi
         </button>
       </form>

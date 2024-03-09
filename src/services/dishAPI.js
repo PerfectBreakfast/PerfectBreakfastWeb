@@ -1,12 +1,11 @@
 import axios from "axios";
 import axiosInstance from "./axiosConfig";
-
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
+import api from "./api";
 
 const dishAPI = {
   getDishAll: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/foods`);
+      const response = await axiosInstance.get(`${api}/v1/foods`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -15,7 +14,7 @@ const dishAPI = {
   getDishByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/foods/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=5`
+        `${api}/v1/foods/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=5`
       );
       return response.data;
     } catch (error) {
@@ -25,10 +24,7 @@ const dishAPI = {
 
   createDish: async (newDishData) => {
     try {
-      const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/foods`,
-        newDishData
-      );
+      const response = await axiosInstance.post(`${api}/v1/foods`, newDishData);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -36,9 +32,7 @@ const dishAPI = {
   },
   getDishById: async (dishId) => {
     try {
-      const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/foods/${dishId}`
-      );
+      const response = await axiosInstance.get(`${api}/v1/foods/${dishId}`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -46,9 +40,7 @@ const dishAPI = {
   },
   getOrderFoodForPartner: async () => {
     try {
-      const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/foods/partner`
-      );
+      const response = await axiosInstance.get(`${api}/v1/foods/partner`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -57,7 +49,7 @@ const dishAPI = {
   editFood: async (foodId, foodName, foodPrice, editFoodData) => {
     try {
       const response = await axiosInstance.put(
-        `${BASE_URL}/api/v1/foods/${foodId}?Name=${foodName}&Price=${foodPrice}`,
+        `${api}/v1/foods/${foodId}?Name=${foodName}&Price=${foodPrice}`,
         editFoodData
       );
       return response.data;
@@ -67,8 +59,26 @@ const dishAPI = {
   },
   deleteDishById: async (dishId) => {
     try {
-      const response = await axiosInstance.delete(
-        `${BASE_URL}/api/v1/foods/${dishId}`
+      const response = await axiosInstance.delete(`${api}/v1/foods/${dishId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getDailyOrderDetailById: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/${dailyOrderId}/dailyorderid/partner`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getDailyOrderDetailByDelivery: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/${dailyOrderId}/dailyorderid/delivery`
       );
       return response.data;
     } catch (error) {

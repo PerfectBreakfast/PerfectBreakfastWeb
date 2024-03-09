@@ -6,7 +6,7 @@ const supplierUnitAPI = {
   getSupplierUnitByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/api/v1/suppliers/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=3`
+        `${api}/v1/suppliers/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=3`
       );
       return response.data;
     } catch (error) {
@@ -16,10 +16,7 @@ const supplierUnitAPI = {
 
   createSupplierUnit: async (values) => {
     try {
-      const response = await axiosInstance.post(
-        `${api}/api/v1/suppliers`,
-        values
-      );
+      const response = await axiosInstance.post(`${api}/v1/suppliers`, values);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -28,7 +25,7 @@ const supplierUnitAPI = {
   supplyAssigment: async (supplyAssigmentData) => {
     try {
       const response = await axiosInstance.post(
-        `${api}/api/v1/supplyassigments`,
+        `${api}/v1/supplyassigments`,
         supplyAssigmentData
       );
       return response.data;
@@ -38,10 +35,7 @@ const supplierUnitAPI = {
   },
   createManagementUnitUser: async (newUserData) => {
     try {
-      const response = await axiosInstance.post(
-        `${api}/api/v1/users`,
-        newUserData
-      );
+      const response = await axiosInstance.post(`${api}/v1/users`, newUserData);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -49,9 +43,7 @@ const supplierUnitAPI = {
   },
   getSupplierByPartner: async () => {
     try {
-      const response = await axiosInstance.get(
-        `${api}/api/v1/suppliers/partner`
-      );
+      const response = await axiosInstance.get(`${api}/v1/suppliers/partner`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -60,7 +52,7 @@ const supplierUnitAPI = {
   getSupplierById: async (supplierId) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/api/v1/suppliers/${supplierId}`
+        `${api}/v1/suppliers/${supplierId}`
       );
       return response.data;
     } catch (error) {
@@ -70,7 +62,7 @@ const supplierUnitAPI = {
   editSupplier: async (supplierId, newSupplierData) => {
     try {
       const response = await axiosInstance.put(
-        `${api}/api/v1/suppliers/${supplierId}`,
+        `${api}/v1/suppliers/${supplierId}`,
         newSupplierData
       );
       return response.data;
@@ -81,7 +73,27 @@ const supplierUnitAPI = {
   deletePartnerById: async (supplierId) => {
     try {
       const response = await axiosInstance.delete(
-        `${api}/api/v1/suppliers/${supplierId}`
+        `${api}/v1/suppliers/${supplierId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getsAllSupplierByPartner: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/suppliers/all/partner`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getSupplierByPaginationForPartner: async (searchTerm, pageIndex) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/suppliers/partner?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=3`
       );
       return response.data;
     } catch (error) {

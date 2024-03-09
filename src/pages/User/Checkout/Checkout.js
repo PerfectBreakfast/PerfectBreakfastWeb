@@ -184,7 +184,7 @@ function Checkout() {
           <div className="fixed bottom-0 left-0 right-0 w-full">
             <div className="flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
               <button
-                className="bg-green-500 text-white p-2 mb-2 rounded-3xl hover:bg-green-600 transition-colors"
+                className="bg-green-500 text-white  py-2.5  mb-2 rounded-3xl hover:bg-green-600 transition-colors"
                 onClick={handleCheckout}
               >
                 Thanh toán

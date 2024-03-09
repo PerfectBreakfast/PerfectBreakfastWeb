@@ -1,12 +1,11 @@
 import axios from "axios";
 import axiosInstance from "./axiosConfig";
-
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
+import api from "./api";
 
 const managementUnitAPI = {
   getAllManagementUnit: async () => {
     try {
-      const response = await axiosInstance.get(`${BASE_URL}/api/v1/partners`);
+      const response = await axiosInstance.get(`${api}/v1/partners`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -15,7 +14,7 @@ const managementUnitAPI = {
   getManagementUnitByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
+        `${api}/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {
@@ -25,7 +24,7 @@ const managementUnitAPI = {
   createManagementUnit: async (newManagementData) => {
     try {
       const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/partners`,
+        `${api}/v1/partners`,
         newManagementData
       );
       return response.data;
@@ -35,10 +34,7 @@ const managementUnitAPI = {
   },
   createManagementUnitUser: async (newUserData) => {
     try {
-      const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/users`,
-        newUserData
-      );
+      const response = await axiosInstance.post(`${api}/v1/users`, newUserData);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -47,7 +43,7 @@ const managementUnitAPI = {
   getPartnerById: async (partnerId) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/partners/${partnerId}`
+        `${api}/v1/partners/${partnerId}`
       );
       return response.data;
     } catch (error) {
@@ -57,7 +53,7 @@ const managementUnitAPI = {
   editPartner: async (partnerId, newPartnerData) => {
     try {
       const response = await axiosInstance.put(
-        `${BASE_URL}/api/v1/partners/${partnerId}`,
+        `${api}/v1/partners/${partnerId}`,
         newPartnerData
       );
       return response.data;
@@ -68,7 +64,7 @@ const managementUnitAPI = {
   deletePartnerById: async (partnerId) => {
     try {
       const response = await axiosInstance.delete(
-        `${BASE_URL}/api/v1/partners/${partnerId}`
+        `${api}/v1/partners/${partnerId}`
       );
       return response.data;
     } catch (error) {

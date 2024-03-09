@@ -33,7 +33,8 @@ const Sidebar = () => {
   const location = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/admin/login");
+    localStorage.removeItem("refreshToken");
+    navigate("/management/login");
   };
   const isActive = (href) => {
     return location.pathname === href;

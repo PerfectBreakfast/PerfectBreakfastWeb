@@ -32,6 +32,20 @@ const OrderDetail = () => {
       </div>
     );
   }
+  const getStatusColorAndText = (status) => {
+    switch (status) {
+      case "Pending":
+        return { color: "text-gray-500", text: "Chờ thanh toán" };
+      case "Paid":
+        return { color: "text-yellow-500", text: "Đã thanh toán" };
+      case "Completed":
+        return { color: "text-green-500", text: "Đã giao thành công" };
+      case "Cancel":
+        return { color: "text-red-500", text: "Đã hủy" };
+      default:
+        return { color: "text-gray-500", text: "Chưa xác định" };
+    }
+  };
   return (
     <div className="flex flex-col max-w-md mx-auto px-4 py-4">
       {orderData && (
@@ -82,7 +96,7 @@ const OrderDetail = () => {
                       <p className=" text-gray-500">x {detail.quantity}</p>
                     </div>
                   </div>
-                  <span className="text-green-500 font-semibold">
+                  <span className=" font-semibold">
                     {detail.unitPrice.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
@@ -96,8 +110,13 @@ const OrderDetail = () => {
           <div className=" mb-4">
             <div className="flex justify-between">
               <p className="text-gray-600">Trạng thái đơn hàng</p>
-              <p className="text-green-500 font-semibold">
-                {orderData.orderStatus}
+
+              <p
+                className={`${
+                  getStatusColorAndText(orderData.orderStatus).color
+                } font-semibold`}
+              >
+                {getStatusColorAndText(orderData.orderStatus).text}
               </p>
             </div>
             <div className="flex justify-between mt-2">
@@ -116,15 +135,19 @@ const OrderDetail = () => {
           </div>
 
           <div>
-            <div className="flex justify-center">
-              {" "}
-              <QRCode value={`pb#${orderData.id}`} />
-            </div>
+            {orderData.orderStatus === "Paid" && (
+              <div className="flex justify-center">
+                <QRCode value={`pb#${orderData.id}`} />
+              </div>
+            )}
 
-            <div className="flex justify-center">
-              {" "}
-              <h2 className="text-lg font-semibold mt-3">Quét để nhận hàng</h2>
-            </div>
+            {orderData.orderStatus === "Paid" && (
+              <div className="flex justify-center">
+                <h2 className="text-lg font-semibold mt-3">
+                  Quét để nhận hàng
+                </h2>
+              </div>
+            )}
           </div>
         </>
       )}

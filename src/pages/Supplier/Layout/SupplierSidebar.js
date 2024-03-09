@@ -33,7 +33,8 @@ const SupplierSidebar = () => {
   const location = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/supplier/login");
+    localStorage.removeItem("refreshToken");
+    navigate("/management/login");
   };
   const isActive = (href) => {
     return location.pathname === href;

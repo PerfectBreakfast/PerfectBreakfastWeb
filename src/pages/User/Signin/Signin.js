@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ClipLoader } from "react-spinners";
 
+import { encryptToken } from "../../../services/CryptoService";
+
 const Login = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -31,19 +33,28 @@ const Login = () => {
     setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
     try {
       const userData = await userAPI.login(credentials);
-      localStorage.setItem("accessToken", userData.accessToken);
+
+      const accessToken = userData.accessToken;
+      const refreshToken = userData.refreshToken;
+      // Mã hóa tokens
+      const encryptedAccessToken = encryptToken(accessToken);
+      const encryptedRefreshToken = encryptToken(refreshToken);
+
+      // Lưu vào localStorage
+      localStorage.setItem("accessToken", encryptedAccessToken);
+      localStorage.setItem("refreshToken", encryptedRefreshToken);
       navigate("/home");
     } catch (error) {
+      console.log(error);
       toast.error("Email hoặc mật khẩu không chính xác");
     } finally {
-      setIsLoading(false); // Kết thúc quá trình tải, set isLoading = false
+      setIsLoading(false);
     }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   return (
     <div className="max-w-xs mx-auto text-center">
       <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />

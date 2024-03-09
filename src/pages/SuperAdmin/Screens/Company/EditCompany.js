@@ -210,7 +210,7 @@ const EditCompany = () => {
 
   return (
     <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      <h2 className="text-xl font-semibold mb-4">Tạo mới công ty</h2>
+      <h2 className="text-xl font-semibold mb-4">Chỉnh sửa công ty</h2>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-3">
           <div>
@@ -404,7 +404,7 @@ const EditCompany = () => {
             type="button"
             onClick={handleEditClick}
           >
-            Edit Company
+            Lưu thay đổi
           </button>
         </div>
       </form>
@@ -417,22 +417,23 @@ const EditCompany = () => {
         onRequestClose={closeModal}
         style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
         className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto">
-          <h2 className="text-lg font-semibold mb-4">Confirm Edit</h2>
-          <p>Are you sure you want to apply these changes?</p>
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn lưu thay đổi cho công ty này không?</p>
           <div className="flex justify-end gap-4 mt-4">
-            <button className="btn-cancel" onClick={closeModal}>
-              Cancel
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeModal}
+            >
+              Hủy bỏ
             </button>
             <button
-              className="btn-confirm"
-              onClick={() => {
-                closeModal();
-                formik.handleSubmit();
-              }}
+              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              onClick={() => formik.handleSubmit()}
             >
-              Confirm
+              Xác nhận
             </button>
           </div>
         </div>
