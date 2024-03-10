@@ -79,6 +79,46 @@ function ComboDetail() {
     }, 500); // Ẩn pop-up sau 1 giây
   };
 
+  // const handleAddToCart = () => {
+  //   const itemToAdd = {
+  //     id: comboData.id,
+  //     name: comboData.name,
+  //     image: comboData.image,
+  //     quantity,
+  //     price: comboData.comboPrice,
+  //   };
+
+  //   // Tạo một clone của hình ảnh sản phẩm
+  //   const productImage = document.createElement("img");
+  //   productImage.src = comboData.image;
+  //   productImage.style.position = "fixed";
+  //   productImage.style.left = "50%"; // Giả sử sản phẩm ở giữa màn hình
+  //   productImage.style.top = "50%";
+  //   productImage.style.transform = "translate(-50%, -50%)";
+  //   productImage.style.transition = "all 0.5s ease";
+  //   document.body.appendChild(productImage);
+
+  //   // Chờ một chút trước khi di chuyển hình ảnh
+  //   setTimeout(() => {
+  //     productImage.style.left = "50%";
+  //     productImage.style.top = "100%"; // Di chuyển đến dưới cùng của trang
+  //     productImage.style.transform = "translate(-50%, -100%) scale(0.1)";
+  //     productImage.style.opacity = "0";
+  //   }, 100);
+
+  //   // Xóa hình ảnh sau khi chuyển cảnh
+  //   setTimeout(() => {
+  //     productImage.remove();
+  //   }, 600); // Đợi cho đến khi hoàn thành chuyển động
+
+  //   addToCart(itemToAdd);
+  //   setShowPopup(true);
+  //   setTimeout(() => {
+  //     setShowPopup(false);
+  //     navigate(-1); // Quay lại màn hình trước sau khi pop-up ẩn
+  //   }, 500); // Ẩn pop-up sau 1 giây
+  // };
+
   const totalPrice = comboData ? comboData.comboPrice * quantity : 0;
   const formattedTotalPrice = totalPrice.toLocaleString("vi-VN", {
     style: "currency",
