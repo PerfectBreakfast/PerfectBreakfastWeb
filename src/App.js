@@ -75,7 +75,7 @@ function App() {
             <Route path="/supplier/login" element={<SupplierLogin />} />
             <Route path="/delivery/login" element={<DeliveryLogin />} />
             <Route path="/loading" element={<Loading />} />
-            <Route path="/scan" element={<QrScan />} />
+            {/* <Route path="/scan" element={<QrScan />} /> */}
           </Routes>
         </CartProvider>
       </Router>
