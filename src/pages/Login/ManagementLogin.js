@@ -59,7 +59,8 @@ const ManagementLogin = () => {
       } else if (roles.includes("SUPPLIER ADMIN")) {
         navigate("/supplier/foods");
       } else if (roles.includes("DELIVERY ADMIN")) {
-        navigate("/delivery/order");
+        // navigate("/delivery/order");
+        navigate("/scan");
       } else {
         toast.error("Email hoặc mật khẩu không chính xác");
       }
