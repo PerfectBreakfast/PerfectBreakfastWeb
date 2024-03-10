@@ -35,7 +35,8 @@ import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
 import Loading from "./pages/Loading/Loading";
 import Notification from "./pages/User/Notification/Notification";
 import ManagementLogin from "./pages/Login/ManagementLogin";
-import QrScan from "./components/ScanQR";
+
+import QrScanner from "./components/ScanQR";
 
 function App() {
   return (
@@ -75,7 +76,7 @@ function App() {
             <Route path="/supplier/login" element={<SupplierLogin />} />
             <Route path="/delivery/login" element={<DeliveryLogin />} />
             <Route path="/loading" element={<Loading />} />
-            {/* <Route path="/scan" element={<QrScan />} /> */}
+            <Route path="/scan" element={<QrScanner />} />
           </Routes>
         </CartProvider>
       </Router>
