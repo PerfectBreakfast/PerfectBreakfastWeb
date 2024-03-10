@@ -2,15 +2,11 @@ import axios from "axios";
 import axiosInstance from "./axiosConfig";
 import api from "./api";
 
-const accountApi = "https://pb-dev-api.azurewebsites.net";
-
 const userAPI = {
   getUser: async () => {
     try {
       // Gọi API với header Authorization chứa token
-      const response = await axiosInstance.get(
-        `${accountApi}/account/current-user`
-      );
+      const response = await axiosInstance.get(`${api}/account/current-user`);
 
       return response.data;
     } catch (error) {
@@ -21,10 +17,7 @@ const userAPI = {
 
   login: async (credentials) => {
     try {
-      const response = await axios.post(
-        `${accountApi}/account/signin`,
-        credentials
-      );
+      const response = await axios.post(`${api}/account/signin`, credentials);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -33,10 +26,7 @@ const userAPI = {
 
   register: async (userData) => {
     try {
-      const response = await axios.post(
-        `${accountApi}/account/signup`,
-        userData
-      );
+      const response = await axios.post(`${api}/account/signup`, userData);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;

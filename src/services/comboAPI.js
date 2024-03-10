@@ -1,13 +1,11 @@
 import axios from "axios";
 import axiosInstance from "./axiosConfig";
-
-const BASE_URL = "https://pb-dev-api.azurewebsites.net";
-const token = localStorage.getItem("accessToken");
+import api from "./api";
 
 const comboAPI = {
   getAllCombo: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/combos`);
+      const response = await axiosInstance.get(`${api}/v1/combos`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -16,9 +14,7 @@ const comboAPI = {
 
   getComboById: async (comboId) => {
     try {
-      const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/combos/${comboId}`
-      );
+      const response = await axiosInstance.get(`${api}/v1/combos/${comboId}`);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -28,11 +24,10 @@ const comboAPI = {
   getComboByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/api/v1/combos/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
+        `${api}/v1/combos/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {
-      console.log("loi", error.response);
       throw error.response ? error.response.data : error.message;
     }
   },
@@ -40,7 +35,7 @@ const comboAPI = {
   createCombo: async (newComboData) => {
     try {
       const response = await axiosInstance.post(
-        `${BASE_URL}/api/v1/combos`,
+        `${api}/v1/combos`,
         newComboData
       );
       return response.data;
@@ -51,7 +46,7 @@ const comboAPI = {
   editCombo: async (comboId, newComboData) => {
     try {
       const response = await axiosInstance.put(
-        `${BASE_URL}/api/v1/combos/${comboId}`,
+        `${api}/v1/combos/${comboId}`,
         newComboData
       );
       return response.data;
@@ -62,7 +57,7 @@ const comboAPI = {
   deleteComboById: async (comboId) => {
     try {
       const response = await axiosInstance.delete(
-        `${BASE_URL}/api/v1/combos/${comboId}`
+        `${api}/v1/combos/${comboId}`
       );
       return response.data;
     } catch (error) {
