@@ -14,7 +14,7 @@ const refreshAccessToken = async () => {
 
     // Gửi refreshToken tới server để nhận accessToken mới
     const response = await fetch(
-      'http://localhost:5198/api/account/refresh-user-token',
+      'https://pb-dev-api.azurewebsites.net/api/account/refresh-user-token',
       {
         method: "POST",
         headers: {
@@ -25,8 +25,6 @@ const refreshAccessToken = async () => {
     );
 
     const data = await response.json();
-    console.log(response);
-    console.log(data);
     if (response.ok) {
       // Mã hóa accessToken mới và lưu vào localStorage
       const accessToken = data.accessToken;
