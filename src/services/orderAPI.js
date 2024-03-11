@@ -14,8 +14,11 @@ const orderAPI = {
   getOrderHistory: async () => {
     try {
       const response = await axiosInstance.get(`${api}/v1/orders/history`);
+      console.log("dda thanh coong");
       return response.data;
     } catch (error) {
+      console.log("hahahahahahahahahahahahahahhahaahhahahah");
+      console.log(error)
       throw error.response ? error.response.data : error.message;
     }
   },

@@ -48,12 +48,10 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     console.log("Handling error:", error);
 
-    // Thêm kiểm tra này để xác định lỗi mạng
-    if (error.code === "ERR_NETWORK") {
-      console.log("check network refresh");
-      console.error("Network error occurred:", error.message);
-
-      const originalRequest = error.config;
+    if(error.response.data.statusCode === 401 
+      && error.response.data.statusPhrase === "Token Expired") {
+        console.log("thực hiện refresh token");
+        const originalRequest = error.config;
       if (!originalRequest._retry) {
         originalRequest._retry = true;
         try {
@@ -71,39 +69,64 @@ axiosInstance.interceptors.response.use(
           return Promise.reject(refreshError);
         }
       }
-      return Promise.reject(error);
-    }
+      }
 
-    const { response } = error;
-    console.log("Handling error 1:", response ? error.response : "No response"); // Cập nhật để kiểm tra response tồn tại
+    // Thêm kiểm tra này để xác định lỗi mạng
+    // if (error.code === "ERR_NETWORK") {
+    //   console.log("check network refresh");
+    //   console.error("Network error occurred:", error.message);
+
+    //   const originalRequest = error.config;
+    //   if (!originalRequest._retry) {
+    //     originalRequest._retry = true;
+    //     try {
+    //       const newAccessToken = await refreshAccessToken();
+    //       if (newAccessToken) {
+    //         const encryptedAccessToken = encryptToken(newAccessToken);
+    //         localStorage.setItem("accessToken", encryptedAccessToken); // Cập nhật token mới vào storage
+    //         originalRequest.headers["Authorization"] = `Bearer ${decryptToken(
+    //           encryptedAccessToken
+    //         )}`;
+    //         return axiosInstance(originalRequest); // Gửi lại yêu cầu với token mới
+    //       }
+    //     } catch (refreshError) {
+    //       console.error("Unable to refresh token:", refreshError);
+    //       return Promise.reject(refreshError);
+    //     }
+    //   }
+    //   return Promise.reject(error);
+    // }
+
+    //const { response } = error;
+    //console.log("Handling error 1:", response ? error.response : "No response"); // Cập nhật để kiểm tra response tồn tại
     // console.log("Handling error 2:", error.data); // Dòng này có thể không cần thiết vì error.data thường không tồn tại
 
-    if (
-      response &&
-      response.data &&
-      response.data.statusCode === 401 &&
-      response.data.statusPhrase === "Token Expired"
-    ) {
-      console.log("check 401 refresh");
-      const originalRequest = error.config;
-      if (!originalRequest._retry) {
-        originalRequest._retry = true;
-        try {
-          const newAccessToken = await refreshAccessToken();
-          if (newAccessToken) {
-            const encryptedAccessToken = encryptToken(newAccessToken);
-            localStorage.setItem("accessToken", encryptedAccessToken); // Cập nhật token mới vào storage
-            originalRequest.headers["Authorization"] = `Bearer ${decryptToken(
-              encryptedAccessToken
-            )}`;
-            return axiosInstance(originalRequest); // Gửi lại yêu cầu với token mới
-          }
-        } catch (refreshError) {
-          console.error("Unable to refresh token:", refreshError);
-          return Promise.reject(refreshError);
-        }
-      }
-    }
+    // if (
+    //   response &&
+    //   response.data &&
+    //   response.data.statusCode === 401 &&
+    //   response.data.statusPhrase === "Token Expired"
+    // ) {
+    //   console.log("check 401 refresh");
+    //   const originalRequest = error.config;
+    //   if (!originalRequest._retry) {
+    //     originalRequest._retry = true;
+    //     try {
+    //       const newAccessToken = await refreshAccessToken();
+    //       if (newAccessToken) {
+    //         const encryptedAccessToken = encryptToken(newAccessToken);
+    //         localStorage.setItem("accessToken", encryptedAccessToken); // Cập nhật token mới vào storage
+    //         originalRequest.headers["Authorization"] = `Bearer ${decryptToken(
+    //           encryptedAccessToken
+    //         )}`;
+    //         return axiosInstance(originalRequest); // Gửi lại yêu cầu với token mới
+    //       }
+    //     } catch (refreshError) {
+    //       console.error("Unable to refresh token:", refreshError);
+    //       return Promise.reject(refreshError);
+    //     }
+    //   }
+    // }
     return Promise.reject(error);
   }
 );

@@ -1,5 +1,6 @@
 import React from "react";
 import { decryptToken, encryptToken } from "./CryptoService";
+import api from "./api";
 
 const refreshAccessToken = async () => {
   try {
@@ -13,7 +14,7 @@ const refreshAccessToken = async () => {
 
     // Gửi refreshToken tới server để nhận accessToken mới
     const response = await fetch(
-      "https://pb-dev-api.azurewebsites.net/account/refresh-user-token",
+      'http://localhost:5198/api/account/refresh-user-token',
       {
         method: "POST",
         headers: {
@@ -24,6 +25,8 @@ const refreshAccessToken = async () => {
     );
 
     const data = await response.json();
+    console.log(response);
+    console.log(data);
     if (response.ok) {
       // Mã hóa accessToken mới và lưu vào localStorage
       const accessToken = data.accessToken;
