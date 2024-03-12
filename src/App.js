@@ -46,6 +46,7 @@ function App() {
         <CartProvider>
           <Routes>
             {/* User */}
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             {/* login cho QTV */}
             <Route path="/management/login" element={<ManagementLogin />} />
