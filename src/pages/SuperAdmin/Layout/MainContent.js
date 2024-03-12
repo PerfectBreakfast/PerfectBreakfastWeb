@@ -32,6 +32,7 @@ import CreateSupplier from "../Screens/SupplierUnit/CreateSupplier";
 import CreateDelivery from "../Screens/DeliveryUnit/CreateDelivery";
 import EditCompany from "../Screens/Company/EditCompany";
 import CompanyDetail from "../Screens/Company/CompanyDetail";
+import FoodRegistration from "../Screens/SupplierUnit/FoodRegistration";
 
 const MainContent = () => {
   return (
@@ -50,6 +51,7 @@ const MainContent = () => {
       <Route path="combo/:id/edit" element={<EditCombo />} />
       <Route path="suppliers" element={<SupplierUnitList />} />
       <Route path="supplier/:id" element={<SupplierDetail />} />
+      <Route path="supplier/:id/registration" element={<FoodRegistration />} />
       <Route path="supplier/create" element={<CreateSupplier />} />
       <Route path="supplier/:id/edit" element={<EditSupplier />} />
       <Route path="delivery" element={<DeliveryUnitList />} />

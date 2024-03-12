@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import dishAPI from "../../../../services/dishAPI";
+import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 
 const OrderDetailByCompany = () => {
   const { dailyOrderId } = useParams();
@@ -61,31 +62,6 @@ const OrderDetailByCompany = () => {
     navigate(`assign`);
   };
 
-  const renderOrderStatus = (status) => {
-    let statusText;
-    let colorClass;
-
-    switch (status) {
-      case "Initial":
-        statusText = "Chờ xử lý";
-        colorClass = "text-gray-500"; // Màu xám
-        break;
-      case "Processing":
-        statusText = "Đang xử lý";
-        colorClass = "text-yellow-500"; // Màu vàng
-        break;
-      case "Complete":
-        statusText = "Hoàn thành";
-        colorClass = "text-green-500"; // Màu xanh lá
-        break;
-      default:
-        statusText = "Không xác định";
-        colorClass = "text-gray-500";
-    }
-
-    return <span className={`${colorClass}`}>{statusText}</span>;
-  };
-
   console.log("dalyorder", orderData);
   return (
     <div className="container mx-auto p-4">
@@ -125,7 +101,7 @@ const OrderDetailByCompany = () => {
                 <span className="font-bold">
                   {" "}
                   {""}
-                  {renderOrderStatus(orderData.status)}
+                  <DailyOrderStatus status={orderData.status} />
                 </span>
               </p>
               <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>

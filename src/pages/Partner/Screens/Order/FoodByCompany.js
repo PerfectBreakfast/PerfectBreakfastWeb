@@ -7,16 +7,23 @@ import Modal from "react-modal";
 import Loading from "../../../Loading/Loading";
 
 import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignmentAPI";
+import SupplierFoodAssigmentStatus from "../../../../components/Status/SupplierFoodAssigmentStatus";
+import supplierUnitAPI from "../../../../services/supplierUnitAPI";
 
 const FoodByCompany = () => {
   const [foodData, setFoodData] = useState([]);
+  const [supplierData, setSupplierData] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [confirmFoodId, setConfirmFoodId] = useState(null);
+  const [distributeModalIsOpen, setDistributeModalIsOpen] = useState(false);
+  const [selectedSupplierId, setSelectedSupplierId] = useState("");
+
   useEffect(() => {
     fetchFoodList();
+    fetchSupplier();
   }, [pageIndex]);
 
   const fetchFoodList = async () => {
@@ -31,6 +38,15 @@ const FoodByCompany = () => {
       console.error("Error fetching data:", error);
     }
   };
+  const fetchSupplier = async () => {
+    try {
+      const data = await supplierUnitAPI.getsAllSupplierByPartner();
+      setSupplierData(data);
+    } catch (error) {
+      console.error("Error fetching supplier data:", error);
+    }
+  };
+
   console.log("food", foodData);
   const handleConfirm = async () => {
     if (confirmFoodId) {
@@ -51,31 +67,6 @@ const FoodByCompany = () => {
     setPageIndex(value - 1);
   };
 
-  const renderOrderStatus = (status) => {
-    let statusText;
-    let colorClass;
-
-    switch (status) {
-      case "Pending":
-        statusText = "Chờ xác nhận";
-        colorClass = "text-gray-500"; // Màu xám
-        break;
-      case "Confirmed":
-        statusText = "Đã xác nhận";
-        colorClass = "text-yellow-500"; // Màu vàng
-        break;
-      case "Completed":
-        statusText = "Hoàn thành";
-        colorClass = "text-green-500"; // Màu xanh lá
-        break;
-      default:
-        statusText = "Không xác định";
-        colorClass = "text-gray-500";
-    }
-
-    return <span className={`${colorClass}`}>{statusText}</span>;
-  };
-
   const openModal = (foodId) => {
     setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận
     setIsOpen(true);
@@ -84,6 +75,42 @@ const FoodByCompany = () => {
   const closeModal = () => {
     setIsOpen(false);
     setConfirmFoodId(null); // Reset ID sau khi đóng modal
+  };
+
+  // const openAssignModal = (foodId) => {
+  //   setConfirmFoodId(foodId);
+  // };
+
+  const openAssignModal = (foodId) => {
+    setConfirmFoodId(foodId);
+    setDistributeModalIsOpen(true);
+  };
+
+  const closeAssignModal = () => {
+    setDistributeModalIsOpen(false);
+    setConfirmFoodId(null);
+    setSelectedSupplierId("");
+  };
+
+  const reassignFood = async () => {
+    if (!selectedSupplierId) {
+      toast.error("Vui lòng chọn nhà cung cấp.");
+      return;
+    }
+
+    try {
+      const foodAssignments = {
+        supplierFoodAssignmentId: confirmFoodId,
+        supplierId: selectedSupplierId,
+      };
+      await SupplierFoodAssignmentAPI.reFoodAssigment(foodAssignments);
+      toast.success("Phân phối thành công!");
+      fetchFoodList(); // Refetch the food list to update the UI
+      closeAssignModal();
+    } catch (error) {
+      console.error("Error reassigning food:", error);
+      toast.error(error.errors);
+    }
   };
 
   return (
@@ -116,8 +143,9 @@ const FoodByCompany = () => {
                               Trạng thái
                             </th>
                             <th className="py-3 px-6 text-center">
-                              Xác nhận đơn hàng
+                              Xác nhận nhận hàng
                             </th>
+                            <th className="py-3 px-6 text-center"></th>
                           </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
@@ -133,7 +161,9 @@ const FoodByCompany = () => {
                                 {foodItem.amountCooked}
                               </td>
                               <td className="py-3 px-6 text-center font-semibold">
-                                {renderOrderStatus(foodItem.status)}
+                                <SupplierFoodAssigmentStatus
+                                  status={foodItem.status}
+                                />
                               </td>
                               <td className="py-3 px-6 text-center">
                                 {foodItem.status === "Confirmed" && (
@@ -142,6 +172,16 @@ const FoodByCompany = () => {
                                     onClick={() => openModal(foodItem.id)}
                                   >
                                     Xác nhận
+                                  </button>
+                                )}
+                              </td>
+                              <td className="py-3 px-6 text-center">
+                                {foodItem.status === "Declined" && (
+                                  <button
+                                    className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600"
+                                    onClick={() => openAssignModal(foodItem.id)}
+                                  >
+                                    Phân phối
                                   </button>
                                 )}
                               </td>
@@ -157,6 +197,7 @@ const FoodByCompany = () => {
           </div>
         ))}
       </div>
+      {/* Modal xác nhận */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -183,6 +224,47 @@ const FoodByCompany = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Modal phân lại đơn hàng */}
+      <Modal
+        isOpen={distributeModalIsOpen}
+        onRequestClose={closeAssignModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        contentLabel="Chọn nhà cung cấp"
+        className="fixed inset-0 flex items-center justify-center"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Chọn nhà cung cấp</h2>
+          <select
+            value={selectedSupplierId}
+            onChange={(e) => setSelectedSupplierId(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="">Chọn nhà cung cấp</option>
+            {supplierData &&
+              supplierData.map((supplier) => (
+                <option key={supplier.id} value={supplier.id}>
+                  {supplier.name}
+                </option>
+              ))}
+          </select>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
+              onClick={closeAssignModal}
+            >
+              Hủy bỏ
+            </button>
+            <button
+              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              onClick={() => reassignFood()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );

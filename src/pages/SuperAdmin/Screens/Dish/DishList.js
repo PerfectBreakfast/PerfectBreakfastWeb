@@ -185,7 +185,7 @@ const Dishes = () => {
                         />
                         <Delete
                           onClick={() => handleDeleteClick(dish.id)}
-                          className="size-5 cursor-pointer ml-4"
+                          className="size-5 cursor-pointer ml-4 text-red-500"
                         />
                       </div>
                     </td>
