@@ -43,11 +43,6 @@ const QrScanner = () => {
           {/* Placeholder for QR scanner */}
         </div>
       </div>
-      {orderId && (
-        <div className="mt-4 p-4 bg-blue-500 text-white rounded-md shadow">
-          <p>Order ID: {orderId}</p>
-        </div>
-      )}
     </div>
   );
 };

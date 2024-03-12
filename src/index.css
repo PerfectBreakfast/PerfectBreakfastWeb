@@ -15,3 +15,44 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "./assets/css/datatables.css";
+
+@layer components {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body.dark {
+    @apply bg-[#060818];
+  }
+
+  /* tables */
+  .table-responsive {
+    @apply overflow-auto;
+  }
+  table {
+    @apply w-full !border-collapse;
+  }
+  table thead tr,
+  table tfoot tr {
+    @apply border-b-0 !bg-[#f6f8fa]  dark:!bg-[#1a2941];
+  }
+  table thead tr th,
+  table tfoot tr th,
+  table tbody tr td {
+    @apply py-3 px-4 ltr:text-left rtl:text-right;
+  }
+  table thead tr th,
+  table tfoot tr th {
+    @apply font-semibold;
+  }
+
+  table.dataTable-table tbody tr th,
+  table.dataTable-table tbody tr td {
+    @apply border-b border-white-light/40 py-3 px-4 ltr:text-left rtl:text-right dark:border-[#191e3a];
+  }
+  table.dataTable-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+}

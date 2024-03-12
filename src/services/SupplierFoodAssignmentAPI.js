@@ -44,10 +44,24 @@ const SupplierFoodAssignmentAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  confirmSupplierFoodAssignmentBySupplier: async (supplierFoodAssignmentId) => {
+  confirmSupplierFoodAssignmentBySupplier: async (
+    supplierFoodAssignmentId,
+    status
+  ) => {
     try {
       const response = await axiosInstance.put(
-        `${api}/v1/supplierfoodassigments/${supplierFoodAssignmentId}/status-confirmation`
+        `${api}/v1/supplierfoodassigments/${supplierFoodAssignmentId}/status-confirmation?status=${status}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  reFoodAssigment: async (foodAssignments) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/supplierfoodassigments`,
+        foodAssignments
       );
       return response.data;
     } catch (error) {

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import { ToastContainer } from "react-toastify";
+import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -31,31 +32,6 @@ const OrderList = () => {
   };
 
   console.log("data", orders);
-
-  const renderOrderStatus = (status) => {
-    let statusText;
-    let colorClass;
-
-    switch (status) {
-      case "Initial":
-        statusText = "Chờ xử lý";
-        colorClass = "text-gray-500"; // Màu xám
-        break;
-      case "Processing":
-        statusText = "Đang xử lý";
-        colorClass = "text-yellow-500"; // Màu vàng
-        break;
-      case "Complete":
-        statusText = "Hoàn thành";
-        colorClass = "text-green-500"; // Màu xanh lá
-        break;
-      default:
-        statusText = "Không xác định";
-        colorClass = "text-gray-500";
-    }
-
-    return <span className={`${colorClass}`}>{statusText}</span>;
-  };
 
   return (
     <div className="container mx-auto p-4">
@@ -93,7 +69,7 @@ const OrderList = () => {
                       {order.orderQuantity}
                     </td>
                     <td className="py-3 px-6">
-                      {renderOrderStatus(order.status)}
+                      <DailyOrderStatus status={order.status} />
                     </td>
                   </tr>
                 ))

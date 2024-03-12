@@ -1,0 +1,60 @@
+table > thead > tr > th,
+table > tbody > tr > td {
+  @apply !py-3 !px-4 text-sm;
+}
+table > thead > tr > th.mantine-187dsit {
+  background-color: rgb(224 230 237 / 0.3);
+}
+.datatables table tbody tr {
+  @apply bg-white dark:!border-[#191e3a] dark:bg-black;
+}
+
+.datatables table tr.mantine-1ublbff.mantine-1ublbff {
+  @apply bg-transparent;
+}
+.datatables table tbody tr td {
+  @apply !border-0 !border-none;
+}
+table tr .mantine-Checkbox-root {
+  @apply flex;
+}
+
+.datatables .table-bordered table thead tr th,
+.datatables .table-bordered table tbody tr td {
+  @apply !border !border-solid !border-[#f6f7fa] dark:!border-[#191e3a];
+}
+
+.datatables .table-compact table thead tr th,
+.datatables .table-compact table tbody tr td {
+  @apply !py-2 !px-3;
+}
+/* .datatables table thead tr th.text-center > div {
+    @apply text-center;
+} */
+.datatables .mantine-gzzjso,
+.datatables .mantine-lrzwoq {
+  @apply border-t-0 !p-0 !pt-5 !bg-transparent;
+}
+.datatables.pagination-padding .mantine-gzzjso {
+  @apply !px-5;
+}
+[dir="rtl"] .datatables .mantine-ScrollArea-root.mantine-lvjyp7 {
+  direction: rtl;
+}
+
+.datatables thead tr th .mantine-Group-root.mantine-1d34tqu {
+  @apply justify-start;
+}
+.datatables thead tr th .mantine-Group-root.mantine-1d34tqu .mantine-oqxib5 {
+  @apply flex-grow-0;
+}
+.mantine-Group-root > .mantine-Text-root {
+  @apply hidden;
+}
+
+.mantine-Table-root th.text-right .mantine-Group-root {
+  @apply !justify-end;
+}
+.datatables .mantine-Group-root[role="navigation"] {
+  @apply flex-auto justify-end gap-1;
+}
