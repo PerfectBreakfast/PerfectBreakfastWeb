@@ -7,23 +7,23 @@ on:
   workflow_dispatch: 
 
 jobs:
-  build:
-    runs-on: hehe # run bằng host tự tạo của toi
-    timeout-minutes: 5
+  # build:
+  #   runs-on: hehe # run bằng host tự tạo của toi
+  #   timeout-minutes: 5
     
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
         
-      - name: Setup Node.js 
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18 # Sửa đổi tương ứng với phiên bản node của bạn
-      - run: npm ci
-      - run: npm run build
+  #     - name: Setup Node.js 
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18 # Sửa đổi tương ứng với phiên bản node của bạn
+  #     - run: npm ci
+  #     - run: npm run build
   
   deploy:
     runs-on: hehe
-    needs: build
+    # needs: build
     steps:
       - uses: actions/checkout@v4
 
