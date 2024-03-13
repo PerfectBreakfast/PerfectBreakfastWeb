@@ -37,8 +37,31 @@
   }
 }
 
+.border-1 {
+  border-width: 1px;
+}
+
+.btn-add {
+  @apply font-semibold h-10 gap-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+}
+
+.btn-add-secondary {
+  @apply border-1 border-green-400 hover:bg-green-400 hover:text-white font-semibold h-8 gap-2 text-green-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+}
+.btn-add-third {
+  @apply border-1 border-sky-400 hover:bg-sky-400 hover:text-white font-semibold h-8 gap-2 text-sky-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+}
+
+.input-search {
+  @apply h-10 py-2 px-4 border rounded-xl text-gray-700 focus:outline-none font-medium focus:border-green-500;
+}
+
 .input-form {
   @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.display-img {
+  @apply w-16 h-12 rounded-xl;
 }
 
 .formik-error-message {
@@ -65,9 +88,32 @@
   @apply px-4 py-2 rounded-full border-0 text-sm font-semibold bg-green-50 text-green-700 hover:bg-green-100 mt-2;
 }
 
+.confirm-modal {
+  @apply bg-white rounded-xl px-9 py-6 max-w-lg mx-auto z-50;
+}
+
+.btn-cancel {
+  @apply font-semibold px-4 py-2 border border-gray-400 hover:bg-gray-100 rounded-xl text-black;
+}
+.btn-confirm-delete {
+  @apply font-semibold px-4 py-2 bg-red-500 hover:bg-red-700 rounded-xl text-white;
+}
+
+.btn-confirm {
+  @apply font-semibold px-4 py-2 bg-green-500 hover:bg-green-700 rounded-xl text-white;
+}
+
+.delete-icon {
+  @apply size-5 cursor-pointer ml-4 text-red-500;
+}
+
 .number-input-form {
   @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
 
+.text-name {
+  @apply font-bold cursor-pointer hover:text-green-500;
+}
+
 /* Data tables css */
-@import "assets/css/datatables.css";
+/* @import "assets/css/datatables.css"; */

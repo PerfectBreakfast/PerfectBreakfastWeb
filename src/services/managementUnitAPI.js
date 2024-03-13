@@ -14,7 +14,7 @@ const managementUnitAPI = {
   getManagementUnitByPagination: async (searchTerm, pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=10`
+        `${api}/v1/partners/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=5`
       );
       return response.data;
     } catch (error) {

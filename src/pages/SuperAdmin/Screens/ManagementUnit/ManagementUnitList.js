@@ -7,6 +7,7 @@ import managementUnitAPI from "../../../../services/managementUnitAPI";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
 
 import Modal from "react-modal";
 import Loading from "../../../Loading/Loading";
@@ -108,18 +109,14 @@ const ManagementUnitList = () => {
         <h2 className="text-2xl font-semibold mb-4">Danh sách đối tác</h2>
 
         <div className="flex justify-between items-center mb-4">
-          <button
-            id="create-btn"
-            type="button"
-            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            onClick={handleClickCreate}
-          >
+          <button type="button" className="btn-add" onClick={handleClickCreate}>
+            <Plus />
             Thêm đối tác
           </button>
           <div className="flex gap-2 items-center">
             <input
               type="text"
-              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              className="input-search "
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -129,24 +126,24 @@ const ManagementUnitList = () => {
                 }
               }}
             />
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
-            </button>
+            </button> */}
           </div>
         </div>
-        <div className="bg-white shadow-md my-6">
+        <div className="bg-white shadow-md my-6 overflow-auto">
           <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6">Tên công ty</th>
-                <th className="py-3 px-6">Địa chỉ</th>
-                <th className="py-3 px-6">Số điện thoại</th>
-                <th className="py-3 px-6">Quản trị viên</th>
-                <th className="py-3 px-6"></th>
-                <th className="py-3 px-6"></th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
+                <th className="py-2.5 font-extrabold px-6">Quản trị viên</th>
+                <th className="py-2.5 font-extrabold px-6"></th>
+                <th className="py-2.5 font-extrabold px-6"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -162,22 +159,22 @@ const ManagementUnitList = () => {
                     key={managementUnit.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left font-bold">
+                    <td className="py-2.5 px-6 text-left font-bold">
                       <span
-                        className="font-medium cursor-pointer hover:text-blue-500"
+                        className="text-name "
                         onClick={() => handleDetailClick(managementUnit.id)}
                       >
                         {managementUnit.name}
                       </span>
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {managementUnit.address}
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {managementUnit.phoneNumber}
                     </td>
 
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <ul>
                         {managementUnit.owners.map((owner, index) => (
                           <li key={index}>{owner}</li>
@@ -185,9 +182,9 @@ const ManagementUnitList = () => {
                       </ul>
                     </td>
 
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        className="btn-add-secondary "
                         onClick={() =>
                           handleAddEmployeeClick(managementUnit.id)
                         }
@@ -195,7 +192,7 @@ const ManagementUnitList = () => {
                         Thêm QTV
                       </button>
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <div className="flex">
                         <Write
                           onClick={() => handleEditClick(managementUnit.id)}
@@ -203,7 +200,7 @@ const ManagementUnitList = () => {
                         />
                         <Delete
                           onClick={() => handleDeleteClick(managementUnit.id)}
-                          className="size-5 cursor-pointer ml-4"
+                          className="delete-icon "
                         />
                       </div>
                     </td>
@@ -238,18 +235,15 @@ const ManagementUnitList = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+        <div className="confirm-modal ">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn xóa dữ liệu này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              className="btn-confirm-delete"
               onClick={() => handleDelete()}
             >
               Xác nhận

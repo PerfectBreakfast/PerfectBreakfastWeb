@@ -27,7 +27,6 @@ const OrderList = () => {
     setPageIndex(value - 1);
   };
   const handleDetailClick = (dailyOrderId) => {
-    // Navigate to the detail page with companyId and bookingDate
     navigate(`detail/${dailyOrderId}`);
   };
 

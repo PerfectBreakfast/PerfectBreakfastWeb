@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deliveryUnitAPI from "../../../../services/deliveryUnitAPI";
 import { ToastContainer, toast } from "react-toastify";
-import {
-  Box,
-  Button,
-  // Modal,
-  Pagination,
-  TextField,
-} from "@mui/material";
+import { Pagination } from "@mui/material";
 
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
+
 import Loading from "../../../Loading/Loading";
 import Modal from "react-modal";
 
@@ -160,18 +156,14 @@ const DeliveryUnitList = () => {
         </h2>
 
         <div className="flex justify-between items-center mb-4">
-          <button
-            id="create-btn"
-            type="button"
-            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            onClick={handleClickCreate}
-          >
+          <button type="button" className="btn-add" onClick={handleClickCreate}>
+            <Plus />
             Thêm đơn vị vận chuyển
           </button>
           <div className="flex gap-2 items-center">
             <input
               type="text"
-              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              className="input-search "
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -181,26 +173,26 @@ const DeliveryUnitList = () => {
                 }
               }}
             />
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
-            </button>
+            </button> */}
           </div>
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className=" w-full table-auto">
+        <div className="bg-white shadow-md my-6 overflow-auto">
+          <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-1/7 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/7 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/7 break-words">Số điện thoại</th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
 
-                <th className="py-3 px-6 w-1/7 break-words">Quản trị viên</th>
-                <th className="py-3 px-6 w-1/7 break-words"></th>
-                <th className="py-3 px-6 w-1/7 break-words"></th>
+                <th className="py-2.5 font-extrabold px-6">Quản trị viên</th>
+                <th className="py-2.5 font-extrabold px-6"></th>
+                <th className="py-2.5 font-extrabold px-6"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -216,39 +208,39 @@ const DeliveryUnitList = () => {
                     key={deliveryUnit.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left font-bold">
+                    <td className="py-2.5 px-6 text-left font-bold">
                       {" "}
                       <span
-                        className="font-medium cursor-pointer hover:text-blue-500"
+                        className="text-name "
                         onClick={() => handleDetailClick(deliveryUnit.id)}
                       >
                         {deliveryUnit.name}
                       </span>
                     </td>
 
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {deliveryUnit.address}
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {deliveryUnit.phoneNumber}
                     </td>
 
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <ul>
                         {deliveryUnit.owners.map((owner, index) => (
                           <li key={index}>{owner}</li>
                         ))}
                       </ul>
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+                        className="btn-add-secondary "
                         onClick={() => handleAddEmployeeClick(deliveryUnit.id)}
                       >
                         Thêm QTV
                       </button>
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <div className="flex">
                         <Write
                           onClick={() => handleEditClick(deliveryUnit.id)}
@@ -256,7 +248,7 @@ const DeliveryUnitList = () => {
                         />
                         <Delete
                           onClick={() => handleDeleteClick(deliveryUnit.id)}
-                          className="size-5 cursor-pointer ml-4"
+                          className="delete-icon "
                         />
                       </div>
                     </td>
@@ -283,64 +275,6 @@ const DeliveryUnitList = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <h2>Tạo mới nhà cung cấp</h2>
-          <TextField
-            label="Tên công ty"
-            name="name"
-            value={newDeliveryData.name}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Địa chỉ"
-            name="address"
-            value={newDeliveryData.address}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Số điện thoại"
-            name="phoneNumber"
-            value={newDeliveryData.phoneNumber}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Hoa hồng"
-            name="commissionRate"
-            value={newDeliveryData.commissionRate}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <div className="create-btn-modal">
-            <Button
-              id="create-btn"
-              variant="contained"
-              onClick={handleCreateData}
-            >
-              Tạo mới
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-
       {loadingDelete && <Loading />}
       <Modal
         isOpen={modalIsOpen}
@@ -349,18 +283,15 @@ const DeliveryUnitList = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+        <div className="confirm-modal ">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn xóa dữ liệu này?</p>
           <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              className="btn-confirm-delete"
               onClick={() => handleDelete()}
             >
               Xác nhận
