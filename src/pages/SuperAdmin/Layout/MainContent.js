@@ -33,6 +33,7 @@ import CreateDelivery from "../Screens/DeliveryUnit/CreateDelivery";
 import EditCompany from "../Screens/Company/EditCompany";
 import CompanyDetail from "../Screens/Company/CompanyDetail";
 import FoodRegistration from "../Screens/SupplierUnit/FoodRegistration";
+import DailyOrderList from "../Screens/DailyOrder/DailyOrderList";
 
 const MainContent = () => {
   return (
@@ -40,6 +41,7 @@ const MainContent = () => {
       <Route path="combo" element={<Combos />} />
       <Route path="foods" element={<Dishes />} />
       <Route path="menu" element={<Menu />} />
+      <Route path="order" element={<DailyOrderList />} />
       <Route path="combo/create" element={<CreateCombo />} />
       <Route path="menu/create" element={<CreateMenu />} />
       <Route path="menu/:id" element={<MenuDetail />} />

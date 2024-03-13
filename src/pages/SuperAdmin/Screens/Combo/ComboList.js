@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Pagination,
-  Button,
-} from "@mui/material";
+import { Pagination } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import comboAPI from "../../../../services/comboAPI";
@@ -18,6 +8,7 @@ import "../Combo/Combo.css";
 
 import Modal from "react-modal";
 
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
@@ -99,10 +90,8 @@ const Combos = () => {
 
         <div className="flex justify-between items-center mb-4">
           <Link to="create">
-            <button
-              id="create-btn"
-              className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            >
+            <button className="btn-add">
+              <Plus />
               Thêm Combo
             </button>
           </Link>
@@ -110,7 +99,7 @@ const Combos = () => {
           <div className="flex gap-2 items-center">
             <input
               type="text"
-              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              className="input-search "
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -120,24 +109,24 @@ const Combos = () => {
                 }
               }}
             />
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
-            </button>
+            </button> */}
           </div>
         </div>
 
         <div className="bg-white shadow-md my-6">
           <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 rounded-l">Hình ảnh</th>
-                <th className="py-3 px-6">Tên Combo</th>
-                <th className="py-3 px-6">combo</th>
-                <th className="py-3 px-6 ">Đơn giá</th>
-                <th className="py-3 px-6 rounded-r"></th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">Tên Combo</th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">combo</th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold ">Đơn giá</th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -153,37 +142,37 @@ const Combos = () => {
                     key={combo.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5px-6 text-left">
                       <img
                         src={combo.image}
                         alt={combo.name}
-                        className="w-10 h-10 rounded-full"
+                        className="display-img"
                       />
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <span
-                        className="font-medium cursor-pointer hover:text-blue-500"
+                        className="text-name "
                         onClick={() => handleDetailClick(combo.id)}
                       >
                         {combo.name}
                       </span>
                     </td>
-                    <td className="py-3 px-6 text-left">{combo.foods}</td>
-                    <td className="py-3 px-6">
+                    <td className="py-2.5 px-6 text-left">{combo.foods}</td>
+                    <td className="py-2.5 px-6">
                       {combo.comboPrice.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </td>
-                    <td className="py-3 px-6">
-                      <div className="flex">
+                    <td className="py-2.5 px-6">
+                      <div className="flex justify-center">
                         <Write
                           onClick={() => handleEditClick(combo.id)}
                           className="size-5 cursor-pointer"
                         />
                         <Delete
                           onClick={() => handleDeleteClick(combo.id)}
-                          className="size-5 cursor-pointer ml-4"
+                          className="delete-icon "
                         />
                       </div>
                     </td>
@@ -206,7 +195,7 @@ const Combos = () => {
             count={totalPages}
             page={pageIndex + 1}
             onChange={handlePageChange}
-            color="primary"
+            color="success"
           />
         </div>
 
@@ -220,18 +209,15 @@ const Combos = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+        <div className="confirm-modal ">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn xóa combo này?</p>
           <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              className="btn-confirm-delete"
               onClick={() => handleDelete()}
             >
               Xác nhận

@@ -41,7 +41,7 @@ import Detail from "./components/Detail";
 
 function App() {
   return (
-    <div>
+    <div className="font-sans">
       <Router>
         <CartProvider>
           <Routes>
