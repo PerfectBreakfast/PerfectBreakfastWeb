@@ -6,6 +6,7 @@ import ShipperSelectModal from "./ShipperSelectModal";
 import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
 import { toast } from "react-toastify";
 import dishAPI from "../../../../services/dishAPI";
+import DailyOrderStatusText from "../../../../components/Status/DailyOrderStatusText";
 
 const OrderFoodDetail = () => {
   const { dailyOrderId } = useParams();
@@ -84,30 +85,7 @@ const OrderFoodDetail = () => {
       </div>
     </div>
   );
-  const renderOrderStatus = (status) => {
-    let statusText;
-    let colorClass;
 
-    switch (status) {
-      case "Initial":
-        statusText = "Chờ xử lý";
-        colorClass = "text-gray-500"; // Màu xám
-        break;
-      case "Processing":
-        statusText = "Đang xử lý";
-        colorClass = "text-yellow-500"; // Màu vàng
-        break;
-      case "Complete":
-        statusText = "Hoàn thành";
-        colorClass = "text-green-500"; // Màu xanh lá
-        break;
-      default:
-        statusText = "Không xác định";
-        colorClass = "text-gray-500";
-    }
-
-    return <span className={`${colorClass}`}>{statusText}</span>;
-  };
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-2">Đơn hàng</h2>
@@ -116,10 +94,7 @@ const OrderFoodDetail = () => {
         {orderData &&
           orderData.totalFoodResponses &&
           orderData.totalFoodResponses.length > 0 && (
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="rounded-2xl bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-3 py-2.5 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            >
+            <button onClick={() => setIsModalOpen(true)} className="btn-add">
               Chọn người giao hàng
             </button>
           )}
@@ -140,9 +115,7 @@ const OrderFoodDetail = () => {
           <p className="mb-2">
             Bữa ăn:
             <span className="font-bold">
-              {" "}
-              {""}
-              {renderOrderStatus(orderData.status)}
+              {""} <DailyOrderStatusText status={orderData.status} />
             </span>
           </p>
           <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>

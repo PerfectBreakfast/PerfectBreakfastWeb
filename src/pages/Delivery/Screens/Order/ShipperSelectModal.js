@@ -38,16 +38,10 @@ const ShipperSelectModal = ({ shipperData, onClose, onSubmit }) => {
             ))}
         </div>
         <div className="flex justify-end gap-2 mt-4">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-          >
+          <button onClick={onClose} className="btn-cancel">
             Hủy
           </button>
-          <button
-            onClick={handleSubmit}
-            className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-          >
+          <button onClick={handleSubmit} className="btn-confirm">
             Xác nhận
           </button>
         </div>

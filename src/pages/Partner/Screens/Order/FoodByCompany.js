@@ -119,7 +119,7 @@ const FoodByCompany = () => {
         Danh sách món ăn đã phân phối
       </h2>
 
-      <div className="bg-white shadow-md my-6">
+      <div className="bg-white shadow-md my-6 overflow-auto">
         {foodData.map((dayData) => (
           <div key={dayData.date}>
             <h3 className="text-lg font-semibold my-2">Ngày: {dayData.date}</h3>
@@ -134,18 +134,22 @@ const FoodByCompany = () => {
                       <h5 className="text-md font-semibold my-2">
                         Bữa ăn: {mealData.meal}
                       </h5>
-                      <table className="min-w-max w-full table-auto mb-6">
+                      <table className="min-w-max w-full table-auto">
                         <thead>
-                          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                            <th className="py-3 px-6">Tên món ăn</th>
-                            <th className="py-3 px-6 text-center">Số lượng</th>
-                            <th className="py-3 px-6 text-center">
+                          <tr className="bg-gray-200 text-gray-800 leading-normal">
+                            <th className="py-2.5 px-6 font-extrabold">
+                              Tên món ăn
+                            </th>
+                            <th className="py-2.5 px-6 text-center font-extrabold">
+                              Số lượng
+                            </th>
+                            <th className="py-2.5 px-6 font-extrabold">
                               Trạng thái
                             </th>
-                            <th className="py-3 px-6 text-center">
+                            <th className="py-2.5 px-6 font-extrabold text-center">
                               Xác nhận nhận hàng
                             </th>
-                            <th className="py-3 px-6 text-center"></th>
+                            <th className="py-2.5 px-6 text-center font-extrabold"></th>
                           </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
@@ -154,31 +158,33 @@ const FoodByCompany = () => {
                               key={foodItem.id}
                               className="border-b border-gray-200 hover:bg-gray-100"
                             >
-                              <td className="py-3 px-6 font-bold">
+                              <td className="py-2.5 px-6 font-bold text-left ">
                                 {foodItem.foodName}
                               </td>
-                              <td className="py-3 px-6 text-center">
+                              <td className="py-2.5 px-6 text-center ">
                                 {foodItem.amountCooked}
                               </td>
-                              <td className="py-3 px-6 text-center font-semibold">
+                              <td className="py-2.5 px-6 font-semibold text-left ">
                                 <SupplierFoodAssigmentStatus
                                   status={foodItem.status}
                                 />
                               </td>
-                              <td className="py-3 px-6 text-center">
-                                {foodItem.status === "Confirmed" && (
-                                  <button
-                                    className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600"
-                                    onClick={() => openModal(foodItem.id)}
-                                  >
-                                    Xác nhận
-                                  </button>
-                                )}
+                              <td className="py-2.5 px-6 text-center ">
+                                <div className="flex justify-center">
+                                  {foodItem.status === "Confirmed" && (
+                                    <button
+                                      className="btn-add"
+                                      onClick={() => openModal(foodItem.id)}
+                                    >
+                                      Xác nhận
+                                    </button>
+                                  )}
+                                </div>
                               </td>
-                              <td className="py-3 px-6 text-center">
+                              <td className="py-2.5 px-6 text-center text-left ">
                                 {foodItem.status === "Declined" && (
                                   <button
-                                    className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600"
+                                    className="btn-replay"
                                     onClick={() => openAssignModal(foodItem.id)}
                                   >
                                     Phân phối
@@ -205,20 +211,14 @@ const FoodByCompany = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận cập nhật"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+        <div className="confirm-modal ">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn xác nhận đơn hàng thành công?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={handleConfirm}
-            >
+            <button className="btn-confirm" onClick={handleConfirm}>
               Xác nhận
             </button>
           </div>
@@ -238,7 +238,7 @@ const FoodByCompany = () => {
           <select
             value={selectedSupplierId}
             onChange={(e) => setSelectedSupplierId(e.target.value)}
-            className="border p-2 w-full"
+            className="input-form"
           >
             <option value="">Chọn nhà cung cấp</option>
             {supplierData &&
@@ -249,16 +249,10 @@ const FoodByCompany = () => {
               ))}
           </select>
           <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeAssignModal}
-            >
+            <button className="btn-cancel" onClick={closeAssignModal}>
               Hủy bỏ
             </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={() => reassignFood()}
-            >
+            <button className="btn-confirm" onClick={() => reassignFood()}>
               Xác nhận
             </button>
           </div>

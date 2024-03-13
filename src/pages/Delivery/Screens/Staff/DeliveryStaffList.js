@@ -8,6 +8,7 @@ import { Pagination } from "@mui/material";
 import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
 
 const DeliveryStaffList = () => {
   const [staffData, setStaffData] = useState([]);
@@ -47,10 +48,10 @@ const DeliveryStaffList = () => {
 
         <div className="flex justify-between items-center mb-4">
           <button
-            id="create-btn"
-            className="rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            className="btn-add"
             onClick={() => handleAddEmployeeClick(deliveryId)}
           >
+            <Plus />
             Thêm nhân viên
           </button>
           {/* 
@@ -76,15 +77,15 @@ const DeliveryStaffList = () => {
           </div> */}
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className=" min-w-max w-full table-auto">
+        <div className="bg-white shadow-md my-6 overflow-auto">
+          <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 rounded-l">Hình ảnh</th>
-                <th className="py-3 px-6">Tên nhân viên</th>
-                <th className="py-3 px-6 rounded-r">Số điện thoại</th>
-                <th className="py-3 px-6 rounded-r">Email</th>
-                <th className="py-3 px-6 rounded-r"></th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-6">Hình ảnh</th>
+                <th className="py-2.5 font-extrabold px-6">Tên nhân viên</th>
+                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
+                <th className="py-2.5 font-extrabold px-6">Email</th>
+                <th className="py-2.5 font-extrabold px-6"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -100,24 +101,26 @@ const DeliveryStaffList = () => {
                     key={staff.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       <img
                         src={staff.image}
                         alt={staff.name}
-                        className="w-16 h-16 rounded-full"
+                        className="display-img-user"
                       />
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="p2.5-3 px-6 text-left">
                       <span
-                        className="font-medium cursor-pointer hover:text-green-500"
+                        className="text-name "
                         // onClick={() => handleDishClick(staff.id)}
                       >
                         {staff.name}
                       </span>
                     </td>
-                    <td className="py-3 px-6 text-left">{staff.phoneNumber}</td>
-                    <td className="py-3 px-6 text-left">{staff.email}</td>
-                    <td className="py-3 px-6">
+                    <td className="py-2.5 px-6 text-left">
+                      {staff.phoneNumber}
+                    </td>
+                    <td className="py-2.5 px-6 text-left">{staff.email}</td>
+                    <td className="py-2.5 px-6">
                       <div className="flex">
                         <Write
                           // onClick={() => handleEditClick(staff.id)}

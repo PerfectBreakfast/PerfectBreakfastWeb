@@ -4,6 +4,7 @@ import DailyOrderAPI from "../../../../services/DailyOrderAPI";
 import { Search } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import { ToastContainer } from "react-toastify";
+import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 
 const DeliveryOrderFoodList = () => {
   const [orders, setOrders] = useState([]);
@@ -34,36 +35,11 @@ const DeliveryOrderFoodList = () => {
     navigate(`detail/${dailyOrderId}`);
   };
 
-  const renderOrderStatus = (status) => {
-    let statusText;
-    let colorClass;
-
-    switch (status) {
-      case "Initial":
-        statusText = "Chờ xử lý";
-        colorClass = "text-gray-500"; // Màu xám
-        break;
-      case "Processing":
-        statusText = "Đang xử lý";
-        colorClass = "text-yellow-500"; // Màu vàng
-        break;
-      case "Completed":
-        statusText = "Hoàn thành";
-        colorClass = "text-green-500"; // Màu xanh lá
-        break;
-      default:
-        statusText = "Không xác định";
-        colorClass = "text-gray-500";
-    }
-
-    return <span className={`${colorClass}`}>{statusText}</span>;
-  };
-
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
 
-      <div className="flex justify-end items-center mb-4">
+      {/* <div className="flex justify-end items-center mb-4">
         <div className="flex gap-2 items-center">
           <input
             type="text"
@@ -74,17 +50,17 @@ const DeliveryOrderFoodList = () => {
             <Search />
           </button>
         </div>
-      </div>
-      <div className="bg-white shadow-md my-6">
+      </div> */}
+      <div className="bg-white shadow-md my-6 overflow-auto">
         <table className="min-w-max w-full table-auto">
           <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 rounded-l">Ngày giờ</th>
-              <th className="py-3 px-6">Tên công ty</th>
-              <th className="py-3 px-6">Địa chỉ</th>
-              <th className="py-3 px-6">Bữa ăn</th>
-              <th className="py-3 px-6">Số lượng</th>
-              <th className="py-3 px-6 rounded-r">Trạng thái</th>
+            <tr className="bg-gray-200 text-gray-800 leading-normal">
+              <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
+              <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+              <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+              <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
+              <th className="py-2.5 font-extrabold px-6">Số lượng</th>
+              <th className="py-2.5 font-extrabold px-6">Trạng thái</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
@@ -99,24 +75,24 @@ const DeliveryOrderFoodList = () => {
                 item.companies.map((company) =>
                   company.dailyOrders.map((order) => (
                     <tr key={order.id}>
-                      <td className="py-3 px-6">{item.bookingDate}</td>
-                      <td className="py-3 px-6 font-bold">{company.name}</td>
+                      <td className="py-2.5 px-6">{item.bookingDate}</td>
+                      <td className="py-2.5 px-6 font-bold">{company.name}</td>
                       <td className="py-3 px-6 break-words">
                         {company.address}
                       </td>
-                      <td className="py-3 px-6">
+                      <td className="py-2.5 px-6">
                         <button
-                          className="text-green-500 hover:underline font-semibold"
+                          className="text-green-500 hover:text-green-600 font-semibold"
                           onClick={() => handleDetailClick(order.id)}
                         >
                           {order.meal}
                         </button>
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-2.5 px-6 text-center">
                         {order.orderQuantity}
                       </td>
-                      <td className="py-3 px-6">
-                        {renderOrderStatus(order.status)}
+                      <td className="py-2.5 px-6">
+                        <DailyOrderStatus status={order.status} />
                       </td>
                     </tr>
                   ))

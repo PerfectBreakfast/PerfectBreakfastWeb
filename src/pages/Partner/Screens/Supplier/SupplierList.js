@@ -53,10 +53,10 @@ const SupplierList = () => {
         <h2 className="text-2xl font-semibold mb-2">Danh sách nhà cung cấp</h2>
 
         <div className="flex justify-end items-center mb-4">
-          <div className="flex gap-2 items-center">
+          <div className="flex justify-between items-center">
             <input
               type="text"
-              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              className="input-search "
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -66,22 +66,28 @@ const SupplierList = () => {
                 }
               }}
             />
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
-            </button>
+            </button> */}
           </div>
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className=" w-full table-auto">
+        <div className="bg-white shadow-md my-6 overflow-auto">
+          <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-2/5 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/5 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/5 break-words">Số điện thoại</th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-6  break-words">
+                  Tên công ty
+                </th>
+                <th className="py-2.5 font-extrabold px-6  break-words">
+                  Địa chỉ
+                </th>
+                <th className="py-2.5 font-extrabold px-6  break-words">
+                  Số điện thoại
+                </th>
               </tr>
             </thead>
 
@@ -98,13 +104,13 @@ const SupplierList = () => {
                     key={supplierUnit.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left font-bold">
+                    <td className="py-2.5 px-6 text-left font-bold">
                       {supplierUnit.name}
                     </td>
-                    <td className="py-3 px-6 text-left whitespace-normal break-words">
+                    <td className="py-2.5 px-6 text-left whitespace-normal break-words">
                       {supplierUnit.address}
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {supplierUnit.phoneNumber}
                     </td>
                   </tr>

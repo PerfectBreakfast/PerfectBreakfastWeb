@@ -51,6 +51,9 @@
 .btn-add-third {
   @apply border-1 border-sky-400 hover:bg-sky-400 hover:text-white font-semibold h-8 gap-2 text-sky-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
 }
+.btn-replay {
+  @apply border-1 border-yellow-400 hover:bg-yellow-400 hover:text-white font-semibold h-10 gap-2 text-yellow-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+}
 
 .input-search {
   @apply h-10 py-2 px-4 border rounded-xl text-gray-700 focus:outline-none font-medium focus:border-green-500;
@@ -62,6 +65,10 @@
 
 .display-img {
   @apply w-16 h-12 rounded-xl;
+}
+
+.display-img-user {
+  @apply w-12 h-12 rounded-full;
 }
 
 .formik-error-message {
@@ -97,6 +104,10 @@
 }
 .btn-confirm-delete {
   @apply font-semibold px-4 py-2 bg-red-500 hover:bg-red-700 rounded-xl text-white;
+}
+
+.btn-delete {
+  @apply hover:bg-red-500 hover:text-white font-semibold px-4 py-2 border-1 border-red-500 rounded-xl text-red-500;
 }
 
 .btn-confirm {

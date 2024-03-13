@@ -85,7 +85,7 @@ const OrderFoodList = () => {
         Danh sách món ăn được phân phối
       </h2>
 
-      <div className="bg-white shadow-md my-6">
+      <div className="bg-white shadow-md my-6 overflow-auto">
         {foodData.map((dayData) => (
           <div key={dayData.date}>
             <h3 className="text-lg font-semibold my-2">Ngày: {dayData.date}</h3>
@@ -100,13 +100,19 @@ const OrderFoodList = () => {
                       Thời gian hoàn thành: {formatTime(mealData.deliveryTime)}
                     </h5>
 
-                    <table className="min-w-max w-full table-auto mb-6">
+                    <table className="min-w-max w-full table-auto">
                       <thead>
-                        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                          <th className="py-3 px-6 ">Tên món ăn</th>
-                          <th className="py-3 px-6 text-center">Số lượng</th>
-                          <th className="py-3 px-6 text-center">Trạng thái</th>
-                          <th className="py-3 px-6 text-center">
+                        <tr className="bg-gray-200 text-gray-800 leading-normal">
+                          <th className="py-2.5 font-extrabold px-6">
+                            Tên món ăn
+                          </th>
+                          <th className="py-2.5 font-extrabold px-6 text-center">
+                            Số lượng
+                          </th>
+                          <th className="py-2.5 font-extrabold px-6 text-center">
+                            Trạng thái
+                          </th>
+                          <th className="py-2.5 font-extrabold px-6 text-center">
                             Xác nhận đơn hàng
                           </th>
                         </tr>
@@ -117,36 +123,36 @@ const OrderFoodList = () => {
                             key={foodItem.id}
                             className="border-b border-gray-200 hover:bg-gray-100"
                           >
-                            <td className="py-3 px-6 font-bold">
+                            <td className="py-2.5 px-6 font-bold ">
                               {foodItem.foodName}
                             </td>
-                            <td className="py-3 px-6 text-center">
+                            <td className="py-2.5 px-6 text-center">
                               {foodItem.amountCooked}
                             </td>
-                            <td className="py-3 px-6 text-center font-semibold">
+                            <td className="py-2.5 px-6 font-semibold text-center">
                               <SupplierFoodAssigmentStatus
                                 status={foodItem.status}
                               />
                             </td>
 
-                            <td className="py-3 px-6 text-center">
+                            <td className="py-2.5 px-6 text-center">
                               {foodItem.status === "Pending" && (
                                 <>
                                   <button
-                                    className="bg-green-500 text-white px-4 py-2 rounded-2xl hover:bg-green-600 mr-2"
-                                    onClick={() =>
-                                      openModal(foodItem.id, "confirm")
-                                    }
-                                  >
-                                    Xác nhận
-                                  </button>
-                                  <button
-                                    className="bg-red-500 text-white px-4 py-2 rounded-2xl hover:bg-red-600"
+                                    className="btn-delete"
                                     onClick={() =>
                                       openModal(foodItem.id, "reject")
                                     }
                                   >
                                     Từ chối
+                                  </button>
+                                  <button
+                                    className="btn-confirm ml-2"
+                                    onClick={() =>
+                                      openModal(foodItem.id, "confirm")
+                                    }
+                                  >
+                                    Xác nhận
                                   </button>
                                 </>
                               )}
