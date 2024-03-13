@@ -6,6 +6,8 @@ import { Pagination } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
+
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -36,16 +38,16 @@ const OrderList = () => {
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
 
-      <div className="bg-white shadow-md my-6">
+      <div className="bg-white shadow-md my-6 overflow-auto">
         <table className="min-w-max w-full table-auto">
           <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 rounded-l">Ngày giờ</th>
-              <th className="py-3 px-6">Tên công ty</th>
-              <th className="py-3 px-6">Địa chỉ</th>
-              <th className="py-3 px-6">Bữa ăn</th>
-              <th className="py-3 px-6">Số lượng</th>
-              <th className="py-3 px-6 rounded-r">Trạng thái</th>
+            <tr className="bg-gray-200 text-gray-800 leading-normal">
+              <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
+              <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+              <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+              <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
+              <th className="py-2.5 font-extrabold px-6">Số lượng</th>
+              <th className="py-2.5 font-extrabold px-6">Trạng thái</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
@@ -58,7 +60,7 @@ const OrderList = () => {
                     <td className="py-3 px-6">{company.address}</td>
                     <td className="py-3 px-6">
                       <button
-                        className="text-green-500 hover:underline font-semibold"
+                        className="text-green-500 hover:text-green-600 font-semibold"
                         onClick={() => handleDetailClick(order.id)}
                       >
                         {order.meal}

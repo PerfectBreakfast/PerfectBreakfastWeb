@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import dishAPI from "../../../../services/dishAPI";
-import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
+import DailyOrderStatusText from "../../../../components/Status/DailyOrderStatusText";
 
 const OrderDetailByCompany = () => {
   const { dailyOrderId } = useParams();
@@ -74,10 +74,7 @@ const OrderDetailByCompany = () => {
             {orderData &&
               orderData.totalFoodResponses &&
               orderData.totalFoodResponses.length > 0 && (
-                <button
-                  onClick={() => handleAssignFood()}
-                  className="rounded-2xl bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-3 py-2.5 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                >
+                <button onClick={() => handleAssignFood()} className="btn-add">
                   Phân món
                 </button>
               )}
@@ -101,7 +98,7 @@ const OrderDetailByCompany = () => {
                 <span className="font-bold">
                   {" "}
                   {""}
-                  <DailyOrderStatus status={orderData.status} />
+                  <DailyOrderStatusText status={orderData.status} />
                 </span>
               </p>
               <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>

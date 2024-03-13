@@ -54,7 +54,7 @@ const CompanyList = () => {
           <div className="flex gap-2 items-center">
             <input
               type="text"
-              className="px-4 py-2 border rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500"
+              className="input-search "
               placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -64,24 +64,24 @@ const CompanyList = () => {
                 }
               }}
             />
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
-            </button>
+            </button> */}
           </div>
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className=" w-full table-auto">
+        <div className="bg-white shadow-md my-6 overflow-auto">
+          <table className="min-w-max w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 w-2/6 break-words">Tên công ty</th>
-                <th className="py-3 px-6 w-2/6 break-words">Địa chỉ</th>
-                <th className="py-3 px-6 w-1/6 break-words">Số điện thoại</th>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
 
-                <th className="py-3 px-6 w-1/6 break-words">Email</th>
+                <th className="py-2.5 font-extrabold px-6">Email</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -97,17 +97,19 @@ const CompanyList = () => {
                     key={companyUnit.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left font-bold">
+                    <td className="py-2.5 px-6 text-left font-bold">
                       {companyUnit.name}
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {companyUnit.address}
                     </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left">
                       {companyUnit.phoneNumber}
                     </td>
 
-                    <td className="py-3 px-6 text-left">{companyUnit.email}</td>
+                    <td className="py-2.5 px-6 text-left">
+                      {companyUnit.email}
+                    </td>
                   </tr>
                 ))
               ) : (

@@ -38,8 +38,9 @@ const Sidebar = () => {
     navigate("/management/login");
   };
   const isActive = (href) => {
-    return location.pathname === href;
+    return location.pathname.startsWith(href);
   };
+
   return (
     <div className="flex h-full">
       {/* Mobile sidebar */}
