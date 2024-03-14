@@ -1,0 +1,13 @@
+*/node_modules/
+*/build/
+*/.git/
+.gitignore
+.editorconfig
+# File hệ thống
+.DS_Store
+Thumbs.db
+
+# Directory IDE
+.idea/
+.vscode/
+*.sublime-workspace
