@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 
 ENV NODE_ENV production
 ENV REACT_APP_API_URL /api    
