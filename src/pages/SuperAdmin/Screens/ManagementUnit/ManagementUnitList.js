@@ -184,7 +184,7 @@ const ManagementUnitList = () => {
 
                     <td className="py-2.5 px-6 text-left">
                       <button
-                        className="btn-add-secondary "
+                        className="btn-add-third"
                         onClick={() =>
                           handleAddEmployeeClick(managementUnit.id)
                         }

@@ -59,6 +59,8 @@ const ManagementLogin = () => {
       } else if (roles.includes("SUPPLIER ADMIN")) {
         navigate("/supplier/foods");
       } else if (roles.includes("DELIVERY ADMIN")) {
+        navigate("/delivery/order");
+      } else if (roles.includes("DELIVERY STAFF")) {
         // navigate("/delivery/order");
         navigate("/scan");
       } else {

@@ -46,10 +46,10 @@
 }
 
 .btn-add-secondary {
-  @apply border-1 border-green-400 hover:bg-green-400 hover:text-white font-semibold h-8 gap-2 text-green-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+  @apply w-28 border-1 border-green-400 hover:bg-green-400 hover:text-white font-semibold h-8 gap-2 text-green-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
 }
 .btn-add-third {
-  @apply border-1 border-sky-400 hover:bg-sky-400 hover:text-white font-semibold h-8 gap-2 text-sky-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+  @apply w-28 border-1 border-sky-400 hover:bg-sky-400 hover:text-white font-semibold h-8 gap-2 text-sky-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
 }
 .btn-replay {
   @apply border-1 border-yellow-400 hover:bg-yellow-400 hover:text-white font-semibold h-10 gap-2 text-yellow-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;

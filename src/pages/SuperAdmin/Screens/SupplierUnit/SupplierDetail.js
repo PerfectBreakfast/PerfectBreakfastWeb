@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
+
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
+import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
 
 import Modal from "react-modal";
 import SupplierCommissionRateAPI from "../../../../services/SupplierCommissionRateAPI";
@@ -136,15 +138,16 @@ const SupplierDetail = () => {
             </table>
           </div>
 
-          <div className="text-xl font-semibold text-gray-600 text-left mt-4">
+          <div className="text-xl font-semibold text-gray-600 text-left mt-2 mb-2">
             Danh sách món ăn đã đăng ký
           </div>
           <div className="flex justify-between items-center mb-4">
             <button
               type="button"
-              className="mt-2 rounded-2xl bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-3 py-2 shadow hover:shadow-lg outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+              className="btn-add"
               onClick={() => handleClickCreate(supplierData.id)}
             >
+              <Plus />
               Đăng ký món ăn
             </button>
           </div>
@@ -189,7 +192,7 @@ const SupplierDetail = () => {
 
                         <Delete
                           onClick={() => handleDeleteClick(commissionRate.id)}
-                          className="size-5 cursor-pointer ml-4"
+                          className="delete-icon "
                         />
                       </div>
                     </td>
@@ -257,18 +260,15 @@ const SupplierDetail = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+        <div className="confirm-modal ">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn xóa món ăn này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white"
+              className="btn-confirm-delete"
               onClick={() => handleDelete()}
             >
               Xác nhận

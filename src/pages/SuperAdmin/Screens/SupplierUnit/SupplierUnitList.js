@@ -198,26 +198,16 @@ const SupplierUnitList = () => {
         </div>
 
         <div className="bg-white shadow-md my-6 overflow-auto">
-          <table className="min-w-max w-full table-auto">
+          <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 font-extrabold px-6 break-words">
-                  Tên công ty
-                </th>
-                <th className="py-2.5 font-extrabold px-6 break-words">
-                  Địa chỉ
-                </th>
-                <th className="py-2.5 font-extrabold px-6 break-words">
-                  Số điện thoại
-                </th>
-                <th className="py-2.5 font-extrabold px-6 break-words">
-                  Quản trị viên
-                </th>
-                <th className="py-2.5 font-extrabold px-6 break-words">
-                  Đối tác
-                </th>
-                <th className="py-2.5 font-extrabold px-6 break-words"></th>
-                <th className="py-2.5 font-extrabold px-6 break-words"></th>
+                <th className="py-2.5 font-extrabold px-6  ">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-6  ">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-6  ">Số điện thoại</th>
+                <th className="py-2.5 font-extrabold px-6  ">Quản trị viên</th>
+                {/* <th className="py-2.5 font-extrabold px-6  ">Đối tác</th> */}
+                <th className="py-2.5 font-extrabold px-6  "></th>
+                <th className="py-2.5 font-extrabold px-6  "></th>
               </tr>
             </thead>
 
@@ -242,7 +232,7 @@ const SupplierUnitList = () => {
                         {supplierUnit.name}
                       </span>
                     </td>
-                    <td className="py-2.5 px-6 text-left whitespace-normal break-words">
+                    <td className="py-2.5 px-6 text-left whitespace-normal  ">
                       {supplierUnit.address}
                     </td>
                     <td className="py-2.5 px-6 text-left">
@@ -256,13 +246,13 @@ const SupplierUnitList = () => {
                         ))}
                       </ul>
                     </td>
-                    <td className="py-2.5 px-6 text-left">
+                    {/* <td className="py-2.5 px-6 text-left">
                       <ul>
                         {supplierUnit.managementUnitName.map((unit, index) => (
                           <li key={index}>{unit}</li>
                         ))}
                       </ul>
-                    </td>
+                    </td> */}
                     <td className="py-2.5 px-6 text-left flex flex-col gap-y-2">
                       <button
                         className="btn-add-secondary"
