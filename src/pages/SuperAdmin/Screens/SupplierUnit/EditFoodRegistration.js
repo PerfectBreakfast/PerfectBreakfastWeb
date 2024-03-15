@@ -57,26 +57,35 @@ const EditFoodRegistration = ({ onClose, commissionRateId }) => {
           bottom: "auto",
           marginRight: "-50%",
           transform: "translate(-50%, -50%)",
+          padding: "2rem",
+          borderRadius: "0.5rem",
+          maxWidth: "500px",
+          width: "90%",
         },
       }}
     >
-      <div>
-        <h2>Chỉnh Sửa Đăng Ký Món Ăn</h2>
+      <div className="flex flex-col">
+        <h2 className="text-xl font-semibold mb-3">Chỉnh sửa</h2>
         <form onSubmit={handleEditSubmit}>
-          <div>
-            <label htmlFor="commissionRate">Hoa hồng: </label>
+          <div className="mb-1">
+            <label htmlFor="commissionRate" className="label-input">
+              Tỷ lệ hoa hồng
+            </label>
             <input
+              className="input-form"
               id="commissionRate"
               type="number"
               value={commissionRate}
               onChange={(e) => setCommissionRate(e.target.value)}
             />
           </div>
-          <div className="flex justify-end mt-4">
-            <button type="button" onClick={onClose} className="mr-2">
+          <div className="flex justify-end gap-2 mt-3">
+            <button type="button" onClick={onClose} className="btn-cancel">
               Hủy
             </button>
-            <button type="submit">Cập nhật</button>
+            <button className="btn-confirm" type="submit">
+              Cập nhật
+            </button>
           </div>
         </form>
       </div>

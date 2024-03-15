@@ -6,6 +6,8 @@ import { Pagination } from "@mui/material";
 import Modal from "react-modal";
 import SupplierFoodAssigmentStatus from "../../../../components/Status/SupplierFoodAssigmentStatus";
 
+import { ReactComponent as File } from "../../../../assets/icons/File.svg";
+
 const OrderFoodList = () => {
   const [foodData, setFoodData] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -57,6 +59,29 @@ const OrderFoodList = () => {
       }
     }
   };
+  const handleExport = async (date) => {
+    try {
+      // Make the API call to get the file data
+      const response =
+        await SupplierFoodAssignmentAPI.downloadFileFoodForSupplier(date);
+
+      // Tạo URL cho tệp tải xuống
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", `Danh sách món ăn ngày ${date}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      return response;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  };
 
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
@@ -85,18 +110,30 @@ const OrderFoodList = () => {
         Danh sách món ăn được phân phối
       </h2>
 
-      <div className="bg-white shadow-md my-6 overflow-auto">
+      <div className="">
         {foodData.map((dayData) => (
-          <div key={dayData.date}>
-            <h3 className="text-lg font-semibold my-2">Ngày: {dayData.date}</h3>
+          <div
+            className="bg-white shadow-md p-4 my-6 overflow-auto"
+            key={dayData.date}
+          >
+            <h3 className="text-lg font-semibold mb-2">Ngày: {dayData.date}</h3>
             {dayData.foodAssignmentGroupByPartners.map((partnerData) => (
               <div key={partnerData.supplierName}>
-                <h4 className="text-md font-semibold my-2">
-                  Đối tác: {partnerData.partnerName}
-                </h4>
+                <div className="flex justify-between ">
+                  <h4 className="text-md font-semibold ">
+                    Đối tác: {partnerData.partnerName}
+                  </h4>
+                  <button
+                    className="btn-add"
+                    onClick={() => handleExport(dayData.date)}
+                  >
+                    <File /> Tải file
+                  </button>
+                </div>
+
                 {partnerData.supplierDeliveryTimes.map((mealData, index) => (
                   <div key={index}>
-                    <h5 className="text-md font-semibold my-2">
+                    <h5 className="text-md font-semibold mb-2">
                       Thời gian hoàn thành: {formatTime(mealData.deliveryTime)}
                     </h5>
 

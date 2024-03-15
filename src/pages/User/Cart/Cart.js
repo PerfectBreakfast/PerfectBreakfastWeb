@@ -26,9 +26,9 @@ function Cart() {
         const data = await MealAPI.getMealByCustomer();
         setMealData(data);
         // Set default selected meal ID (optional)
-        if (data.length > 0) {
-          setSelectedMealId(data[0].id);
-        }
+        // if (data.length > 0) {
+        //   setSelectedMealId(data[0].id);
+        // }
       } catch (error) {
         console.error("Error fetching meal data:", error);
         alert("Error fetching meal data. Please try again later.");
@@ -123,6 +123,9 @@ function Cart() {
                 onChange={(e) => setSelectedMealId(e.target.value)}
                 className="p-2.5 mt-1 block w-full text-base border-gray-300 focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-lg shadow-sm bg-white hover:border-gray-400"
               >
+                <option value="" disabled>
+                  Chọn bữa ăn
+                </option>
                 {mealData.map((meal) => (
                   <option key={meal.id} value={meal.id}>
                     {meal.mealType}
@@ -206,8 +209,11 @@ function Cart() {
             </div>
 
             <button
-              className="bg-green-500 text-white py-2.5 mb-2 rounded-3xl hover:bg-green-600 "
+              className={`bg-green-500 text-white py-2.5 mb-2 rounded-3xl hover:bg-green-600 ${
+                selectedMealId ? "" : "opacity-50 cursor-not-allowed"
+              }`}
               onClick={handleGoToCheckout}
+              disabled={!selectedMealId}
             >
               Tiến hành thanh toán
             </button>

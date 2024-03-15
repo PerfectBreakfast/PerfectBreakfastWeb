@@ -28,13 +28,6 @@ const Homepage = () => {
         const menu = await menuAPI.getMenu();
 
         setMenuData(menu);
-        if (menu && menu.menuDate) {
-          const date = new Date(menu.menuDate);
-          const formattedDate = `${date.getDate()}-${
-            date.getMonth() + 1
-          }-${date.getFullYear()}`;
-          setFormattedMenuDate(formattedDate);
-        }
         setLoading(false); // Dừng loading khi fetch hoàn tất
       } catch (error) {
         console.error("Error fetching menu:", error);
@@ -45,6 +38,15 @@ const Homepage = () => {
 
     fetchMenu();
   }, []);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <>
@@ -65,7 +67,9 @@ const Homepage = () => {
         ) : (
           <>
             <div className="menuDate text-left text-xl font-bold">
-              <h6>Thực đơn ngày {formattedMenuDate}</h6>
+              <h6 className="text-green-600">
+                Thực đơn ngày {formatDate(menuData.menuDate)}
+              </h6>
             </div>
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
