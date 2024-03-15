@@ -38,6 +38,8 @@ import ManagementLogin from "./pages/Login/ManagementLogin";
 
 import QrScanner from "./components/ScanQR";
 import Detail from "./components/Detail";
+import ForgotPassword from "./pages/User/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/User/ForgotPassword/ResetPassword";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
             {/* login cho QTV */}
             <Route path="/management/login" element={<ManagementLogin />} />
             <Route path="/register" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/home" element={<Homepage />} />
             <Route path="/combo/:id" element={<ComboDetail />} />
             <Route path="/cart" element={<Cart />} />

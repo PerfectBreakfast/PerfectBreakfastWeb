@@ -70,6 +70,16 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getEmailForgotPassword: async (userEmail) => {
+    try {
+      const response = await axios.get(
+        `${api}/account/password-token?email=${userEmail}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;

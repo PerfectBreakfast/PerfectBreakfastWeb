@@ -122,8 +122,19 @@
   @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
 
+.user-input {
+  @apply mt-3 focus:outline-none border-1 w-full rounded-xl p-2 hover:border-green-500  focus:border-green-500;
+}
+
 .text-name {
   @apply font-bold cursor-pointer hover:text-green-500;
+}
+
+.btn-submit-user {
+  @apply font-bold p-2 w-full rounded-xl bg-green-500 text-white transition-colors duration-300 hover:bg-green-700 mt-4 border-none;
+}
+.loading-button {
+  @apply font-bold p-2 w-full rounded-xl bg-green-500 text-white transition-colors duration-300 hover:bg-green-700 mt-4 border-none;
 }
 
 /* Data tables css */

@@ -4,9 +4,12 @@ import logo from "../../../assets/images/logo.png";
 import "./Signin.css"; // Import CSS file
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+
+import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
+import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
+import { ReactComponent as Visibility } from "../../../assets/icons/Eye Closed.svg";
 
 import { encryptToken } from "../../../services/CryptoService";
 
@@ -18,7 +21,6 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false); // Thêm trạng thái mới
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,10 +73,10 @@ const Login = () => {
             placeholder="Email"
             value={credentials.email}
             onChange={handleInputChange}
-            className="input input-bordered w-full rounded-3xl p-2 border-2"
+            className="user-input"
           />
 
-          <div className="input-group rounded-3xl p-2 border-2">
+          <div className="input-group rounded-xl mt-2.5 p-2 border-1 focus:outline-none w-full hover:border-green-500  focus:border-green-500">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -83,7 +85,7 @@ const Login = () => {
               placeholder="Mật khẩu"
               value={credentials.password}
               onChange={handleInputChange}
-              className="input input-bordered w-full"
+              className="focus:outline-none"
             />
             <span
               className="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -95,27 +97,28 @@ const Login = () => {
         </div>
 
         <div className="mt-2 text-left">
-          <a href="#" className="text-red-600 hover:underline">
+          <Link
+            to={"/forgot-password"}
+            className="text-red-600 hover:underline"
+          >
             Quên mật khẩu?
-          </a>
+          </Link>
         </div>
 
         <button
           type="submit"
-          disabled={isLoading}
-          className={`btn btn-primary w-full rounded-full transition-colors duration-300 mt-2 border-none ${
-            isLoading ? "bg-green-600" : "bg-green-600 hover:bg-green-700"
-          }`}
+          className="btn-submit-user"
+          disabled={isLoading} // Disable nút khi đang gọi API
         >
-          {isLoading ? <ClipLoader color="#ffffff" size={24} /> : "Đăng nhập"}
+          {isLoading ? <Loading /> : "Đăng nhập"}
         </button>
       </form>
 
       <div className="mt-4">
         Bạn chưa có tài khoản?{" "}
-        <a href="/register" className="text-blue-600 hover:underline">
+        <Link to={"/register"} className="text-blue-600 hover:underline">
           Đăng ký ngay
-        </a>
+        </Link>
       </div>
       <ToastContainer />
     </div>
