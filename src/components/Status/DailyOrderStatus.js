@@ -9,7 +9,6 @@ const DailyOrderStatus = ({ status }) => {
       statusText = "Chờ đặt đơn";
       styleClass =
         "border-1 border-gray-500 hover:bg-gray-50  text-gray-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
-
       break;
     case "Processing":
       statusText = "Đang chờ phân phối";

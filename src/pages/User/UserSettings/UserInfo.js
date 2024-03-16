@@ -125,17 +125,11 @@ function UserInfo() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-white rounded-lg p-6 shadow-lg">
             <h5 className="text-lg font-bold mb-6">Bạn có muốn đăng xuất?</h5>
-            <div className="flex justify-end mt-3">
-              <button
-                onClick={cancelRemoveItem}
-                className="text-red-500 bg-transparent hover:bg-red-100 p-3 rounded mr-4"
-              >
+            <div className="flex justify-end gap-2 mt-3">
+              <button onClick={cancelRemoveItem} className="btn-cancel">
                 Hủy
               </button>
-              <button
-                onClick={handleLogout}
-                className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors"
-              >
+              <button onClick={handleLogout} className="btn-confirm-delete">
                 Xác nhận
               </button>
             </div>

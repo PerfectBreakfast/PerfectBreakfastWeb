@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import UserHeader from "../../Header/Header";
 import MobileNavigation from "../../Footer/Footer";
 import HomepageSkeleton from "./HomepageSkeleton";
+import moment from "moment";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -22,24 +23,27 @@ const Homepage = () => {
     console.log(`Redirect to detail page for combo with id: ${comboId}`);
   };
 
+  const formatDate = (dateString) => {
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(5, 7);
+    const day = dateString.substring(8, 10);
+    return `${day}/${month}/${year}`;
+  };
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
         const menu = await menuAPI.getMenu();
 
         setMenuData(menu);
-        if (menu && menu.menuDate) {
-          const date = new Date(menu.menuDate);
-          const formattedDate = `${date.getDate()}-${
-            date.getMonth() + 1
-          }-${date.getFullYear()}`;
-          setFormattedMenuDate(formattedDate);
-        }
-        setLoading(false); // Dừng loading khi fetch hoàn tất
+        const menuDate = formatDate(menu.menuDate);
+        setFormattedMenuDate(menuDate);
+
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching menu:", error);
-        setError(true); // Xử lý lỗi nếu có
-        setLoading(false); // Dừng loading khi fetch hoàn tất (có hoặc không có lỗi)
+        setError(true);
+        setLoading(false);
       }
     };
 
@@ -65,7 +69,9 @@ const Homepage = () => {
         ) : (
           <>
             <div className="menuDate text-left text-xl font-bold">
-              <h6>Thực đơn ngày {formattedMenuDate}</h6>
+              <h6 className="text-green-600">
+                Thực đơn ngày {formattedMenuDate}
+              </h6>
             </div>
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
