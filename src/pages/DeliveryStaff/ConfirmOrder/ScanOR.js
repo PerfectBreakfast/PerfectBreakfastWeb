@@ -31,7 +31,7 @@ const ScanQR = () => {
           // Save the string after 'pb' into orderId
           const result = decodedText.substring(3); // Remove 'pb' and save the rest
           setQrCodeMessage(result);
-          navigate(`/order/${result}`);
+          navigate(`order/${result}`);
         }
       };
 
