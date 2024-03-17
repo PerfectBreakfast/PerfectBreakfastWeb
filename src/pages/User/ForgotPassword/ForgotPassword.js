@@ -60,14 +60,14 @@ const ForgotPassword = () => {
             placeholder="Email"
             value={email}
             onChange={handleEmailChange}
-            className="input input-bordered w-full rounded-3xl p-2 border-2"
+            className="input input-bordered w-full rounded-xl p-2 border-2"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className={`btn btn-primary w-full rounded-full transition-colors duration-300 mt-2 border-none ${
+          className={`btn btn-primary w-full rounded-xl transition-colors duration-300 mt-2.5 border-none ${
             isLoading ? "bg-green-600" : "bg-green-600 hover:bg-green-700"
           }`}
         >
