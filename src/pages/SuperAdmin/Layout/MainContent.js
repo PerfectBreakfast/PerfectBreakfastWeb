@@ -39,7 +39,7 @@ const MainContent = () => {
   return (
     <Routes>
       <Route path="combo" element={<Combos />} />
-      <Route path="foods" element={<Dishes />} />
+      <Route path="food" element={<Dishes />} />
       <Route path="menu" element={<Menu />} />
       <Route path="order" element={<DailyOrderList />} />
       <Route path="combo/create" element={<CreateCombo />} />
@@ -51,7 +51,7 @@ const MainContent = () => {
       <Route path="food/:id/edit" element={<EditFood />} />
       <Route path="combo/:id" element={<ComboDetail />} />
       <Route path="combo/:id/edit" element={<EditCombo />} />
-      <Route path="suppliers" element={<SupplierUnitList />} />
+      <Route path="supplier" element={<SupplierUnitList />} />
       <Route path="supplier/:id" element={<SupplierDetail />} />
       <Route path="supplier/:id/registration" element={<FoodRegistration />} />
       <Route path="supplier/create" element={<CreateSupplier />} />
@@ -64,24 +64,24 @@ const MainContent = () => {
         path="delivery/create-delivery-user"
         element={<CreateDeliveryUser />}
       />
-      <Route path="partners" element={<ManagementUnitList />} />
+      <Route path="partner" element={<ManagementUnitList />} />
       <Route path="partner/create" element={<CreatePartner />} />
       <Route path="partner/:id" element={<PartnerDetail />} />
       <Route path="partner/:id/edit" element={<EditPartner />} />
-      <Route path="companies" element={<CompanyList />} />
-      <Route path="companies/create" element={<CreateCompany />} />
+      <Route path="company" element={<CompanyList />} />
+      <Route path="company/create" element={<CreateCompany />} />
       <Route path="company/:id/edit" element={<EditCompany />} />
       <Route path="company/:id" element={<CompanyDetail />} />
       <Route
-        path="partners/create-management-user"
+        path="partner/create-management-user"
         element={<CreateManagementUser />}
       />
       <Route
-        path="suppliers/create-supplier-user"
+        path="supplier/create-supplier-user"
         element={<CreateSupplierUser />}
       />
       <Route
-        path="deliveries/create-delivery-user"
+        path="delivery/create-delivery-user"
         element={<CreateDeliveryUser />}
       />
     </Routes>

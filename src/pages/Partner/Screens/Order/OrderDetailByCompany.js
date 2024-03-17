@@ -73,7 +73,8 @@ const OrderDetailByCompany = () => {
           <div className="flex justify-end items-center">
             {orderData &&
               orderData.totalFoodResponses &&
-              orderData.totalFoodResponses.length > 0 && (
+              orderData.totalFoodResponses.length > 0 &&
+              orderData.status === "Processing" && (
                 <button onClick={() => handleAssignFood()} className="btn-add">
                   Phân món
                 </button>

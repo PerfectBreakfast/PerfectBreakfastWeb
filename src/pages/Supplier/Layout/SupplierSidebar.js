@@ -37,7 +37,16 @@ const SupplierSidebar = () => {
     navigate("/management/login");
   };
   const isActive = (href) => {
-    return location.pathname === href;
+    // So sánh đường dẫn hiện tại với href một cách chính xác
+    if (location.pathname === href) {
+      return true;
+    }
+    // Đối với các trường hợp đường dẫn con, kiểm tra thêm điều kiện kết thúc bằng "/"
+    // và đảm bảo rằng phần còn lại sau href là một đường dẫn con
+    return (
+      location.pathname.startsWith(href) &&
+      location.pathname[href.length] === "/"
+    );
   };
   return (
     <div className="flex h-full">
