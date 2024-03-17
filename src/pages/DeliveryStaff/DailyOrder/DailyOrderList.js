@@ -21,7 +21,7 @@ const DailyOrderList = () => {
   useEffect(() => {
     const fetchShippingOrder = async () => {
       try {
-        const data = await ShippingOrderAPI.getShippingOrderForDeliveryStafff();
+        const data = await ShippingOrderAPI.getShippingOrderForDeliveryStaff();
 
         setOrderData(data);
         setLoading(false);
@@ -41,8 +41,26 @@ const DailyOrderList = () => {
       <div className="container mx-auto p-2 mb-12">
         {loading ? (
           <div className="space-y-4">
-            {Array.from({ length: 10 }, (_, index) => (
-              <HomepageSkeleton key={index} />
+            {/* Skeleton cho tiêu đề ngày */}
+            <div className="animate-pulse">
+              <div className="h-6 bg-gray-300 rounded-md w-3/4"></div>
+            </div>
+
+            {/* Lặp qua một số skeleton cho các đơn hàng */}
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="animate-pulse grid grid-cols-1 gap-2 mb-3 bg-gray-100 p-4 rounded-lg"
+              >
+                {/* Skeleton cho tên công ty */}
+                <div className="h-4 bg-gray-300 rounded-md w-1/2"></div>
+                {/* Skeleton cho địa chỉ */}
+                <div className="h-4 bg-gray-300 rounded-md w-3/4"></div>
+                {/* Skeleton cho số điện thoại */}
+                <div className="h-4 bg-gray-300 rounded-md w-1/2"></div>
+                {/* Skeleton cho thời gian giao hàng */}
+                <div className="h-4 bg-gray-300 rounded-md w-1/4"></div>
+              </div>
             ))}
           </div>
         ) : error ? (

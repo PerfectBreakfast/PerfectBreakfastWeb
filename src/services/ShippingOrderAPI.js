@@ -36,5 +36,16 @@ const ShippingOrderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getShippingOrderHistoryForDeliveryStaff: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/shippingorders/delivery-staff/history-order
+        `
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 export default ShippingOrderAPI;
