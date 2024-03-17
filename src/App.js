@@ -44,6 +44,8 @@ import DailyOrderList from "./pages/DeliveryStaff/DailyOrder/DailyOrderList";
 import DailyOrderDetail from "./pages/DeliveryStaff/DailyOrder/DailyOrderDetail";
 import ScanOR from "./pages/DeliveryStaff/ConfirmOrder/ScanOR";
 import CustomerOrderDetail from "./pages/DeliveryStaff/ConfirmOrder/OrderDetail";
+import ShippingHistory from "./pages/DeliveryStaff/ShippingHistory/ShippingHistory";
+import StaffSetting from "./pages/DeliveryStaff/Setting/StaffSetting,";
 
 function App() {
   return (
@@ -91,6 +93,7 @@ function App() {
 
             {/* Delivery Staff */}
             <Route path="/staff/order" element={<DailyOrderList />} />
+            <Route path="/staff/history" element={<ShippingHistory />} />
             <Route
               path="/staff/order/:dailyOrderId"
               element={<DailyOrderDetail />}
@@ -100,6 +103,7 @@ function App() {
               path="/staff/scan/order/:orderId"
               element={<CustomerOrderDetail />}
             />
+            <Route path="/staff/setting" element={<StaffSetting />} />
           </Routes>
         </CartProvider>
       </Router>
