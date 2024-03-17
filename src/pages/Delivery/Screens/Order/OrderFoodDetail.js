@@ -13,6 +13,7 @@ const OrderFoodDetail = () => {
 
   const [orderData, setOrderData] = useState(null);
   const [shipperData, setShipperData] = useState(null);
+  const [staffData, setStaffData] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,9 +36,18 @@ const OrderFoodDetail = () => {
       }
     };
     fetchOrderDetail();
+    fetchStaffByOder();
     fetchShipper();
   }, [dailyOrderId]);
 
+  const fetchStaffByOder = async () => {
+    try {
+      const data = await ShippingOrderAPI.getStaffByDailyOrder(dailyOrderId);
+      setStaffData(data);
+    } catch (error) {
+      console.error("Error fetching dish data:", error);
+    }
+  };
   const handleSubmitShipper = async (shipperIds) => {
     if (orderData && shipperIds.length) {
       try {
@@ -45,6 +55,7 @@ const OrderFoodDetail = () => {
           dailyOrderId: dailyOrderId,
           shipperIds, // Sửa đổi này phản ánh API mới
         });
+        fetchStaffByOder();
         toast.success("Thêm người giao hàng thành công!");
       } catch (error) {
         console.error("Error submitting shippers:", error);
@@ -54,7 +65,7 @@ const OrderFoodDetail = () => {
     setIsModalOpen(false); // Đóng modal sau khi submit
   };
 
-  console.log("shipper", shipperData);
+  console.log("shipper", staffData);
   const LoadingSkeleton = () => (
     <div className="mt-6 w-5/6 mx-auto animate-pulse">
       <div className="space-y-4">
@@ -118,6 +129,46 @@ const OrderFoodDetail = () => {
               {""} <DailyOrderStatusText status={orderData.status} />
             </span>
           </p>
+          <h2 className="text-xl font-semibold mb-3 mt-3">
+            Nhân viên giao hàng
+          </h2>
+          <table className="min-w-full table-auto mb-4">
+            <thead>
+              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-6 text-left">Hình ảnh</th>
+                <th className="py-3 px-6 ">Tên nhân viên</th>
+                <th className="py-3 px-6 ">Email</th>
+                <th className="py-3 px-6 text-right">Số điện thoại</th>
+              </tr>
+            </thead>
+            {staffData && staffData.length > 0 ? (
+              <tbody className="text-gray-600 text-sm font-light">
+                {staffData.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="display-img-user"
+                    />
+                    <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
+                      {item.name}
+                    </td>
+                    <td className="py-3 px-6 text-left">{item.email}</td>
+                    <td className="py-3 px-6 text-right">{item.phoneNumber}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center py-3 px-6">
+                  Chưa có nhân viên giao hàng
+                </td>
+              </tr>
+            )}{" "}
+          </table>
           <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>
           <table className="min-w-full table-auto">
             <thead>

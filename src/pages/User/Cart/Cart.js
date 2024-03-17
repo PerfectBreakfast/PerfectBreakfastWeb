@@ -209,7 +209,7 @@ function Cart() {
             </div>
 
             <button
-              className={`bg-green-500 text-white py-2.5 mb-2 rounded-3xl hover:bg-green-600 ${
+              className={`bg-green-500 text-white py-2.5 mb-2 rounded-xl hover:bg-green-600 ${
                 selectedMealId ? "" : "opacity-50 cursor-not-allowed"
               }`}
               onClick={handleGoToCheckout}

@@ -47,5 +47,15 @@ const ShippingOrderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getStaffByDailyOrder: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/shippingorders/delivery-staff/daily-order/${dailyOrderId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 export default ShippingOrderAPI;

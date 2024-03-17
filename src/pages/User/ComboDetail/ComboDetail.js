@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ComboDetailSkeleton from "./ComboDetailSkeleton";
 import { ReactComponent as Check } from "../../../assets/icons/check.svg";
+import { ReactComponent as BackIcon } from "../../../assets/icons/back-arrow.svg";
 
 function ComboDetail() {
   const { id } = useParams();
@@ -157,20 +158,7 @@ function ComboDetail() {
         <div className="mt-2 flex justify-between">
           <div className="container flex items-center">
             <button onClick={handleGoBack} className="mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
+              <BackIcon />
             </button>
             <h1 className="text-xl font-semibold mb-4">Chi tiết món ăn</h1>
           </div>
@@ -220,7 +208,7 @@ function ComboDetail() {
 
               <button
                 onClick={handleAddToCart}
-                class="bg-green-500 text-white py-2.5 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-5/6 rounded-3xl font-bold"
+                class="bg-green-500 text-white py-2.5 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-5/6 rounded-xl font-bold"
               >
                 Thêm vào giỏ hàng - {formattedTotalPrice}
               </button>

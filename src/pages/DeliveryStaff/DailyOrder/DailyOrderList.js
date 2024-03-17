@@ -35,6 +35,11 @@ const DailyOrderList = () => {
     fetchShippingOrder();
   }, []);
   console.log("data", orderData);
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("vi-VN", options);
+  };
+
   return (
     <>
       <UserHeader />
@@ -74,7 +79,7 @@ const DailyOrderList = () => {
                 <div className="menuDate text-left text-xl font-bold">
                   {/* Sử dụng dateGroup.bookingDate để hiển thị ngày giao */}
                   <h6 className="text-green-600">
-                    Đơn hàng ngày {dateGroup.bookingDate}
+                    Đơn hàng ngày {formatDate(dateGroup.bookingDate)}
                   </h6>
                 </div>
                 {dateGroup.totalFoodForCompanyResponses.map((order, index) => (
