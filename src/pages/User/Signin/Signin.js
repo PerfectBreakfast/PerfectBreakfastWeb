@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
 import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
@@ -29,6 +30,35 @@ const Login = () => {
       [name]: value,
     }));
   };
+
+  // call tới google
+  const handleLoginGoogle = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async (codeResponse) => {
+      console.log(codeResponse);
+      //setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
+      try {
+        const userData = await userAPI.externalLogin(codeResponse.code);
+  
+        const accessToken = userData.accessToken;
+        const refreshToken = userData.refreshToken;
+        // Mã hóa tokens
+        const encryptedAccessToken = encryptToken(accessToken);
+        const encryptedRefreshToken = encryptToken(refreshToken);
+  
+        // Lưu vào localStorage
+        localStorage.setItem("accessToken", encryptedAccessToken);
+        localStorage.setItem("refreshToken", encryptedRefreshToken);
+        navigate("/home");
+      } catch (error) {
+        console.log(error);
+        toast.error("Lỗi không thể đăng nhập");
+      } finally {
+        //setIsLoading(false);
+      }
+    },
+    onError: errorResponse => console.log(errorResponse),
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -120,9 +150,23 @@ const Login = () => {
           Đăng ký ngay
         </Link>
       </div>
+
+      <div className="mt-4">
+        OR
+      </div>
+
+      <button type="button" class="mt-4 btn-submit-user"
+        onClick={() => handleLoginGoogle()}>
+        Đăng nhập bằng Google 🚀
+      </button>
+
+
       <ToastContainer />
     </div>
   );
 };
+
+
+
 
 export default Login;
