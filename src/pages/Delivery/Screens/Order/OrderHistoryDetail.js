@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import DailyOrderAPI from "../../../../services/DailyOrderAPI";
-import userAPI from "../../../../services/userAPI";
-import ShipperSelectModal from "./ShipperSelectModal";
-import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
-import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 import dishAPI from "../../../../services/dishAPI";
+import userAPI from "../../../../services/userAPI";
+import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
 import DailyOrderStatusText from "../../../../components/Status/DailyOrderStatusText";
 
-const OrderFoodDetail = () => {
+const OrderHistoryDetail = () => {
   const { dailyOrderId } = useParams();
 
   const [orderData, setOrderData] = useState(null);
-  const [shipperData, setShipperData] = useState(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchOrderDetail = async () => {
@@ -25,36 +19,9 @@ const OrderFoodDetail = () => {
         console.error("Error fetching dish data:", error);
       }
     };
-
-    const fetchShipper = async () => {
-      try {
-        const data = await userAPI.getDeliveryStaff();
-        setShipperData(data);
-      } catch (error) {
-        console.error("Error fetching dish data:", error);
-      }
-    };
     fetchOrderDetail();
-    fetchShipper();
   }, [dailyOrderId]);
 
-  const handleSubmitShipper = async (shipperIds) => {
-    if (orderData && shipperIds.length) {
-      try {
-        await ShippingOrderAPI.assignOrderForShipper({
-          dailyOrderId: dailyOrderId,
-          shipperIds, // Sửa đổi này phản ánh API mới
-        });
-        toast.success("Thêm người giao hàng thành công!");
-      } catch (error) {
-        console.error("Error submitting shippers:", error);
-        toast.error(error.errors);
-      }
-    }
-    setIsModalOpen(false); // Đóng modal sau khi submit
-  };
-
-  console.log("shipper", shipperData);
   const LoadingSkeleton = () => (
     <div className="mt-6 w-5/6 mx-auto animate-pulse">
       <div className="space-y-4">
@@ -89,16 +56,6 @@ const OrderFoodDetail = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-2">Đơn hàng</h2>
-
-      <div className="flex justify-end items-center">
-        {orderData &&
-          orderData.totalFoodResponses &&
-          orderData.totalFoodResponses.length > 0 && (
-            <button onClick={() => setIsModalOpen(true)} className="btn-add">
-              Chọn người giao hàng
-            </button>
-          )}
-      </div>
 
       {orderData ? (
         <div className="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -155,15 +112,8 @@ const OrderFoodDetail = () => {
       ) : (
         <LoadingSkeleton />
       )}
-      {isModalOpen && (
-        <ShipperSelectModal
-          shipperData={shipperData}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSubmitShipper}
-        />
-      )}
     </div>
   );
 };
 
-export default OrderFoodDetail;
+export default OrderHistoryDetail;

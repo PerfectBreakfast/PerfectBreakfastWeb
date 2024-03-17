@@ -7,6 +7,7 @@ import FoodByCompany from "../Screens/Order/FoodByCompany";
 import SupplierFoodAssigment from "../Screens/Order/TotalOrderFood";
 import CompanyList from "../Screens/Company/CompanyList";
 import SupplierList from "../Screens/Supplier/SupplierList";
+import DailyOrderHistory from "../Screens/Order/DailyOrderHistory";
 
 const PartnerContent = () => {
   return (
@@ -20,6 +21,12 @@ const PartnerContent = () => {
         path="order/detail/:dailyOrderId/assign"
         element={<SupplierFoodAssigment />}
       />
+      <Route path="order-history" element={<DailyOrderHistory />} />
+      <Route
+        path="order-history/:dailyOrderId"
+        element={<OrderDetailByCompany />}
+      />
+
       <Route path="food" element={<FoodByCompany />} />
       <Route path="company" element={<CompanyList />} />
       <Route path="supplier" element={<SupplierList />} />
