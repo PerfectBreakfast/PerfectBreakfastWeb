@@ -90,6 +90,17 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  resetPassword: async (newPasswordData) => {
+    try {
+      const response = await axios.put(
+        `${api}/account/password-resetion`,
+        newPasswordData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;

@@ -26,10 +26,10 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  confirmOrderForDeliveryStaff: async (orderId) => {
+  repaymentOrder: async (orderId) => {
     try {
-      const response = await axiosInstance.patch(
-        `${api}/v1/orders/${orderId}/status-complete`
+      const response = await axiosInstance.get(
+        `${api}/v1/orders/${orderId}/paymentlink`
       );
       return response.data;
     } catch (error) {

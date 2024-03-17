@@ -60,7 +60,7 @@ function App() {
             <Route path="/management/login" element={<ManagementLogin />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/resetpassword" element={<ResetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/home" element={<Homepage />} />
             <Route path="/combo/:id" element={<ComboDetail />} />
             <Route path="/cart" element={<Cart />} />
