@@ -24,6 +24,16 @@ const userAPI = {
     }
   },
 
+  externalLogin: async (code) => {
+    try {
+      const response = await axios.post(`${api}/account/google?code=${code}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+
   register: async (userData) => {
     try {
       const response = await axios.post(`${api}/account/signup`, userData);
