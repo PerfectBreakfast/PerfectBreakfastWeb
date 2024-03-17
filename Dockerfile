@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 
 ENV NODE_ENV production
 ENV REACT_APP_API_URL /api    
@@ -24,6 +24,7 @@ FROM nginx:1.25.4
 COPY --from=build /app/build /usr/share/nginx/html
 # Expose port 80 for Nginx
 EXPOSE 80
+EXPOSE 443
 # Start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
 
