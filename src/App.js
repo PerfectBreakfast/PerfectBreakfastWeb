@@ -40,6 +40,9 @@ import QrScanner from "./components/ScanQR";
 import Detail from "./components/Detail";
 import ForgotPassword from "./pages/User/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/User/ForgotPassword/ResetPassword";
+import DailyOrderList from "./pages/DeliveryStaff/DailyOrder/DailyOrderList";
+import DailyOrderDetail from "./pages/DeliveryStaff/DailyOrder/DailyOrderDetail";
+import ScanOR from "./pages/DeliveryStaff/ConfirmOrder/ScanOR";
 
 function App() {
   return (
@@ -84,6 +87,14 @@ function App() {
             <Route path="/loading" element={<Loading />} />
             <Route path="/scan" element={<QrScanner />} />
             <Route path="/order/:orderId" element={<Detail />} />
+
+            {/* Delivery Staff */}
+            <Route path="/staff/order" element={<DailyOrderList />} />
+            <Route
+              path="/staff/order/:dailyOrderId"
+              element={<DailyOrderDetail />}
+            />
+            <Route path="/staff/scan" element={<ScanOR />} />
           </Routes>
         </CartProvider>
       </Router>

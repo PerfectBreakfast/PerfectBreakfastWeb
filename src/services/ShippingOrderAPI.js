@@ -14,5 +14,27 @@ const ShippingOrderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+
+  getShippingOrderForDeliveryStaff: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/shippingorders/daily-order/pending-status
+        `
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  confirmShippingOrderByStaff: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/shippingorders/confirmation/${dailyOrderId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 export default ShippingOrderAPI;

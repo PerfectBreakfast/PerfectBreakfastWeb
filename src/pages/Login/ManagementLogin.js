@@ -62,7 +62,7 @@ const ManagementLogin = () => {
         navigate("/delivery/order");
       } else if (roles.includes("DELIVERY STAFF")) {
         // navigate("/delivery/order");
-        navigate("/scan");
+        navigate("/staff/order");
       } else {
         toast.error("Email hoặc mật khẩu không chính xác");
       }
