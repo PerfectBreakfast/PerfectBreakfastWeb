@@ -43,6 +43,7 @@ import ResetPassword from "./pages/User/ForgotPassword/ResetPassword";
 import DailyOrderList from "./pages/DeliveryStaff/DailyOrder/DailyOrderList";
 import DailyOrderDetail from "./pages/DeliveryStaff/DailyOrder/DailyOrderDetail";
 import ScanOR from "./pages/DeliveryStaff/ConfirmOrder/ScanOR";
+import CustomerOrderDetail from "./pages/DeliveryStaff/ConfirmOrder/OrderDetail";
 
 function App() {
   return (
@@ -95,6 +96,10 @@ function App() {
               element={<DailyOrderDetail />}
             />
             <Route path="/staff/scan" element={<ScanOR />} />
+            <Route
+              path="/staff/scan/order/:orderId"
+              element={<CustomerOrderDetail />}
+            />
           </Routes>
         </CartProvider>
       </Router>

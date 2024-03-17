@@ -33,19 +33,19 @@ const Login = () => {
 
   // call tới google
   const handleLoginGoogle = useGoogleLogin({
-    flow: 'auth-code',
+    flow: "auth-code",
     onSuccess: async (codeResponse) => {
       console.log(codeResponse);
       //setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
       try {
         const userData = await userAPI.externalLogin(codeResponse.code);
-  
+
         const accessToken = userData.accessToken;
         const refreshToken = userData.refreshToken;
         // Mã hóa tokens
         const encryptedAccessToken = encryptToken(accessToken);
         const encryptedRefreshToken = encryptToken(refreshToken);
-  
+
         // Lưu vào localStorage
         localStorage.setItem("accessToken", encryptedAccessToken);
         localStorage.setItem("refreshToken", encryptedRefreshToken);
@@ -57,7 +57,7 @@ const Login = () => {
         //setIsLoading(false);
       }
     },
-    onError: errorResponse => console.log(errorResponse),
+    onError: (errorResponse) => console.log(errorResponse),
   });
 
   const handleLogin = async (e) => {
@@ -151,22 +151,19 @@ const Login = () => {
         </Link>
       </div>
 
-      <div className="mt-4">
-        OR
-      </div>
+      <div className="mt-4">OR</div>
 
-      <button type="button" class="mt-4 btn-submit-user"
-        onClick={() => handleLoginGoogle()}>
+      <button
+        type="button"
+        class="mt-4 btn-submit-user"
+        onClick={() => handleLoginGoogle()}
+      >
         Đăng nhập bằng Google 🚀
       </button>
-
 
       <ToastContainer />
     </div>
   );
 };
-
-
-
 
 export default Login;

@@ -21,7 +21,7 @@ const DailyOrderList = () => {
   useEffect(() => {
     const fetchShippingOrder = async () => {
       try {
-        const data = await ShippingOrderAPI.getShippingOrderForDeliveryStaff();
+        const data = await ShippingOrderAPI.getShippingOrderForDeliveryStafff();
 
         setOrderData(data);
         setLoading(false);
@@ -46,31 +46,35 @@ const DailyOrderList = () => {
             ))}
           </div>
         ) : error ? (
-          <div className="text-center mt-4 font-bold">
+          <div className="text-xl text-center mt-4 font-bold">
             <p>Không có đơn hàng cần giao</p>
           </div>
         ) : (
           <>
-            <div className="menuDate text-left text-xl font-bold">
-              <h6 className="text-green-600">Đơn hàng cần giao</h6>
-            </div>
-            {orderData.map((order, index) => (
-              <div
-                key={index}
-                onClick={() => handleComboClick(order.dailyOrderId)}
-                className="grid grid-cols-1 gap-2 mb-3 bg-gray-100 p-4 rounded-lg shadow cursor-pointer"
-              >
-                <div className="flex justify-between">
-                  <p>Ngày giao: {order.bookingDate}</p>
-                  <p>Thời gian: {order.deliveryTime}</p>
-                  <p>Bữa giao: {order.meal}</p>
+            {orderData.map((dateGroup) => (
+              <>
+                <div className="menuDate text-left text-xl font-bold">
+                  {/* Sử dụng dateGroup.bookingDate để hiển thị ngày giao */}
+                  <h6 className="text-green-600">
+                    Đơn hàng ngày {dateGroup.bookingDate}
+                  </h6>
                 </div>
-                <h2 className="font-semibold">
-                  Tên công ty: {order.companyName}
-                </h2>
-                <p>Địa chỉ: {order.address}</p>
-                <p>Sđt: {order.phoneNumber}</p>
-              </div>
+                {dateGroup.totalFoodForCompanyResponses.map((order, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleComboClick(order.dailyOrderId)}
+                    className="grid grid-cols-1 gap-2 mb-3 bg-gray-100 p-4 rounded-lg shadow cursor-pointer"
+                  >
+                    <h2 className="font-bold">
+                      Tên công ty: {order.companyName}
+                    </h2>
+                    <p>Địa chỉ: {order.address}</p>
+                    <p>Sđt: {order.phoneNumber}</p>
+                    <p>Thời gian giao hàng: {order.deliveryTime}</p>
+                    {/* If you need to display food details, map over totalFoodResponses here */}
+                  </div>
+                ))}
+              </>
             ))}
           </>
         )}
