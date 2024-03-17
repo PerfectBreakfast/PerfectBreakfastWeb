@@ -16,15 +16,11 @@ import logo from "../../../assets/images/logo.png";
 const navigation = [
   { name: "Danh sách đơn hàng", href: "/delivery/order", icon: FoodIcon },
   { name: "Danh sách nhân viên", href: "/delivery/staff", icon: Staff },
-  // { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
-  // { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
-  // { name: "Danh sách NCC", href: "/admin/suppliers", icon: SupplierIcon },
-  // { name: "Danh sách ĐVVC", href: "/admin/deliveries", icon: DeliveryIcon },
-  // {
-  //   name: "Danh sách công ty",
-  //   href: "/admin/companies",
-  //   icon: CompanyIcon,
-  // },
+  {
+    name: "Lịch sử đơn hàng",
+    href: "/delivery/order-history",
+    icon: MenuIcon,
+  },
   {
     name: "Danh sách công ty",
     href: "/delivery/company",
@@ -42,8 +38,18 @@ const DeliverySidebar = () => {
     navigate("/management/login");
   };
   const isActive = (href) => {
-    return location.pathname === href;
+    // So sánh đường dẫn hiện tại với href một cách chính xác
+    if (location.pathname === href) {
+      return true;
+    }
+    // Đối với các trường hợp đường dẫn con, kiểm tra thêm điều kiện kết thúc bằng "/"
+    // và đảm bảo rằng phần còn lại sau href là một đường dẫn con
+    return (
+      location.pathname.startsWith(href) &&
+      location.pathname[href.length] === "/"
+    );
   };
+
   return (
     <div className="flex h-full">
       {/* Mobile sidebar */}
