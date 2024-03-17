@@ -30,6 +30,10 @@ const ShippingHistory = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("vi-VN", options);
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -76,7 +80,7 @@ const ShippingHistory = () => {
                 key={index}
                 className="grid grid-cols-1 gap-2 mb-3 bg-gray-100 p-4 rounded-lg shadow cursor-pointer"
               >
-                <p>Thời gian giao hàng: {order.bookingDate}</p>
+                <p>Thời gian giao hàng: {formatDate(order.bookingDate)}</p>
                 <h2 className="font-bold">Tên công ty: {order.companyName}</h2>
                 <p>Địa chỉ: {order.address}</p>
                 <p>Bữa ăn: {order.meal}</p>

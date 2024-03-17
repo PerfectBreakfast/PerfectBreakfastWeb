@@ -107,48 +107,6 @@ const CustomerOrderDetail = () => {
               </div>
             </div>
           ))}
-          {orderData.orderDetails.map((detail, index) => (
-            <div
-              key={index}
-              className="mb-3 px-4 py-3 rounded-xl shadow bg-white"
-            >
-              <div className="flex items-center">
-                <img
-                  src={detail.image}
-                  alt={detail.comboName}
-                  className="w-20 h-20 mr-4 rounded-lg"
-                />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">
-                    {detail.comboName}
-                  </h4>
-                  <p className="text-gray-600">Món ăn: {detail.foods}</p>
-                  <p className="text-gray-600">Số lượng: {detail.quantity}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-          {orderData.orderDetails.map((detail, index) => (
-            <div
-              key={index}
-              className="mb-3 px-4 py-3 rounded-xl shadow bg-white"
-            >
-              <div className="flex items-center">
-                <img
-                  src={detail.image}
-                  alt={detail.comboName}
-                  className="w-20 h-20 mr-4 rounded-lg"
-                />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">
-                    {detail.comboName}
-                  </h4>
-                  <p className="text-gray-600">Món ăn: {detail.foods}</p>
-                  <p className="text-gray-600">Số lượng: {detail.quantity}</p>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 w-full">
