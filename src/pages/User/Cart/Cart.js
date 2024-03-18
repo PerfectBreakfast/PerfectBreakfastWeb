@@ -121,7 +121,7 @@ function Cart() {
                 id="mealSelect"
                 value={selectedMealId}
                 onChange={(e) => setSelectedMealId(e.target.value)}
-                className="p-2.5 mt-1 block w-full text-base border-gray-300 focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-lg shadow-sm bg-white hover:border-gray-400"
+                className="border-1 p-2.5 mt-1 block w-full text-base border-gray-300 focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-lg shadow-sm bg-white hover:border-gray-400"
               >
                 <option value="" disabled>
                   Chọn bữa ăn
