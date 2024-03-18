@@ -76,7 +76,7 @@ const Homepage = () => {
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
-                  className="border-1 border-gray-200 flex flex-row items-center p-3 shadow-md rounded-lg h-24"
+                  className="border-1 border-gray-200 flex flex-row items-center p-3 shadow-md rounded-lg h-24 bg-gray-50"
                   key={combo.id}
                   onClick={() => handleComboClick(combo.id)}
                 >

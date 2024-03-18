@@ -5,6 +5,8 @@ import logo from "../../../assets/images/logo.png";
 import userAPI from "../../../services/userAPI";
 import { ClipLoader } from "react-spinners";
 
+import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
+
 const ForgotPassword = () => {
   const protocol = window.location.protocol;
   const host = window.location.host;
@@ -66,13 +68,11 @@ const ForgotPassword = () => {
 
         <button
           type="submit"
-          disabled={isLoading}
-          className={`btn btn-primary w-full rounded-xl transition-colors duration-300 mt-2.5 border-none ${
-            isLoading ? "bg-green-600" : "bg-green-600 hover:bg-green-700"
-          }`}
+          className="btn-submit-user"
+          disabled={isLoading} // Disable nút khi đang gọi API
         >
           {isLoading ? (
-            <ClipLoader color="#ffffff" size={24} />
+            <Loading className=" animate-spin inline w-5 h-5 text-gray-200 dark:text-gray-600" />
           ) : (
             "Reset lại mật khẩu"
           )}
