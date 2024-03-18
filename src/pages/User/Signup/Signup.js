@@ -228,7 +228,11 @@ const Signup = () => {
           className="btn-submit-user"
           disabled={isLoading} // Disable nút khi đang gọi API
         >
-          {isLoading ? <Loading /> : "Đăng ký"}
+          {isLoading ? (
+            <Loading className=" animate-spin inline w-5 h-5 text-gray-200 dark:text-gray-600" />
+          ) : (
+            "Đăng ký"
+          )}
         </button>
       </form>
 

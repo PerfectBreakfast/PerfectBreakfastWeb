@@ -6,6 +6,7 @@ import logo from "../../../assets/images/logo.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router";
+
 import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
 import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
 import { ReactComponent as Visibility } from "../../../assets/icons/Eye Closed.svg";
@@ -15,7 +16,9 @@ const ResetPassword = () => {
   const queryParams = new URLSearchParams(location.search);
   const tokenParams = queryParams.get("token");
   const email = queryParams.get("email");
-  const token = tokenParams.replace(/ /g, "+");
+  // const token = tokenParams.replace(/ /g, "+");
+  // Chỉ thực hiện replace nếu tokenParams tồn tại
+  const token = tokenParams ? tokenParams.replace(/ /g, "+") : "";
 
   const navigate = useNavigate();
 
@@ -122,12 +125,14 @@ const ResetPassword = () => {
 
         <button
           type="submit"
-          className={`btn-submit-user ${
-            isLoading ? "disabled:opacity-50" : ""
-          }`}
-          disabled={isLoading}
+          className="btn-submit-user"
+          disabled={isLoading} // Disable nút khi đang gọi API
         >
-          {isLoading ? <Loading /> : "Đặt lại mật khẩu"}
+          {isLoading ? (
+            <Loading className=" animate-spin inline w-5 h-5 text-gray-200 dark:text-gray-600" />
+          ) : (
+            "Đặt lại mật khẩu"
+          )}
         </button>
       </form>
       <ToastContainer />

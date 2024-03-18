@@ -164,7 +164,7 @@ function ComboDetail() {
           </div>
         </div>
 
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg mb-24">
           <div class="max-h-64 w-full mt-2 border-2 border-white rounded-xl shadow-md overflow-hidden">
             <img
               id="imgDetail"
@@ -184,9 +184,12 @@ function ComboDetail() {
               })}
             </h6>
             <p class="text-base">{comboData.content}</p>
-
-            <div class="mb-5 fixed bottom-0 left-0 w-full bg-white ">
-              <div class="flex items-center justify-center py-2.5 space-x-2">
+          </div>
+        </div>
+        <div className="container">
+          <div className="fixed bottom-0 left-0 right-0 w-full">
+            <div className="flex flex-col mt-4 px-2 pt-2 pb-1 shadow-lg bg-white rounded-t-2xl">
+              <div className="flex justify-center my-2">
                 <button
                   aria-label="remove"
                   class="text-red-500"
@@ -205,16 +208,16 @@ function ComboDetail() {
                   <AddIcon />
                 </button>
               </div>
-
               <button
                 onClick={handleAddToCart}
-                class="bg-green-500 text-white py-2.5 px-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-5/6 rounded-xl font-bold"
+                className="bg-green-500 text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors font-bold"
               >
                 Thêm vào giỏ hàng - {formattedTotalPrice}
               </button>
             </div>
           </div>
         </div>
+
         <ToastContainer />
       </div>
     </>
