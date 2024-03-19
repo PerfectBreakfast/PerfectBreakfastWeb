@@ -23,6 +23,17 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  loginForManagement: async (credentials) => {
+    try {
+      const response = await axios.post(
+        `${api}/account/management/login`,
+        credentials
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 
   externalLogin: async (code) => {
     try {
