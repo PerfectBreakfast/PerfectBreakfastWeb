@@ -85,6 +85,16 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getFoodForCombo: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/status?status=0`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default dishAPI;

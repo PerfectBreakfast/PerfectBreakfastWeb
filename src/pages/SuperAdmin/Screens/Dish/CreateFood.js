@@ -35,6 +35,7 @@ const CreateFood = () => {
       name: "",
       price: "",
       categoryId: "",
+      foodStatus: "",
       selectedImage: null,
     },
     validationSchema: Yup.object({
@@ -43,6 +44,7 @@ const CreateFood = () => {
         .positive("Đơn giá phải là số dương")
         .required("Đơn giá không được để trống"),
       categoryId: Yup.string().required("Danh mục không được để trống"),
+      foodStatus: Yup.string().required("Bạn cần chọn loại món"),
       selectedImage: Yup.mixed().required("Bạn cần chọn hình ảnh cho món ăn"),
     }),
 
@@ -54,6 +56,7 @@ const CreateFood = () => {
         formData.append("name", values.name);
         formData.append("price", values.price);
         formData.append("categoryId", values.categoryId);
+        formData.append("foodStatus", values.foodStatus);
         if (values.selectedImage) {
           formData.append("image", values.selectedImage);
         }
@@ -101,6 +104,7 @@ const CreateFood = () => {
       name: true,
       price: true,
       categoryId: true,
+      foodStatus: true,
       selectedImage: true,
     });
 
@@ -182,6 +186,29 @@ const CreateFood = () => {
             {formik.touched.categoryId && formik.errors.categoryId ? (
               <div className="formik-error-message">
                 {formik.errors.categoryId}
+              </div>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="foodStatus" className="label-input">
+              Chọn loại món
+            </label>
+            <select
+              id="foodStatus"
+              name="foodStatus"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.foodStatus}
+              className="input-form"
+            >
+              <option value="">Chọn loại món</option>
+              <option value="0">Combo</option>
+              <option value="1">Bán lẻ</option>
+            </select>
+            {formik.touched.foodStatus && formik.errors.foodStatus ? (
+              <div className="formik-error-message">
+                {formik.errors.foodStatus}
               </div>
             ) : null}
           </div>
