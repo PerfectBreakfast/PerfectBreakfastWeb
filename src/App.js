@@ -46,6 +46,7 @@ import ScanOR from "./pages/DeliveryStaff/ConfirmOrder/ScanOR";
 import CustomerOrderDetail from "./pages/DeliveryStaff/ConfirmOrder/OrderDetail";
 import ShippingHistory from "./pages/DeliveryStaff/ShippingHistory/ShippingHistory";
 import StaffSetting from "./pages/DeliveryStaff/Setting/StaffSetting,";
+import FoodDetail from "./pages/User/ComboDetail/FoodDetail";
 
 function App() {
   return (
@@ -61,8 +62,9 @@ function App() {
             <Route path="/register" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/home" element={<Homepage />} />
-            <Route path="/combo/:id" element={<ComboDetail />} />
+            <Route path="/menu" element={<Homepage />} />
+            <Route path="/menu/combo/:id" element={<ComboDetail />} />
+            <Route path="/menu/food/:id" element={<FoodDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-history" element={<OrderHistoryList />} />

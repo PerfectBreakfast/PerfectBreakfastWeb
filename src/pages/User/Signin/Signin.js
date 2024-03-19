@@ -49,7 +49,7 @@ const Login = () => {
         // Lưu vào localStorage
         localStorage.setItem("accessToken", encryptedAccessToken);
         localStorage.setItem("refreshToken", encryptedRefreshToken);
-        navigate("/home");
+        navigate("/menu");
       } catch (error) {
         console.log(error);
         toast.error("Lỗi không thể đăng nhập");
@@ -75,7 +75,7 @@ const Login = () => {
       // Lưu vào localStorage
       localStorage.setItem("accessToken", encryptedAccessToken);
       localStorage.setItem("refreshToken", encryptedRefreshToken);
-      navigate("/home");
+      navigate("/menu");
     } catch (error) {
       console.log(error);
       toast.error("Email hoặc mật khẩu không chính xác");

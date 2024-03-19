@@ -46,17 +46,30 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  editFood: async (foodId, foodName, foodPrice, editFoodData) => {
+  // editFood: async (foodId, foodName, foodPrice, foodStatus, editFoodData) => {
+  //   try {
+  //     const response = await axiosInstance.put(
+  //       `${api}/v1/foods/${foodId}?Name=${foodName}&Price=${foodPrice}`,
+  //       editFoodData
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     throw error.response ? error.response.data : error.message;
+  //   }
+  // },
+
+  editFood: async (foodId, foodData) => {
     try {
       const response = await axiosInstance.put(
-        `${api}/v1/foods/${foodId}?Name=${foodName}&Price=${foodPrice}`,
-        editFoodData
+        `${api}/v1/foods/${foodId}`,
+        foodData
       );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
     }
   },
+
   deleteDishById: async (dishId) => {
     try {
       const response = await axiosInstance.delete(`${api}/v1/foods/${dishId}`);
@@ -89,6 +102,16 @@ const dishAPI = {
     try {
       const response = await axiosInstance.get(
         `${api}/v1/foods/status?status=0`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getFoodForMenu: async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/status?status=1`
       );
       return response.data;
     } catch (error) {

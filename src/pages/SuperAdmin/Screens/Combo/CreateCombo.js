@@ -102,16 +102,18 @@ const CreateCombo = () => {
     );
 
     try {
-      const response = await categoryAPI.getFoodByCategory(categoryId);
+      const response = await categoryAPI.getFoodByCategoryForCreate(categoryId);
       if (type === "main") {
-        setMainDishes(response[0]?.foodResponse || []);
+        setMainDishes(response.foodResponse || []);
       } else {
-        setSideDishes(response[0]?.foodResponse || []);
+        setSideDishes(response.foodResponse || []);
       }
     } catch (error) {
       console.error(`Error fetching ${type} dishes:`, error);
     }
   };
+
+  console.log("mon chinh", mainDishes);
 
   const handleCreateClick = async () => {
     // Đánh dấu tất cả các trường là đã chạm vào, bao gồm cả selectedImage
@@ -278,7 +280,7 @@ const CreateCombo = () => {
             ) : null}
           </div>
 
-          {mainDishes.length > 0 && (
+          {/* {mainDishes.length > 0 && (
             <div>
               <select
                 id="mainFoodId"
@@ -292,6 +294,34 @@ const CreateCombo = () => {
                 {mainDishes.map((dish) => (
                   <option key={dish.id} value={dish.id}>
                     {dish.name}
+                  </option>
+                ))}
+              </select>
+              {formik.touched.mainFoodId && formik.errors.mainFoodId ? (
+                <div className="formik-error-message">
+                  {formik.errors.mainFoodId}
+                </div>
+              ) : null}
+            </div>
+          )} */}
+
+          {mainDishes.length > 0 && (
+            <div>
+              <select
+                id="mainFoodId"
+                name="mainFoodId"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.mainFoodId}
+                className="input-form dark:shadow-sm-light"
+              >
+                <option value="">Chọn món chính</option>
+                {mainDishes.map((dish) => (
+                  <option key={dish.id} value={dish.id}>
+                    {`${dish.name} - ${dish.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}`}
                   </option>
                 ))}
               </select>
@@ -329,7 +359,7 @@ const CreateCombo = () => {
             ) : null}
           </div>
 
-          {sideDishes.length > 0 && (
+          {/* {sideDishes.length > 0 && (
             <div>
               <select
                 id="sideFoodId"
@@ -343,6 +373,34 @@ const CreateCombo = () => {
                 {sideDishes.map((dish) => (
                   <option key={dish.id} value={dish.id}>
                     {dish.name}
+                  </option>
+                ))}
+              </select>
+              {formik.touched.sideFoodId && formik.errors.sideFoodId ? (
+                <div className="formik-error-message">
+                  {formik.errors.sideFoodId}
+                </div>
+              ) : null}
+            </div>
+          )} */}
+
+          {sideDishes.length > 0 && (
+            <div>
+              <select
+                id="sideFoodId"
+                name="sideFoodId"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.sideFoodId}
+                className="input-form dark:shadow-sm-light"
+              >
+                <option value="">Chọn món phụ</option>
+                {sideDishes.map((dish) => (
+                  <option key={dish.id} value={dish.id}>
+                    {`${dish.name} - ${dish.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}`}
                   </option>
                 ))}
               </select>

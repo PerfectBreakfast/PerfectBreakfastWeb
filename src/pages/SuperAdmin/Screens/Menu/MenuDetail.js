@@ -171,6 +171,50 @@ const MenuDetail = () => {
             </tbody>
           </table>
         </div>
+
+        <p className="text-xl font-semibold text-gray-600 text-left mt-4">
+          Danh sách món ăn
+        </p>
+        <div className="overflow-x-auto max-h-96 mt-2">
+          <table className="min-w-max w-full table-auto  mb-4">
+            <thead className="bg-gray-200 sticky top-0 ">
+              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-6">Hình ảnh</th>
+                <th className="py-3 px-6">Tên món ăn</th>
+                <th className="py-3 px-6">Đơn giá</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {menuDetail.foodResponses.map((food) => (
+                <tr key={food.id} className="border-b">
+                  <td className="py-3 px-6 text-left">
+                    <img
+                      src={food.image}
+                      alt={food.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {" "}
+                    <span
+                      className="font-medium cursor-pointer hover:text-green-500"
+                      onClick={() => handleDetailClick(food.id)}
+                    >
+                      {food.name}
+                    </span>
+                  </td>
+
+                  <td className="py-3 px-6 text-left">
+                    {food.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {isLoading && <Loading />}

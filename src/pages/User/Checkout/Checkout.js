@@ -47,32 +47,44 @@ function Checkout() {
   const handleCheckout = async () => {
     setIsLoading(true);
     try {
+      // Tạo orderDetails dựa trên yêu cầu của API
       const orderDetails = {
         note,
         payment: paymentMethod,
         mealId: selectedMealId,
-        orderDetails: cart.map((item) => ({
-          quantity: item.quantity,
-          comboId: item.id,
-        })),
+        orderDetails: cart.map((item) => {
+          // Cấu trúc dữ liệu cho mỗi item trong giỏ hàng
+          const detail = {
+            quantity: item.quantity,
+          };
+
+          // Phân biệt giữa combo và food dựa vào type, gán đúng key cho mỗi loại
+          if (item.type === "combo") {
+            detail.comboId = item.id;
+          } else if (item.type === "food") {
+            detail.foodId = item.id;
+          }
+
+          return detail;
+        }),
       };
+
       console.log("orderDetails", orderDetails);
-      // Gọi hàm orderFood từ orderAPI
+      // Gọi API đặt hàng với thông tin đã chuẩn bị
       const result = await orderAPI.orderFood(orderDetails);
 
-      // Kiểm tra xem có paymentUrl trong kết quả không
+      // Kiểm tra và xử lý dựa trên kết quả trả về từ API
       if (result.paymentUrl) {
-        // Chuyển hướng tới trang thanh toán
+        // Nếu có URL thanh toán, chuyển hướng người dùng để thực hiện thanh toán
         window.location.href = result.paymentUrl;
       } else {
-        // Xử lý khi không có paymentUrl
+        // Nếu không có URL thanh toán, xử lý lỗi tương ứng
         console.error("No paymentUrl found in the result:", result);
         navigate("/cancel");
       }
     } catch (error) {
       setIsLoading(false);
       console.error("Error placing order:", error);
-      // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi cho người dùng
       navigate("/cancel");
     }
   };

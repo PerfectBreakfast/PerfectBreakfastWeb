@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosInstance from "./axiosConfig";
 import api from "./api";
 
@@ -31,10 +30,10 @@ const categoryAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getFoodByCategory: async (categoryId) => {
+  getFoodByCategoryForCreate: async (categoryId) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/categories/${categoryId}`
+        `${api}/v1/categories/${categoryId}?status=0`
       );
       return response.data;
     } catch (error) {

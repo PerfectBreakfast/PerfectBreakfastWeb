@@ -19,8 +19,10 @@ const Homepage = () => {
   const [error, setError] = useState(false);
 
   const handleComboClick = (comboId) => {
-    navigate(`/combo/${comboId}`);
-    console.log(`Redirect to detail page for combo with id: ${comboId}`);
+    navigate(`combo/${comboId}`);
+  };
+  const handleFoodClick = (foodId) => {
+    navigate(`food/${foodId}`);
   };
 
   const formatDate = (dateString) => {
@@ -73,6 +75,7 @@ const Homepage = () => {
                 Thực đơn ngày {formattedMenuDate}
               </h6>
             </div>
+            <h6 className="text-gray-600 font-bold text-lg">Combo</h6>
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
@@ -94,6 +97,35 @@ const Homepage = () => {
                   <div className=" text-lg font-bold">
                     <h5>
                       {combo.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <h6 className="text-gray-600 font-bold text-lg">Món ăn</h6>
+            {menuData.foodResponses.map((food) => (
+              <div className=" grid grid-cols-1 gap-4 mb-3">
+                <div
+                  className="border-1 border-gray-200 flex flex-row items-center p-3 shadow-md rounded-lg h-24 bg-gray-50"
+                  key={food.id}
+                  onClick={() => handleFoodClick(food.id)}
+                >
+                  <div className=" flex-shrink-0">
+                    <img
+                      src={food.image}
+                      alt={food.name}
+                      className="h-16 w-16 rounded-xl"
+                    />
+                  </div>
+                  <div className=" flex-grow px-4">
+                    <h5 className="text-lg font-bold">{food.name}</h5>
+                  </div>
+                  <div className=" text-lg font-bold">
+                    <h5>
+                      {food.price.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}

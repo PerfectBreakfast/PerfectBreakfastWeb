@@ -103,8 +103,9 @@ const EditCombo = () => {
   const fetchDishes = async (categoryId, setDishesFunc) => {
     if (!categoryId) return;
     try {
-      const response = await categoryAPI.getFoodByCategory(categoryId);
-      setDishesFunc(response[0]?.foodResponse || []);
+      const response = await categoryAPI.getFoodByCategoryForCreate(categoryId);
+      // setDishesFunc(response[0]?.foodResponse || []);
+      setDishesFunc(response.foodResponse || []);
     } catch (error) {
       console.error("Error fetching dishes:", error);
     }
@@ -273,10 +274,19 @@ const EditCombo = () => {
               value={formik.values.mainFoodId}
               className=" input-form"
             >
-              <option value="">Chọn món chính</option>
+              {/* <option value="">Chọn món chính</option>
               {mainDishes.map((dish) => (
                 <option key={dish.id} value={dish.id}>
                   {dish.name}
+                </option>
+              ))} */}
+              <option value="">Chọn món chính</option>
+              {mainDishes.map((dish) => (
+                <option key={dish.id} value={dish.id}>
+                  {`${dish.name} - ${dish.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}`}
                 </option>
               ))}
             </select>
@@ -321,10 +331,19 @@ const EditCombo = () => {
               value={formik.values.sideFoodId}
               className=" input-form"
             >
-              <option value="">Chọn món phụ</option>
+              {/* <option value="">Chọn món phụ</option>
               {sideDishes.map((dish) => (
                 <option key={dish.id} value={dish.id}>
                   {dish.name}
+                </option>
+              ))} */}
+              <option value="">Chọn món phụ</option>
+              {sideDishes.map((dish) => (
+                <option key={dish.id} value={dish.id}>
+                  {`${dish.name} - ${dish.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}`}
                 </option>
               ))}
             </select>

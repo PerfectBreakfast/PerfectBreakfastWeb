@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-
-import comboAPI from "../../../services/comboAPI";
-
-import "../ComboDetail/ComboDetail.css";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../../services/CartContext";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import dishAPI from "../../../services/dishAPI";
 import ComboDetailSkeleton from "./ComboDetailSkeleton";
+
 import { ReactComponent as Check } from "../../../assets/icons/check.svg";
 import { ReactComponent as BackIcon } from "../../../assets/icons/back-arrow.svg";
 
-function ComboDetail() {
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { ToastContainer } from "react-toastify";
+
+const FoodDetail = () => {
   const { id } = useParams();
-  const [comboData, setComboData] = useState(null);
+  const [foodData, setFoodData] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -24,16 +22,16 @@ function ComboDetail() {
   const { addToCart } = useCart(); // Add this line
 
   useEffect(() => {
-    const fetchComboData = async () => {
+    const fetchData = async () => {
       try {
-        const data = await comboAPI.getComboById(id);
-        setComboData(data);
+        const data = await dishAPI.getDishById(id);
+        setFoodData(data);
       } catch (error) {
-        console.error("Error fetching combo data:", error);
+        console.error("Error fetching food data:", error);
       }
     };
 
-    fetchComboData();
+    fetchData();
   }, [id]);
 
   const handleQuantityChange = (event) => {
@@ -53,12 +51,12 @@ function ComboDetail() {
 
   const handleAddToCart = () => {
     const itemToAdd = {
-      id: comboData.id,
-      name: comboData.name,
-      image: comboData.image,
+      id: foodData.id,
+      name: foodData.name,
+      image: foodData.image,
       quantity,
-      price: comboData.comboPrice,
-      type: "combo",
+      price: foodData.price,
+      type: "food",
     };
     addToCart(itemToAdd);
     setShowPopup(true);
@@ -68,7 +66,7 @@ function ComboDetail() {
     }, 500); // Ẩn pop-up sau 1 giây
   };
 
-  const totalPrice = comboData ? comboData.comboPrice * quantity : 0;
+  const totalPrice = foodData ? foodData.price * quantity : 0;
   const formattedTotalPrice = totalPrice.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
@@ -78,7 +76,7 @@ function ComboDetail() {
     navigate(-1);
   };
 
-  if (!comboData) {
+  if (!foodData) {
     return (
       <div className="space-y-4">
         {Array.from({ length: 1 }, (_, index) => (
@@ -118,20 +116,20 @@ function ComboDetail() {
               id="imgDetail"
               class="w-full object-cover"
               height="250"
-              src={comboData.image}
-              alt={comboData.name}
+              src={foodData.image}
+              alt={foodData.name}
             />
           </div>
 
           <div class="text-center mt-5">
-            <h4 class="text-2xl font-bold mb-2">{comboData.name}</h4>
+            <h4 class="text-2xl font-bold mb-2">{foodData.name}</h4>
             <h6 class="text-xl font-semibold mb-2">
-              {comboData.comboPrice.toLocaleString("vi-VN", {
+              {foodData.price.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
               })}
             </h6>
-            <p class="text-base">{comboData.content}</p>
+            <p class="text-base">{foodData.content}</p>
           </div>
         </div>
         <div className="container">
@@ -170,6 +168,6 @@ function ComboDetail() {
       </div>
     </>
   );
-}
+};
 
-export default ComboDetail;
+export default FoodDetail;
