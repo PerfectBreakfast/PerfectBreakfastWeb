@@ -41,13 +41,27 @@ function Cart() {
   //   dispatch({ type: "REMOVE_FROM_CART", payload: itemId });
   // };
 
-  const handleRemoveItem = (itemId) => {
-    setItemToRemove(itemId);
+  // const handleRemoveItem = (itemId) => {
+  //   setItemToRemove(itemId);
+  //   setShowConfirmation(true);
+  // };
+
+  const handleRemoveItem = (item) => {
+    // Assume item includes both id and type
+    setItemToRemove(item);
     setShowConfirmation(true);
   };
 
+  // const confirmRemoveItem = () => {
+  //   dispatch({ type: "REMOVE_FROM_CART", payload: itemToRemove });
+  //   setShowConfirmation(false);
+  // };
+
   const confirmRemoveItem = () => {
-    dispatch({ type: "REMOVE_FROM_CART", payload: itemToRemove });
+    dispatch({
+      type: "REMOVE_FROM_CART",
+      payload: { id: itemToRemove.id, type: itemToRemove.type },
+    });
     setShowConfirmation(false);
   };
 
@@ -56,15 +70,32 @@ function Cart() {
     setShowConfirmation(false);
   };
 
-  const handleIncreaseQuantity = (itemId) => {
-    dispatch({ type: "UPDATE_QUANTITY", payload: { itemId, quantity: 1 } });
+  // const handleIncreaseQuantity = (itemId) => {
+  //   dispatch({ type: "UPDATE_QUANTITY", payload: { itemId, quantity: 1 } });
+  // };
+
+  const handleIncreaseQuantity = (item) => {
+    dispatch({
+      type: "UPDATE_QUANTITY",
+      payload: { id: item.id, type: item.type, quantity: 1 },
+    });
   };
 
-  const handleDecreaseQuantity = (itemId) => {
-    // Kiểm tra xem quantity có lớn hơn 1 không
-    const item = cart.find((cartItem) => cartItem.id === itemId);
+  // const handleDecreaseQuantity = (itemId) => {
+  //   // Kiểm tra xem quantity có lớn hơn 1 không
+  //   const item = cart.find((cartItem) => cartItem.id === itemId);
+  //   if (item.quantity > 1) {
+  //     dispatch({ type: "UPDATE_QUANTITY", payload: { itemId, quantity: -1 } });
+  //   }
+  // };
+
+  const handleDecreaseQuantity = (item) => {
+    // Check if the item quantity is greater than 1
     if (item.quantity > 1) {
-      dispatch({ type: "UPDATE_QUANTITY", payload: { itemId, quantity: -1 } });
+      dispatch({
+        type: "UPDATE_QUANTITY",
+        payload: { id: item.id, type: item.type, quantity: -1 },
+      });
     }
   };
 
@@ -154,7 +185,7 @@ function Cart() {
                 <span className="text-lg font-bold mb-2">{item.name}</span>
                 <div className="flex items-center">
                   <button
-                    onClick={() => handleDecreaseQuantity(item.id)}
+                    onClick={() => handleDecreaseQuantity(item)}
                     className="text-white bg-red-500 hover:bg-red-600 p-2 rounded-full"
                   >
                     {/* Replace with Tailwind-friendly icon */}
@@ -162,7 +193,7 @@ function Cart() {
                   </button>
                   <span className="mx-2 text-lg">{item.quantity}</span>
                   <button
-                    onClick={() => handleIncreaseQuantity(item.id)}
+                    onClick={() => handleIncreaseQuantity(item)}
                     className="text-white bg-green-500 hover:bg-green-600 p-2 rounded-full"
                   >
                     {/* Replace with Tailwind-friendly icon */}
@@ -177,7 +208,7 @@ function Cart() {
               <div className="flex flex-col items-end">
                 {" "}
                 <button
-                  onClick={() => handleRemoveItem(item.id)}
+                  onClick={() => handleRemoveItem(item)}
                   className="text-red-500 hover:text-red-600 mb-2"
                 >
                   {/* Replace with Tailwind-friendly icon */}

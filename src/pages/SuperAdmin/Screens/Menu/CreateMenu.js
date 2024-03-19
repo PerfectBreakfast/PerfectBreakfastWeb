@@ -30,7 +30,7 @@ const CreateMenu = () => {
     };
     const fetchFoodData = async () => {
       try {
-        const data = await dishAPI.getFoodForCombo();
+        const data = await dishAPI.getFoodForMenu();
         setFoodData(data);
       } catch (error) {
         toast.error("Failed to fetch food data.");

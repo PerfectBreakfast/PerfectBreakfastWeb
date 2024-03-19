@@ -26,6 +26,7 @@ const EditFood = () => {
           formik.setValues({
             name: data.name,
             price: data.price,
+            foodStatus: data.foodStatus,
             image: null, // Khởi tạo không có file hình ảnh mới
           });
           setOriginalImage(data.image); // Lưu URL hình ảnh ban đầu
@@ -43,6 +44,7 @@ const EditFood = () => {
     initialValues: {
       name: "",
       price: "",
+      foodStatus: "",
       image: null,
     },
     validationSchema: Yup.object({
@@ -50,19 +52,22 @@ const EditFood = () => {
       price: Yup.number()
         .required("Giá không được để trống")
         .positive("Giá phải là số dương"),
+      foodStatus: Yup.string().required("Bạn cần chọn loại món"),
     }),
+
     onSubmit: async (values) => {
       setIsOpen(false); // Close modal after confirmation
       setIsLoading(true); // Hiển thị loading
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("price", values.price);
+      formData.append("foodStatus", values.foodStatus);
       if (values.image instanceof File) {
         formData.append("image", values.image);
       }
 
       try {
-        await dishAPI.editFood(id, values.name, values.price, formData);
+        await dishAPI.editFood(id, formData);
         toast.success("Cập nhật món ăn thành công!");
         navigate(-1);
       } catch (error) {
@@ -99,6 +104,7 @@ const EditFood = () => {
     formik.setTouched({
       name: true,
       price: true,
+      foodStatus: true,
     });
 
     const errors = await formik.validateForm();
@@ -157,6 +163,33 @@ const EditFood = () => {
               </div>
             )}
           </div>
+
+          <div>
+            <label htmlFor="foodStatus" className="label-input">
+              Loại món ăn
+            </label>
+            <select
+              id="foodStatus"
+              className="input-form"
+              name="foodStatus"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.foodStatus}
+            >
+              {" "}
+              <option disabled value="">
+                Chọn loại món
+              </option>
+              <option value="0">Combo</option>
+              <option value="1">Bán lẻ</option>
+            </select>
+            {formik.touched.foodStatus && formik.errors.foodStatus && (
+              <div className="text-red-500 text-sm mt-2">
+                {formik.errors.foodStatus}
+              </div>
+            )}
+          </div>
+
           <div>
             <label htmlFor="selectedImage" className="label-input">
               Hình ảnh
