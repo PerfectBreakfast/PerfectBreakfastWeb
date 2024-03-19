@@ -11,26 +11,69 @@ import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
 import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
 import { ReactComponent as Visibility } from "../../../assets/icons/Eye Closed.svg";
+import companyAPI from "../../../services/companyAPI";
 
 const Signup = () => {
   const [companies, setCompanies] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const companyList = await userAPI.getCompanies();
-        setCompanies(companyList);
-      } catch (error) {
-        // console.error("Error fetching companies:", error);
-      }
-    };
+  const [searchResults, setSearchResults] = useState([]); // Thêm state cho kết quả tìm kiếm
+  const [showSuggestions, setShowSuggestions] = useState(false); // Thêm state để kiểm soát việc hiển thị gợi ý
 
-    fetchCompanies();
-  }, []);
+  // useEffect(() => {
+  //   const fetchCompanies = async () => {
+  //     try {
+  //       const companyList = await userAPI.getCompanies();
+  //       setCompanies(companyList);
+  //     } catch (error) {
+  //       // console.error("Error fetching companies:", error);
+  //     }
+  //   };
+
+  //   const searchCompany = async (searchTerm) => {
+  //     try {
+  //       const companyList = await companyAPI.getCompanyForSignUp(searchTerm);
+  //       setCompanies(companyList);
+  //     } catch (error) {
+  //       // console.error("Error fetching companies:", error);
+  //     }
+  //   };
+
+  //   fetchCompanies();
+  // }, [searchTerm]);
+
+  const handleSearchChange = async (event) => {
+    const { value } = event.target;
+    setSearchTerm(value);
+    if (value.length > 2) {
+      // Tìm kiếm công ty với API
+      try {
+        const companyList = await companyAPI.getCompanyForSignUp(value);
+        setSearchResults(companyList);
+        setShowSuggestions(true);
+      } catch (error) {
+        setSearchResults([]);
+      }
+    } else {
+      setSearchResults([]);
+      setShowSuggestions(false);
+    }
+
+    // Nếu người dùng xóa tên công ty đã chọn, xóa giá trị companyId
+    if (value === "") {
+      formik.setFieldValue("companyId", "", false);
+    }
+  };
+
+  const handleSelectCompany = (companyId, companyName) => {
+    formik.setFieldValue("companyId", companyId);
+    setSearchTerm(companyName); // Cập nhật searchTerm để hiển thị tên công ty đã chọn
+    setShowSuggestions(false); // Ẩn gợi ý sau khi chọn
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -190,7 +233,7 @@ const Signup = () => {
             ) : null}
           </div>
 
-          <div className="relative">
+          {/* <div className="relative">
             <select
               name="companyId"
               onChange={formik.handleChange}
@@ -211,15 +254,47 @@ const Signup = () => {
                 <option disabled>Không có dữ liệu</option>
               )}
             </select>
+          </div> */}
+
+          {/* Search công ty */}
+          <div className="relative">
+            <input
+              type="text"
+              name="searchCompany"
+              placeholder="Tìm kiếm công ty..."
+              onChange={handleSearchChange}
+              value={searchTerm}
+              autoComplete="off"
+              className="user-input"
+              onBlur={() => formik.setFieldTouched("companyId", true)}
+            />
+            {showSuggestions && (
+              <div className="absolute z-10 w-full bg-white shadow-md max-h-60 overflow-auto">
+                {searchResults.length > 0 ? (
+                  searchResults.map((company) => (
+                    <div
+                      key={company.id}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() =>
+                        handleSelectCompany(company.id, company.name)
+                      }
+                    >
+                      {company.name}
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-2 text-gray-500">Không có kết quả</div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="text-left">
-            {" "}
-            {formik.touched.companyId && formik.errors.companyId ? (
+            {formik.touched.companyId && !formik.values.companyId && (
               <div className="formik-error-message">
                 {formik.errors.companyId}
               </div>
-            ) : null}
+            )}
           </div>
         </div>
 

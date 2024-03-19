@@ -75,6 +75,16 @@ const companyAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getCompanyForSignUp: async (searchTerm) => {
+    try {
+      const response = await axios.get(
+        `${api}/v1/companies/search?searchTerm=${searchTerm}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default companyAPI;
