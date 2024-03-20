@@ -12,7 +12,7 @@ const MobileNavigation = () => {
   const [value, setValue] = useState(0);
 
   const navigationItems = [
-    { icon: HomeIcon, route: "/home" },
+    { icon: HomeIcon, route: "/menu" },
     { icon: CartIcon, route: "/cart" },
     { icon: HistoryIcon, route: "/order-history" },
     { icon: UserIcon, route: "/user" },
