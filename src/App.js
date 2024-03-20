@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Login from "./pages/User/Signin/Signin";
 import Signup from "./pages/User/Signup/Signup";
+import SignupExternal from "./pages/User/Signup/SignupExternal";
 import Homepage from "./pages/User/Homepage/Homepage";
 import ComboDetail from "./pages/User/ComboDetail/ComboDetail";
 import { CartProvider } from "./services/CartContext";
@@ -57,6 +58,7 @@ function App() {
             {/* User */}
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register-external/:id" element={<SignupExternal />} />
             {/* login cho QTV */}
             <Route path="/management/login" element={<ManagementLogin />} />
             <Route path="/register" element={<Signup />} />

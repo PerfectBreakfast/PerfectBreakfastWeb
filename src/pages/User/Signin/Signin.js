@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { useGoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
 import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
@@ -46,10 +47,18 @@ const Login = () => {
         const encryptedAccessToken = encryptToken(accessToken);
         const encryptedRefreshToken = encryptToken(refreshToken);
 
-        // Lưu vào localStorage
+        // decode access token
+        const decoded = jwtDecode(accessToken);
+        // Nếu CompanyId rỗng thì 
+        if(decoded.CompanyId === ""){
+          console.log(decoded);
+          navigate(`/register-external/${decoded.UserId}`);
+        }else{
+          // Lưu vào localStorage
         localStorage.setItem("accessToken", encryptedAccessToken);
         localStorage.setItem("refreshToken", encryptedRefreshToken);
         navigate("/menu");
+        }
       } catch (error) {
         console.log(error);
         toast.error("Lỗi không thể đăng nhập");

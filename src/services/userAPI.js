@@ -112,6 +112,17 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editUserWhenSignupGoogle: async (userId, userData) => {
+    try {
+      const response = await axios.put(
+        `${api}/v1/users/${userId}/google`,
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
