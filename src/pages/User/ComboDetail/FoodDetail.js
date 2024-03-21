@@ -110,7 +110,7 @@ const FoodDetail = () => {
           </div>
         </div>
 
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg mb-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg mb-32">
           <div class="max-h-64 w-full mt-2 border-2 border-white rounded-xl shadow-md overflow-hidden">
             <img
               id="imgDetail"
@@ -138,26 +138,48 @@ const FoodDetail = () => {
               <div className="flex justify-center my-2">
                 <button
                   aria-label="remove"
-                  class="text-red-500"
+                  class="text-red-500 border-1 border-red-500 rounded-md"
                   onClick={handleDecrement}
                 >
                   <RemoveIcon />
                 </button>
 
-                <span class="px-1 text-base">{quantity}</span>
+                {/* <span class="px-2.5 text-base">{quantity}</span> */}
+                <input
+                  type="number"
+                  className="mx-2 w-16 text-center self-center border-1 border-gray-300 rounded-md focus:outline-none focus:border-green-500 "
+                  value={quantity}
+                  onChange={(e) => {
+                    const newQuantity = e.target.value;
+                    // Cho phép người dùng xóa số lượng để nhập giá trị mới
+                    if (newQuantity === "") {
+                      setQuantity(newQuantity);
+                    } else {
+                      const num = parseInt(newQuantity, 10);
+                      // Chỉ cập nhật nếu là số dương
+                      if (num > 0) {
+                        setQuantity(num);
+                      }
+                    }
+                  }}
+                  onBlur={(e) => {
+                    // Nếu input trống khi người dùng bấm ra ngoài, đặt số lượng về 1
+                    if (e.target.value === "") {
+                      setQuantity(1);
+                    }
+                  }}
+                  min="1"
+                />
 
                 <button
-                  class="text-green-500"
+                  class="text-green-500 border-1 border-green-500 rounded-md"
                   aria-label="add"
                   onClick={handleIncrement}
                 >
                   <AddIcon />
                 </button>
               </div>
-              <button
-                onClick={handleAddToCart}
-                className="bg-green-500 text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors font-bold"
-              >
+              <button onClick={handleAddToCart} className="user-btn-confirm ">
                 Thêm vào giỏ hàng - {formattedTotalPrice}
               </button>
             </div>

@@ -32,10 +32,10 @@ const ForgotPassword = () => {
     try {
       const userData = await userAPI.getEmailForgotPassword(email, headers);
 
-      toast.success("Vui lòng kiểm tra email để lấy lại mật khẩu");
+      toast.success("Vui lòng kiểm tra email để đặt lại mật khẩu");
       setTimeout(() => {
         navigate("/login");
-      }, 3000);
+      }, 1500);
     } catch (error) {
       console.log(error);
       toast.error("Email không tồn tại");
@@ -48,9 +48,7 @@ const ForgotPassword = () => {
     <div className="max-w-xs mx-auto text-center">
       <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />
 
-      <h2 className="text-lg font-semibold mt-4">
-        Đặt lại mật khẩu của bạn qua email
-      </h2>
+      <h2 className="text-lg font-semibold mt-4">Đặt lại mật khẩu qua email</h2>
 
       <form onSubmit={handleResetPassword} className="space-y-4 mt-4">
         <div className="space-y-4">
@@ -59,7 +57,7 @@ const ForgotPassword = () => {
             name="email"
             required
             autoComplete="email"
-            placeholder="Email"
+            placeholder="Nhập email của bạn"
             value={email}
             onChange={handleEmailChange}
             className="input input-bordered w-full rounded-xl p-2 border-2"
@@ -78,7 +76,7 @@ const ForgotPassword = () => {
           )}
         </button>
       </form>
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </div>
   );
 };

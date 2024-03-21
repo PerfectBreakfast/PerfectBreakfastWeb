@@ -94,7 +94,7 @@ function Checkout() {
   };
 
   return (
-    <div className="relative">
+    <div className="container mx-auto p-4">
       {isLoading && (
         <div className="fixed inset-0 bg-white flex justify-center items-center">
           <div className="loader">
@@ -109,8 +109,12 @@ function Checkout() {
           </div>
         </div>
       )}
-      <div className="flex items-center m-2.5">
-        <button onClick={handleGoBack} className="flex items-center">
+      <div className="flex items-center mb-4">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center text-gray-600"
+        >
+          {/* Replace this with a Tailwind-friendly back icon or image */}
           <ArrowBackIosIcon />
         </button>
         <h6 className="text-lg font-bold">Thanh toán</h6>
@@ -134,9 +138,13 @@ function Checkout() {
           ) : (
             <CheckoutSkeleton />
           )}
+          <label htmlFor="note" className="text-lg mb-2">
+            Ghi chú:
+          </label>
           <textarea
-            className="placeholder-gray-500 multiline rows-4 border-0 rounded-none w-full p-4 mt-2 bg-green-100"
-            placeholder="Ghi chú"
+            id="note"
+            className="placeholder-gray-500 multiline rows-4 border-0 rounded-xl w-full p-3 bg-green-100 focus:outline-none"
+            placeholder="Nhập ghi chú cho đơn hàng của bạn"
             value={note}
             onChange={handleNoteChange}
           />
@@ -194,7 +202,7 @@ function Checkout() {
         </div>
         {!isLoading && (
           <div className="fixed bottom-0 left-0 right-0 w-full">
-            <div className="flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
+            <div className=" flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
               <button
                 className="bg-green-500 font-bold text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors"
                 onClick={handleCheckout}

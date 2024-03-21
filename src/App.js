@@ -48,6 +48,7 @@ import CustomerOrderDetail from "./pages/DeliveryStaff/ConfirmOrder/OrderDetail"
 import ShippingHistory from "./pages/DeliveryStaff/ShippingHistory/ShippingHistory";
 import StaffSetting from "./pages/DeliveryStaff/Setting/StaffSetting,";
 import FoodDetail from "./pages/User/ComboDetail/FoodDetail";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (

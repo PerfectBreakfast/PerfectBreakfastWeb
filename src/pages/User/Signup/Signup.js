@@ -108,7 +108,7 @@ const Signup = () => {
         toast.success("Đăng ký tài khoản thành công");
         setTimeout(() => {
           navigate("/login");
-        }, 3000);
+        }, 1700);
       } catch (error) {
         toast.error("Đăng ký thất bại");
       } finally {
@@ -126,7 +126,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="max-w-xs mx-auto text-center">
+    <div className="max-w-xs mx-auto text-center h-full mb-10">
       <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />
 
       <h2 className="text-lg font-semibold mt-4">Đăng ký</h2>
@@ -317,7 +317,7 @@ const Signup = () => {
           Đăng nhập ngay
         </Link>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={1500} />
     </div>
   );
 };

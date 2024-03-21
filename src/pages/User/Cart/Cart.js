@@ -10,7 +10,12 @@ import MealAPI from "../../../services/MealAPI";
 import { ReactComponent as Decrease } from "../../../assets/icons/decrease.svg";
 import { ReactComponent as Increase } from "../../../assets/icons/increase.svg";
 import { ReactComponent as Remove } from "../../../assets/icons/remove.svg";
+
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
 import Loading from "../../Loading/Loading";
+import { ToastContainer, toast } from "react-toastify";
 
 function Cart() {
   const { cart, dispatch } = useCart();
@@ -25,13 +30,9 @@ function Cart() {
       try {
         const data = await MealAPI.getMealByCustomer();
         setMealData(data);
-        // Set default selected meal ID (optional)
-        // if (data.length > 0) {
-        //   setSelectedMealId(data[0].id);
-        // }
       } catch (error) {
         console.error("Error fetching meal data:", error);
-        alert("Error fetching meal data. Please try again later.");
+        toast.error(error.errors);
       }
     };
 
@@ -171,33 +172,33 @@ function Cart() {
           {cart.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between mb-4 p-4 shadow-lg rounded-lg bg-white"
+              className="border-1 border-gray-200 flex flex-row  p-3 shadow-md rounded-lg h-24 bg-gray-50 mb-3"
             >
               {/* Image */}
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-24 h-24 object-cover rounded-lg"
+                className="h-16 w-16 rounded-xl"
               />
 
               {/* Name and Price */}
               <div className="flex flex-col flex-1 mx-4">
-                <span className="text-lg font-bold mb-2">{item.name}</span>
+                <span className="cart-food-name mb-2">{item.name}</span>
                 <div className="flex items-center">
                   <button
                     onClick={() => handleDecreaseQuantity(item)}
-                    className="text-white bg-red-500 hover:bg-red-600 p-2 rounded-full"
+                    className="text-red-500 hover:text-white border-1 border-red-500 hover:bg-red-600 rounded-md "
                   >
                     {/* Replace with Tailwind-friendly icon */}
-                    <Decrease />
+                    <RemoveIcon />
                   </button>
-                  <span className="mx-2 text-lg">{item.quantity}</span>
+                  <span className="mx-2.5 text-lg">{item.quantity}</span>
                   <button
                     onClick={() => handleIncreaseQuantity(item)}
-                    className="text-white bg-green-500 hover:bg-green-600 p-2 rounded-full"
+                    className="text-green-500 hover:text-white border-1 border-green-500 hover:bg-green-600 rounded-md "
                   >
                     {/* Replace with Tailwind-friendly icon */}
-                    <Increase />
+                    <AddIcon />
                   </button>
                 </div>
               </div>
@@ -255,21 +256,18 @@ function Cart() {
       {/* Confirmation Dialog */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <h5 className="text-lg font-bold mb-4">Xác nhận xóa món ăn?</h5>
+          <div className="bg-white rounded-xl p-6 shadow-lg">
+            <h5 className="text-lg font-bold mb-2">Xác nhận xóa món ăn?</h5>
             <p className="mb-4">
               Bạn có chắc chắn muốn xóa món ăn này khỏi giỏ hàng không?
             </p>
             <div className="flex justify-end">
-              <button
-                onClick={cancelRemoveItem}
-                className="text-red-500 bg-transparent hover:bg-red-100 p-3 rounded mr-4"
-              >
+              <button onClick={cancelRemoveItem} className="btn-cancel mr-2.5">
                 Hủy
               </button>
               <button
                 onClick={confirmRemoveItem}
-                className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors"
+                className="btn-confirm-delete "
               >
                 Xác nhận
               </button>
@@ -277,6 +275,7 @@ function Cart() {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 }
