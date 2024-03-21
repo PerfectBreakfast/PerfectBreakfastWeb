@@ -37,9 +37,8 @@ const OrderList = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
-
       <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto">
+        <table className="min-w-max w-full table-dailyoder">
           <thead>
             <tr className="bg-gray-200 text-gray-800 leading-normal">
               <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
@@ -52,12 +51,38 @@ const OrderList = () => {
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
             {orders.map((item) =>
-              item.companies.map((company) =>
-                company.dailyOrders.map((order) => (
+              item.companies.flatMap((company, companyIndex) =>
+                company.dailyOrders.map((order, orderIndex) => (
                   <tr key={order.id}>
-                    <td className="py-3 px-6">{item.bookingDate}</td>
-                    <td className="py-3 px-6 font-bold">{company.name}</td>
-                    <td className="py-3 px-6">{company.address}</td>
+                    {companyIndex === 0 && orderIndex === 0 && (
+                      <td
+                        className="py-3 px-6"
+                        rowSpan={item.companies.reduce(
+                          (acc, cur) => acc + cur.dailyOrders.length,
+                          0
+                        )}
+                      >
+                        {item.bookingDate}
+                      </td>
+                    )}
+                    {orderIndex === 0 && (
+                      <td
+                        className="py-3 px-6 font-bold"
+                        rowSpan={company.dailyOrders.length}
+                      >
+                        {company.name}
+                      </td>
+                    )}
+
+                    {orderIndex === 0 && (
+                      <td
+                        className="py-3 px-6 font-semibold"
+                        rowSpan={company.dailyOrders.length}
+                      >
+                        {company.address}
+                      </td>
+                    )}
+
                     <td className="py-3 px-6">
                       <button
                         className="text-green-500 hover:text-green-600 font-semibold"
@@ -78,15 +103,13 @@ const OrderList = () => {
             )}
           </tbody>
         </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </div>
+        {/* <Pagination
+          componentName="div"
+          count={totalPages}
+          page={pageIndex + 1}
+          onChange={handlePageChange}
+          color="primary"
+        /> */}
       </div>
 
       <ToastContainer position="top-right" autoClose={2000} />

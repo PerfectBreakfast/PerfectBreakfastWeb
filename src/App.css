@@ -203,3 +203,7 @@ input[type="number"] {
 
 /* Data tables css */
 /* @import "assets/css/datatables.css"; */
+
+.table-dailyoder td {
+  border: 1px solid #ddd; /* Thêm đường viền cho mỗi ô */
+}

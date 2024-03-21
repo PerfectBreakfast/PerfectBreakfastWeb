@@ -52,7 +52,7 @@ const DeliveryOrderFoodList = () => {
         </div>
       </div> */}
       <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto">
+        <table className="min-w-max w-full table-auto table-dailyoder">
           <thead>
             <tr className="bg-gray-200 text-gray-800 leading-normal">
               <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
@@ -66,20 +66,42 @@ const DeliveryOrderFoodList = () => {
           <tbody className="text-gray-600 text-sm font-light">
             {isLoading ? (
               <tr>
-                <td colSpan="4" className="text-center py-3 px-6">
+                <td colSpan="6" className="text-center py-3 px-6">
                   Đang tải...
                 </td>
               </tr>
             ) : orders.length > 0 ? (
-              orders.map((item) =>
-                item.companies.map((company) =>
-                  company.dailyOrders.map((order) => (
+              orders.flatMap((item) =>
+                item.companies.flatMap((company, companyIndex) =>
+                  company.dailyOrders.map((order, orderIndex) => (
                     <tr key={order.id}>
-                      <td className="py-2.5 px-6">{item.bookingDate}</td>
-                      <td className="py-2.5 px-6 font-bold">{company.name}</td>
-                      <td className="py-3 px-6 break-words">
-                        {company.address}
-                      </td>
+                      {companyIndex === 0 && orderIndex === 0 && (
+                        <td
+                          className="py-2.5 px-6"
+                          rowSpan={item.companies.reduce(
+                            (acc, cur) => acc + cur.dailyOrders.length,
+                            0
+                          )}
+                        >
+                          {item.bookingDate}
+                        </td>
+                      )}
+                      {orderIndex === 0 && (
+                        <td
+                          className="py-2.5 px-6 font-bold"
+                          rowSpan={company.dailyOrders.length}
+                        >
+                          {company.name}
+                        </td>
+                      )}
+                      {orderIndex === 0 && (
+                        <td
+                          className="py-3 px-6 font-bold"
+                          rowSpan={company.dailyOrders.length}
+                        >
+                          {company.name}
+                        </td>
+                      )}
                       <td className="py-2.5 px-6">
                         <button
                           className="text-green-500 hover:text-green-600 font-semibold"
@@ -100,7 +122,7 @@ const DeliveryOrderFoodList = () => {
               )
             ) : (
               <tr>
-                <td colSpan="4" className="text-center py-3 px-6">
+                <td colSpan="6" className="text-center py-3 px-6">
                   Không có dữ liệu
                 </td>
               </tr>

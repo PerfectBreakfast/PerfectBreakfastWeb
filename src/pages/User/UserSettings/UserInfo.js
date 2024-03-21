@@ -99,11 +99,6 @@ function UserInfo() {
           </Grid>
           <Grid item xs={12} sm={12}>
             <Button fullWidth id="userSettingBtn" variant="outlined">
-              FAQ <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button fullWidth id="userSettingBtn" variant="outlined">
               Trợ giúp <KeyboardArrowRightIcon />
             </Button>
           </Grid>
