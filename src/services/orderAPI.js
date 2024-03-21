@@ -36,6 +36,16 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  cancelOrder: async (orderCode) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/orders/${orderCode}/cancel`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default orderAPI;

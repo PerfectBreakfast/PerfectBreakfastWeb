@@ -94,7 +94,7 @@ const FoodDetail = () => {
             <div className="flex items-center">
               <Check className="w-9" />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <p className="ml-2">Đã thêm vào giỏ!</p>
             </div>
           </div>

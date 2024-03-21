@@ -172,7 +172,7 @@ function Cart() {
           {cart.map((item) => (
             <div
               key={item.id}
-              className="border-1 border-gray-200 flex flex-row  p-3 shadow-md rounded-lg h-24 bg-gray-50 mb-3"
+              className="bg-white rounded-xl shadow flex flex-row p-3 h-24 cursor-pointer mb-3"
             >
               {/* Image */}
               <img
