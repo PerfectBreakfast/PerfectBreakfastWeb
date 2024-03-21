@@ -50,7 +50,7 @@ const ResetPassword = () => {
         toast.success("Đặt lại mật khẩu thành công!");
         setTimeout(() => {
           navigate("/login");
-        }, 3000);
+        }, 1100);
         console.log(response); // Handle response as per your requirement
       } catch (error) {
         console.log(error.errors);
@@ -135,7 +135,7 @@ const ResetPassword = () => {
           )}
         </button>
       </form>
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </div>
   );
 };

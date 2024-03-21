@@ -79,7 +79,7 @@ const Homepage = () => {
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
-                  className="border-1 border-gray-200 flex flex-row items-center p-3 shadow-md rounded-lg h-24 bg-gray-50"
+                  className="border-1 border-gray-200 flex flex-row p-3 shadow-md rounded-lg h-24 bg-gray-50 cursor-pointer"
                   key={combo.id}
                   onClick={() => handleComboClick(combo.id)}
                 >
@@ -90,17 +90,21 @@ const Homepage = () => {
                       className="h-16 w-16 rounded-xl"
                     />
                   </div>
-                  <div className=" flex-grow px-4">
-                    <h5 className="text-lg font-bold">{combo.name}</h5>
-                    <p className="text-gray-600">{combo.foods}</p>
-                  </div>
-                  <div className=" text-lg font-bold">
-                    <h5>
-                      {combo.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </h5>
+
+                  <div className="flex flex-row items-start justify-between w-full">
+                    {" "}
+                    <div className="px-2.5">
+                      <h5 className="user-combo-name ">{combo.name}</h5>
+                      <p className="text-gray-600">{combo.foods}</p>
+                    </div>
+                    <div className=" text-lg font-semibold mt-1 ">
+                      <h5>
+                        {combo.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,27 +113,29 @@ const Homepage = () => {
             {menuData.foodResponses.map((food) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
-                  className="border-1 border-gray-200 flex flex-row items-center p-3 shadow-md rounded-lg h-24 bg-gray-50"
+                  className="border-1 border-gray-200 flex flex-row  p-3 shadow-md rounded-lg h-24 bg-gray-50 cursor-pointer"
                   key={food.id}
                   onClick={() => handleFoodClick(food.id)}
                 >
-                  <div className=" flex-shrink-0">
+                  <div className="flex-shrink-0 items-center">
                     <img
                       src={food.image}
                       alt={food.name}
                       className="h-16 w-16 rounded-xl"
                     />
                   </div>
-                  <div className=" flex-grow px-4">
-                    <h5 className="text-lg font-bold">{food.name}</h5>
-                  </div>
-                  <div className=" text-lg font-bold">
-                    <h5>
-                      {food.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </h5>
+                  <div className="flex justify-between w-full">
+                    <div className="flex-grow px-2.5">
+                      <h5 className="user-food-name ">{food.name}</h5>
+                    </div>
+                    <div className="mt-1 text-right text-lg font-semibold">
+                      <h5>
+                        {food.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </h5>
+                    </div>
                   </div>
                 </div>
               </div>

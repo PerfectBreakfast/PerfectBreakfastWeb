@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import userAPI from "../../../services/userAPI";
+
 import logo from "../../../assets/images/logo.png";
+import google from "../../../assets/images/google.png";
+
 import "./Signin.css"; // Import CSS file
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -49,15 +52,15 @@ const Login = () => {
 
         // decode access token
         const decoded = jwtDecode(accessToken);
-        // Nếu CompanyId rỗng thì 
-        if(decoded.CompanyId === ""){
+        // Nếu CompanyId rỗng thì
+        if (decoded.CompanyId === "") {
           console.log(decoded);
           navigate(`/register-external/${decoded.UserId}`);
-        }else{
+        } else {
           // Lưu vào localStorage
-        localStorage.setItem("accessToken", encryptedAccessToken);
-        localStorage.setItem("refreshToken", encryptedRefreshToken);
-        navigate("/menu");
+          localStorage.setItem("accessToken", encryptedAccessToken);
+          localStorage.setItem("refreshToken", encryptedRefreshToken);
+          navigate("/menu");
         }
       } catch (error) {
         console.log(error);
@@ -97,7 +100,7 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="max-w-xs mx-auto text-center">
+    <div className="max-w-xs mx-auto text-center mb-10">
       <img src={logo} alt="Logo" className="w-1/5 max-w-xs mx-auto mt-5" />
 
       <h2 className="text-lg font-semibold mt-4">Đăng nhập</h2>
@@ -157,24 +160,27 @@ const Login = () => {
         </button>
       </form>
 
-      <div className="mt-4">
+      <div className="mt-3">
         Bạn chưa có tài khoản?{" "}
         <Link to={"/register"} className="text-blue-600 hover:underline">
           Đăng ký ngay
         </Link>
       </div>
 
-      <div className="mt-4">OR</div>
+      <div className="mt-4 flex items-center justify-center">
+        <hr class="line" />
+        <span className="mx-2">Đăng nhập với</span> <hr class="line" />
+      </div>
 
       <button
         type="button"
-        class="mt-4 btn-submit-user"
+        class="mt-4 btn-submit-user-outline flex items-center justify-center"
         onClick={() => handleLoginGoogle()}
       >
-        Đăng nhập bằng Google 🚀
+        <img src={google} alt="google" className="size-6 mr-2" /> Google
       </button>
 
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </div>
   );
 };

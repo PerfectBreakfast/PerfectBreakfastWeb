@@ -6,6 +6,17 @@
   height: 40vmin;
   pointer-events: none;
 }
+/* Ẩn nút tăng/giảm trong input[type=number] - hoạt động trên hầu hết các trình duyệt */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: none; /* Chrome, Safari, và các trình duyệt hỗ trợ */
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -39,6 +50,16 @@
 
 .border-1 {
   border-width: 1px;
+}
+.border-t-1 {
+  border-top-width: 1px;
+}
+.text-xxs {
+  font-size: 0.45rem;
+  line-height: 0.25rem;
+}
+.p-custom {
+  padding: 0.3rem;
 }
 
 .btn-add {
@@ -133,8 +154,51 @@
 .btn-submit-user {
   @apply font-bold p-2 w-full rounded-xl bg-green-500 text-white transition-colors duration-300 hover:bg-green-700 mt-4 border-none;
 }
+
+.btn-submit-user-outline {
+  @apply font-bold p-2 w-full rounded-xl  text-green-500 hover:text-white transition-colors duration-300 hover:bg-green-500 mt-4 border-1 border-green-500;
+}
+
 .loading-button {
   @apply font-bold p-2 w-full rounded-xl bg-green-500 text-white transition-colors duration-300 hover:bg-green-700 mt-4 border-none;
+}
+.line {
+  @apply w-10 border-t-1 border-solid border-gray-500;
+}
+.user-food-name {
+  @apply text-lg font-bold;
+}
+.user-combo-name {
+  @apply text-lg font-bold;
+}
+.cart-food-name {
+  @apply text-lg font-bold;
+}
+.user-btn-confirm {
+  @apply bg-green-500 text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors font-bold;
+}
+
+@media (max-width: 768px) {
+  .user-food-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
+    max-width: 150px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
+  }
+  .user-combo-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
+    max-width: 150px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
+  }
+  .cart-food-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
+    max-width: 100px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
+  }
 }
 
 /* Data tables css */
