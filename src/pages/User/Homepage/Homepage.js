@@ -79,7 +79,7 @@ const Homepage = () => {
             {menuData.comboFoodResponses.map((combo) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
-                  className="border-1 border-gray-200 flex flex-row p-3 shadow-md rounded-lg h-24 bg-gray-50 cursor-pointer"
+                  className="bg-white rounded-xl shadow flex flex-row p-3 h-24 cursor-pointer"
                   key={combo.id}
                   onClick={() => handleComboClick(combo.id)}
                 >
@@ -113,7 +113,7 @@ const Homepage = () => {
             {menuData.foodResponses.map((food) => (
               <div className=" grid grid-cols-1 gap-4 mb-3">
                 <div
-                  className="border-1 border-gray-200 flex flex-row  p-3 shadow-md rounded-lg h-24 bg-gray-50 cursor-pointer"
+                  className="bg-white rounded-xl shadow flex flex-row p-3 h-24 cursor-pointer"
                   key={food.id}
                   onClick={() => handleFoodClick(food.id)}
                 >

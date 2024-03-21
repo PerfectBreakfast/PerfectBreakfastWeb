@@ -109,7 +109,7 @@ function Checkout() {
           </div>
         </div>
       )}
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-3">
         <button
           onClick={handleGoBack}
           className="flex items-center text-gray-600"
@@ -119,7 +119,7 @@ function Checkout() {
         </button>
         <h6 className="text-lg font-bold">Thanh toán</h6>
       </div>
-      <div className="container">
+      <div className="container mb-24">
         <p className="contents align-middle text-lg mb-2 font-bold">
           Thông tin người dùng
         </p>

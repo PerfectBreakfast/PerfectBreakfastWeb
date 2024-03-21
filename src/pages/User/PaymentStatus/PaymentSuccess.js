@@ -15,13 +15,15 @@ const PaymentSuccess = () => {
       <UserHeader />
       <div className="payment-success-container">
         <CheckCircleIcon color="success" id="iconSuccess" />
-        <h2>Thanh toán thành công</h2>
+        <h2 className="text-green-500 font-bold text-lg">
+          Thanh toán thành công
+        </h2>
         <p>
           Đơn hàng đã thanh toán thành công, vui lòng kiểm tra lại trong giỏ
           hàng.{" "}
         </p>
         <Link to="/menu">
-          <button className="bg-green-500 text-white p-2 rounded-3xl hover:bg-green-600 transition-colors mt-2">
+          <button className="bg-green-500 text-white py-2 px-2.5 rounded-xl hover:bg-green-700 transition-colors mt-2">
             Quay về trang chủ
           </button>
         </Link>
