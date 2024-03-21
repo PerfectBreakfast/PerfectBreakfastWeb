@@ -10,6 +10,7 @@ const DailyOrderHistory = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchOrderList = async () => {
       try {
@@ -24,18 +25,18 @@ const DailyOrderHistory = () => {
     };
     fetchOrderList();
   }, [pageIndex]);
+
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
   };
+
   const handleDetailClick = (dailyOrderId) => {
     navigate(`${dailyOrderId}`);
   };
 
-  console.log("data", orders);
-
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
+      <h2 className="text-2xl font-semibold mb-2">Lịch sử đơn hàng</h2>
 
       <div className="bg-white shadow-md my-6 overflow-auto">
         <table className="min-w-max w-full table-auto">
@@ -50,42 +51,52 @@ const DailyOrderHistory = () => {
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {orders.map((item) =>
-              item.companies.map((company) =>
-                company.dailyOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="py-3 px-6">{item.bookingDate}</td>
-                    <td className="py-3 px-6 font-bold">{company.name}</td>
-                    <td className="py-3 px-6">{company.address}</td>
-                    <td className="py-3 px-6">
-                      <button
-                        className="text-green-500 hover:text-green-600 font-semibold"
-                        onClick={() => handleDetailClick(order.id)}
-                      >
-                        {order.meal}
-                      </button>
-                    </td>
-                    <td className="py-3 px-6 text-center">
-                      {order.orderQuantity}
-                    </td>
-                    <td className="py-3 px-6">
-                      <DailyOrderStatus status={order.status} />
-                    </td>
-                  </tr>
-                ))
+            {orders.length > 0 ? (
+              orders.map((item) =>
+                item.companies.map((company) =>
+                  company.dailyOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td className="py-3 px-6">{item.bookingDate}</td>
+                      <td className="py-3 px-6 font-bold">{company.name}</td>
+                      <td className="py-3 px-6">{company.address}</td>
+                      <td className="py-3 px-6">
+                        <button
+                          className="text-green-500 hover:text-green-600 font-semibold"
+                          onClick={() => handleDetailClick(order.id)}
+                        >
+                          {order.meal}
+                        </button>
+                      </td>
+                      <td className="py-3 px-6 text-center">
+                        {order.orderQuantity}
+                      </td>
+                      <td className="py-3 px-6">
+                        <DailyOrderStatus status={order.status} />
+                      </td>
+                    </tr>
+                  ))
+                )
               )
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center py-3 px-6">
+                  Không có lịch sử đơn hàng
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </div>
+        {orders.length > 0 && (
+          <div className="pagination-container" style={{ marginTop: "5px" }}>
+            <Pagination
+              componentName="div"
+              count={totalPages}
+              page={pageIndex + 1}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+        )}
       </div>
 
       <ToastContainer position="top-right" autoClose={2000} />

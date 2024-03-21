@@ -6,7 +6,7 @@ import OrderFoodList from "../Screens/Order/OrderFoodList";
 const SupplierContent = () => {
   return (
     <Routes>
-      <Route path="foods" element={<OrderFoodList />} />
+      <Route path="food" element={<OrderFoodList />} />
       {/* <Route path="foods" element={<Dishes />} />
       <Route path="menu" element={<Menu />} />
       <Route path="combo/create" element={<CreateCombo />} />

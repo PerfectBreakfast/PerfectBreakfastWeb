@@ -14,7 +14,7 @@ import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import logo from "../../../assets/images/logo.png";
 
 const navigation = [
-  { name: "Danh sách món ăn", href: "/supplier/foods", icon: FoodIcon },
+  { name: "Danh sách món ăn", href: "/supplier/food", icon: FoodIcon },
   // { name: "Danh sách combo", href: "/admin/combo", icon: ComboIcon },
   // { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
   // { name: "Danh sách đối tác", href: "/admin/partners", icon: PartnerIcon },
