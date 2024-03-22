@@ -160,7 +160,7 @@ function Cart() {
                 </option>
                 {mealData.map((meal) => (
                   <option key={meal.id} value={meal.id}>
-                    {meal.mealType}
+                    {meal.mealType} - {meal.startTime} tới {meal.endTime}
                   </option>
                 ))}
               </select>

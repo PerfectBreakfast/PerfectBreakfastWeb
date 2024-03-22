@@ -54,6 +54,7 @@ import ChangePassword from "./pages/User/UserSettings/ChangePassword";
 import TermOfUse from "./pages/User/Rule/TermOfUse";
 import CompanyInfo from "./pages/User/Rule/CompanyInfo";
 import FaqPage from "./pages/User/Rule/FaqPage";
+import ErrorPage from "./pages/Error/ErrorPage";
 
 function App() {
   return (
@@ -122,6 +123,8 @@ function App() {
               element={<CustomerOrderDetail />}
             />
             <Route path="/staff/setting" element={<StaffSetting />} />
+
+            <Route path="/error" element={<ErrorPage />} />
           </Routes>
         </CartProvider>
       </Router>
