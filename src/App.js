@@ -49,6 +49,11 @@ import ShippingHistory from "./pages/DeliveryStaff/ShippingHistory/ShippingHisto
 import StaffSetting from "./pages/DeliveryStaff/Setting/StaffSetting,";
 import FoodDetail from "./pages/User/ComboDetail/FoodDetail";
 import { ToastContainer } from "react-toastify";
+import EditUser from "./pages/User/UserSettings/EditUser";
+import ChangePassword from "./pages/User/UserSettings/ChangePassword";
+import TermOfUse from "./pages/User/Rule/TermOfUse";
+import CompanyInfo from "./pages/User/Rule/CompanyInfo";
+import FaqPage from "./pages/User/Rule/FaqPage";
 
 function App() {
   return (
@@ -79,6 +84,14 @@ function App() {
             <Route path="/success" element={<PaymentSuccess />} />
             <Route path="/cancel" element={<CancelPayment />} />
             <Route path="/user" element={<UserInfo />} />
+            <Route path="/user/edit" element={<EditUser />} />
+            <Route
+              path="/user/edit/change-password"
+              element={<ChangePassword />}
+            />
+            <Route path="/user/rules" element={<TermOfUse />} />
+            <Route path="/user/company-info" element={<CompanyInfo />} />
+            <Route path="/user/FAQ" element={<FaqPage />} />
 
             {/* Super Admin */}
             <Route path="/admin/login" element={<AdminLogin />} />
