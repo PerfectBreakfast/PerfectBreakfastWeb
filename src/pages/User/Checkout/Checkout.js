@@ -29,7 +29,7 @@ function Checkout() {
       } catch (error) {
         console.error("Error fetching user data:", error);
         // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi cho người dùng
-        alert("Error fetching user data. Please try again later.");
+        // alert("Error fetching user data. Please try again later.");
       }
     };
 

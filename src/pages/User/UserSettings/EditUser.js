@@ -13,6 +13,7 @@ import { ReactComponent as Write } from "../../../assets/icons/write.svg";
 import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
 import { ReactComponent as RightIcon } from "../../../assets/icons/right-arrow.svg";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import Loading from "../../Loading/Loading";
 
 const EditUser = () => {
   const [userData, setUserData] = useState(null);
@@ -53,11 +54,11 @@ const EditUser = () => {
 
       try {
         await userAPI.editUserForCustomer(formData);
-        toast.success("User information updated successfully!");
+        toast.success("Thay đổi thông tin thành công!");
         navigate(-1);
       } catch (error) {
         console.error("Error updating user info:", error);
-        toast.error("Failed to update user information!");
+        toast.error("Thay đổi thông tin thất bại!");
       }
     },
   });
@@ -157,7 +158,9 @@ const EditUser = () => {
       openModal();
     }
   };
-
+  if (!userData) {
+    return <Loading />;
+  }
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -193,7 +196,7 @@ const EditUser = () => {
 
             <label
               htmlFor="image"
-              className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600"
+              className="absolute bottom-0 right-0 bg-green-500 rounded-full p-2 cursor-pointer hover:bg-green-600"
             >
               {" "}
               <Write className="h-4 w-4 text-white" />
