@@ -146,6 +146,9 @@ input[type="number"] {
 .user-input {
   @apply mt-3 focus:outline-none border-1 w-full rounded-xl p-2 hover:border-green-500  focus:border-green-500;
 }
+.edit-user-input {
+  @apply mt-1 focus:outline-none border-1 w-full rounded-xl p-2 hover:border-green-500  focus:border-green-500;
+}
 
 .text-name {
   @apply font-bold cursor-pointer hover:text-green-500;

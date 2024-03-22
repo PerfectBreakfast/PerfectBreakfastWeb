@@ -1,24 +1,10 @@
 import React, { useEffect, useState } from "react";
 import userAPI from "../../../services/userAPI";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import InfoIcon from "@mui/icons-material/Info";
-import HelpIcon from "@mui/icons-material/Help";
-import LiveHelpIcon from "@mui/icons-material/LiveHelp";
-import "../UserSettings/UserInfo.css";
-import Divider from "@mui/material/Divider";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
 
 function UserInfo() {
   const [userData, setUserData] = useState(null);
@@ -40,6 +26,7 @@ function UserInfo() {
   }, []);
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     navigate("/login");
   };
 
@@ -49,82 +36,93 @@ function UserInfo() {
   const handleLogoutConfirm = () => {
     setShowConfirmation(true);
   };
-  const cancelRemoveItem = () => {
+  const cancelLogout = () => {
     setShowConfirmation(false);
   };
   return (
-    <div className="userSettingContainer">
-      <div className="userSettings">
-        <IconButton onClick={handleGoBack}>
-          <ArrowBackIosIcon />{" "}
-        </IconButton>
-        <Typography className="paymentText" variant="h6" gutterBottom>
-          Thông tin người dùng
-        </Typography>
+    <div className="container mx-auto p-4">
+      <div className="flex items-center mb-4">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center text-gray-600"
+        >
+          <ArrowBackIosIcon />
+        </button>
+        <h6 className="text-lg font-bold ml-4">Thông tin người dùng</h6>
       </div>
-      <Box padding={2}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={4} sm={2}>
-            <IconButton>
-              <AccountCircleIcon fontSize="large" id="iconAvatar" />
-            </IconButton>
-          </Grid>
-          <Grid item xs={8} sm={10}>
-            {userData && (
-              <div>
-                <Typography variant="h6" gutterBottom>
-                  {userData.name}
-                </Typography>
-
-                <Typography variant="body1" gutterBottom>
-                  <PhoneIcon /> {userData.phoneNumber}
-                </Typography>
-                <Divider className="custom-divider" />
-                <Typography variant="body1" gutterBottom>
-                  <ApartmentIcon /> {userData.companyName}
-                </Typography>
-                <Divider className="custom-divider" />
-              </div>
+      {userData && (
+        <div
+          className="bg-white shadow rounded-lg p-3 mb-6 mb-6 cursor-pointer"
+          onClick={() => navigate("edit")}
+        >
+          <div className="flex items-center space-x-4 mb-2">
+            {userData.image ? (
+              <img
+                src={userData.image}
+                alt="User"
+                className="w-16 h-16 rounded-full object-cover"
+              />
+            ) : (
+              <User className="w-16 h-16" />
             )}
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button
-              fullWidth
-              id="userSettingBtn"
-              variant="outlined"
-              size="large"
-            >
-              Thông tin khác <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button fullWidth id="userSettingBtn" variant="outlined">
-              Trợ giúp <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-      <div className="container logoutUser">
-        <Button
-          id="logoutBtn"
-          variant="contained"
-          size="large"
+
+            <div>
+              <p className="text-xl font-semibold">{userData.name}</p>
+              <p className="text-sm text-gray-600">{userData.companyName}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="bg-white shadow rounded-lg px-4 py-3 mb-6">
+        <div className="flex flex-col space-y-2">
+          <button
+            onClick={() => navigate("FAQ")}
+            className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
+          >
+            Hỏi đáp
+          </button>
+          <button
+            onClick={() => navigate("rules")}
+            className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
+          >
+            Điều khoản sử dụng
+          </button>
+
+          <button
+            onClick={() => navigate("company-info")}
+            className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
+          >
+            Thông tin về P&B
+          </button>
+        </div>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 flex justify-center items-end px-4 py-2.5 bg-transparent">
+        <button
+          className=" w-5/6 px-10 py-2.5 bg-red-500 text-white rounded-xl hover:bg-red-700 transition duration-500"
           onClick={handleLogoutConfirm}
         >
           Đăng xuất
-        </Button>
+        </button>
       </div>
 
       {/* Confirmation Dialog */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-white rounded-lg p-6 shadow-lg">
-            <h5 className="text-lg font-bold mb-6">Bạn có muốn đăng xuất?</h5>
+            <h5 className="text-lg font-bold mb-6">
+              Bạn có chắc chắn muốn đăng xuất không?
+            </h5>
             <div className="flex justify-end gap-2 mt-3">
-              <button onClick={cancelRemoveItem} className="btn-cancel">
-                Hủy
+              <button
+                onClick={cancelLogout}
+                className="px-4 py-2 rounded text-gray-600 border border-gray-300 hover:bg-gray-100 transition duration-200"
+              >
+                Hủy bỏ
               </button>
-              <button onClick={handleLogout} className="btn-confirm-delete">
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition duration-200"
+              >
                 Xác nhận
               </button>
             </div>

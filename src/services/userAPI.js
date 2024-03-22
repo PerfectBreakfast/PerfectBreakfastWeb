@@ -123,6 +123,25 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editUserForCustomer: async (userData) => {
+    try {
+      const response = await axiosInstance.put(`${api}/v1/users`, userData);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  changePassword: async (newPasswordData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/users/change-password`,
+        newPasswordData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
