@@ -5,7 +5,7 @@ const Loading = () => {
   let [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#0CBF66");
   return (
-    <div className="fixed inset-0 bg-gray-700 bg-opacity-50 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-300 bg-opacity-50 z-50 flex justify-center items-center">
       <div className="loader">
         {" "}
         <ClipLoader

@@ -5,6 +5,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
+import Loading from "../../Loading/Loading";
 
 function UserInfo() {
   const [userData, setUserData] = useState(null);
@@ -39,8 +40,11 @@ function UserInfo() {
   const cancelLogout = () => {
     setShowConfirmation(false);
   };
+  if (!userData) {
+    return <Loading />;
+  }
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 ">
       <div className="flex items-center mb-4">
         <button
           onClick={handleGoBack}
@@ -96,9 +100,9 @@ function UserInfo() {
           </button>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center items-end px-4 py-2.5 bg-transparent">
+      <div>
         <button
-          className=" w-5/6 px-10 py-2.5 bg-red-500 text-white rounded-xl hover:bg-red-700 transition duration-500"
+          className="w-full px-10 py-2.5 bg-red-500 text-white rounded-xl hover:bg-red-700 transition duration-500"
           onClick={handleLogoutConfirm}
         >
           Đăng xuất
