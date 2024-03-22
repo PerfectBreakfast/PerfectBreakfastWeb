@@ -115,7 +115,10 @@ function Cart() {
   if (!mealData) {
     return <Loading />;
   }
-
+  const convertTimeFormat = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="flex items-center mb-4">
@@ -160,7 +163,8 @@ function Cart() {
                 </option>
                 {mealData.map((meal) => (
                   <option key={meal.id} value={meal.id}>
-                    {meal.mealType} - {meal.startTime} tới {meal.endTime}
+                    {meal.mealType} - {convertTimeFormat(meal.startTime)} tới{" "}
+                    {convertTimeFormat(meal.endTime)}
                   </option>
                 ))}
               </select>
