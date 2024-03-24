@@ -5,30 +5,61 @@ import { toast } from "react-toastify";
 
 import comboImg from "../../../assets/images/combo.png";
 import OrderHistoryListSkeleton from "./OrderHistoryListSkeleton";
+import { ReactComponent as Loading } from "../../../assets/icons/loading.svg";
 
 const OrderHistoryList = () => {
   const [historyData, setHistoryData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Initialize isLoading as true
+  const [isMoreLoading, setIsMoreLoading] = useState(false);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const fetchOrderHistory = async () => {
-      try {
-        const data = await orderAPI.getOrderHistory();
-        if (data && data.length > 0) {
-          setHistoryData(data);
-        } else {
-          setHistoryData([]); // Set historyData as an empty array if data is empty
-        }
-        setIsLoading(false); // Set isLoading to false after fetching data
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setIsLoading(false);
-      }
-    };
+    // const fetchOrderHistory = async () => {
+    //   try {
+    //     const data = await orderAPI.getOrderHistory();
+    //     if (data && data.length > 0) {
+    //       setHistoryData(data);
+    //     } else {
+    //       setHistoryData([]); // Set historyData as an empty array if data is empty
+    //     }
+    //     setIsLoading(false); // Set isLoading to false after fetching data
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //     setIsLoading(false);
+    //   }
+    // };
 
     fetchOrderHistory();
-  }, []);
+  }, [page]);
+
+  const fetchOrderHistory = async () => {
+    setIsMoreLoading(true);
+    try {
+      const data = await orderAPI.getOrderHistory(page);
+
+      if (data && data.length > 0) {
+        if (page > 1) {
+          setHistoryData(data);
+          setIsMoreLoading(true); // Nếu đây không phải là trang đầu tiên, nối dữ liệu mới
+        } else {
+          setHistoryData(data);
+          setIsLoading(true); // Nếu đây là trang đầu tiên, đặt dữ liệu mới
+        }
+      } else if (page === 1) {
+        setHistoryData([]); // Nếu không có dữ liệu trên trang đầu, đặt mảng trống
+      }
+    } catch (error) {
+      console.error("Error fetching order history:", error);
+    } finally {
+      setIsLoading(false);
+      setIsMoreLoading(false);
+    }
+  };
+
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   const handleGoBack = () => {
     navigate(-1);
@@ -135,6 +166,21 @@ const OrderHistoryList = () => {
           // Show message when there is no data
           <div className="text-center mt-2 font-bold">
             <p>Bạn chưa đặt món ăn nào!</p>
+          </div>
+        )}
+        {historyData && historyData.length > 0 && !isLoading && (
+          <div className="w-full flex justify-center">
+            <button
+              disabled={isMoreLoading}
+              className="w-40 py-2 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition-colors"
+              onClick={handleLoadMore}
+            >
+              {isMoreLoading ? (
+                <Loading className=" animate-spin inline w-5 h-5 text-gray-200 dark:text-gray-600" />
+              ) : (
+                "Xem thêm"
+              )}
+            </button>
           </div>
         )}
       </div>

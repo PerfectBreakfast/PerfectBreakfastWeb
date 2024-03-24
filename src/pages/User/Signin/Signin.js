@@ -26,6 +26,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false); // Thêm trạng thái mới
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,12 +36,17 @@ const Login = () => {
     }));
   };
 
+  const startGoogleLogin = () => {
+    setIsGoogleLoading(true); // Đặt trạng thái loading trước khi gọi hàm đăng nhập
+    handleLoginGoogle(); // Gọi hàm đăng nhập Google sau khi đã đặt trạng thái loading
+  };
+
   // call tới google
   const handleLoginGoogle = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
+      // setIsGoogleLoading(true);
       console.log(codeResponse);
-      //setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
       try {
         const userData = await userAPI.externalLogin(codeResponse.code);
 
@@ -66,7 +72,7 @@ const Login = () => {
         console.log(error);
         toast.error("Lỗi không thể đăng nhập");
       } finally {
-        //setIsLoading(false);
+        setIsGoogleLoading(false);
       }
     },
     onError: (errorResponse) => console.log(errorResponse),
@@ -173,11 +179,23 @@ const Login = () => {
       </div>
 
       <button
+        disabled={isGoogleLoading}
         type="button"
         class="mt-4 btn-submit-user-outline flex items-center justify-center"
-        onClick={() => handleLoginGoogle()}
+        onClick={startGoogleLogin}
       >
-        <img src={google} alt="google" className="size-6 mr-2" /> Google
+        {isGoogleLoading ? (
+          <Loading className=" animate-spin inline w-5 h-5 text-gray-200 dark:text-gray-600" />
+        ) : (
+          <>
+            {" "}
+            <img
+              src={google}
+              alt="google"
+              className="size-6 mr-2"
+            /> Google{" "}
+          </>
+        )}
       </button>
 
       <ToastContainer autoClose={1000} />
