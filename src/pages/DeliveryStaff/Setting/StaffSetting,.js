@@ -3,18 +3,14 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router";
 import userAPI from "../../../services/userAPI";
 import { ToastContainer, toast } from "react-toastify";
-import { Button, Divider, Grid, IconButton, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PhoneIcon from "@mui/icons-material/Phone";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+
+import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
+import Loading from "../../Loading/Loading";
 
 const StaffSetting = () => {
   const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
   const [showConfirmation, setShowConfirmation] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -41,92 +37,90 @@ const StaffSetting = () => {
   const handleLogoutConfirm = () => {
     setShowConfirmation(true);
   };
-  const cancelRemoveItem = () => {
+  const cancelLogout = () => {
     setShowConfirmation(false);
   };
+  if (!userData) {
+    return <Loading />;
+  }
   return (
-    <div className="userSettingContainer">
-      <div className="userSettings">
-        <IconButton onClick={handleGoBack}>
-          <ArrowBackIosIcon />{" "}
-        </IconButton>
-        <Typography className="paymentText" variant="h6" gutterBottom>
-          Thông tin người dùng
-        </Typography>
+    <div className="container mx-auto p-4 ">
+      <div className="flex items-center mb-4">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center text-gray-600"
+        >
+          <ArrowBackIosIcon />
+        </button>
+        <h6 className="text-lg font-bold ml-4">Thông tin người dùng</h6>
       </div>
-      <Box padding={2}>
-        <Grid container spacing={2} alignItems="center">
-          {userData && (
-            <>
-              <Grid item xs={4} sm={2}>
-                <img
-                  src={userData.image}
-                  alt={userData.name}
-                  className="w-20 h-20 rounded-full"
-                />
-              </Grid>
-              <Grid item xs={8} sm={10}>
-                <div>
-                  <Typography variant="h6" gutterBottom>
-                    {userData.name}
-                  </Typography>
+      {userData && (
+        <div
+          className="bg-white shadow rounded-lg p-3 mb-6 mb-6 cursor-pointer"
+          onClick={() => navigate("edit")}
+        >
+          <div className="flex items-center space-x-4 mb-2">
+            {userData.image ? (
+              <img
+                src={userData.image}
+                alt="User"
+                className="w-16 h-16 rounded-full object-cover"
+              />
+            ) : (
+              <User className="w-16 h-16" />
+            )}
 
-                  <Typography variant="body1" gutterBottom>
-                    <PhoneIcon /> {userData.phoneNumber}
-                  </Typography>
-                  <Divider className="custom-divider" />
-                  <Typography variant="body1" gutterBottom>
-                    <ApartmentIcon /> {userData.companyName}
-                  </Typography>
-                  <Divider className="custom-divider" />
-                </div>
-              </Grid>
-            </>
-          )}
+            <div>
+              <p className="text-xl font-semibold">{userData.name}</p>
+              <p className="text-sm text-gray-600">{userData.companyName}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="bg-white shadow rounded-lg px-4 py-3 mb-6">
+        <div className="flex flex-col space-y-2">
+          <button
+            // onClick={() => navigate("/rules")}
+            className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
+          >
+            Báo cáo
+          </button>
 
-          <Grid item xs={12} sm={12}>
-            <Button
-              fullWidth
-              id="userSettingBtn"
-              variant="outlined"
-              size="large"
-            >
-              Thông tin khác <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button fullWidth id="userSettingBtn" variant="outlined">
-              FAQ <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button fullWidth id="userSettingBtn" variant="outlined">
-              Trợ giúp <KeyboardArrowRightIcon />
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-      <div className="container logoutUser">
-        <Button
-          id="logoutBtn"
-          variant="contained"
-          size="large"
+          <button
+            onClick={() => navigate("/company-info")}
+            className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
+          >
+            Thông tin về P&B
+          </button>
+        </div>
+      </div>
+      <div>
+        <button
+          className="w-full px-10 py-2.5 bg-red-500 text-white rounded-xl hover:bg-red-700 transition duration-500"
           onClick={handleLogoutConfirm}
         >
           Đăng xuất
-        </Button>
+        </button>
       </div>
 
       {/* Confirmation Dialog */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-white rounded-lg p-6 shadow-lg">
-            <h5 className="text-lg font-bold mb-6">Bạn có muốn đăng xuất?</h5>
+            <h5 className="text-lg font-bold mb-6">
+              Bạn có chắc chắn muốn đăng xuất không?
+            </h5>
             <div className="flex justify-end gap-2 mt-3">
-              <button onClick={cancelRemoveItem} className="btn-cancel">
-                Hủy
+              <button
+                onClick={cancelLogout}
+                className="px-4 py-2 rounded text-gray-600 border border-gray-300 hover:bg-gray-100 transition duration-200"
+              >
+                Hủy bỏ
               </button>
-              <button onClick={handleLogout} className="btn-confirm-delete">
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition duration-200"
+              >
                 Xác nhận
               </button>
             </div>

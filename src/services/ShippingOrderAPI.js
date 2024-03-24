@@ -15,10 +15,10 @@ const ShippingOrderAPI = {
     }
   },
 
-  getShippingOrderForDeliveryStaff: async () => {
+  getShippingOrderForDeliveryStaff: async (shippingDate) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/shippingorders/daily-order/pending-status
+        `${api}/v1/shippingorders/delivery-staff?time=${shippingDate}
         `
       );
       return response.data;
