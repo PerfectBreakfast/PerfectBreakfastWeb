@@ -21,11 +21,22 @@ const OrderDetail = () => {
   const [modalAction, setModalAction] = useState({ action: "", id: null });
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const [formattedDate, setFormattedDate] = useState("");
+
+  const formatDate = (dateString) => {
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(5, 7);
+    const day = dateString.substring(8, 10);
+    return `${day}/${month}/${year}`;
+  };
+
   useEffect(() => {
     const fetchComboData = async () => {
       try {
         const data = await orderAPI.getOrderDetail(orderId);
         setOrderData(data);
+        const orderDate = formatDate(data.bookingDate);
+        setFormattedDate(orderDate);
       } catch (error) {
         console.error("Error fetching combo data:", error);
       }
@@ -209,11 +220,25 @@ const OrderDetail = () => {
             </div>
 
             <div className=" rounded-lg mb-1">
+              <h2 className="text-lg font-semibold mb-2">
+                Thông tin nhận hàng
+              </h2>
+              <div className="bg-white shadow rounded-xl p-3 mb-3 last:mb-0">
+                <p className="text-gray-600 mb-1">
+                  Thời gian nhận hàng: {orderData.meal}, {formattedDate}
+                </p>
+                <p className="text-gray-600 mb-1">
+                  Công ty: {orderData.company.name}
+                </p>
+                <p className="text-gray-600">
+                  Địa chỉ: {orderData.company.address}
+                </p>
+              </div>
               <h2 className="text-lg font-semibold mb-2">Tóm tắt đơn hàng</h2>
               {orderData.orderDetails.map((detail, index) => (
                 <div
                   key={index}
-                  className="bg-white shadow rounded-2xl p-3 mb-3 last:mb-0"
+                  className="bg-white shadow rounded-xl p-3 mb-3 last:mb-0"
                 >
                   <div className="flex justify-between">
                     <div className="flex ">
@@ -286,7 +311,7 @@ const OrderDetail = () => {
             </div>
             {!isLoading && orderData.orderStatus === "Pending" && (
               <div className="fixed bottom-0 left-0 right-0 w-full">
-                <div className="flex mt-4 px-2 pt-3 pb-1 shadow-lg bg-white rounded-t-2xl">
+                <div className="flex mt-4 px-2 pt-3 pb-1 shadow-lg bg-white rounded-t-xl">
                   <button
                     onClick={() => handleModalCancel(orderData.orderCode)}
                     className="border-1 border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-2.5 w-full mb-2 rounded-xl transition-colors font-bold mx-2"
