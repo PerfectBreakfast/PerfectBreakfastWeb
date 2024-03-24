@@ -14,7 +14,7 @@ import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import { ReactComponent as Setting } from "../../../assets/icons/Settings.svg";
 
 import logo from "../../../assets/images/logo.png";
-import userAPI from "../../../services/userAPI";
+import { useUser } from "../../../components/Context/UserContext";
 
 const navigation = [
   { name: "Danh sách món ăn", href: "/admin/food", icon: FoodIcon },
@@ -32,24 +32,24 @@ const navigation = [
 ];
 
 const Sidebar = () => {
-  const [userData, setUserData] = useState(null);
+  const { userData } = useUser(); // Destructure userData from the context
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = await userAPI.getUser();
-        setUserData(user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        // toast.error("Vui lòng đăng nhập lại!");
-        // navigate("/login");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const user = await userAPI.getUser();
+  //       setUserData(user);
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //       // toast.error("Vui lòng đăng nhập lại!");
+  //       // navigate("/login");
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -150,7 +150,10 @@ const Sidebar = () => {
                   ))}
                   {userData && (
                     <div className="absolute bottom-0 w-full flex items-center py-2.5 justify-between ">
-                      <div className="flex items-center ">
+                      <div
+                        className="flex items-center cursor-pointer"
+                        onClick={() => navigate("profile")}
+                      >
                         <img
                           src={userData.image}
                           alt="Avatar"
@@ -168,10 +171,10 @@ const Sidebar = () => {
                       <div className="">
                         <button
                           onClick={handleLogout}
-                          className="mx-auto group flex items-center w-full text-left text-sm font-medium rounded-md text-red-600 hover:text-white "
+                          className="h-full flex items-center w-full text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
                         >
                           <LogoutIcon
-                            className=" mr-4 h-6 w-6"
+                            className="mt-2 mr-4 h-6 w-6"
                             aria-hidden="true"
                           />
                         </button>

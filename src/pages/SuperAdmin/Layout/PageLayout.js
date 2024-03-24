@@ -5,6 +5,8 @@ import MainContent from "./MainContent";
 import { Box, styled } from "@mui/system";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserProvider } from "../../../components/Context/UserContext";
+
 const drawerWidth = 240;
 
 const MainContainer = styled("div")({
@@ -15,16 +17,19 @@ const MainContainer = styled("div")({
 
 const AppLayout = () => {
   return (
-    <Box sx={{ display: "flex" }}>
-      <Sidebar />
+    <UserProvider>
+      <Box sx={{ display: "flex" }}>
+        <Sidebar />
 
-      <MainContainer>
-        <div style={{ height: "64px" }} />{" "}
-        {/* Adjust the height based on your Sidebar's height */}
-        <MainContent />
-      </MainContainer>
-      <ToastContainer position="top-right" autoClose={2000} />
-    </Box>
+        <MainContainer>
+          <div style={{ height: "64px" }} />{" "}
+          {/* Adjust the height based on your Sidebar's height */}
+          <MainContent />
+        </MainContainer>
+        <ToastContainer position="top-right" autoClose={2000} />
+      </Box>
+      /
+    </UserProvider>
   );
 };
 

@@ -5,30 +5,15 @@ const DailyOrderStatusDelivery = ({ status }) => {
   let styleClass;
 
   switch (status) {
-    case "Initial":
-      statusText = "Chờ đặt đơn";
-      styleClass =
-        "bg-1 bg-gray-500 text-white text-sm font-semibold   px-2.5 py-0.5 rounded";
-      break;
-    case "Processing":
-      statusText = "Đang chờ phân phối";
+    case "Pending":
+      statusText = "Đang chờ lấy hàng";
       styleClass =
         "bg-1 bg-amber-500 text-white text-sm font-semibold   px-2.5 py-0.5 rounded";
       break;
-    case "Cooking":
-      statusText = "Đang nấu";
-      styleClass =
-        "bg-1 bg-yellow-500 text-white  text-sm font-semibold   px-2.5 py-0.5 rounded";
-      break;
-    case "Waiting":
+    case "Confirm":
       statusText = "Đang chờ giao hàng";
       styleClass =
         "bg-1 bg-blue-500 text-white  text-sm font-semibold   px-2.5 py-0.5 rounded";
-      break;
-    case "Delivering":
-      statusText = "Đang giao hàng";
-      styleClass =
-        "bg-1 bg-indigo-500 text-white  text-sm font-semibold   px-2.5 py-0.5 rounded";
       break;
     case "Complete":
       statusText = "Hoàn thành";
