@@ -13,7 +13,7 @@ const orderAPI = {
   getOrderHistory: async (pageNumber) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/orders/history?pageNumber=${3}`
+        `${api}/v1/orders/history?pageNumber=${pageNumber}`
       );
       return response.data;
     } catch (error) {
