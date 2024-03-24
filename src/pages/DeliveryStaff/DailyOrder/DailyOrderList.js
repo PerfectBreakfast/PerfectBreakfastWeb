@@ -97,9 +97,7 @@ const DailyOrderList = () => {
                       Bữa ăn: {orderItem.dailyOrder.meal}
                     </div>
                     <div>
-                      <DailyOrderStatusDelivery
-                        status={orderItem.dailyOrder.status}
-                      />
+                      <DailyOrderStatusDelivery status={orderItem.status} />
                     </div>
                   </div>
                   <div className="flex items-center font-bold ">

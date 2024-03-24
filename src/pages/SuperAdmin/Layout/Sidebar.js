@@ -150,7 +150,10 @@ const Sidebar = () => {
                   ))}
                   {userData && (
                     <div className="absolute bottom-0 w-full flex items-center py-2.5 justify-between ">
-                      <div className="flex items-center ">
+                      <div
+                        className="flex items-center cursor-pointer"
+                        onClick={() => navigate("profile")}
+                      >
                         <img
                           src={userData.image}
                           alt="Avatar"
@@ -168,10 +171,10 @@ const Sidebar = () => {
                       <div className="">
                         <button
                           onClick={handleLogout}
-                          className="mx-auto group flex items-center w-full text-left text-sm font-medium rounded-md text-red-600 hover:text-white "
+                          className="h-full flex items-center w-full text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
                         >
                           <LogoutIcon
-                            className=" mr-4 h-6 w-6"
+                            className="mt-2 mr-4 h-6 w-6"
                             aria-hidden="true"
                           />
                         </button>

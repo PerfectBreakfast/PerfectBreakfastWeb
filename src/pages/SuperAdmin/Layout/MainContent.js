@@ -34,6 +34,8 @@ import EditCompany from "../Screens/Company/EditCompany";
 import CompanyDetail from "../Screens/Company/CompanyDetail";
 import FoodRegistration from "../Screens/SupplierUnit/FoodRegistration";
 import DailyOrderList from "../Screens/DailyOrder/DailyOrderList";
+import AdminProfile from "../Screens/Profile/AdminProfile";
+import AdminChangePassword from "../Screens/Profile/AdminChangePassword";
 
 const MainContent = () => {
   return (
@@ -84,6 +86,8 @@ const MainContent = () => {
         path="delivery/create-delivery-user"
         element={<CreateDeliveryUser />}
       />
+      <Route path="profile" element={<AdminProfile />} />
+      <Route path="profile/change-password" element={<AdminChangePassword />} />
     </Routes>
   );
 };

@@ -5,6 +5,7 @@ import MainContent from "./MainContent";
 import { Box, styled } from "@mui/system";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const drawerWidth = 240;
 
 const MainContainer = styled("div")({
