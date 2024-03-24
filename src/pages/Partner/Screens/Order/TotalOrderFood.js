@@ -16,29 +16,58 @@ const SupplierFoodAssigment = () => {
 
   console.log("test id", dailyOrderId);
 
+  // useEffect(() => {
+  //   const fetchOrderFoodData = async () => {
+  //     try {
+  //       const data = await dishAPI.getDailyOrderDetailById(dailyOrderId);
+  //       setOrderFoodData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching dish data:", error);
+  //     }
+  //   };
+
+  //   const fetchSupplier = async () => {
+  //     try {
+  //       const data = await supplierUnitAPI.getsAllSupplierByPartner();
+  //       setSupplierData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching supplier data:", error);
+  //     }
+  //   };
+
+  //   fetchSupplier();
+  //   fetchOrderFoodData();
+  // }, []);
+  // console.log("supplier", supplierData);
+
   useEffect(() => {
     const fetchOrderFoodData = async () => {
       try {
         const data = await dishAPI.getDailyOrderDetailById(dailyOrderId);
         setOrderFoodData(data);
+        fetchSuppliersForFoods(data.totalFoodResponses); // Gọi hàm mới để fetch suppliers dựa trên foods
       } catch (error) {
         console.error("Error fetching dish data:", error);
       }
     };
 
-    const fetchSupplier = async () => {
-      try {
-        const data = await supplierUnitAPI.getsAllSupplierByPartner();
-        setSupplierData(data);
-      } catch (error) {
-        console.error("Error fetching supplier data:", error);
-      }
-    };
-
-    fetchSupplier();
     fetchOrderFoodData();
   }, []);
-  console.log("supplier", supplierData);
+
+  const fetchSuppliersForFoods = async (foods) => {
+    const supplierDataByFoodId = {};
+    await Promise.all(
+      foods.map(async (food) => {
+        try {
+          const data = await supplierUnitAPI.fetchSuppliersForFood(food.id); // Giả định rằng API đã được cập nhật để nhận foodId
+          supplierDataByFoodId[food.id] = data;
+        } catch (error) {
+          console.error(`Error fetching suppliers for food ${food.id}:`, error);
+        }
+      })
+    );
+    setSupplierData(supplierDataByFoodId);
+  };
 
   const submitAssignments = async () => {
     // Kiểm tra xem tất cả các nhà cung cấp đã được chọn
@@ -182,6 +211,26 @@ const SupplierFoodAssigment = () => {
                     key={idx}
                     className="flex flex-row items-center space-x-4"
                   >
+                    {/* <select
+                      className="input-form"
+                      value={assignment.supplierId}
+                      onChange={(e) =>
+                        handleAssignmentChange(
+                          item.id,
+                          idx,
+                          "supplierId",
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="">Chọn nhà cung cấp</option>
+                      {supplierData[item.id] &&
+                        supplierData[item.id].map((supplier) => (
+                          <option key={supplier.id} value={supplier.id}>
+                            {supplier.name}
+                          </option>
+                        ))}
+                    </select> */}
                     <select
                       className="input-form"
                       value={assignment.supplierId}
@@ -195,13 +244,20 @@ const SupplierFoodAssigment = () => {
                       }
                     >
                       <option value="">Chọn nhà cung cấp</option>
-                      {supplierData &&
-                        supplierData.map((supplier) => (
+                      {supplierData[item.id] &&
+                      supplierData[item.id].length > 0 ? (
+                        supplierData[item.id].map((supplier) => (
                           <option key={supplier.id} value={supplier.id}>
                             {supplier.name}
                           </option>
-                        ))}
+                        ))
+                      ) : (
+                        <option value="" disabled>
+                          Không có nhà cung cấp tương ứng
+                        </option>
+                      )}
                     </select>
+
                     <input
                       type="number"
                       className="number-input-form "

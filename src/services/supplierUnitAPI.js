@@ -80,10 +80,10 @@ const supplierUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getsAllSupplierByPartner: async () => {
+  fetchSuppliersForFood: async (foodId) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/suppliers/all/partner`
+        `${api}/v1/suppliers/food/${foodId}`
       );
       return response.data;
     } catch (error) {
