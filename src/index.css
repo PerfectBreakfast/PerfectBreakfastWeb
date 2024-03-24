@@ -36,7 +36,7 @@ code {
   }
   table thead tr,
   table tfoot tr {
-    @apply border-b-0 !bg-[#f6f8fa]  dark:!bg-[#1a2941];
+    @apply border-b-0 !bg-[#f6f8fa];
   }
   table thead tr th,
   table tfoot tr th,
@@ -50,7 +50,7 @@ code {
 
   table.dataTable-table tbody tr th,
   table.dataTable-table tbody tr td {
-    @apply border-b border-white-light/40 py-3 px-4 ltr:text-left rtl:text-right dark:border-[#191e3a];
+    @apply border-b border-white-light/40 py-3 px-4 ltr:text-left rtl:text-right;
   }
   table.dataTable-table tbody tr:last-child td {
     @apply border-b-0;
