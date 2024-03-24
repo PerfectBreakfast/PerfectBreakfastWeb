@@ -202,6 +202,13 @@ input[type="number"] {
     white-space: nowrap; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
     max-width: 100px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
   }
+  /* .delivery-order-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block; 
+    max-width: 768px; 
+  } */
 }
 
 /* Data tables css */

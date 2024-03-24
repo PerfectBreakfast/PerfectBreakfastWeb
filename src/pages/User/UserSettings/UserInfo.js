@@ -80,20 +80,20 @@ function UserInfo() {
       <div className="bg-white shadow rounded-lg px-4 py-3 mb-6">
         <div className="flex flex-col space-y-2">
           <button
-            onClick={() => navigate("FAQ")}
+            onClick={() => navigate("/FAQ")}
             className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
           >
             Hỏi đáp
           </button>
           <button
-            onClick={() => navigate("rules")}
+            onClick={() => navigate("/rules")}
             className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
           >
             Điều khoản sử dụng
           </button>
 
           <button
-            onClick={() => navigate("company-info")}
+            onClick={() => navigate("/company-info")}
             className="w-full p-2.5 border-1 border-green-500 text-green-500 font-bold rounded-xl hover:bg-green-500 hover:text-white transition duration-500"
           >
             Thông tin về P&B

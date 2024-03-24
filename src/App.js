@@ -36,7 +36,6 @@ import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
 import Loading from "./pages/Loading/Loading";
 import Notification from "./pages/User/Notification/Notification";
 import ManagementLogin from "./pages/Login/ManagementLogin";
-
 import QrScanner from "./components/ScanQR";
 import Detail from "./components/Detail";
 import ForgotPassword from "./pages/User/ForgotPassword/ForgotPassword";
@@ -55,6 +54,8 @@ import TermOfUse from "./pages/User/Rule/TermOfUse";
 import CompanyInfo from "./pages/User/Rule/CompanyInfo";
 import FaqPage from "./pages/User/Rule/FaqPage";
 import ErrorPage from "./pages/Error/ErrorPage";
+import StaffInfo from "./pages/DeliveryStaff/Setting/StaffInfo";
+import StaffChangePassword from "./pages/DeliveryStaff/Setting/StaffChangePassword";
 
 function App() {
   return (
@@ -90,9 +91,9 @@ function App() {
               path="/user/edit/change-password"
               element={<ChangePassword />}
             />
-            <Route path="/user/rules" element={<TermOfUse />} />
-            <Route path="/user/company-info" element={<CompanyInfo />} />
-            <Route path="/user/FAQ" element={<FaqPage />} />
+            <Route path="/rules" element={<TermOfUse />} />
+            <Route path="/company-info" element={<CompanyInfo />} />
+            <Route path="/FAQ" element={<FaqPage />} />
 
             {/* Super Admin */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -123,6 +124,11 @@ function App() {
               element={<CustomerOrderDetail />}
             />
             <Route path="/staff/setting" element={<StaffSetting />} />
+            <Route path="/staff/setting/edit" element={<StaffInfo />} />
+            <Route
+              path="/staff/setting/edit/change-password"
+              element={<StaffChangePassword />}
+            />
 
             <Route path="/error" element={<ErrorPage />} />
           </Routes>

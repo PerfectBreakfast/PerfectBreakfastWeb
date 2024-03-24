@@ -142,6 +142,17 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  editStaff: async (userId, userData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/users/${userId}`,
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
