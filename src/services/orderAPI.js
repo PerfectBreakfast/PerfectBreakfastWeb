@@ -10,9 +10,11 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getOrderHistory: async () => {
+  getOrderHistory: async (pageNumber) => {
     try {
-      const response = await axiosInstance.get(`${api}/v1/orders/history`);
+      const response = await axiosInstance.get(
+        `${api}/v1/orders/history?pageNumber=${pageNumber}`
+      );
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
