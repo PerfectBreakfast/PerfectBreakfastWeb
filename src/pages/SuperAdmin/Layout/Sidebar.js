@@ -14,7 +14,7 @@ import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import { ReactComponent as Setting } from "../../../assets/icons/Settings.svg";
 
 import logo from "../../../assets/images/logo.png";
-import userAPI from "../../../services/userAPI";
+import { useUser } from "../../../components/Context/UserContext";
 
 const navigation = [
   { name: "Danh sách món ăn", href: "/admin/food", icon: FoodIcon },
@@ -32,24 +32,24 @@ const navigation = [
 ];
 
 const Sidebar = () => {
-  const [userData, setUserData] = useState(null);
+  const { userData } = useUser(); // Destructure userData from the context
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = await userAPI.getUser();
-        setUserData(user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        // toast.error("Vui lòng đăng nhập lại!");
-        // navigate("/login");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const user = await userAPI.getUser();
+  //       setUserData(user);
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //       // toast.error("Vui lòng đăng nhập lại!");
+  //       // navigate("/login");
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

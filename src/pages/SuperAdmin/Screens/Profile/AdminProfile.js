@@ -16,6 +16,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import userAPI from "../../../../services/userAPI";
 import companyAPI from "../../../../services/companyAPI";
 import Loading from "../../../Loading/Loading";
+import { useUser } from "../../../../components/Context/UserContext";
 
 const AdminProfile = () => {
   const [userData, setUserData] = useState(null);
@@ -25,6 +26,8 @@ const AdminProfile = () => {
   const [hasChanged, setHasChanged] = useState(false);
 
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  const { updateUser } = useUser(); // Use updateUser from context
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +52,7 @@ const AdminProfile = () => {
       try {
         await userAPI.editUserForCustomer(formData);
         toast.success("Thay đổi thông tin thành công!");
+        await updateUser();
         navigate(-1);
       } catch (error) {
         console.error("Error updating user info:", error);
