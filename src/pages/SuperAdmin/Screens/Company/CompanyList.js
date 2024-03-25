@@ -43,7 +43,7 @@ const CompanyList = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching company :", error);
-      toast.error("Lỗi khi thêm dvvc");
+      toast.error(error.errors);
       setIsLoading(false);
     }
   };

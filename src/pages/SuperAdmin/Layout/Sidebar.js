@@ -35,6 +35,7 @@ const Sidebar = () => {
   const { userData } = useUser(); // Destructure userData from the context
   const navigate = useNavigate();
   const location = useLocation();
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // useEffect(() => {
   //   const fetchUserData = async () => {
@@ -67,6 +68,13 @@ const Sidebar = () => {
       location.pathname.startsWith(href) &&
       location.pathname[href.length] === "/"
     );
+  };
+
+  const handleLogoutConfirm = () => {
+    setShowConfirmation(true);
+  };
+  const cancelLogout = () => {
+    setShowConfirmation(false);
   };
 
   return (
@@ -105,7 +113,8 @@ const Sidebar = () => {
                   </Disclosure.Button>
                 ))}
                 <button
-                  onClick={handleLogout}
+                  // onClick={handleLogout}
+                  onClick={handleLogoutConfirm}
                   className="flex items-center p-2 w-full text-left text-base font-medium rounded-md text-red-600 hover:text-white hover:bg-red-800"
                 >
                   <LogoutIcon className="mr-3 h-6 w-6" aria-hidden="true" />
@@ -170,7 +179,7 @@ const Sidebar = () => {
                       </div>
                       <div className="">
                         <button
-                          onClick={handleLogout}
+                          onClick={handleLogoutConfirm}
                           className="h-full flex items-center w-full text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
                         >
                           <LogoutIcon
@@ -187,6 +196,30 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h5 className="text-lg font-bold mb-6">
+              Bạn có chắc chắn muốn đăng xuất không?
+            </h5>
+            <div className="flex justify-end gap-2 mt-3">
+              <button
+                onClick={cancelLogout}
+                className="px-4 py-2 rounded text-gray-600 border border-gray-300 hover:bg-gray-100 transition duration-200"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition duration-200"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

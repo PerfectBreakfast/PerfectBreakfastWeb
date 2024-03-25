@@ -3,7 +3,7 @@ import axiosInstance from "./axiosConfig";
 import api from "./api";
 
 const deliveryUnitAPI = {
-  getManagementUnit: async () => {
+  getAllDelivery: async () => {
     try {
       const response = await axiosInstance.get(`${api}/v1/deliveries`);
       return response.data;
