@@ -20,7 +20,7 @@ const FoodRegistration = () => {
         const foodData = await dishAPI.getDishAll();
         setFoodData(foodData);
       } catch (error) {
-        toast.error("Failed to fetch data.");
+        // toast.error("Failed to fetch data.");
       }
     };
     fetchData();

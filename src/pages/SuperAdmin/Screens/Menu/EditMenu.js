@@ -8,10 +8,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-modal";
 import Loading from "../../../Loading/Loading";
+import dishAPI from "../../../../services/dishAPI";
 
 const EditMenu = () => {
   const { id } = useParams();
   const [combos, setCombos] = useState([]);
+  const [foodData, setFoodData] = useState([]);
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,24 +34,43 @@ const EditMenu = () => {
         formik.setValues({
           menuName: menuData.name,
           selectedCombos: menuData.comboFoodResponses.map((combo) => combo.id),
+          selectedFoods: menuData.foodResponses.map((food) => food.id),
         });
       } catch (error) {
         toast.error("Failed to fetch menu data.");
       }
     };
+    const fetchFoodData = async () => {
+      try {
+        const data = await dishAPI.getFoodForMenu();
+        setFoodData(data);
+      } catch (error) {
+        toast.error("Failed to fetch food data.");
+      }
+    };
 
     fetchMenuData();
     fetchComboData();
+    fetchFoodData();
   }, [id]);
 
   const formik = useFormik({
     initialValues: {
       menuName: "",
       selectedCombos: [],
+      selectedFoods: [], // Add this line
     },
     validationSchema: Yup.object({
       menuName: Yup.string().required("Tên menu là bắt buộc"),
-      selectedCombos: Yup.array().min(1, "Phải có ít nhất 1 combo được chọn"),
+      // selectedCombos: Yup.array().min(1, "Phải có ít nhất 1 combo được chọn"),
+      selectedCombos: Yup.array(),
+      selectedFoods: Yup.array().test(
+        "at-least-one-array",
+        "Phải có ít nhất 1 combo hoặc món ăn được chọn",
+        function (value) {
+          return this.parent.selectedCombos.length > 0 || value.length > 0;
+        }
+      ),
     }),
     onSubmit: async (values) => {
       setIsOpen(false);
@@ -57,9 +78,10 @@ const EditMenu = () => {
       try {
         const menuData = {
           name: values.menuName,
-          menuFoodRequests: values.selectedCombos.map((comboId) => ({
-            comboId,
-          })),
+          menuFoodRequests: [
+            ...values.selectedCombos.map((comboId) => ({ comboId })),
+            ...values.selectedFoods.map((foodId) => ({ foodId })),
+          ],
         };
         await menuAPI.editMenu(id, menuData);
         toast.success("Chỉnh sửa menu thành công!");
@@ -67,22 +89,45 @@ const EditMenu = () => {
       } catch (error) {
         toast.error("Chỉnh sửa menu thất bại!");
       } finally {
-        setIsLoading(false); // Ẩn loading
+        setIsLoading(false);
       }
     },
   });
 
-  const handleCheckboxChange = (comboId) => {
-    const updatedCombos = formik.values.selectedCombos.includes(comboId)
-      ? formik.values.selectedCombos.filter((id) => id !== comboId)
-      : [...formik.values.selectedCombos, comboId];
-
-    formik.setFieldValue("selectedCombos", updatedCombos);
+  const handleCheckboxChange = (id, type) => {
+    if (type === "combo") {
+      const updatedCombos = formik.values.selectedCombos.includes(id)
+        ? formik.values.selectedCombos.filter((comboId) => comboId !== id)
+        : [...formik.values.selectedCombos, id];
+      formik.setFieldValue("selectedCombos", updatedCombos);
+    } else if (type === "food") {
+      const updatedFoods = formik.values.selectedFoods.includes(id)
+        ? formik.values.selectedFoods.filter((foodId) => foodId !== id)
+        : [...formik.values.selectedFoods, id];
+      formik.setFieldValue("selectedFoods", updatedFoods);
+    }
   };
+
+  // const handleCheckboxChange = (id, type) => {
+  //   let updatedSelections;
+  //   if (type === "combo") {
+  //     updatedSelections = formik.values.selectedCombos.includes(id)
+  //       ? formik.values.selectedCombos.filter((cid) => cid !== id)
+  //       : [...formik.values.selectedCombos, id];
+  //     formik.setFieldValue("selectedCombos", updatedSelections);
+  //   } else if (type === "food") {
+  //     updatedSelections = formik.values.selectedFoods.includes(id)
+  //       ? formik.values.selectedFoods.filter((fid) => fid !== id)
+  //       : [...formik.values.selectedFoods, id];
+  //     formik.setFieldValue("selectedFoods", updatedSelections);
+  //   }
+  // };
+
   const handleSubmitClick = async () => {
     formik.setTouched({
       menuName: true,
       selectedCombos: true,
+      selectedFoods: true,
     });
 
     const errors = await formik.validateForm();
@@ -184,7 +229,9 @@ const EditMenu = () => {
                           checked={formik.values.selectedCombos.includes(
                             combo.id
                           )}
-                          onChange={() => handleCheckboxChange(combo.id)}
+                          onChange={() =>
+                            handleCheckboxChange(combo.id, "combo")
+                          }
                           className="form-checkbox h-5 w-5 text-green-600"
                         />
                       </td>
@@ -196,6 +243,49 @@ const EditMenu = () => {
             {formik.touched.selectedCombos && formik.errors.selectedCombos && (
               <p className="formik-error-message ">
                 {formik.errors.selectedCombos}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="label-input">Lựa chọn món ăn</label>
+            <div className="overflow-x-auto max-h-96">
+              <table className="min-w-full table-auto">
+                <thead className="bg-gray-200 sticky top-0 ">
+                  <tr>
+                    <th className="px-4 py-2">Tên món ăn</th>
+                    <th className="px-4 py-2">Đơn giá</th>
+                    <th className="px-4 py-2"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {foodData.map((food) => (
+                    <tr key={food.id} className="border-b">
+                      <td className="px-4 py-2">{food.name}</td>
+                      <td className="px-4 py-2">
+                        {food.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </td>
+                      <td className="px-4 py-2">
+                        <input
+                          type="checkbox"
+                          checked={formik.values.selectedFoods.includes(
+                            food.id
+                          )}
+                          onChange={() => handleCheckboxChange(food.id, "food")}
+                          className="form-checkbox h-5 w-5 text-green-600"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {formik.touched.selectedFoods && formik.errors.selectedFoods && (
+              <p className="formik-error-message ">
+                {formik.errors.selectedFoods}
               </p>
             )}
           </div>

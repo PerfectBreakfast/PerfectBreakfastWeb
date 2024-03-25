@@ -30,7 +30,7 @@ const EditCompany = () => {
         const [managementRes, deliveryRes, mealRes, companyRes] =
           await Promise.all([
             managementUnitAPI.getAllManagementUnit(),
-            deliveryUnitAPI.getManagementUnit(),
+            deliveryUnitAPI.getAllDelivery(),
             MealAPI.getMealByAdmin(),
             companyAPI.getCompanyById(id),
           ]);

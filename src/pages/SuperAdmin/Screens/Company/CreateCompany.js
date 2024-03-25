@@ -24,7 +24,7 @@ const CreateCompany = () => {
     const fetchData = async () => {
       try {
         const managementData = await managementUnitAPI.getAllManagementUnit();
-        const deliveryData = await deliveryUnitAPI.getManagementUnit();
+        const deliveryData = await deliveryUnitAPI.getAllDelivery();
         const mealData = await MealAPI.getMealByAdmin();
         setManagementData(managementData);
         setDeliveryData(deliveryData);
