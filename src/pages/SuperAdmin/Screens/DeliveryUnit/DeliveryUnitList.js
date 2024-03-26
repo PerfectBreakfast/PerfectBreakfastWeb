@@ -49,7 +49,7 @@ const DeliveryUnitList = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching delivery units:", error);
-      toast.error("Lỗi khi thêm dvvc");
+      toast.error(error.errors);
       setIsLoading(false);
     }
   };
@@ -218,7 +218,7 @@ const DeliveryUnitList = () => {
                       </span>
                     </td>
 
-                    <td className="py-2.5 px-6 text-left">
+                    <td className="py-2.5 px-6 text-left whitespace-normal ">
                       {deliveryUnit.address}
                     </td>
                     <td className="py-2.5 px-6 text-left">
