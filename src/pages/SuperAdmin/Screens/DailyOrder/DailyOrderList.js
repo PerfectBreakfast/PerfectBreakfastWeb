@@ -100,12 +100,15 @@ const DailyOrderList = () => {
       }
     }
   };
+  const handleDetailClick = (dailyOrderId) => {
+    navigate(`${dailyOrderId}`);
+  };
 
   return (
     <div className="container mx-auto p-4">
-      <h4 className="text-2xl font-semibold mb-4">Danh sách đơn hàng</h4>
+      <h4 className="text-2xl font-semibold mb-4">Tổng hợp đơn hàng</h4>
       {settingData ? (
-        <div className="w-fit border-1 border-green-500 px-4 py-3 rounded-xl flex items-center">
+        <div className="w-fit bg-white shadow-sm px-4 py-3 rounded-xl flex items-center">
           <p className="font-semibold text-gray-700">
             Thời gian chốt đơn hàng: {formatTime(settingData.time)}
           </p>
@@ -148,7 +151,12 @@ const DailyOrderList = () => {
                     </td>
                     <td className="py-2.5 px-6 text-left">{company.address}</td>
                     <td className="py-2.5 px-6 text-left">
-                      <span className=" font-semibold"> {order.meal}</span>
+                      <button
+                        className="text-green-500 hover:text-green-600 font-semibold"
+                        onClick={() => handleDetailClick(order.id)}
+                      >
+                        {order.meal}
+                      </button>
                     </td>
                     <td className="py-3 text-center font-semibold">
                       {order.orderQuantity}

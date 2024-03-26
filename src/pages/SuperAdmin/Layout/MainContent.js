@@ -36,6 +36,7 @@ import FoodRegistration from "../Screens/SupplierUnit/FoodRegistration";
 import DailyOrderList from "../Screens/DailyOrder/DailyOrderList";
 import AdminProfile from "../Screens/Profile/AdminProfile";
 import AdminChangePassword from "../Screens/Profile/AdminChangePassword";
+import OrderListByDailyOrder from "../Screens/DailyOrder/OrderListByDailyOrder";
 
 const MainContent = () => {
   return (
@@ -44,6 +45,7 @@ const MainContent = () => {
       <Route path="food" element={<Dishes />} />
       <Route path="menu" element={<Menu />} />
       <Route path="order" element={<DailyOrderList />} />
+      <Route path="order/:id" element={<OrderListByDailyOrder />} />
       <Route path="combo/create" element={<CreateCombo />} />
       <Route path="menu/create" element={<CreateMenu />} />
       <Route path="menu/:id" element={<MenuDetail />} />

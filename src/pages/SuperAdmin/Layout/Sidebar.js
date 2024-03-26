@@ -20,7 +20,7 @@ const navigation = [
   { name: "Danh sách món ăn", href: "/admin/food", icon: FoodIcon },
   { name: "Danh sách combo", href: "/admin/combo", icon: ComboIcon },
   { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },
-  { name: "Danh sách đơn hàng", href: "/admin/order", icon: FoodIcon },
+  { name: "Tổng hợp đơn hàng", href: "/admin/order", icon: FoodIcon },
   { name: "Danh sách đối tác", href: "/admin/partner", icon: PartnerIcon },
   { name: "Danh sách NCC", href: "/admin/supplier", icon: SupplierIcon },
   { name: "Danh sách ĐVVC", href: "/admin/delivery", icon: DeliveryIcon },

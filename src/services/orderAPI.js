@@ -48,6 +48,16 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getOrderByDailyOrder: async (dailyorderId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/orders/daily-order/${dailyorderId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default orderAPI;

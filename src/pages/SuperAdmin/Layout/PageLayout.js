@@ -21,14 +21,13 @@ const AppLayout = () => {
       <Box sx={{ display: "flex" }}>
         <Sidebar />
 
-        <MainContainer>
+        <MainContainer className="bg-gray-100">
           <div style={{ height: "64px" }} />{" "}
           {/* Adjust the height based on your Sidebar's height */}
           <MainContent />
         </MainContainer>
         <ToastContainer position="top-right" autoClose={2000} />
       </Box>
-      /
     </UserProvider>
   );
 };
