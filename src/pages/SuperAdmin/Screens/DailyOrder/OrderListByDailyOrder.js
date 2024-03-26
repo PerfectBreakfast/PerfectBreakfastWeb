@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 import orderAPI from "../../../../services/orderAPI";
+import Loading from "../../../Loading/Loading";
 
 Modal.setAppElement("#root"); // Adjust according to your project setup
 
@@ -82,11 +83,13 @@ const OrderListByDailyOrder = () => {
                       })}
                     </td>
                     {/* <td>{order.orderStatus}</td> */}
-                    <td className="text-green-500">Đã thanh toán</td>
+                    <td className="text-green-500 font-semibold">
+                      Đã thanh toán
+                    </td>
                   </tr>
                 ))
               ) : (
-                <p>Loading orders...</p>
+                <Loading />
               )}
             </tbody>
           </table>

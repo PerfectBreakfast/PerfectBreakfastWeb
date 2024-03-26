@@ -4,13 +4,13 @@ import * as Yup from "yup";
 
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Loading } from "../../../../assets/icons/loading.svg";
-import { ReactComponent as VisibilityOff } from "../../../../assets/icons/Eye.svg";
-import { ReactComponent as Visibility } from "../../../../assets/icons/Eye Closed.svg";
+import { ReactComponent as Loading } from "../../assets/icons/loading.svg";
+import { ReactComponent as VisibilityOff } from "../../assets/icons/Eye.svg";
+import { ReactComponent as Visibility } from "../../assets/icons/Eye Closed.svg";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import Modal from "react-modal";
-import userAPI from "../../../../services/userAPI";
+import userAPI from "../../services/userAPI";
 
 const AdminChangePassword = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -124,7 +124,7 @@ const AdminChangePassword = () => {
             >
               Mật khẩu hiện tại
             </label>
-            <div className="input-group rounded-xl mt-2.5 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
+            <div className="flex justify-between rounded-xl mt-2.5 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
               <input
                 id="currentPassword"
                 type={showCurrentPassword ? "text" : "password"}
@@ -133,10 +133,10 @@ const AdminChangePassword = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.currentPassword}
-                className="focus:outline-none"
+                className="focus:outline-none w-full"
               />
               <span
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                className=" flex items-center pr-3"
                 onClick={toggleCurrentPasswordVisibility}
               >
                 {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
@@ -159,7 +159,7 @@ const AdminChangePassword = () => {
             >
               Mật khẩu mới
             </label>
-            <div className="input-group rounded-xl mt-2.5 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
+            <div className="flex justify-between rounded-xl mt-2.5 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -167,10 +167,10 @@ const AdminChangePassword = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
-                className="focus:outline-none"
+                className="focus:outline-none w-full"
               />
               <span
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                className=" flex items-center pr-3"
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -192,7 +192,7 @@ const AdminChangePassword = () => {
             >
               Xác nhận mật khẩu mới
             </label>
-            <div className="input-group rounded-xl mt-1 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
+            <div className="flex justify-between  rounded-xl mt-1 p-2 border-2 focus:outline-none border-1 w-full hover:border-green-500 focus:border-green-500">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -200,10 +200,10 @@ const AdminChangePassword = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.confirmPassword}
-                className="focus:outline-none"
+                className="focus:outline-none w-full"
               />
               <span
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                className="flex items-center pr-3"
                 onClick={toggleConfirmPasswordVisibility}
               >
                 {showConfirmPassword ? <VisibilityOff /> : <Visibility />}

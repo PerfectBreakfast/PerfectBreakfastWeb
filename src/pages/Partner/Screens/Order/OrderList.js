@@ -103,13 +103,15 @@ const OrderList = () => {
             )}
           </tbody>
         </table>
-        {/* <Pagination
-          componentName="div"
-          count={totalPages}
-          page={pageIndex + 1}
-          onChange={handlePageChange}
-          color="primary"
-        /> */}
+        <div className="flex justify-end py-2.5">
+          <Pagination
+            componentName="div"
+            count={totalPages}
+            page={pageIndex + 1}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </div>
       </div>
 
       <ToastContainer position="top-right" autoClose={2000} />

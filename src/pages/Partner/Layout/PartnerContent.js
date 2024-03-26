@@ -8,6 +8,8 @@ import SupplierFoodAssigment from "../Screens/Order/TotalOrderFood";
 import CompanyList from "../Screens/Company/CompanyList";
 import SupplierList from "../Screens/Supplier/SupplierList";
 import DailyOrderHistory from "../Screens/Order/DailyOrderHistory";
+import AdminProfile from "../../../components/Profile/AdminProfile";
+import AdminChangePassword from "../../../components/Profile/AdminChangePassword";
 
 const PartnerContent = () => {
   return (
@@ -30,6 +32,8 @@ const PartnerContent = () => {
       <Route path="food" element={<FoodByCompany />} />
       <Route path="company" element={<CompanyList />} />
       <Route path="supplier" element={<SupplierList />} />
+      <Route path="profile" element={<AdminProfile />} />
+      <Route path="profile/change-password" element={<AdminChangePassword />} />
     </Routes>
   );
 };
