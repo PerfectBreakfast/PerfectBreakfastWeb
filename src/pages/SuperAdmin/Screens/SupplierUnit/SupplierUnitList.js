@@ -68,7 +68,7 @@ const SupplierUnitList = () => {
       setManagementUnits(response);
     } catch (error) {
       console.error("Error fetching units:", error);
-      toast.error("Error fetching units");
+      toast.error("Error fetching management");
     }
   };
 
@@ -339,6 +339,9 @@ const SupplierUnitList = () => {
               value={selectedManagementUnit}
               onChange={(e) => setSelectedManagementUnit(e.target.value)}
             >
+              <option disabled value="">
+                Chọn
+              </option>
               {managementUnits.map((managementUnit) => (
                 <option key={managementUnit.id} value={managementUnit.id}>
                   {managementUnit.name}
