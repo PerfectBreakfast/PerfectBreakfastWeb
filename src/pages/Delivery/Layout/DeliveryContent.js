@@ -8,6 +8,8 @@ import CreateDeliveryStaff from "../Screens/Staff/CreateDeliveryStaff";
 import CompanyList from "../Screens/Company/CompanyList";
 import DailyOrderHistory from "../Screens/Order/DailyOrderHistory";
 import OrderHistoryDetail from "../Screens/Order/OrderHistoryDetail";
+import AdminProfile from "../../../components/Profile/AdminProfile";
+import AdminChangePassword from "../../../components/Profile/AdminChangePassword";
 
 const DeliveryContent = () => {
   return (
@@ -22,6 +24,8 @@ const DeliveryContent = () => {
       <Route path="staff" element={<DeliveryStaffList />} />
       <Route path="staff/create" element={<CreateDeliveryStaff />} />
       <Route path="company" element={<CompanyList />} />
+      <Route path="profile" element={<AdminProfile />} />
+      <Route path="profile/change-password" element={<AdminChangePassword />} />
     </Routes>
   );
 };

@@ -34,8 +34,8 @@ import EditCompany from "../Screens/Company/EditCompany";
 import CompanyDetail from "../Screens/Company/CompanyDetail";
 import FoodRegistration from "../Screens/SupplierUnit/FoodRegistration";
 import DailyOrderList from "../Screens/DailyOrder/DailyOrderList";
-import AdminProfile from "../Screens/Profile/AdminProfile";
-import AdminChangePassword from "../Screens/Profile/AdminChangePassword";
+import AdminProfile from "../../../components/Profile/AdminProfile";
+import AdminChangePassword from "../../../components/Profile/AdminChangePassword";
 import OrderListByDailyOrder from "../Screens/DailyOrder/OrderListByDailyOrder";
 
 const MainContent = () => {

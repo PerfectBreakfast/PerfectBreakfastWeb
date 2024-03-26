@@ -58,6 +58,16 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  confirmOrderForDeliveryStaff: async (orderId) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${api}/v1/orders/${orderId}/status-complete`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default orderAPI;

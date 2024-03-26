@@ -8,15 +8,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Modal from "react-modal";
 
-import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
-import { ReactComponent as User } from "../../../../assets/icons/User Circle.svg";
-import { ReactComponent as RightIcon } from "../../../../assets/icons/right-arrow.svg";
+import { ReactComponent as Write } from "../../assets/icons/write.svg";
+import { ReactComponent as User } from "../../assets/icons/User Circle.svg";
+import { ReactComponent as RightIcon } from "../../assets/icons/right-arrow.svg";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
-import userAPI from "../../../../services/userAPI";
-import companyAPI from "../../../../services/companyAPI";
-import Loading from "../../../Loading/Loading";
-import { useUser } from "../../../../components/Context/UserContext";
+import userAPI from "../../services/userAPI";
+import companyAPI from "../../services/companyAPI";
+import Loading from "../../pages/Loading/Loading";
+import { useUser } from "../Context/UserContext";
 
 const AdminProfile = () => {
   const [userData, setUserData] = useState(null);
@@ -231,16 +231,30 @@ const AdminProfile = () => {
                 </div>
               )}
             </div>
-            <button
+            {/* <button
               type="button"
               onClick={handleUpdateClick}
               disabled={!hasChanged}
-              className={`w-2/12 font-bold bg-green-500 text-white mt-2 py-2 rounded-xl hover:bg-green-600 ${
+              className={`w-32 font-bold bg-green-500 text-white mt-2 py-2 rounded-xl hover:bg-green-600 ${
                 hasChanged ? "" : "opacity-50 cursor-not-allowed"
               }`}
             >
               Cập nhật
-            </button>
+            </button> */}
+            <div className="justify-start">
+              <button
+                type="button"
+                onClick={handleUpdateClick}
+                disabled={!hasChanged}
+                className={`w-32 font-bold bg-green-500 text-white mt-2 py-2 rounded-xl hover:bg-green-600 ${
+                  hasChanged
+                    ? ""
+                    : "border-green-500 bg-green-300 cursor-not-allowed"
+                }`}
+              >
+                Cập nhật
+              </button>
+            </div>
           </div>
 
           <h6 className="text-base font-semibold text-gray-600 mb-2.5">
@@ -257,7 +271,7 @@ const AdminProfile = () => {
 
               <div
                 onClick={() => navigate("change-password")}
-                className="input-group edit-user-input relative cursor-pointer" // Thêm relative ở đây
+                className="flex justify-between edit-user-input cursor-pointer" // Thêm relative ở đây
               >
                 <input
                   value="••••••••"
@@ -266,7 +280,7 @@ const AdminProfile = () => {
                   name="password"
                   className="focus:outline-none w-full cursor-pointer " // Đảm bảo input chiếm toàn bộ chiều rộng
                 />
-                <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <span className=" flex items-center pr-3">
                   <RightIcon className="h-5 w-5" />
                 </span>
               </div>

@@ -277,7 +277,7 @@ const SupplierFoodAssigment = () => {
                       onClick={() => removeSupplierSelection(item.id, idx)}
                       className="text-white bg-red-600 hover:bg-red-800 font-medium p-2 px-3 rounded-full shadow"
                     >
-                      -
+                      x
                     </button>
                   </div>
                 ))}

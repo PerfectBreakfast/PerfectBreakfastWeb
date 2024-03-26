@@ -76,7 +76,7 @@ const OrderDetailByCompany = () => {
               orderData.totalFoodResponses.length > 0 &&
               orderData.status === "Processing" && (
                 <button onClick={() => handleAssignFood()} className="btn-add">
-                  Phân món
+                  Chọn nhà cung cấp
                 </button>
               )}
           </div>
