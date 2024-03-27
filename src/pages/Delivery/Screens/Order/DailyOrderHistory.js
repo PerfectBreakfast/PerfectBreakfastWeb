@@ -33,6 +33,14 @@ const DailyOrderHistory = () => {
   const handleDetailClick = (dailyOrderId) => {
     navigate(`${dailyOrderId}`);
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -42,7 +50,7 @@ const DailyOrderHistory = () => {
         <table className="min-w-max w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
+              <th className="py-2.5 font-extrabold px-6">Ngày giao hàng</th>
               <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
               <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
               <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
@@ -56,7 +64,9 @@ const DailyOrderHistory = () => {
                 item.companies.map((company) =>
                   company.dailyOrders.map((order) => (
                     <tr key={order.id}>
-                      <td className="py-3 px-6">{item.bookingDate}</td>
+                      <td className="py-3 px-6">
+                        {formatDate(item.bookingDate)}
+                      </td>
                       <td className="py-3 px-6 font-bold">{company.name}</td>
                       <td className="py-3 px-6">{company.address}</td>
                       <td className="py-3 px-6">

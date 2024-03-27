@@ -103,6 +103,14 @@ const OrderFoodList = () => {
     // Cắt bỏ phần giây, lấy từ ký tự đầu tiên đến ký tự thứ 5
     return time.slice(0, 5);
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -116,7 +124,9 @@ const OrderFoodList = () => {
             className="bg-white shadow-md p-4 my-6 overflow-auto"
             key={dayData.date}
           >
-            <h3 className="text-lg font-semibold mb-2">Ngày: {dayData.date}</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Ngày: {formatDate(dayData.date)}
+            </h3>
             {dayData.foodAssignmentGroupByPartners.map((partnerData) => (
               <div key={partnerData.supplierName}>
                 <div className="flex justify-between ">

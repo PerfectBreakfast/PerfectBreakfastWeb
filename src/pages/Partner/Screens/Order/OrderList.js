@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 
 import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
+import FoodStatusText from "../../../../components/Status/FoodStatus";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -34,6 +35,15 @@ const OrderList = () => {
 
   console.log("data", orders);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
@@ -41,7 +51,7 @@ const OrderList = () => {
         <table className="min-w-max w-full table-dailyoder">
           <thead>
             <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 font-extrabold px-6">Ngày giờ</th>
+              <th className="py-2.5 font-extrabold px-6">Ngày giao hàng</th>
               <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
               <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
               <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
@@ -62,7 +72,7 @@ const OrderList = () => {
                           0
                         )}
                       >
-                        {item.bookingDate}
+                        {formatDate(item.bookingDate)}
                       </td>
                     )}
                     {orderIndex === 0 && (

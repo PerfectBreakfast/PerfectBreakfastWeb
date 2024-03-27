@@ -20,7 +20,7 @@ const SupplierFoodAssigmentStatus = ({ status }) => {
       styleClass =
         "border-1 border-red-500 hover:bg-red-50  text-red-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
-    case "Complete":
+    case "Completed":
       statusText = "Hoàn thành";
       styleClass =
         "border-1 border-green-500 hover:bg-green-50  text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
