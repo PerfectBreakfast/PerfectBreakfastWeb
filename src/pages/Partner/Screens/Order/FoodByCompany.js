@@ -37,11 +37,11 @@ const FoodByCompany = () => {
       console.error("Error fetching data:", error);
     }
   };
-  const fetchSupplier = async (confirmFoodId) => {
-    console.log("foodId", confirmFoodId);
-    if (confirmFoodId) {
+  const fetchSupplier = async (foodId) => {
+    console.log("foodId", foodId);
+    if (foodId) {
       try {
-        const data = await supplierUnitAPI.getSuppliersForFood(confirmFoodId);
+        const data = await supplierUnitAPI.getSuppliersForFood(foodId);
         setSupplierData(data);
       } catch (error) {
         console.error("Error fetching supplier data:", error);
@@ -84,7 +84,6 @@ const FoodByCompany = () => {
   // };
 
   const openAssignModal = (foodId) => {
-    setConfirmFoodId(foodId);
     fetchSupplier(foodId);
     setDistributeModalIsOpen(true);
   };
@@ -198,7 +197,9 @@ const FoodByCompany = () => {
                                 {foodItem.status === "Declined" && (
                                   <button
                                     className="btn-replay"
-                                    onClick={() => openAssignModal(foodItem.id)}
+                                    onClick={() =>
+                                      openAssignModal(foodItem.foodId)
+                                    }
                                   >
                                     Phân phối
                                   </button>
@@ -253,14 +254,26 @@ const FoodByCompany = () => {
             onChange={(e) => setSelectedSupplierId(e.target.value)}
             className="input-form"
           >
-            <option value="">Chọn nhà cung cấp</option>
-            {supplierData &&
-              supplierData.map((supplier) => (
-                <option key={supplier.id} value={supplier.id}>
-                  {supplier.name}
+            {/* Kiểm tra nếu supplierData không tồn tại hoặc mảng rỗng */}
+
+            <>
+              <option disabled value="">
+                Chọn nhà cung cấp
+              </option>
+              {!supplierData || supplierData.length === 0 ? (
+                <option value="">
+                  Không có nhà cung cấp nào đăng ký món ăn này
                 </option>
-              ))}
+              ) : (
+                supplierData.map((supplier) => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.name}
+                  </option>
+                ))
+              )}
+            </>
           </select>
+
           <div className="flex justify-end gap-4 mt-4">
             <button className="btn-cancel" onClick={closeAssignModal}>
               Hủy bỏ
