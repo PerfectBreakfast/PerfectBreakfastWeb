@@ -59,7 +59,7 @@ const SupplierFoodAssigment = () => {
     await Promise.all(
       foods.map(async (food) => {
         try {
-          const data = await supplierUnitAPI.fetchSuppliersForFood(food.id); // Giả định rằng API đã được cập nhật để nhận foodId
+          const data = await supplierUnitAPI.getSuppliersForFood(food.id); // Giả định rằng API đã được cập nhật để nhận foodId
           supplierDataByFoodId[food.id] = data;
         } catch (error) {
           console.error(`Error fetching suppliers for food ${food.id}:`, error);
