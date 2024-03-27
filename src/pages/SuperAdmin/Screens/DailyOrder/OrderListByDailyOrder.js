@@ -48,7 +48,7 @@ const OrderListByDailyOrder = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white p-4 rounded-xl min-h-screen">
-        <h4 className="text-2xl font-semibold mb-4">Danh sách đơn hàng</h4>
+        <h4 className="text-2xl font-semibold mb-4">Danh sách đơn đặt</h4>
         <div className="bg-white shadow-md my-6 overflow-auto">
           <table className="min-w-max w-full table-auto">
             <thead>
@@ -56,7 +56,7 @@ const OrderListByDailyOrder = () => {
                 <th>Mã đơn hàng</th>
                 <th>Thời gian</th>
                 <th>Tên người dùng</th>
-                <th>Số lượng</th>
+                <th>Số lượng </th>
                 <th>Tổng tiền</th>
                 <th>Trạng thái</th>
               </tr>

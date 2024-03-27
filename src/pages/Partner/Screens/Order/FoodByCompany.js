@@ -23,7 +23,6 @@ const FoodByCompany = () => {
 
   useEffect(() => {
     fetchFoodList();
-    fetchSupplier();
   }, [pageIndex]);
 
   const fetchFoodList = async () => {
@@ -38,12 +37,15 @@ const FoodByCompany = () => {
       console.error("Error fetching data:", error);
     }
   };
-  const fetchSupplier = async () => {
-    try {
-      const data = await supplierUnitAPI.getsAllSupplierByPartner();
-      setSupplierData(data);
-    } catch (error) {
-      console.error("Error fetching supplier data:", error);
+  const fetchSupplier = async (confirmFoodId) => {
+    console.log("foodId", confirmFoodId);
+    if (confirmFoodId) {
+      try {
+        const data = await supplierUnitAPI.getSuppliersForFood(confirmFoodId);
+        setSupplierData(data);
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
     }
   };
 
@@ -83,6 +85,7 @@ const FoodByCompany = () => {
 
   const openAssignModal = (foodId) => {
     setConfirmFoodId(foodId);
+    fetchSupplier(foodId);
     setDistributeModalIsOpen(true);
   };
 

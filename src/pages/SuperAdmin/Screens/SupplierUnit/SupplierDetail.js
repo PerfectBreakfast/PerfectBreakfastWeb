@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import SupplierCommissionRateAPI from "../../../../services/SupplierCommissionRateAPI";
 import { toast } from "react-toastify";
 import EditFoodRegistration from "./EditFoodRegistration";
+import FoodStatusText from "../../../../components/Status/FoodStatus";
 
 const SupplierDetail = () => {
   const { id } = useParams();
@@ -155,10 +156,11 @@ const SupplierDetail = () => {
             <table className="w-full table-auto mb-4">
               <thead className="bg-gray-200 sticky top-0">
                 <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/5">Hình ảnh</th>
-                  <th className="py-3 px-6 w-2/5">Tên món ăn</th>
-                  <th className="py-3 px-6 w-1/5">Tỷ lệ</th>
-                  <th className="py-3 px-6 w-1/5"></th>
+                  <th className="py-3 px-6 w-2/6">Hình ảnh</th>
+                  <th className="py-3 px-6 w-2/6">Tên món ăn</th>
+                  <th className="py-3 px-6 w-1/6">Ghi chú</th>
+                  <th className="py-3 px-6 w-1/6">Tỷ lệ</th>
+                  <th className="py-3 px-6 w-1/6"></th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -179,6 +181,9 @@ const SupplierDetail = () => {
                       >
                         {commissionRate.food.name}
                       </span>
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <FoodStatusText status={commissionRate.food.foodStatus} />
                     </td>
                     <td className="py-3 px-6 text-left">
                       {commissionRate.commissionRate}%

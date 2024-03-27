@@ -80,7 +80,7 @@ const supplierUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  fetchSuppliersForFood: async (foodId) => {
+  getSuppliersForFood: async (foodId) => {
     try {
       const response = await axiosInstance.get(
         `${api}/v1/suppliers/food/${foodId}`

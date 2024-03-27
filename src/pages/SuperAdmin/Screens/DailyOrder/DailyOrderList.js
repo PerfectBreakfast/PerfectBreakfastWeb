@@ -126,11 +126,11 @@ const DailyOrderList = () => {
         <table className="min-w-max w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 ">Ngày giờ</th>
+              <th className="py-2.5 ">Ngày giao hàng</th>
               <th className="py-2.5">Tên công ty</th>
               <th className="py-2.5 ">Địa chỉ</th>
               <th className="py-2.5">Bữa ăn</th>
-              <th className="py-2.5 text-center">Số lượng</th>
+              <th className="py-2.5 text-center">Số lượng đơn đặt</th>
               <th className="py-2.5 text-center">Trạng thái</th>
             </tr>
           </thead>

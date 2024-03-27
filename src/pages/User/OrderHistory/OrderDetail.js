@@ -62,7 +62,7 @@ const OrderDetail = () => {
         return { color: "text-gray-500", text: "Chờ thanh toán" };
       case "Paid":
         return { color: "text-yellow-500", text: "Đã thanh toán" };
-      case "Completed":
+      case "Complete":
         return { color: "text-green-500", text: "Đã giao thành công" };
       case "Cancel":
         return { color: "text-red-500", text: "Đã hủy" };
