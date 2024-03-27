@@ -85,6 +85,7 @@ const FoodByCompany = () => {
 
   const openAssignModal = (foodId) => {
     fetchSupplier(foodId);
+    setConfirmFoodId(foodId);
     setDistributeModalIsOpen(true);
   };
 
