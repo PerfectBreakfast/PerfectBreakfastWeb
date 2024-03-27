@@ -118,6 +118,16 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getFoodRegistrationSupplier: async (supplierId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/supplier/${supplierId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default dishAPI;

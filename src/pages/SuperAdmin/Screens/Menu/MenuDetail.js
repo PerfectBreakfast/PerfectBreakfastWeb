@@ -50,6 +50,9 @@ const MenuDetail = () => {
   const handleDetailClick = (comboId) => {
     navigate(`/admin/combo/${comboId}`);
   };
+  const handleFoodDetailClick = (foodId) => {
+    navigate(`/admin/food/${foodId}`);
+  };
 
   if (!menuDetail)
     return (
@@ -198,7 +201,7 @@ const MenuDetail = () => {
                     {" "}
                     <span
                       className="font-medium cursor-pointer hover:text-green-500"
-                      onClick={() => handleDetailClick(food.id)}
+                      onClick={() => handleFoodDetailClick(food.id)}
                     >
                       {food.name}
                     </span>

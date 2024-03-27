@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import Modal from "react-modal";
 import SupplierCommissionRateAPI from "../../../../services/SupplierCommissionRateAPI";
 import Loading from "../../../Loading/Loading";
+import FoodStatusText from "../../../../components/Status/FoodStatus";
 
 const FoodRegistration = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const FoodRegistration = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const foodData = await dishAPI.getDishAll();
+        const foodData = await dishAPI.getFoodRegistrationSupplier(id);
         setFoodData(foodData);
       } catch (error) {
         // toast.error("Failed to fetch data.");
@@ -94,31 +95,42 @@ const FoodRegistration = () => {
           <div>
             <label className="label-input">Lựa chọn món ăn</label>
             <div className="overflow-x-auto max-h-96">
-              <table className="min-w-full table-auto">
-                <thead className="bg-gray-200 sticky top-0 ">
-                  <tr>
-                    <th className="px-4 py-2">Tên món ăn</th>
-                    <th className="px-4 py-2"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {foodData.map((food) => (
-                    <tr key={food.id} className="border-b">
-                      <td className="px-4 py-2">{food.name}</td>
-                      <td className="px-4 py-2">
-                        <input
-                          type="checkbox"
-                          checked={formik.values.selectedFoods.includes(
-                            food.id
-                          )}
-                          onChange={() => handleCheckboxChange(food.id)}
-                          className="form-checkbox h-5 w-5 text-green-600"
-                        />
-                      </td>
+              {foodData.length > 0 ? (
+                <table className="min-w-full table-auto">
+                  <thead className="bg-gray-200 sticky top-0 ">
+                    <tr>
+                      <th className="px-4 py-2">Tên món ăn</th>
+                      <th className="px-4 py-2">Ghi chú</th>
+                      <th className="px-4 py-2"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {foodData.map((food) => (
+                      <tr key={food.id} className="border-b">
+                        <td className="px-4 py-2 font-semibold">{food.name}</td>
+                        <td className="px-4 py-2">
+                          {" "}
+                          <FoodStatusText status={food.foodStatus} />
+                        </td>
+                        <td className="px-4 py-2">
+                          <input
+                            type="checkbox"
+                            checked={formik.values.selectedFoods.includes(
+                              food.id
+                            )}
+                            onChange={() => handleCheckboxChange(food.id)}
+                            className="form-checkbox h-5 w-5 text-green-600"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-center text-gray-500">
+                  Đã đăng ký tất cả các món ăn.
+                </p> // Display message if no food data
+              )}
             </div>
 
             {formik.touched.selectedFoods && formik.errors.selectedFoods && (

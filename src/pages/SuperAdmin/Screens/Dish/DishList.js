@@ -15,6 +15,7 @@ import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
 
 import Modal from "react-modal";
 import Loading from "../../../Loading/Loading";
+import FoodStatus from "../../../../components/Status/FoodStatus";
 
 Modal.setAppElement("#root"); // Tránh warning về accessibility
 
@@ -133,10 +134,13 @@ const Dishes = () => {
           <table className=" min-w-max w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 px-6 w-1/4 font-extrabold">Hình ảnh</th>
-                <th className="py-2.5 px-6 w-1/4 font-extrabold">Tên món ăn</th>
-                <th className="py-2.5 px-6 w-1/4 font-extrabold">Đơn giá</th>
-                <th className="py-2.5 px-6 w-1/4"></th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">Tên món ăn</th>
+                <th className="py-2.5 text-left px-6 w-1/5 font-extrabold">
+                  Ghi chú
+                </th>
+                <th className="py-2.5 px-6 w-1/5 font-extrabold">Đơn giá</th>
+                <th className="py-2.5 px-6 w-1/5"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -161,11 +165,14 @@ const Dishes = () => {
                     </td>
                     <td className="py-2.5 px-6 text-left">
                       <span
-                        className="text-name "
+                        className="text-name"
                         onClick={() => handleDishClick(dish.id)}
                       >
                         {dish.name}
                       </span>
+                    </td>
+                    <td className="py-2.5 px-6 text-left">
+                      <FoodStatus status={dish.foodStatus} />
                     </td>
                     <td className="py-2.5 px-6">
                       {dish.price.toLocaleString("vi-VN", {

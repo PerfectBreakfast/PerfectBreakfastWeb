@@ -5,6 +5,8 @@ import dishAPI from "../../../../services/dishAPI";
 import "../Table/Table.css";
 import "../Dish/Dish.css";
 import Loading from "../../../Loading/Loading";
+import FoodStatus from "../../../../components/Status/FoodStatus";
+import FoodStatusNumber from "../../../../components/Status/FoodStatusNumber";
 
 const DishDetail = () => {
   const { id } = useParams();
@@ -83,6 +85,13 @@ const DishDetail = () => {
                       style: "currency",
                       currency: "VND",
                     })}
+                  </span>
+                </div>
+                <div className="text-lg text-gray-700">
+                  Ghi chú:
+                  <span className="font-semibold">
+                    {" "}
+                    <FoodStatusNumber status={dishData.foodStatus} />
                   </span>
                 </div>
               </div>
