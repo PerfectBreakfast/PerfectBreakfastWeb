@@ -14,8 +14,6 @@ const SupplierFoodAssigment = () => {
   const [tempAssignments, setTempAssignments] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
 
-  console.log("test id", dailyOrderId);
-
   // useEffect(() => {
   //   const fetchOrderFoodData = async () => {
   //     try {
@@ -96,7 +94,7 @@ const SupplierFoodAssigment = () => {
     try {
       // Gửi đối tượng mới đến API
       await SupplierFoodAssignmentAPI.FoodAssigment(assignmentsToSubmit);
-      toast.success("Assignments submitted successfully!");
+      toast.success("Phân món ăn thành công!");
     } catch (error) {
       toast.error(error.errors);
       console.error("Error submitting assignments:", error);
@@ -243,7 +241,9 @@ const SupplierFoodAssigment = () => {
                         )
                       }
                     >
-                      <option value="">Chọn nhà cung cấp</option>
+                      <option disabled value="">
+                        Chọn nhà cung cấp
+                      </option>
                       {supplierData[item.id] &&
                       supplierData[item.id].length > 0 ? (
                         supplierData[item.id].map((supplier) => (
@@ -309,7 +309,6 @@ const SupplierFoodAssigment = () => {
           Phân phối
         </button>
       </div>
-      <ToastContainer />
     </div>
   );
 };

@@ -17,7 +17,7 @@ const SupplierFoodAssignmentAPI = {
   getSupplierFoodAssignmentByPartner: async (pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/supplierfoodassigments/partner?pageIndex=${pageIndex}&pageSize=10`
+        `${api}/v1/supplierfoodassigments/partner?pageIndex=${pageIndex}&pageSize=20`
       );
       return response.data;
     } catch (error) {

@@ -115,6 +115,14 @@ const FoodByCompany = () => {
       toast.error(error.errors);
     }
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -125,7 +133,9 @@ const FoodByCompany = () => {
       <div className="bg-white shadow-md my-6 overflow-auto">
         {foodData.map((dayData) => (
           <div key={dayData.date}>
-            <h3 className="text-lg font-semibold my-2">Ngày: {dayData.date}</h3>
+            <h3 className="text-lg font-semibold my-2">
+              Ngày: {formatDate(dayData.date)}
+            </h3>
             {dayData.foodAssignmentGroupBySuppliers.map((supplierData) => (
               <div key={supplierData.supplierName}>
                 <h4 className="text-md font-semibold my-2">
