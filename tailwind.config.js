@@ -5,7 +5,9 @@ module.exports = {
     extend: {
       colors: {
         customSidebarBg: "#ACC9BA", // Tên custom color
-        customHoverSidebar: "#027C3F",
+        customHoverSidebar: "#0abe63",
+        mainColor: "#0abe63",
+        mainTextColorButton: "#ffffff",
       },
       fontFamily: {
         sans: ["Nunito Sans", "sans-serif"],
