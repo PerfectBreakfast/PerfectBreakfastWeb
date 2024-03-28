@@ -28,11 +28,9 @@ const PartnerDetail = () => {
   return (
     <>
       {partnerData ? (
-        <div className="mt-6 w-5/6 mx-auto">
-          <div className="text-2xl font-bold mb-1 text-left">
-            Chi tiết đối tác
-          </div>
-          <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+        <div className="container mx-auto p-4">
+          <div className="text-2xl font-bold mb-4">Chi tiết đối tác</div>
+          <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mb-4">
             <div className="p-6">
               <p className="">
                 Tên đối tác: <strong>{partnerData.name}</strong>
@@ -48,75 +46,87 @@ const PartnerDetail = () => {
               </p>
             </div>
           </div>
-
-          <div className="text-xl font-semibold text-gray-600 text-left mt-4">
-            Danh sách công ty
-          </div>
-          <div class="overflow-x-auto max-h-96 mt-2">
-            <table className="w-full table-auto mb-4">
-              <thead className="bg-gray-200 sticky top-0">
-                <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/6">Tên công ty</th>
-                  <th className="py-3 px-6 w-2/6">Địa chỉ</th>
-                  <th className="py-3 px-6 w-1/6">Số điện thoại</th>
-                  <th className="py-3 px-6 w-1/6">Email</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {partnerData.companies.map((company) => (
-                  <tr key={company.id} className="border-b">
-                    <td className="py-3 px-6 text-left">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={() => handleCompanyClick(company.id)}
-                      >
-                        {company.name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">{company.address}</td>
-                    <td className="py-3 px-6 text-left">
-                      {company.phoneNumber}
-                    </td>
-                    <td className="py-3 px-6 text-left">{company.email}</td>
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <p className="text-xl font-semibold text-gray-600 text-left">
+              Danh sách doanh nghiệp
+            </p>
+            <div className="overflow-x-auto max-h-96 mt-2">
+              <table className="w-full table-auto mb-4">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-200 text-gray-800 leading-normal">
+                    <th className="py-2.5 px-3 w-2/6">Tên công ty</th>
+                    <th className="py-2.5 px-3 w-2/6 text-left">Địa chỉ</th>
+                    <th className="py-2.5 px-3 w-1/6 text-left">
+                      Số điện thoại
+                    </th>
+                    <th className="py-2.5 px-3 w-1/6">Email</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-gray-600 text-sm font-light">
+                  {partnerData.companies.map((company) => (
+                    <tr key={company.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          onClick={() => handleCompanyClick(company.id)}
+                        >
+                          {company.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {company.address}
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {company.phoneNumber}
+                      </td>
+                      <td className="py-2.5 px-3 text-left">{company.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="text-xl font-semibold text-gray-600 text-left mt-2">
-            Danh sách nhà cung cấp
-          </div>
-          <div class="overflow-x-auto max-h-96 mt-2">
-            <table className="w-full table-auto mb-4">
-              <thead className="bg-gray-200 sticky top-0">
-                <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/5">Tên nhà cung cấp</th>
-                  <th className="py-3 px-6 w-2/5">Địa chỉ</th>
-                  <th className="py-3 px-6 w-1/5 text-center">Số điện thoại</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {partnerData.supplierDTO.map((supplier) => (
-                  <tr key={supplier.id} className="border-b">
-                    <td className="py-3 px-6 text-left ">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={() => handleSupplierClick(supplier.id)}
-                      >
-                        {supplier.name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">{supplier.address}</td>
-                    <td className="py-3 px-6 text-center">
-                      {supplier.phoneNumber}
-                    </td>
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <p className="text-xl font-semibold text-gray-600 text-left">
+              Danh sách nhà cung cấp
+            </p>
+            <div className="overflow-x-auto max-h-96 mt-2">
+              <table className="w-full table-auto mb-4">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-200 text-gray-800 leading-normal">
+                    {" "}
+                    <th className="py-2.5 px-3 w-2/6">Tên nhà cung cấp</th>
+                    <th className="py-2.5 px-3 w-3/6 text-left">Địa chỉ</th>
+                    <th className="py-2.5 px-3 w-1/6 text-center">
+                      Số điện thoại
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-gray-600 text-sm font-light">
+                  {partnerData.supplierDTO.map((supplier) => (
+                    <tr key={supplier.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left ">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          onClick={() => handleSupplierClick(supplier.id)}
+                        >
+                          {supplier.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {supplier.address}
+                      </td>
+                      <td className="py-2.5 px-3 text-center">
+                        {supplier.phoneNumber}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (

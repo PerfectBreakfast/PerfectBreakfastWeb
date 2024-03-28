@@ -15,6 +15,7 @@ const EditSupplier = () => {
 
   useEffect(() => {
     const fetchSupplierData = async () => {
+      setIsLoading(true);
       try {
         const data = await supplierUnitAPI.getSupplierById(id);
         if (data) {
@@ -22,7 +23,9 @@ const EditSupplier = () => {
         }
       } catch (error) {
         console.error("Error fetching supplier data:", error);
-        toast.error("Failed to fetch supplier data!");
+        toast.error(error.errors);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -53,7 +56,7 @@ const EditSupplier = () => {
         navigate(-1);
       } catch (error) {
         console.error("Error updating supplier:", error);
-        toast.error("Cập nhật nhà cung cấp thất bại!");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false);
       }
@@ -64,7 +67,7 @@ const EditSupplier = () => {
   const closeModal = () => setIsOpen(false);
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <h2 className="text-xl font-semibold mb-4">Chỉnh sửa nhà cung cấp</h2>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
         {/* Dynamic form fields */}
@@ -127,11 +130,7 @@ const EditSupplier = () => {
           )}
         </div>
         {/* Edit button */}
-        <button
-          type="button"
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-          onClick={openModal}
-        >
+        <button type="button" className="btn-submit-form" onClick={openModal}>
           Lưu thay đổi
         </button>
       </form>
@@ -146,15 +145,12 @@ const EditSupplier = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn lưu thay đổi cho nhà cung cấp này không?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

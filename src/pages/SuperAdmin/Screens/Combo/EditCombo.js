@@ -25,6 +25,7 @@ const EditCombo = () => {
 
   useEffect(() => {
     const fetchCategoriesAndComboData = async () => {
+      setIsLoading(true);
       try {
         const categoriesResponse = await categoryAPI.getCategory();
         setCategories(categoriesResponse);
@@ -50,6 +51,8 @@ const EditCombo = () => {
         );
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCategoriesAndComboData();
@@ -92,7 +95,7 @@ const EditCombo = () => {
         navigate(-1); // Hoặc địa chỉ bạn muốn chuyển hướng đến
       } catch (error) {
         console.error("Error updating combo:", error);
-        toast.error("Cập nhật combo thất bại!");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false); // Ẩn loading
       }
@@ -160,10 +163,7 @@ const EditCombo = () => {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      {isLoading && <Loading />}
-      <ToastContainer />
-
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa combo</h2>
         <div className="flex flex-col gap-3">
@@ -371,25 +371,20 @@ const EditCombo = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận cập nhật"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+        <div className="bg-white rounded-xl p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn cập nhật combo này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={formik.submitForm}
-            >
+            <button className="btn-confirm " onClick={formik.submitForm}>
               Xác nhận
             </button>
           </div>
         </div>
       </Modal>
+      {isLoading && <Loading />}
     </div>
   );
 };

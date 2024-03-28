@@ -84,10 +84,9 @@ const Combos = () => {
     setIsOpen(false);
   }
   return (
-    <>
-      <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-semibold mb-4">Danh sách combo</h2>
-
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mb-4">Danh sách combo</h2>
+      <div className="bg-white rounded-xl p-4 ">
         <div className="flex justify-between items-center mb-4">
           <Link to="create">
             <button className="btn-add">
@@ -118,21 +117,21 @@ const Combos = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className="min-w-max w-full table-auto">
+        <div>
+          <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">Hình ảnh</th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">Tên Combo</th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">combo</th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold ">Đơn giá</th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold"></th>
+                <th className="py-2.5 px-3 w-2/12 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-3 w-3/12 font-extrabold">Tên Combo</th>
+                <th className="py-2.5 px-3 w-3/12 font-extrabold">Món ăn</th>
+                <th className="py-2.5 px-3 w-2/12 font-extrabold ">Đơn giá</th>
+                <th className="py-2.5 px-3 w-2/12 font-extrabold"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
               {isLoading ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
+                  <td colSpan="5" className="text-center py-3 px-3">
                     Đang tải...
                   </td>
                 </tr>
@@ -142,14 +141,14 @@ const Combos = () => {
                     key={combo.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-2.5px-6 text-left">
+                    <td className="py-2.5px-3 text-left">
                       <img
                         src={combo.image}
                         alt={combo.name}
                         className="display-img"
                       />
                     </td>
-                    <td className="py-2.5 px-6 text-left">
+                    <td className="py-2.5 px-3 text-left">
                       <span
                         className="text-name "
                         onClick={() => handleDetailClick(combo.id)}
@@ -157,14 +156,14 @@ const Combos = () => {
                         {combo.name}
                       </span>
                     </td>
-                    <td className="py-2.5 px-6 text-left">{combo.foods}</td>
-                    <td className="py-2.5 px-6">
+                    <td className="py-2.5 px-3 text-left">{combo.foods}</td>
+                    <td className="py-2.5 px-3">
                       {combo.comboPrice.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </td>
-                    <td className="py-2.5 px-6">
+                    <td className="py-2.5 px-3">
                       <div className="flex justify-center">
                         <Write
                           onClick={() => handleEditClick(combo.id)}
@@ -180,27 +179,34 @@ const Combos = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
+                  <td colSpan="5" className="text-center py-3 px-3">
                     Không có dữ liệu
                   </td>
                 </tr>
               )}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
-
-        <div className="pagination-container" style={{ marginTop: "20px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="success"
-          />
-        </div>
-
-        <ToastContainer position="top-right" autoClose={2000} />
       </div>
+
+      <ToastContainer position="top-right" autoClose={2000} />
       {loadingDelete && <Loading />}
       <Modal
         isOpen={modalIsOpen}
@@ -212,7 +218,7 @@ const Combos = () => {
         <div className="confirm-modal ">
           <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn xóa combo này?</p>
-          <div className="flex justify-end gap-4 mt-4">
+          <div className="flex justify-end gap-2 mt-4">
             <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
@@ -225,7 +231,7 @@ const Combos = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 

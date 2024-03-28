@@ -126,7 +126,7 @@ const CreateFood = () => {
     setImageInputKey(Date.now()); // Reset input file bằng cách thay đổi key
   };
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-10 h-fit w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Tạo mới món ăn</h2>
         <div className="flex flex-col gap-3">

@@ -93,9 +93,9 @@ const CompanyDetail = () => {
     navigate(`/admin/delivery/${deliveryId}`);
   };
   return (
-    <div className="mt-6 w-5/6 mx-auto">
-      <div className="text-2xl font-bold mb-1 text-left">Thông tin công ty</div>
-      <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+    <div className="container mx-auto p-4">
+      <div className="text-2xl font-bold mb-4">Thông tin công ty</div>
+      <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mb-4">
         <div className="p-6">
           <p className="">
             Tên công ty: <strong>{companyData.name}</strong>
@@ -115,10 +115,10 @@ const CompanyDetail = () => {
         </div>
       </div>
 
-      <div className="text-xl font-semibold text-gray-600 text-left mt-4">
+      <div className="text-lg font-semibold text-gray-600 text-left mt-4">
         Đối tác
       </div>
-      <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg mt-2 p-6">
+      <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mt-2 p-6">
         <p className="">
           Tên:{" "}
           <strong
@@ -129,44 +129,47 @@ const CompanyDetail = () => {
           </strong>
         </p>
       </div>
-
-      <div className="text-xl font-semibold text-gray-600 text-left mt-4">
-        Đơn vị vận chuyển
+      <div className="mb-4">
+        <div className="text-lg font-semibold text-gray-600 text-left mt-4">
+          Đơn vị vận chuyển
+        </div>
+        <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mt-2 p-6">
+          <p className="">
+            Tên:{" "}
+            <strong
+              className="font-medium cursor-pointer hover:text-green-500"
+              onClick={() => handleDeliveryClick(companyData.delivery.id)}
+            >
+              {companyData.delivery.name}
+            </strong>
+          </p>
+        </div>
       </div>
-      <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg mt-2 p-6">
-        <p className="">
-          Tên:{" "}
-          <strong
-            className="font-medium cursor-pointer hover:text-green-500"
-            onClick={() => handleDeliveryClick(companyData.delivery.id)}
-          >
-            {companyData.delivery.name}
-          </strong>
+
+      <div className="bg-white rounded-xl p-4 mb-4">
+        <p className="text-xl font-semibold text-gray-600 text-left">
+          Danh sách bữa ăn
         </p>
-      </div>
-
-      <div className="text-xl font-semibold text-gray-600 text-left mt-4">
-        Danh sách bữa ăn
-      </div>
-      <div className="overflow-x-auto mt-2">
-        <table className="w-full table-auto mb-4">
-          <thead className="bg-gray-200 sticky top-0">
-            <tr className="text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6">Bữa ăn</th>
-              <th className="py-3 px-6">Thời gian bắt đầu</th>
-              <th className="py-3 px-6">Thời gian kết thúc</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {companyData.meals.map((meal) => (
-              <tr key={meal.id} className="border-b">
-                <td className="py-3 px-6 text-left">{meal.mealType}</td>
-                <td className="py-3 px-6 text-left">{meal.startTime}</td>
-                <td className="py-3 px-6 text-left">{meal.endTime}</td>
+        <div className="overflow-x-auto max-h-96 mt-2">
+          <table className="w-full table-auto mb-4">
+            <thead className="sticky top-0">
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-3 px-6">Bữa ăn</th>
+                <th className="py-3 px-6">Thời gian bắt đầu</th>
+                <th className="py-3 px-6">Thời gian kết thúc</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {companyData.meals.map((meal) => (
+                <tr key={meal.id} className="border-b">
+                  <td className="py-3 px-6 text-left">{meal.mealType}</td>
+                  <td className="py-3 px-6 text-left">{meal.startTime}</td>
+                  <td className="py-3 px-6 text-left">{meal.endTime}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

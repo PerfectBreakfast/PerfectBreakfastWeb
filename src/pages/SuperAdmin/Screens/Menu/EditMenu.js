@@ -24,11 +24,12 @@ const EditMenu = () => {
         const comboData = await comboAPI.getAllCombo();
         setCombos(comboData);
       } catch (error) {
-        toast.error("Failed to fetch combo data.");
+        toast.error(error.errors);
       }
     };
 
     const fetchMenuData = async () => {
+      setIsLoading(true);
       try {
         const menuData = await menuAPI.getMenuById(id);
         formik.setValues({
@@ -37,7 +38,9 @@ const EditMenu = () => {
           selectedFoods: menuData.foodResponses.map((food) => food.id),
         });
       } catch (error) {
-        toast.error("Failed to fetch menu data.");
+        toast.error(error.errors);
+      } finally {
+        setIsLoading(false);
       }
     };
     const fetchFoodData = async () => {
@@ -45,7 +48,7 @@ const EditMenu = () => {
         const data = await dishAPI.getFoodForMenu();
         setFoodData(data);
       } catch (error) {
-        toast.error("Failed to fetch food data.");
+        toast.error(error.errors);
       }
     };
 
@@ -147,40 +150,10 @@ const EditMenu = () => {
   }
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      {isLoading && <Loading />}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
-        className="fixed inset-0 flex items-center justify-center"
-        contentLabel="Xác nhận"
-      >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
-          <p>Bạn có chắc chắn muốn cập nhật menu này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
-              Hủy bỏ
-            </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={() => formik.handleSubmit()}
-            >
-              Xác nhận
-            </button>
-          </div>
-        </div>
-      </Modal>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      >
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
+      <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-3">
-          <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa menu</h2>
+          <h2 className="text-2xl font-semibold mb-2">Chỉnh sửa menu</h2>
           <div>
             <label className="label-input" htmlFor="menuName">
               Tên menu
@@ -299,7 +272,30 @@ const EditMenu = () => {
           </button>
         </div>
       </form>
-      <ToastContainer />
+      {isLoading && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn cập nhật menu này?</p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
+              Hủy bỏ
+            </button>
+            <button
+              className="btn-confirm "
+              onClick={() => formik.handleSubmit()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

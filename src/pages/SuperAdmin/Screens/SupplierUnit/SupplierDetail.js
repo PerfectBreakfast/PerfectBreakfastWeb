@@ -79,7 +79,7 @@ const SupplierDetail = () => {
       fetchSupplierData(); // Cập nhật dữ liệu
     } catch (error) {
       console.error("Error deleting:", error);
-      toast.error("Có lỗi xảy ra."); // Thông báo lỗi
+      toast.error(error.errors); // Thông báo lỗi
     }
     setLoadingDelete(false); // Ẩn loader
     setCommissionRateId(null); // Reset commissionRateId
@@ -100,11 +100,9 @@ const SupplierDetail = () => {
   return (
     <>
       {supplierData ? (
-        <div className="mt-6 w-5/6 mx-auto">
-          <div className="text-2xl font-bold mb-1 text-left">
-            Chi tiết nhà cung cấp
-          </div>
-          <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+        <div className="container mx-auto p-4">
+          <div className="text-2xl font-bold mb-4">Chi tiết nhà cung cấp</div>
+          <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mb-4">
             <div className="p-6">
               <p className="">
                 Tên nhà cung cấp: <strong>{supplierData.name}</strong>
@@ -118,114 +116,124 @@ const SupplierDetail = () => {
             </div>
           </div>
 
-          <div className="text-xl font-semibold text-gray-600 text-left mt-4">
-            Danh sách đơn vị quản lý
-          </div>
-          <div class="overflow-x-auto max-h-96 mt-2">
-            <table className="w-full table-auto mb-4">
-              <thead className="bg-gray-200 sticky top-0">
-                <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/6">Tên đơn vị</th>
-                  <th className="py-3 px-6 w-2/6">Địa chỉ</th>
-                  <th className="py-3 px-6 w-1/6">Số điện thoại</th>
-                  <th className="py-3 px-6 w-1/6"></th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {supplierData.managementUnitDtos.map((unit) => (
-                  <tr key={unit.id} className="border-b">
-                    <td className="py-3 px-6 text-left">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={() => handleDetailClick(unit.id)}
-                      >
-                        {unit.name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">{unit.address}</td>
-                    <td className="py-3 px-6 text-left">{unit.phoneNumber}</td>
-                    <td className="py-3 px-6 text-left">
-                      {" "}
-                      <Delete
-                        onClick={() => handleDeleteClick(unit.id, "partner")}
-                        className="delete-icon"
-                      />
-                    </td>
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <p className="text-xl font-semibold text-gray-600 text-left">
+              {" "}
+              Danh sách đơn vị quản lý
+            </p>
+            <div className="overflow-x-auto max-h-96 mt-2">
+              <table className="w-full table-auto mb-4">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-200 text-gray-800 leading-normal">
+                    <th className="py-2.5 px-3 w-2/6">Tên đơn vị</th>
+                    <th className="py-2.5 px-3 w-2/6">Địa chỉ</th>
+                    <th className="py-2.5 px-3 w-1/6">Số điện thoại</th>
+                    <th className="py-2.5 px-3 w-1/6"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="text-xl font-semibold text-gray-600 text-left mt-2 mb-2">
-            Danh sách món ăn đã đăng ký
-          </div>
-          <div className="flex justify-between items-center mb-4">
-            <button
-              type="button"
-              className="btn-add"
-              onClick={() => handleClickCreate(supplierData.id)}
-            >
-              <Plus />
-              Đăng ký món ăn
-            </button>
-          </div>
-          <div class="overflow-x-auto max-h-96 mt-2 mb-5">
-            <table className="w-full table-auto mb-4">
-              <thead className="bg-gray-200 sticky top-0">
-                <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/6">Hình ảnh</th>
-                  <th className="py-3 px-6 w-2/6">Tên món ăn</th>
-                  <th className="py-3 px-6 w-1/6">Ghi chú</th>
-                  <th className="py-3 px-6 w-1/6">Tỷ lệ</th>
-                  <th className="py-3 px-6 w-1/6"></th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {supplierData.commissionRates.map((commissionRate) => (
-                  <tr key={commissionRate.id} className="border-b">
-                    <td className="py-3 px-6 text-left">
-                      <img
-                        src={commissionRate.food.image}
-                        alt={commissionRate.food.name}
-                        className="w-10 h-10 rounded-full"
-                      />
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        // onClick={() => handleDetailClick(commissionRate.id)}
-                      >
-                        {commissionRate.food.name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      <FoodStatusText status={commissionRate.food.foodStatus} />
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {commissionRate.commissionRate}%
-                    </td>
-                    <td className="py-3 px-6 text-center">
-                      <div className="flex">
-                        <Write
-                          onClick={() => handleEditClick(commissionRate.id)}
-                          className="size-5 cursor-pointer"
-                        />
-
+                </thead>
+                <tbody className="text-gray-600 text-sm font-light">
+                  {supplierData.managementUnitDtos.map((unit) => (
+                    <tr key={unit.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          onClick={() => handleDetailClick(unit.id)}
+                        >
+                          {unit.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">{unit.address}</td>
+                      <td className="py-2.5 px-3 text-left">
+                        {unit.phoneNumber}
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
                         <Delete
-                          onClick={() =>
-                            handleDeleteClick(commissionRate.id, "food")
-                          }
+                          onClick={() => handleDeleteClick(unit.id, "partner")}
                           className="delete-icon"
                         />
-                      </div>
-                    </td>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <p className="text-xl font-semibold text-gray-600 text-left mb-2">
+              {" "}
+              Danh sách món ăn đã đăng ký
+            </p>
+            <div className="flex justify-between items-center mb-3">
+              <button
+                type="button"
+                className="btn-add"
+                onClick={() => handleClickCreate(supplierData.id)}
+              >
+                <Plus />
+                Đăng ký món ăn
+              </button>
+            </div>
+            <div className="overflow-x-auto max-h-96 mt-2">
+              <table className="w-full table-auto mb-4">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-200 text-gray-800 leading-normal">
+                    <th className="py-2.5 px-3 w-2/6">Hình ảnh</th>
+                    <th className="py-2.5 px-3 w-2/6">Tên món ăn</th>
+                    <th className="py-2.5 px-3 w-1/6">Ghi chú</th>
+                    <th className="py-2.5 px-3 w-1/6">Tỷ lệ</th>
+                    <th className="py-2.5 px-3 w-1/6"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-gray-600 text-sm font-light">
+                  {supplierData.commissionRates.map((commissionRate) => (
+                    <tr key={commissionRate.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left">
+                        <img
+                          src={commissionRate.food.image}
+                          alt={commissionRate.food.name}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          // onClick={() => handleDetailClick(commissionRate.id)}
+                        >
+                          {commissionRate.food.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        <FoodStatusText
+                          status={commissionRate.food.foodStatus}
+                        />
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {commissionRate.commissionRate}%
+                      </td>
+                      <td className="py-2.5 px-3 text-center">
+                        <div className="flex">
+                          <Write
+                            onClick={() => handleEditClick(commissionRate.id)}
+                            className="size-5 cursor-pointer"
+                          />
+
+                          <Delete
+                            onClick={() =>
+                              handleDeleteClick(commissionRate.id, "food")
+                            }
+                            className="delete-icon"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (
@@ -248,13 +256,13 @@ const SupplierDetail = () => {
             <table className="w-full">
               <thead>
                 <tr>
-                  <th className="py-3 px-6">
+                  <th className="py-2.5 px-3">
                     <div className="bg-gray-300 h-4 w-3/4 rounded"></div>
                   </th>
-                  <th className="py-3 px-6">
+                  <th className="py-2.5 px-3">
                     <div className="bg-gray-300 h-4 w-3/4 rounded"></div>
                   </th>
-                  <th className="py-3 px-6">
+                  <th className="py-2.5 px-3">
                     <div className="bg-gray-300 h-4 w-1/4 rounded"></div>
                   </th>
                 </tr>
@@ -262,13 +270,13 @@ const SupplierDetail = () => {
               <tbody>
                 {[...Array(2)].map((_, index) => (
                   <tr key={index} className="border-b">
-                    <td className="py-3 px-6">
+                    <td className="py-2.5 px-3">
                       <div className="h-4 bg-gray-300 rounded"></div>
                     </td>
-                    <td className="py-3 px-6">
+                    <td className="py-2.5 px-3">
                       <div className="h-4 bg-gray-300 rounded"></div>
                     </td>
-                    <td className="py-3 px-6">
+                    <td className="py-2.5 px-3">
                       <div className="h-4 bg-gray-300 rounded"></div>
                     </td>
                   </tr>

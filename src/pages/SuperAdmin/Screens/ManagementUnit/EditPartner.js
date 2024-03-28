@@ -16,13 +16,16 @@ const EditPartner = () => {
   useEffect(() => {
     const fetchPartnerData = async () => {
       try {
+        setIsLoading(true);
         const data = await managementUnitAPI.getPartnerById(id);
         if (data) {
           formik.setValues(data);
         }
       } catch (error) {
         console.error("Error fetching partner data:", error);
-        toast.error("Failed to fetch partner data!");
+        toast.error(error.errors);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -59,7 +62,7 @@ const EditPartner = () => {
         navigate(-1);
       } catch (error) {
         console.error("Error updating partner:", error);
-        toast.error("Cập nhật đối tác thất bại!");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false);
       }
@@ -89,96 +92,98 @@ const EditPartner = () => {
   const closeModal = () => setIsOpen(false);
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      <h2 className="text-xl font-semibold mb-4">Chỉnh sửa đối tác</h2>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
-        {/* Dynamic form fields */}
-        {/* Name field */}
-        <div>
-          <label htmlFor="name" className="label-input">
-            Tên công ty:
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            className="input-form"
-            placeholder="Nhập tên công ty"
-          />
-          {formik.touched.name && formik.errors.name && (
-            <div className="formik-error-message">{formik.errors.name}</div>
-          )}
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
+      <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa món ăn</h2>
+        <div className="flex flex-col gap-3">
+          <div>
+            <label htmlFor="name" className="label-input">
+              Tên công ty:
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              className="input-form"
+              placeholder="Nhập tên công ty"
+            />
+            {formik.touched.name && formik.errors.name && (
+              <div className="formik-error-message">{formik.errors.name}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="address" className="label-input">
+              Địa chỉ:
+            </label>
+            <input
+              id="address"
+              name="address"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.address}
+              className="input-form"
+              placeholder="Nhập địa chỉ"
+            />
+            {formik.touched.address && formik.errors.address && (
+              <div className="formik-error-message">
+                {formik.errors.address}
+              </div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="phoneNumber" className="label-input">
+              Số điện thoại:
+            </label>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.phoneNumber}
+              className="input-form"
+              placeholder="Nhập số điện thoại"
+            />
+            {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+              <div className="formik-error-message">
+                {formik.errors.phoneNumber}
+              </div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="commissionRate" className="label-input">
+              Hoa hồng (%):
+            </label>
+            <input
+              id="commissionRate"
+              name="commissionRate"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.commissionRate}
+              className="input-form"
+              placeholder="Nhập tỷ lệ hoa hồng"
+            />
+            {formik.touched.commissionRate && formik.errors.commissionRate && (
+              <div className="formik-error-message">
+                {formik.errors.commissionRate}
+              </div>
+            )}
+          </div>
+          {/* Other fields like address, phoneNumber, commissionRate with similar structure */}
+          {/* Edit button */}
+          <button
+            type="button"
+            className="btn-submit-form"
+            onClick={handleCreateClick}
+          >
+            Lưu thay đổi
+          </button>
         </div>
-        <div>
-          <label htmlFor="address" className="label-input">
-            Địa chỉ:
-          </label>
-          <input
-            id="address"
-            name="address"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.address}
-            className="input-form"
-            placeholder="Nhập địa chỉ"
-          />
-          {formik.touched.address && formik.errors.address && (
-            <div className="formik-error-message">{formik.errors.address}</div>
-          )}
-        </div>
-        <div>
-          <label htmlFor="phoneNumber" className="label-input">
-            Số điện thoại:
-          </label>
-          <input
-            id="phoneNumber"
-            name="phoneNumber"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phoneNumber}
-            className="input-form"
-            placeholder="Nhập số điện thoại"
-          />
-          {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-            <div className="formik-error-message">
-              {formik.errors.phoneNumber}
-            </div>
-          )}
-        </div>
-        <div>
-          <label htmlFor="commissionRate" className="label-input">
-            Hoa hồng (%):
-          </label>
-          <input
-            id="commissionRate"
-            name="commissionRate"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.commissionRate}
-            className="input-form"
-            placeholder="Nhập tỷ lệ hoa hồng"
-          />
-          {formik.touched.commissionRate && formik.errors.commissionRate && (
-            <div className="formik-error-message">
-              {formik.errors.commissionRate}
-            </div>
-          )}
-        </div>
-        {/* Other fields like address, phoneNumber, commissionRate with similar structure */}
-        {/* Edit button */}
-        <button
-          type="button"
-          className="btn-submit-form"
-          onClick={handleCreateClick}
-        >
-          Lưu thay đổi
-        </button>
       </form>
       {isLoading && <Loading />}
       <Modal
@@ -191,15 +196,12 @@ const EditPartner = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn lưu thay đổi cho đối tác này không?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận
