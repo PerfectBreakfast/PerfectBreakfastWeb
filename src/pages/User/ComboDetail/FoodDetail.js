@@ -180,7 +180,8 @@ const FoodDetail = () => {
                 </button>
               </div>
               <button onClick={handleAddToCart} className="user-btn-confirm ">
-                Thêm vào giỏ hàng - {formattedTotalPrice}
+                Thêm vào giỏ hàng <span className="mx-2">•</span>{" "}
+                {formattedTotalPrice}
               </button>
             </div>
           </div>

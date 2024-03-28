@@ -21,6 +21,8 @@ const SupplierDetail = () => {
   const [editingCommissionRateId, setEditingCommissionRateId] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const [partnerId, setPartnerId] = useState(null);
+  const [deletingObjectType, setDeletingObjectType] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const navigate = useNavigate();
 
@@ -43,9 +45,14 @@ const SupplierDetail = () => {
     navigate(`registration`);
   };
 
-  const handleDeleteClick = (commissionRateId) => {
-    setCommissionRateId(commissionRateId); // Lưu id món ăn cần xóa vào state
-    openModal(); // Mở modal xác nhận
+  const handleDeleteClick = (id, type) => {
+    if (type === "partner") {
+      setPartnerId(id); // Cập nhật partnerId khi xóa đơn vị quản lý
+    } else if (type === "food") {
+      setCommissionRateId(id); // Cập nhật commissionRateId khi xóa món ăn
+    }
+    setDeletingObjectType(type); // Cập nhật loại đối tượng đang xóa
+    openModal();
   };
 
   function openModal() {
@@ -58,22 +65,26 @@ const SupplierDetail = () => {
 
   // Hàm xử lý việc xóa món ăn
   const handleDelete = async () => {
-    if (commissionRateId) {
-      // Kiểm tra nếu có id món ăn cần xóa
-      setLoadingDelete(true); // Hiển thị loader
-      closeModal();
-      try {
-        await SupplierCommissionRateAPI.deleteFood(commissionRateId); // Gọi API để xóa
-        toast.success("Món ăn đã được xóa thành công!"); // Thông báo thành công
-        fetchSupplierData(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
-      } catch (error) {
-        console.error("Error deleting dish:", error);
-        toast.error("Có lỗi xảy ra khi xóa món ăn."); // Thông báo lỗi
+    setLoadingDelete(true); // Hiển thị loader
+    closeModal();
+    try {
+      // Kiểm tra loại đối tượng và gọi API phù hợp
+      if (deletingObjectType === "partner") {
+        await supplierUnitAPI.removePartnerForSupplier(id, partnerId); // Gọi API xóa partner
+        toast.success("Đơn vị quản lý đã được xóa thành công!");
+      } else if (deletingObjectType === "food") {
+        await SupplierCommissionRateAPI.deleteFood(commissionRateId); // Gọi API xóa món ăn
+        toast.success("Món ăn đã được xóa thành công!");
       }
-      setLoadingDelete(false); // Ẩn loader
-      // Đóng modal
-      setCommissionRateId(null);
+      fetchSupplierData(); // Cập nhật dữ liệu
+    } catch (error) {
+      console.error("Error deleting:", error);
+      toast.error("Có lỗi xảy ra."); // Thông báo lỗi
     }
+    setLoadingDelete(false); // Ẩn loader
+    setCommissionRateId(null); // Reset commissionRateId
+    setPartnerId(null); // Reset partnerId
+    setDeletingObjectType(null);
   };
 
   const handleEditClick = (commissionRateId) => {
@@ -114,9 +125,10 @@ const SupplierDetail = () => {
             <table className="w-full table-auto mb-4">
               <thead className="bg-gray-200 sticky top-0">
                 <tr className="text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 w-2/5">Tên đơn vị</th>
-                  <th className="py-3 px-6 w-2/5">Địa chỉ</th>
-                  <th className="py-3 px-6 w-1/5">Số điện thoại</th>
+                  <th className="py-3 px-6 w-2/6">Tên đơn vị</th>
+                  <th className="py-3 px-6 w-2/6">Địa chỉ</th>
+                  <th className="py-3 px-6 w-1/6">Số điện thoại</th>
+                  <th className="py-3 px-6 w-1/6"></th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -126,13 +138,20 @@ const SupplierDetail = () => {
                       {" "}
                       <span
                         className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={handleClickCreate}
+                        onClick={() => handleDetailClick(unit.id)}
                       >
                         {unit.name}
                       </span>
                     </td>
                     <td className="py-3 px-6 text-left">{unit.address}</td>
                     <td className="py-3 px-6 text-left">{unit.phoneNumber}</td>
+                    <td className="py-3 px-6 text-left">
+                      {" "}
+                      <Delete
+                        onClick={() => handleDeleteClick(unit.id, "partner")}
+                        className="delete-icon"
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -196,8 +215,10 @@ const SupplierDetail = () => {
                         />
 
                         <Delete
-                          onClick={() => handleDeleteClick(commissionRate.id)}
-                          className="delete-icon "
+                          onClick={() =>
+                            handleDeleteClick(commissionRate.id, "food")
+                          }
+                          className="delete-icon"
                         />
                       </div>
                     </td>
@@ -267,7 +288,13 @@ const SupplierDetail = () => {
       >
         <div className="confirm-modal ">
           <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
-          <p>Bạn có chắc chắn muốn xóa món ăn này?</p>
+          <p>
+            Bạn có chắc chắn muốn xóa{" "}
+            {deletingObjectType === "partner"
+              ? "đơn vị quản lý này"
+              : "món ăn này"}
+            ?
+          </p>
           <div className="flex justify-end gap-2 mt-4">
             <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ

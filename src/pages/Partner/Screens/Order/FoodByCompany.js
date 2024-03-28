@@ -106,6 +106,7 @@ const FoodByCompany = () => {
         supplierFoodAssignmentId: confirmFoodId,
         supplierId: selectedSupplierId,
       };
+      console.log("data gui di", foodAssignments);
       await SupplierFoodAssignmentAPI.reFoodAssigment(foodAssignments);
       toast.success("Phân phối thành công!");
       fetchFoodList(); // Refetch the food list to update the UI
