@@ -66,7 +66,7 @@ const CreateCombo = () => {
         navigate(-1);
       } catch (error) {
         console.error("Error creating combo:", error);
-        toast.error("Thêm combo thất bại!");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false); // Ẩn loading
       }
@@ -143,36 +143,7 @@ const CreateCombo = () => {
     setIsOpen(false);
   }
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      <ToastContainer />
-      {isLoading && <Loading />}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
-        className="fixed inset-0 flex items-center justify-center"
-        contentLabel="Xác nhận"
-      >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
-          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
-          <p>Bạn có chắc chắn muốn tạo mới combo này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
-              Hủy bỏ
-            </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={() => formik.handleSubmit()}
-            >
-              Xác nhận
-            </button>
-          </div>
-        </div>
-      </Modal>
-
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Tạo mới combo</h2>
         <div className="flex flex-col gap-3">
@@ -421,6 +392,31 @@ const CreateCombo = () => {
           </button>
         </div>
       </form>
+
+      {isLoading && <Loading />}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-xl p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn tạo mới combo này?</p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
+              Hủy bỏ
+            </button>
+            <button
+              className="btn-confirm "
+              onClick={() => formik.handleSubmit()}
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -127,7 +127,7 @@ const EditFood = () => {
   };
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-10 h-fit w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       {isLoading && <Loading />}
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa món ăn</h2>
@@ -261,7 +261,7 @@ const EditFood = () => {
         className="fixed inset-0 flex items-center justify-center"
         contentLabel="Xác nhận cập nhật"
       >
-        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+        <div className="bg-white rounded-xl p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn cập nhật món ăn này?</p>
           <div className="flex justify-end gap-2 mt-4">

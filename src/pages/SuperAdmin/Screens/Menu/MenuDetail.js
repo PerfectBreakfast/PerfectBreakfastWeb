@@ -72,24 +72,24 @@ const MenuDetail = () => {
           <table class="min-w-max w-full table-auto mb-4">
             <thead class="bg-gray-200 sticky top-0">
               <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th class="py-3 px-6"> </th>
-                <th class="py-3 px-6"> </th>
-                <th class="py-3 px-6"> </th>
-                <th class="py-3 px-6"> </th>
+                <th class="py-2.5 px-3"> </th>
+                <th class="py-2.5 px-3"> </th>
+                <th class="py-2.5 px-3"> </th>
+                <th class="py-2.5 px-3"> </th>
               </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
               <tr class="border-b">
-                <td class="py-3 px-6">
+                <td class="py-2.5 px-3">
                   <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
                 </td>
-                <td class="py-3 px-6">
+                <td class="py-2.5 px-3">
                   <div class="h-4 bg-gray-300 rounded w-3/4"></div>
                 </td>
-                <td class="py-3 px-6">
+                <td class="py-2.5 px-3">
                   <div class="h-4 bg-gray-300 rounded w-1/2"></div>
                 </td>
-                <td class="py-3 px-6">
+                <td class="py-2.5 px-3">
                   <div class="h-4 bg-gray-300 rounded w-1/4"></div>
                 </td>
               </tr>
@@ -101,9 +101,9 @@ const MenuDetail = () => {
 
   return (
     <>
-      <div className="mt-6 w-5/6 mx-auto">
-        <div className="text-2xl font-bold mb-1 text-left">Chi tiết menu</div>
-        <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+      <div className="container mx-auto p-4">
+        <div className="text-2xl font-bold mb-4">Chi tiết menu</div>
+        <div className="bg-white rounded-xl overflow-hidden sm:rounded-lg mb-4">
           <div className="p-6">
             <h2 className="text-lg font-semibold">{menuDetail.name}</h2>
             <p className="">
@@ -130,93 +130,99 @@ const MenuDetail = () => {
             )}
           </div>
         </div>
-        <p className="text-xl font-semibold text-gray-600 text-left mt-4">
-          Danh sách combo
-        </p>
-        <div className="overflow-x-auto max-h-96 mt-2">
-          <table className="min-w-max w-full table-auto  mb-4">
-            <thead className="bg-gray-200 sticky top-0 ">
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6">Hình ảnh</th>
-                <th className="py-3 px-6">Tên combo</th>
-                <th className="py-3 px-6">Món ăn</th>
-                <th className="py-3 px-6">Đơn giá</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600 text-sm font-light">
-              {menuDetail.comboFoodResponses.map((combo) => (
-                <tr key={combo.id} className="border-b">
-                  <td className="py-3 px-6 text-left">
-                    <img
-                      src={combo.image}
-                      alt={combo.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {" "}
-                    <span
-                      className="font-medium cursor-pointer hover:text-green-500"
-                      onClick={() => handleDetailClick(combo.id)}
-                    >
-                      {combo.name}
-                    </span>
-                  </td>
-                  <td className="py-3 px-6 text-left">{combo.foods}</td>
-                  <td className="py-3 px-6 text-left">
-                    {combo.price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </td>
+        <div className="bg-white rounded-xl p-4 mb-4">
+          {" "}
+          <p className="text-xl font-semibold text-gray-600 text-left">
+            Danh sách combo
+          </p>
+          <div className="overflow-x-auto max-h-96 mt-2">
+            <table className="w-full table-auto mb-4">
+              <thead className="sticky top-0">
+                <tr className="bg-gray-200 text-gray-800 leading-normal">
+                  <th className="py-2.5 px-3 w-1/5">Hình ảnh</th>
+                  <th className="py-2.5 px-3 text-left w-2/5">Tên combo</th>
+                  <th className="py-2.5 px-3 w-1/5">Món ăn</th>
+                  <th className="py-2.5 px-3 text-right w-1/5">Đơn giá</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-light">
+                {menuDetail.comboFoodResponses.map((combo) => (
+                  <tr key={combo.id} className="border-b">
+                    <td className="py-2.5 px-3 text-left">
+                      <img
+                        src={combo.image}
+                        alt={combo.name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </td>
+                    <td className="py-2.5 px-3 text-left">
+                      {" "}
+                      <span
+                        className="font-medium cursor-pointer hover:text-green-500"
+                        onClick={() => handleDetailClick(combo.id)}
+                      >
+                        {combo.name}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-left">{combo.foods}</td>
+                    <td className="py-2.5 px-3 text-right">
+                      {combo.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <p className="text-xl font-semibold text-gray-600 text-left mt-4">
-          Danh sách món ăn
-        </p>
-        <div className="overflow-x-auto max-h-96 mt-2">
-          <table className="min-w-max w-full table-auto  mb-4">
-            <thead className="bg-gray-200 sticky top-0 ">
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6">Hình ảnh</th>
-                <th className="py-3 px-6">Tên món ăn</th>
-                <th className="py-3 px-6">Đơn giá</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600 text-sm font-light">
-              {menuDetail.foodResponses.map((food) => (
-                <tr key={food.id} className="border-b">
-                  <td className="py-3 px-6 text-left">
-                    <img
-                      src={food.image}
-                      alt={food.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {" "}
-                    <span
-                      className="font-medium cursor-pointer hover:text-green-500"
-                      onClick={() => handleFoodDetailClick(food.id)}
-                    >
-                      {food.name}
-                    </span>
-                  </td>
-
-                  <td className="py-3 px-6 text-left">
-                    {food.price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </td>
+        <div className="bg-white rounded-xl p-4 ">
+          <p className="text-xl font-semibold text-gray-600 text-left">
+            Danh sách món ăn
+          </p>
+          <div className="overflow-x-auto max-h-96 mt-2">
+            <table className="w-full table-auto mb-4">
+              <thead className="sticky top-0">
+                <tr className="bg-gray-200 text-gray-800 leading-normal">
+                  {" "}
+                  <th className="py-2.5 px-3 w-1/5">Hình ảnh</th>
+                  <th className="py-2.5 px-3 text-left w-3/5">Tên món ăn</th>
+                  <th className="py-2.5 px-3 text-right w-1/5">Đơn giá</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-light">
+                {menuDetail.foodResponses.map((food) => (
+                  <tr key={food.id} className="border-b">
+                    <td className="py-2.5 px-3 text-left">
+                      <img
+                        src={food.image}
+                        alt={food.name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </td>
+                    <td className="py-2.5 px-3 text-left">
+                      {" "}
+                      <span
+                        className="font-medium cursor-pointer hover:text-green-500"
+                        onClick={() => handleFoodDetailClick(food.id)}
+                      >
+                        {food.name}
+                      </span>
+                    </td>
+
+                    <td className="py-2.5 px-3 text-right">
+                      {food.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
