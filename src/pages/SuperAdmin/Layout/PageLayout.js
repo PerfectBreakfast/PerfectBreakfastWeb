@@ -21,7 +21,7 @@ const AppLayout = () => {
       <Box sx={{ display: "flex" }}>
         <Sidebar />
 
-        <MainContainer className="bg-gray-100">
+        <MainContainer className="bg-color">
           <div style={{ height: "64px" }} />{" "}
           {/* Adjust the height based on your Sidebar's height */}
           <MainContent />

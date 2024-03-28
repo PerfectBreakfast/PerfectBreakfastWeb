@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dishAPI from "../../../../services/dishAPI";
@@ -34,6 +34,7 @@ const CreateFood = () => {
     initialValues: {
       name: "",
       price: "",
+      description: "",
       categoryId: "",
       foodStatus: "",
       selectedImage: null,
@@ -43,6 +44,7 @@ const CreateFood = () => {
       price: Yup.number()
         .positive("Đơn giá phải là số dương")
         .required("Đơn giá không được để trống"),
+      description: Yup.string().required("Mô tả món ăn không được để trống"),
       categoryId: Yup.string().required("Danh mục không được để trống"),
       foodStatus: Yup.string().required("Bạn cần chọn loại món"),
       selectedImage: Yup.mixed().required("Bạn cần chọn hình ảnh cho món ăn"),
@@ -55,6 +57,7 @@ const CreateFood = () => {
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("price", values.price);
+        formData.append("description", values.description);
         formData.append("categoryId", values.categoryId);
         formData.append("foodStatus", values.foodStatus);
         if (values.selectedImage) {
@@ -66,7 +69,7 @@ const CreateFood = () => {
         navigate(-1);
       } catch (error) {
         console.error("Error creating new dish:", error);
-        toast.error("Có lỗi xảy ra khi tạo mới món ăn!");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false);
       }
@@ -103,6 +106,7 @@ const CreateFood = () => {
     formik.setTouched({
       name: true,
       price: true,
+      description: true,
       categoryId: true,
       foodStatus: true,
       selectedImage: true,
@@ -122,7 +126,7 @@ const CreateFood = () => {
     setImageInputKey(Date.now()); // Reset input file bằng cách thay đổi key
   };
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-10 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Tạo mới món ăn</h2>
         <div className="flex flex-col gap-3">
@@ -161,6 +165,26 @@ const CreateFood = () => {
             />
             {formik.touched.price && formik.errors.price ? (
               <div className="formik-error-message">{formik.errors.price}</div>
+            ) : null}
+          </div>
+          <div>
+            <label htmlFor="description" className="label-input">
+              Mô tả
+            </label>
+            <input
+              id="description"
+              name="description"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.description}
+              className="input-form"
+              placeholder="Mô tả món ăn"
+            />
+            {formik.touched.description && formik.errors.description ? (
+              <div className="formik-error-message">
+                {formik.errors.description}
+              </div>
             ) : null}
           </div>
 
@@ -250,7 +274,7 @@ const CreateFood = () => {
 
           <button
             type="button"
-            className="btn-submit-form"
+            className="btn-submit-form mt-2"
             onClick={handleCreateClick}
           >
             Tạo mới
@@ -268,15 +292,12 @@ const CreateFood = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn tạo mới món ăn này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận
@@ -284,6 +305,7 @@ const CreateFood = () => {
           </div>
         </div>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

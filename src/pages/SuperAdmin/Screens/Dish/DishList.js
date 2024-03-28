@@ -73,16 +73,15 @@ const Dishes = () => {
   // Hàm xử lý việc xóa món ăn
   const handleDelete = async () => {
     if (dishToDelete) {
-      // Kiểm tra nếu có id món ăn cần xóa
-      setLoadingDelete(true); // Hiển thị loader
+      setLoadingDelete(true);
       closeModal();
       try {
-        await dishAPI.deleteDishById(dishToDelete); // Gọi API để xóa
-        toast.success("Món ăn đã được xóa thành công!"); // Thông báo thành công
-        fetchDish(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
+        await dishAPI.deleteDishById(dishToDelete);
+        toast.success("Món ăn đã được xóa thành công!");
+        fetchDish();
       } catch (error) {
         console.error("Error deleting dish:", error);
-        toast.error("Có lỗi xảy ra khi xóa món ăn."); // Thông báo lỗi
+        toast.error(error.errors); // Thông báo lỗi
       }
       setLoadingDelete(false); // Ẩn loader
       // Đóng modal
@@ -98,10 +97,9 @@ const Dishes = () => {
   }
 
   return (
-    <>
-      <div className="container mx-auto p-4">
-        <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
-
+    <div className="container mx-auto p-4">
+      <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
+      <div className="bg-white rounded-xl p-4 ">
         <div className="flex justify-between items-center mb-4">
           <button className="btn-add" type="button" onClick={handleClickCreate}>
             <Plus />
@@ -130,17 +128,17 @@ const Dishes = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow-md my-6">
-          <table className=" min-w-max w-full table-auto">
+        <div>
+          <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">Hình ảnh</th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">Tên món ăn</th>
-                <th className="py-2.5 text-left px-6 w-1/5 font-extrabold">
+                <th className="py-2.5 px-3 w-1/6 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-3 w-2/6 font-extrabold">Tên món ăn</th>
+                <th className="py-2.5 px-3 text-left w-1/5 font-extrabold">
                   Ghi chú
                 </th>
-                <th className="py-2.5 px-6 w-1/5 font-extrabold">Đơn giá</th>
-                <th className="py-2.5 px-6 w-1/5"></th>
+                <th className="py-2.5 px-3 w-1/6 font-extrabold">Đơn giá</th>
+                <th className="py-2.5 px-3 w-1/6"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -156,14 +154,14 @@ const Dishes = () => {
                     key={dish.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-2.5 px-6 text-left">
+                    <td className="py-2.5 px-3 text-left">
                       <img
                         src={dish.image}
                         alt={dish.name}
                         className="display-img"
                       />
                     </td>
-                    <td className="py-2.5 px-6 text-left">
+                    <td className="py-2.5 px-3 text-left max-w-xs whitespace-normal">
                       <span
                         className="text-name"
                         onClick={() => handleDishClick(dish.id)}
@@ -171,16 +169,16 @@ const Dishes = () => {
                         {dish.name}
                       </span>
                     </td>
-                    <td className="py-2.5 px-6 text-left">
+                    <td className="py-2.5 px-3 text-left">
                       <FoodStatus status={dish.foodStatus} />
                     </td>
-                    <td className="py-2.5 px-6">
+                    <td className="py-2.5 px-3">
                       {dish.price.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </td>
-                    <td className="py-2.5px-6">
+                    <td className="py-2.5 px-3">
                       <div className="flex justify-center">
                         <Write
                           onClick={() => handleEditClick(dish.id)}
@@ -202,17 +200,25 @@ const Dishes = () => {
                 </tr>
               )}
             </tbody>
-          </table>
-        </div>
 
-        <div className="pagination-container" style={{ marginTop: "20px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="success"
-          />
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
@@ -241,7 +247,7 @@ const Dishes = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 
