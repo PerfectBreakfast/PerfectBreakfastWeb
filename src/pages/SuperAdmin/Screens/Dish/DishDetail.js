@@ -27,40 +27,41 @@ const DishDetail = () => {
 
   if (!dishData) {
     return (
-      <div className="mt-6 w-5/6 mx-auto">
-        <div className="animate-pulse">
-          <div className="text-2xl font-bold mb-6 text-left bg-gray-300 h-6 rounded-md"></div>
-          <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
-            <div className="p-6">
-              <div className="flex flex-wrap -mx-3 justify-center">
-                <div className="px-3 w-full lg:w-1/2">
-                  <div className="aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
-                    <div className="w-96 h-80 bg-gray-300 object-center object-cover rounded-2xl"></div>
-                  </div>
-                </div>
-                <div className="px-3 w-full lg:w-1/2">
-                  <div className="mb-6 space-y-3">
-                    <div className="h-4 bg-gray-300 rounded-md w-3/4"></div>
-                    <div className="h-6 bg-gray-300 rounded-md w-5/6"></div>
-                    <div className="h-4 bg-gray-300 rounded-md w-2/4"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      // <div className="mt-6 w-5/6 mx-auto">
+      //   <div className="animate-pulse">
+      //     <div className="text-2xl font-bold mb-6 text-left bg-gray-300 h-6 rounded-md"></div>
+      //     <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+      //       <div className="p-6">
+      //         <div className="flex flex-wrap -mx-3 justify-center">
+      //           <div className="px-3 w-full lg:w-1/2">
+      //             <div className="aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
+      //               <div className="w-96 h-80 bg-gray-300 object-center object-cover rounded-2xl"></div>
+      //             </div>
+      //           </div>
+      //           <div className="px-3 w-full lg:w-1/2">
+      //             <div className="mb-6 space-y-3">
+      //               <div className="h-4 bg-gray-300 rounded-md w-3/4"></div>
+      //               <div className="h-6 bg-gray-300 rounded-md w-5/6"></div>
+      //               <div className="h-4 bg-gray-300 rounded-md w-2/4"></div>
+      //             </div>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div>
+      <Loading />
     );
   }
 
   return (
-    <div className="mt-6 w-5/6 mx-auto">
-      <div className="text-2xl font-bold mb-6 text-left ">Chi tiết món ăn</div>
-      <div className="bg-white shadow-xl overflow-hidden sm:rounded-lg">
+    <div className="container mx-auto p-4">
+      <h4 className="text-2xl font-semibold mb-4">Chi tiết món ăn</h4>
+      <div className="bg-white shadow rounded-xl overflow-hidden sm:rounded-lg">
         <div className="p-6">
           <div className="flex flex-wrap -mx-3 justify-center">
             <div className="px-3 w-full lg:w-1/2">
-              <div className="aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
+              <div className="flex justify-center aspect-w-1 aspect-h-1 w-full mx-auto rounded-lg overflow-hidden">
                 <img
                   src={dishData.image}
                   alt={dishData.name}
@@ -93,6 +94,10 @@ const DishDetail = () => {
                     {" "}
                     <FoodStatusNumber status={dishData.foodStatus} />
                   </span>
+                </div>
+                <div className="text-lg text-gray-700">
+                  Mô tả:
+                  <span> {dishData.description}</span>
                 </div>
               </div>
             </div>

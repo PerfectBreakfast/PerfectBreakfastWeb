@@ -20,12 +20,14 @@ const EditFood = () => {
 
   useEffect(() => {
     const fetchFoodData = async () => {
+      setIsLoading(true);
       try {
         const data = await dishAPI.getDishById(id);
         if (data) {
           formik.setValues({
             name: data.name,
             price: data.price,
+            description: data.description,
             foodStatus: data.foodStatus,
             image: null, // Khởi tạo không có file hình ảnh mới
           });
@@ -34,6 +36,9 @@ const EditFood = () => {
         }
       } catch (error) {
         console.error("Error fetching food data:", error);
+        toast.error(error.errors);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,6 +50,7 @@ const EditFood = () => {
       name: "",
       price: "",
       foodStatus: "",
+      description: "",
       image: null,
     },
     validationSchema: Yup.object({
@@ -52,6 +58,7 @@ const EditFood = () => {
       price: Yup.number()
         .required("Giá không được để trống")
         .positive("Giá phải là số dương"),
+      description: Yup.string().required("Mô tả món ăn không được để trống"),
       foodStatus: Yup.string().required("Bạn cần chọn loại món"),
     }),
 
@@ -61,6 +68,7 @@ const EditFood = () => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("price", values.price);
+      formData.append("description", values.description);
       formData.append("foodStatus", values.foodStatus);
       if (values.image instanceof File) {
         formData.append("image", values.image);
@@ -71,7 +79,7 @@ const EditFood = () => {
         toast.success("Cập nhật món ăn thành công!");
         navigate(-1);
       } catch (error) {
-        toast.error("Có lỗi xảy ra khi cập nhật món ăn.");
+        toast.error(error.errors);
         console.error("Error updating food:", error);
       } finally {
         setIsLoading(false); // Ẩn loading
@@ -104,6 +112,7 @@ const EditFood = () => {
     formik.setTouched({
       name: true,
       price: true,
+      description: true,
       foodStatus: true,
     });
 
@@ -118,7 +127,7 @@ const EditFood = () => {
   };
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-10 h-fit w-5/6">
       {isLoading && <Loading />}
       <form onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa món ăn</h2>
@@ -138,9 +147,7 @@ const EditFood = () => {
               placeholder="Nhập tên món ăn"
             />
             {formik.touched.name && formik.errors.name && (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.name}
-              </div>
+              <div className="formik-error-message">{formik.errors.name}</div>
             )}
           </div>
           <div>
@@ -158,12 +165,29 @@ const EditFood = () => {
               value={formik.values.price}
             />
             {formik.touched.price && formik.errors.price && (
-              <div className="text-red-500 text-sm mt-2">
-                {formik.errors.price}
+              <div className="formik-error-message">{formik.errors.price}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="description" className="label-input">
+              Mô tả
+            </label>
+            <input
+              id="description"
+              className="input-form"
+              type="text"
+              name="description"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.description}
+              placeholder="Nhập mô tả món ăn"
+            />
+            {formik.touched.description && formik.errors.description && (
+              <div className="formik-error-message">
+                {formik.errors.description}
               </div>
             )}
           </div>
-
           <div>
             <label htmlFor="foodStatus" className="label-input">
               Loại món ăn
@@ -184,7 +208,7 @@ const EditFood = () => {
               <option value="1">Bán lẻ</option>
             </select>
             {formik.touched.foodStatus && formik.errors.foodStatus && (
-              <div className="text-red-500 text-sm mt-2">
+              <div className="formik-error-message">
                 {formik.errors.foodStatus}
               </div>
             )}
@@ -223,7 +247,7 @@ const EditFood = () => {
           <button
             type="button"
             onClick={handleCreateClick}
-            className="btn-submit-form"
+            className="btn-submit-form mt-2"
           >
             Cập Nhật
           </button>
@@ -240,17 +264,11 @@ const EditFood = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn cập nhật món ăn này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
-            <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
-              onClick={formik.submitForm}
-            >
+            <button className="btn-confirm " onClick={formik.submitForm}>
               Xác nhận
             </button>
           </div>
