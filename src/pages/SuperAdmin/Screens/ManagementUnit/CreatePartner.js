@@ -80,102 +80,106 @@ const CreatePartner = () => {
   }
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      <h2 className="text-xl font-semibold mb-4">Tạo mới đối tác</h2>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
+      <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-2xl font-semibold mb-4">Tạo mới đối tác</h2>
         {/* Name field */}
-        <div>
-          <label htmlFor="name" className="label-input">
-            Tên công ty:
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            className="input-form"
-            placeholder="Nhập tên công ty"
-          />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="formik-error-message">{formik.errors.name}</div>
-          ) : null}
+        <div className="flex flex-col gap-3">
+          <div>
+            <label htmlFor="name" className="label-input">
+              Tên công ty:
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              className="input-form"
+              placeholder="Nhập tên công ty"
+            />
+            {formik.touched.name && formik.errors.name ? (
+              <div className="formik-error-message">{formik.errors.name}</div>
+            ) : null}
+          </div>
+
+          {/* Address field */}
+          <div>
+            <label htmlFor="address" className="label-input">
+              Địa chỉ:
+            </label>
+            <input
+              id="address"
+              name="address"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.address}
+              className="input-form"
+              placeholder="Nhập địa chỉ"
+            />
+            {formik.touched.address && formik.errors.address ? (
+              <div className="formik-error-message">
+                {formik.errors.address}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Phone Number field */}
+          <div>
+            <label htmlFor="phoneNumber" className="label-input">
+              Số điện thoại:
+            </label>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.phoneNumber}
+              className="input-form"
+              placeholder="Nhập số điện thoại"
+            />
+            {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+              <div className="formik-error-message">
+                {formik.errors.phoneNumber}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Commission Rate field */}
+          <div>
+            <label htmlFor="commissionRate" className="label-input">
+              Hoa hồng (%):
+            </label>
+            <input
+              id="commissionRate"
+              name="commissionRate"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.commissionRate}
+              className="input-form"
+              placeholder="Nhập tỷ lệ hoa hồng"
+            />
+            {formik.touched.commissionRate && formik.errors.commissionRate ? (
+              <div className="formik-error-message">
+                {formik.errors.commissionRate}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Submit button */}
+
+          <button
+            type="button"
+            className="btn-submit-form"
+            onClick={handleCreateClick}
+          >
+            Tạo mới
+          </button>
         </div>
-
-        {/* Address field */}
-        <div>
-          <label htmlFor="address" className="label-input">
-            Địa chỉ:
-          </label>
-          <input
-            id="address"
-            name="address"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.address}
-            className="input-form"
-            placeholder="Nhập địa chỉ"
-          />
-          {formik.touched.address && formik.errors.address ? (
-            <div className="formik-error-message">{formik.errors.address}</div>
-          ) : null}
-        </div>
-
-        {/* Phone Number field */}
-        <div>
-          <label htmlFor="phoneNumber" className="label-input">
-            Số điện thoại:
-          </label>
-          <input
-            id="phoneNumber"
-            name="phoneNumber"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phoneNumber}
-            className="input-form"
-            placeholder="Nhập số điện thoại"
-          />
-          {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
-            <div className="formik-error-message">
-              {formik.errors.phoneNumber}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Commission Rate field */}
-        <div>
-          <label htmlFor="commissionRate" className="label-input">
-            Hoa hồng (%):
-          </label>
-          <input
-            id="commissionRate"
-            name="commissionRate"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.commissionRate}
-            className="input-form"
-            placeholder="Nhập tỷ lệ hoa hồng"
-          />
-          {formik.touched.commissionRate && formik.errors.commissionRate ? (
-            <div className="formik-error-message">
-              {formik.errors.commissionRate}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Submit button */}
-
-        <button
-          type="button"
-          className="btn-submit-form"
-          onClick={handleCreateClick}
-        >
-          Tạo mới
-        </button>
       </form>
       {isLoading && <Loading />}
       <Modal
@@ -188,15 +192,12 @@ const CreatePartner = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn tạo mới đối tác này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

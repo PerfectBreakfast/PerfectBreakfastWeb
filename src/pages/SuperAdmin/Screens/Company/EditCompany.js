@@ -58,7 +58,7 @@ const EditCompany = () => {
         setFixedMealIds(fixedMeals);
       } catch (error) {
         console.error("Error fetching data:", error);
-        toast.error("Error fetching company data");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false);
       }
@@ -126,10 +126,10 @@ const EditCompany = () => {
           ...values,
           meals: mealsForSubmission,
         });
-        toast.success("Company updated successfully!");
+        toast.success("Cập nhật công ty thành công!");
         navigate(-1);
       } catch (error) {
-        toast.error("Error updating company");
+        toast.error(error.errors);
         console.error("Error updating company:", error);
       } finally {
         setIsLoading(false);
@@ -209,7 +209,7 @@ const EditCompany = () => {
   };
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <h2 className="text-xl font-semibold mb-4">Chỉnh sửa công ty</h2>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-3">
@@ -423,14 +423,11 @@ const EditCompany = () => {
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn lưu thay đổi cho công ty này không?</p>
           <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

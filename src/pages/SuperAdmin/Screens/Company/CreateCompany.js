@@ -156,8 +156,8 @@ const CreateCompany = () => {
     setIsOpen(false);
   }
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
-      <h2 className="text-xl font-semibold mb-4">Tạo mới công ty</h2>
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
+      <h2 className="text-2xl font-semibold mb-4">Tạo mới công ty</h2>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-3">
           <div>
@@ -248,7 +248,9 @@ const CreateCompany = () => {
               onChange={formik.handleChange}
               value={formik.values.partnerId}
             >
-              <option value="">Chọn công ty quản lý</option>
+              <option disabled value="">
+                Chọn công ty quản lý
+              </option>
               {managementData.map((management) => (
                 <option key={management.id} value={management.id}>
                   {management.name}
@@ -276,7 +278,9 @@ const CreateCompany = () => {
               onChange={formik.handleChange}
               value={formik.values.deliveryId}
             >
-              <option value="">Chọn đơn vị vận chuyển</option>
+              <option disabled value="">
+                Chọn đơn vị vận chuyển
+              </option>
               {deliveryData.map((delivery) => (
                 <option key={delivery.id} value={delivery.id}>
                   {delivery.name}
@@ -365,15 +369,12 @@ const CreateCompany = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn tạo mới công ty này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

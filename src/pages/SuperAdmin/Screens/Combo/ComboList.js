@@ -131,7 +131,7 @@ const Combos = () => {
             <tbody className="text-gray-600 text-sm font-light">
               {isLoading ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-3">
+                  <td colSpan="5" className="text-center py-3 px-3">
                     Đang tải...
                   </td>
                 </tr>
@@ -179,7 +179,7 @@ const Combos = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-3">
+                  <td colSpan="5" className="text-center py-3 px-3">
                     Không có dữ liệu
                   </td>
                 </tr>

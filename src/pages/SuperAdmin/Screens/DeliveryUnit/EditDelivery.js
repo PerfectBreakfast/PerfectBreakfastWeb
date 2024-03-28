@@ -17,6 +17,7 @@ const EditDelivery = () => {
   useEffect(() => {
     const fetchDeliveryData = async () => {
       try {
+        setIsLoading(true);
         const data = await deliveryUnitAPI.getDeliveryById(id);
         if (data) {
           formik.setValues(data);
@@ -24,6 +25,8 @@ const EditDelivery = () => {
       } catch (error) {
         console.error("Error fetching delivery data:", error);
         toast.error("Failed to fetch delivery data!");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -71,7 +74,7 @@ const EditDelivery = () => {
   const closeModal = () => setIsOpen(false);
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <h2 className="text-xl font-semibold mb-4">
         Chỉnh sửa đơn vị vận chuyển
       </h2>
@@ -173,15 +176,12 @@ const EditDelivery = () => {
           <p>
             Bạn có chắc chắn muốn lưu thay đổi cho đơn vị vận chuyển này không?
           </p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

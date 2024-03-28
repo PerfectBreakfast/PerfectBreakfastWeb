@@ -87,11 +87,11 @@ const FoodRegistration = () => {
   }
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-2xl font-semibold mb-4">Đăng ký món ăn</h2>
+        {/* Name field */}
         <div className="flex flex-col gap-3">
-          <h2 className="text-2xl font-semibold mb-2">Đăng ký món ăn</h2>
-
           <div>
             <label className="label-input">Lựa chọn món ăn</label>
             <div className="overflow-x-auto max-h-96">
@@ -183,15 +183,12 @@ const FoodRegistration = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn đăng ký món ăn này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

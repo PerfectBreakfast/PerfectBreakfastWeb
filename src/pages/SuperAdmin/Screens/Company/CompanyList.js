@@ -81,7 +81,7 @@ const CompanyList = () => {
         fetchCompany(); // Gọi lại hàm fetchDish để cập nhật danh sách món ăn
       } catch (error) {
         console.error("Error deleting dish:", error);
-        toast.error("Có lỗi xảy ra khi xóa công ty!"); // Thông báo lỗi
+        toast.error(error.errors); // Thông báo lỗi
       }
       setLoadingDelete(false); // Ẩn loader
       // Đóng modal
@@ -101,114 +101,123 @@ const CompanyList = () => {
     <>
       <div className="container mx-auto p-4">
         <h2 className="text-2xl font-semibold mb-4">Danh sách công ty</h2>
-
-        <div className="flex justify-between items-center mb-4">
-          <Link to="create">
-            <button className="btn-add">
-              <Plus />
-              Thêm công ty
-            </button>
-          </Link>
-          <div className="flex gap-2 items-center">
-            <input
-              type="text"
-              className="input-search "
-              placeholder="Tìm kiếm"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-            />
-            {/* <button
+        <div className="bg-white rounded-xl p-4 ">
+          <div className="flex justify-between items-center mb-4">
+            <Link to="create">
+              <button className="btn-add">
+                <Plus />
+                Thêm công ty
+              </button>
+            </Link>
+            <div className="flex gap-2 items-center">
+              <input
+                type="text"
+                className="input-search "
+                placeholder="Tìm kiếm"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+              />
+              {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
               onClick={handleSearch}
             >
               <Search />
             </button> */}
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white shadow-md my-6 overflow-auto">
-          <table className="min-w-max w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
-                <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
-                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
+          <div>
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="bg-gray-200 text-gray-800 leading-normal">
+                  <th className="py-2.5 font-extrabold px-3">Tên công ty</th>
+                  <th className="py-2.5 font-extrabold px-3">Địa chỉ</th>
+                  <th className="py-2.5 font-extrabold px-3">Số điện thoại</th>
 
-                {/* <th className="py-2.5 font-extrabold px-6">Đối tác</th>
-                <th className="py-2.5 font-extrabold px-6">Đơn vị vận chuyển</th> */}
-                <th className="py-2.5 font-extrabold px-6"></th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600 text-sm font-light">
-              {isLoading ? (
-                <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
-                    Đang tải...
-                  </td>
+                  {/* <th className="py-2.5 font-extrabold px-3">Đối tác</th>
+                <th className="py-2.5 font-extrabold px-3">Đơn vị vận chuyển</th> */}
+                  <th className="py-2.5 font-extrabold px-3"></th>
                 </tr>
-              ) : companiesData.length > 0 ? (
-                companiesData.map((companyUnit) => (
-                  <tr
-                    key={companyUnit.id}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-2.5 px-6 text-left font-bold">
-                      <span
-                        className="text-name "
-                        onClick={() => handleDetailClick(companyUnit.id)}
-                      >
-                        {companyUnit.name}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-6 text-left">
-                      {companyUnit.address}
-                    </td>
-                    <td className="py-2.5 px-6 text-left">
-                      {companyUnit.phoneNumber}
-                    </td>
-
-                    {/* <td className="py-3 px-6 text-left">
-                      {companyUnit.managementUnit}
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {companyUnit.deliveryUnit}
-                    </td> */}
-                    <td className="py-2.5 px-6 text-left">
-                      <div className="flex">
-                        <Write
-                          onClick={() => handleEditClick(companyUnit.id)}
-                          className="size-5 cursor-pointer"
-                        />
-                        <Delete
-                          onClick={() => handleDeleteClick(companyUnit.id)}
-                          className="delete-icon "
-                        />
-                      </div>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-light">
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="4" className="text-center py-3 px-3">
+                      Đang tải...
                     </td>
                   </tr>
-                ))
-              ) : (
+                ) : companiesData.length > 0 ? (
+                  companiesData.map((companyUnit) => (
+                    <tr
+                      key={companyUnit.id}
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                    >
+                      <td className="py-2.5 px-3 text-left font-bold">
+                        <span
+                          className="text-name "
+                          onClick={() => handleDetailClick(companyUnit.id)}
+                        >
+                          {companyUnit.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {companyUnit.address}
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {companyUnit.phoneNumber}
+                      </td>
+
+                      {/* <td className="py-3 px-3 text-left">
+                      {companyUnit.managementUnit}
+                    </td>
+                    <td className="py-3 px-3 text-left">
+                      {companyUnit.deliveryUnit}
+                    </td> */}
+                      <td className="py-2.5 px-3 text-left">
+                        <div className="flex">
+                          <Write
+                            onClick={() => handleEditClick(companyUnit.id)}
+                            className="size-5 cursor-pointer"
+                          />
+                          <Delete
+                            onClick={() => handleDeleteClick(companyUnit.id)}
+                            className="delete-icon "
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-3 px-3">
+                      Không có dữ liệu
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+              <tfoot>
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
-                    Không có dữ liệu
+                  <td colspan="6">
+                    <div className="pagination-container">
+                      <Pagination
+                        componentName="div"
+                        count={totalPages}
+                        page={pageIndex + 1}
+                        onChange={handlePageChange}
+                        shape="rounded"
+                        showFirstButton
+                        showLastButton
+                      />
+                    </div>
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-
-          <div className="pagination-container mt-4">
-            <Pagination
-              componentName="div"
-              count={totalPages}
-              page={pageIndex + 1}
-              onChange={handlePageChange}
-            />
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>

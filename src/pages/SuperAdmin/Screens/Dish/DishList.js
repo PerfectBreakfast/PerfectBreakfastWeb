@@ -144,7 +144,7 @@ const Dishes = () => {
             <tbody className="text-gray-600 text-sm font-light">
               {isLoading ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
+                  <td colSpan="5" className="text-center py-3 px-6">
                     Đang tải...
                   </td>
                 </tr>
@@ -194,7 +194,7 @@ const Dishes = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
+                  <td colSpan="5" className="text-center py-3 px-6">
                     Không có dữ liệu
                   </td>
                 </tr>

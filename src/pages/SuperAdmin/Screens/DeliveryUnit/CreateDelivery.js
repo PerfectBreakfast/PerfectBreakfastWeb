@@ -43,7 +43,7 @@ const CreateDelivery = () => {
         navigate(-1); // Navigate back
       } catch (error) {
         console.error("Error creating delivery unit:", error);
-        toast.error("Error creating delivery unit");
+        toast.error(error.errors);
       } finally {
         setIsLoading(false); // Ẩn loading
       }
@@ -78,7 +78,7 @@ const CreateDelivery = () => {
   }
 
   return (
-    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl w-5/6">
+    <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <h2 className="text-xl font-semibold mb-4">Tạo mới đơn vị vận chuyển</h2>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
         {/* Name field */}
@@ -169,7 +169,7 @@ const CreateDelivery = () => {
 
         <button
           type="button"
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+          className="btn-submit-form"
           onClick={handleCreateClick}
         >
           Tạo mới
@@ -186,15 +186,12 @@ const CreateDelivery = () => {
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
           <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
           <p>Bạn có chắc chắn muốn tạo mới đơn vị vận chuyển này?</p>
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
-              onClick={closeModal}
-            >
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
               Hủy bỏ
             </button>
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-700 rounded text-white"
+              className="btn-confirm "
               onClick={() => formik.handleSubmit()}
             >
               Xác nhận

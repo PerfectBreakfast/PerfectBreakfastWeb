@@ -23,9 +23,12 @@ const DailyOrderList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchOrderList = async () => {
+      setIsLoading(true);
       try {
         const result = await DailyOrderAPI.getDailyOrderForSuperAdmin(
           pageIndex
@@ -34,6 +37,8 @@ const DailyOrderList = () => {
         setTotalPages(result.totalPagesCount);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchOrderList();
@@ -108,7 +113,7 @@ const DailyOrderList = () => {
     <div className="container mx-auto p-4">
       <h4 className="text-2xl font-semibold mb-4">Tổng hợp đơn hàng</h4>
       {settingData ? (
-        <div className="w-fit bg-white shadow-sm px-4 py-3 rounded-xl flex items-center">
+        <div className="w-fit bg-white shadow-sm px-4 py-3 rounded-xl flex items-center mb-4">
           <p className="font-semibold text-gray-700">
             Thời gian chốt đơn hàng: {formatTime(settingData.time)}
           </p>
@@ -122,64 +127,95 @@ const DailyOrderList = () => {
       ) : (
         <p></p>
       )}
-      <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 ">Ngày giao hàng</th>
-              <th className="py-2.5">Tên công ty</th>
-              <th className="py-2.5 ">Địa chỉ</th>
-              <th className="py-2.5">Bữa ăn</th>
-              <th className="py-2.5 text-center">Số lượng đơn đặt</th>
-              <th className="py-2.5 text-center">Trạng thái</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {orders.map((item) =>
-              item.companies.map((company) =>
-                company.dailyOrders.map((order) => (
-                  <tr
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                    key={order.id}
-                  >
-                    <td className="py-2.5 px-6 text-left">
-                      {/* {item.bookingDate} */}
-                      {formatDate(item.bookingDate)}
-                    </td>
-                    <td className="py-2.5 px-6 text-left">
-                      <span className=" font-semibold"> {company.name}</span>
-                    </td>
-                    <td className="py-2.5 px-6 text-left">{company.address}</td>
-                    <td className="py-2.5 px-6 text-left">
-                      <button
-                        className="text-green-500 hover:text-green-600 font-semibold"
-                        onClick={() => handleDetailClick(order.id)}
+      <div className="bg-white rounded-xl p-4 ">
+        <div>
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 ">Ngày giao hàng</th>
+                <th className="py-2.5">Tên công ty</th>
+                <th className="py-2.5 ">Địa chỉ</th>
+                <th className="py-2.5">Bữa ăn</th>
+                <th className="py-2.5 text-center">Số lượng đơn đặt</th>
+                <th className="py-2.5 text-center">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-3">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
+                orders.map((item) =>
+                  item.companies.map((company) =>
+                    company.dailyOrders.map((order) => (
+                      <tr
+                        className="border-b border-gray-200 hover:bg-gray-100"
+                        key={order.id}
                       >
-                        {order.meal}
-                      </button>
-                    </td>
-                    <td className="py-3 text-center font-semibold">
-                      {order.orderQuantity}
-                    </td>
-                    <td className="py-2.5 px-6 text-center">
-                      <DailyOrderStatus status={order.status} />
-                    </td>
-                  </tr>
-                ))
-              )
-            )}
-          </tbody>
-        </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="success"
-          />
+                        <td className="py-2.5 px-3 text-left">
+                          {/* {item.bookingDate} */}
+                          {formatDate(item.bookingDate)}
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          <span className=" font-semibold">
+                            {" "}
+                            {company.name}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {company.address}
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          <button
+                            className="text-green-500 hover:text-green-600 font-semibold"
+                            onClick={() => handleDetailClick(order.id)}
+                          >
+                            {order.meal}
+                          </button>
+                        </td>
+                        <td className="py-3 text-center font-semibold">
+                          {order.orderQuantity}
+                        </td>
+                        <td className="py-2.5 px-3 text-center">
+                          <DailyOrderStatus status={order.status} />
+                        </td>
+                      </tr>
+                    ))
+                  )
+                )
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-3">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setIsOpen(false)}
@@ -225,7 +261,6 @@ const DailyOrderList = () => {
           </div>
         </div>
       </Modal>
-      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 };
