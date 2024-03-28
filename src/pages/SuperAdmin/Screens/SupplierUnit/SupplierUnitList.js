@@ -28,12 +28,9 @@ const SupplierUnitList = () => {
   const [managementUnits, setManagementUnits] = useState([]);
 
   const [isAssignManagerModalOpen, setAssignManagerModalOpen] = useState(false);
-  const [
-    selectedSupplierUnitForAssignment,
-    setSelectedSupplierUnitForAssignment,
-  ] = useState(null);
   const [selectedManagementUnit, setSelectedManagementUnit] = useState("");
 
+  const [supplierId, setSupplierId] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [dishToDelete, setDishToDelete] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -41,8 +38,8 @@ const SupplierUnitList = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    fetchManagementUnits(supplierId);
     fetchSupplierUnits();
-    fetchManagementUnits();
   }, [pageIndex, searchTerm]); // Dependency on pageIndex and searchTerm
 
   const fetchSupplierUnits = async () => {
@@ -62,13 +59,17 @@ const SupplierUnitList = () => {
     }
   };
 
-  const fetchManagementUnits = async () => {
-    try {
-      const response = await managementUnitAPI.getAllManagementUnit();
-      setManagementUnits(response);
-    } catch (error) {
-      console.error("Error fetching units:", error);
-      toast.error("Error fetching management");
+  const fetchManagementUnits = async (supplierId) => {
+    if (supplierId) {
+      try {
+        const response = await managementUnitAPI.getPartnerForSupplier(
+          supplierId
+        );
+        setManagementUnits(response);
+      } catch (error) {
+        console.error("Error fetching units:", error);
+        toast.error("Error fetching management");
+      }
     }
   };
 
@@ -86,10 +87,17 @@ const SupplierUnitList = () => {
     setModalOpen(false);
   };
 
-  const handleOpenAssignManagerModal = (supplierUnit) => {
+  const handleOpenAssignManagerModal = (supplierId) => {
+    setSelectedManagementUnit("");
     setAssignManagerModalOpen(true);
-    setSelectedSupplierUnitForAssignment(supplierUnit);
-    console.log("test", selectedSupplierUnitForAssignment);
+    setSupplierId(supplierId);
+    fetchManagementUnits(supplierId);
+  };
+  const handleCloseAssignManagerModal = () => {
+    setSupplierId(null);
+    fetchManagementUnits(null);
+    setSelectedManagementUnit("");
+    setAssignManagerModalOpen(false);
   };
 
   const handleAssignManager = async () => {
@@ -100,18 +108,17 @@ const SupplierUnitList = () => {
         return;
       }
 
-      // Make the API call to assign a manager to the supplier unit
       await supplierUnitAPI.supplyAssigment({
-        supplierId: selectedSupplierUnitForAssignment.id,
+        supplierId: supplierId,
         partnerId: selectedManagementUnit,
       });
-      // setAssignManagerModalOpen(false);
-      // Display a success message
+
       toast.success("Gán quản lý thành công!");
 
-      // Close the modal and refresh the list of supplier units
       handleCloseModal();
       fetchSupplierUnits();
+      setSupplierId(null);
+      setSelectedManagementUnit("");
     } catch (error) {
       console.error("Error assigning manager:", error);
       toast.error("Error assigning manager");
@@ -122,11 +129,9 @@ const SupplierUnitList = () => {
     console.log("id", id);
   };
   const handleDetailClick = (supplierId) => {
-    // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/supplier/${supplierId}`);
   };
   const handleEditClick = (supplierId) => {
-    // Use navigate to navigate to the detail page with the dishId parameter
     navigate(`/admin/supplier/${supplierId}/edit`);
   };
 
@@ -145,8 +150,7 @@ const SupplierUnitList = () => {
 
   const handleDelete = async () => {
     if (dishToDelete) {
-      // Kiểm tra nếu có id món ăn cần xóa
-      setLoadingDelete(true); // Hiển thị loader
+      setLoadingDelete(true);
       closeModal();
       try {
         await supplierUnitAPI.deletePartnerById(dishToDelete); // Gọi API để xóa
@@ -201,13 +205,13 @@ const SupplierUnitList = () => {
           <table className=" w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 font-extrabold px-6  ">Tên công ty</th>
-                <th className="py-2.5 font-extrabold px-6  ">Địa chỉ</th>
-                <th className="py-2.5 font-extrabold px-6  ">Số điện thoại</th>
+                <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
                 <th className="py-2.5 font-extrabold px-6  ">Quản trị viên</th>
                 {/* <th className="py-2.5 font-extrabold px-6  ">Đối tác</th> */}
-                <th className="py-2.5 font-extrabold px-6  "></th>
-                <th className="py-2.5 font-extrabold px-6  "></th>
+                <th className="py-2.5 font-extrabold px-6"></th>
+                <th className="py-2.5 font-extrabold px-6"></th>
               </tr>
             </thead>
 
@@ -264,7 +268,7 @@ const SupplierUnitList = () => {
                       <button
                         className="btn-add-third"
                         onClick={() =>
-                          handleOpenAssignManagerModal(supplierUnit)
+                          handleOpenAssignManagerModal(supplierUnit.id)
                         }
                       >
                         Gán quản lý
@@ -307,7 +311,7 @@ const SupplierUnitList = () => {
 
       <Modal
         isOpen={isAssignManagerModalOpen}
-        onRequestClose={() => setAssignManagerModalOpen(false)}
+        onRequestClose={() => handleCloseAssignManagerModal()}
         style={{
           overlay: { backgroundColor: "rgba(0,0,0,0.5)" },
           content: {
@@ -326,9 +330,7 @@ const SupplierUnitList = () => {
         contentLabel="Assign Manager Modal"
       >
         <div className="flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">
-            Gán quản lý cho {selectedSupplierUnitForAssignment?.name}
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">Gán đối tác</h2>
           <div className="mb-1">
             <label htmlFor="managementUnitSelect" className="label-input">
               Chọn công ty đối tác

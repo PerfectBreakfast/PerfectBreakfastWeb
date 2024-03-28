@@ -100,6 +100,16 @@ const supplierUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  removePartnerForSupplier: async (supplierId, partnerId) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${api}/v1/supplyassigments/supplier/${supplierId}/partner/${partnerId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default supplierUnitAPI;

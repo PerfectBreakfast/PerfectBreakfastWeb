@@ -183,9 +183,10 @@ function ComboDetail() {
               </div>
               <button
                 onClick={handleAddToCart}
-                className="bg-green-500 text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors font-bold"
+                className="bg-green-500 text-white py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors font-bold"
               >
-                Thêm vào giỏ hàng - {formattedTotalPrice}
+                Thêm vào giỏ hàng <span className="mx-1">•</span>{" "}
+                {formattedTotalPrice}
               </button>
             </div>
           </div>

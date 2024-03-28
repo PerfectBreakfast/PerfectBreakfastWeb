@@ -71,6 +71,16 @@ const managementUnitAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getPartnerForSupplier: async (supplierId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/partners/supplier-assignment/${supplierId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default managementUnitAPI;
