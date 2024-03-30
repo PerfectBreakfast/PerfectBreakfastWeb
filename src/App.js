@@ -7,6 +7,7 @@ import {
   Routes,
   Route,
   useParams,
+  Outlet,
 } from "react-router-dom";
 import Login from "./pages/User/Signin/Signin";
 import Signup from "./pages/User/Signup/Signup";
@@ -36,8 +37,7 @@ import DeliveryLogin from "./pages/Delivery/Screens/Login/Login";
 import Loading from "./pages/Loading/Loading";
 import Notification from "./pages/User/Notification/Notification";
 import ManagementLogin from "./pages/Login/ManagementLogin";
-import QrScanner from "./components/ScanQR";
-import Detail from "./components/Detail";
+
 import ForgotPassword from "./pages/User/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/User/ForgotPassword/ResetPassword";
 import DailyOrderList from "./pages/DeliveryStaff/DailyOrder/DailyOrderList";
@@ -56,6 +56,8 @@ import FaqPage from "./pages/User/Rule/FaqPage";
 import ErrorPage from "./pages/Error/ErrorPage";
 import StaffInfo from "./pages/DeliveryStaff/Setting/StaffInfo";
 import StaffChangePassword from "./pages/DeliveryStaff/Setting/StaffChangePassword";
+import { AuthProvider } from "./components/Context/AuthContext";
+import PrivateRoute from "./components/Context/ProtectedRoute";
 
 function App() {
   return (
@@ -63,15 +65,86 @@ function App() {
       <Router>
         <CartProvider>
           <Routes>
-            {/* User */}
+            {/* Public Route */}
+            {/* -> Login Admin <-*/}
+            <Route path="/management/login" element={<ManagementLogin />} />
+            <Route path="/error" element={<ErrorPage />} />
+            {/* -> Login user <- */}
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register-external/:id" element={<SignupExternal />} />
-            {/* login cho QTV */}
-            <Route path="/management/login" element={<ManagementLogin />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            {/* ------------ */}
+
+            {/* Private Admin Route */}
+            <Route
+              path="/admin/*"
+              element={
+                <PrivateRoute allowedRoles={["SUPER ADMIN"]}>
+                  <PageLayout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/partner/*"
+              element={
+                <PrivateRoute allowedRoles={["PARTNER ADMIN"]}>
+                  <PartnerPageLayout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/supplier/*"
+              element={
+                <PrivateRoute allowedRoles={["SUPPLIER ADMIN"]}>
+                  <SupplierPageLayout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/delivery/*"
+              element={
+                <PrivateRoute allowedRoles={["DELIVERY ADMIN"]}>
+                  <DeliveryPageLayout />
+                </PrivateRoute>
+              }
+            />
+            {/* ------------ */}
+
+            {/* User */}
+
+            <Route
+              path="/user"
+              element={
+                <PrivateRoute allowedRoles={["CUSTOMER"]}>
+                  <Outlet />
+                </PrivateRoute>
+              }
+            >
+              {/* Định nghĩa các Route con dành cho User sử dụng relative paths */}
+              <Route path="menu" element={<Homepage />} />
+              <Route path="menu/combo/:id" element={<ComboDetail />} />
+              <Route path="menu/food/:id" element={<FoodDetail />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="checkout" element={<Checkout />} />
+              <Route path="order-history" element={<OrderHistoryList />} />
+              <Route path="notifications" element={<Notification />} />
+              <Route
+                path="order-history/detail/:orderId"
+                element={<OrderDetail />}
+              />
+              <Route path="success" element={<PaymentSuccess />} />
+              <Route path="cancel" element={<CancelPayment />} />
+              <Route path="" element={<UserInfo />} />
+              <Route path="edit" element={<EditUser />} />
+              <Route path="edit/change-password" element={<ChangePassword />} />
+              <Route path="rules" element={<TermOfUse />} />
+              <Route path="company-info" element={<CompanyInfo />} />
+              <Route path="FAQ" element={<FaqPage />} />
+            </Route>
+
+            {/* <Route path="/register-external/:id" element={<SignupExternal />} />
             <Route path="/menu" element={<Homepage />} />
             <Route path="/menu/combo/:id" element={<ComboDetail />} />
             <Route path="/menu/food/:id" element={<FoodDetail />} />
@@ -93,26 +166,10 @@ function App() {
             />
             <Route path="/rules" element={<TermOfUse />} />
             <Route path="/company-info" element={<CompanyInfo />} />
-            <Route path="/FAQ" element={<FaqPage />} />
-
-            {/* Super Admin */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/*" element={<PageLayout />} />
-            {/* <Route path="/admin/foods" element={<Dishes />} />
-            <Route path="/admin/combos" element={<Combos />} />
-            <Route path="/admin/menu" element={<Menu />} /> */}
-            <Route path="/partner/*" element={<PartnerPageLayout />} />
-            <Route path="/supplier/*" element={<SupplierPageLayout />} />
-            <Route path="/delivery/*" element={<DeliveryPageLayout />} />
-            <Route path="/partner/login" element={<PartnerLogin />} />
-            <Route path="/supplier/login" element={<SupplierLogin />} />
-            <Route path="/delivery/login" element={<DeliveryLogin />} />
-            <Route path="/loading" element={<Loading />} />
-            <Route path="/scan" element={<QrScanner />} />
-            <Route path="/order/:orderId" element={<Detail />} />
+            <Route path="/FAQ" element={<FaqPage />} /> */}
 
             {/* Delivery Staff */}
-            <Route path="/staff/order" element={<DailyOrderList />} />
+            {/* <Route path="/staff/order" element={<DailyOrderList />} />
             <Route path="/staff/history" element={<ShippingHistory />} />
             <Route
               path="/staff/order/:dailyOrderId"
@@ -128,9 +185,34 @@ function App() {
             <Route
               path="/staff/setting/edit/change-password"
               element={<StaffChangePassword />}
-            />
+            /> */}
 
-            <Route path="/error" element={<ErrorPage />} />
+            <Route
+              path="/staff"
+              element={
+                <PrivateRoute allowedRoles={["DELIVERY STAFF"]}>
+                  <Outlet />
+                </PrivateRoute>
+              }
+            >
+              <Route path="order" element={<DailyOrderList />} />
+              <Route path="/staff/history" element={<ShippingHistory />} />
+              <Route
+                path="order/:dailyOrderId"
+                element={<DailyOrderDetail />}
+              />
+              <Route path="scan" element={<ScanOR />} />
+              <Route
+                path="scan/order/:orderId"
+                element={<CustomerOrderDetail />}
+              />
+              <Route path="setting" element={<StaffSetting />} />
+              <Route path="setting/edit" element={<StaffInfo />} />
+              <Route
+                path="setting/edit/change-password"
+                element={<StaffChangePassword />}
+              />
+            </Route>
           </Routes>
         </CartProvider>
       </Router>

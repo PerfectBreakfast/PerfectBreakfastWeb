@@ -9,8 +9,10 @@ import { encryptToken } from "../../services/CryptoService";
 import roleAPI from "../../services/roleAPI";
 
 import { ReactComponent as Loading } from "../../assets/icons/loading.svg";
+import { useAuth } from "../../components/Context/AuthContext";
 
 const ManagementLogin = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [roleData, setRoleData] = useState([]);
 
@@ -51,7 +53,7 @@ const ManagementLogin = () => {
       const userData = await userAPI.loginForManagement(credentials);
 
       const roles = userData.roles;
-
+      login(userData);
       const accessToken = userData.accessToken;
       const refreshToken = userData.refreshToken;
 

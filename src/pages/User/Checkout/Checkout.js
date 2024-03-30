@@ -64,7 +64,7 @@ function Checkout() {
           } else if (item.type === "food") {
             detail.foodId = item.id;
           }
-
+          console("test data", orderDetails);
           return detail;
         }),
       };
@@ -80,12 +80,12 @@ function Checkout() {
       } else {
         // Nếu không có URL thanh toán, xử lý lỗi tương ứng
         console.error("No paymentUrl found in the result:", result);
-        navigate("/cancel");
+        navigate("/user/cancel");
       }
     } catch (error) {
       setIsLoading(false);
       console.error("Error placing order:", error);
-      navigate("/cancel");
+      navigate("/user/cancel");
     }
   };
 

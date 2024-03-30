@@ -15,8 +15,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import userAPI from "../../services/userAPI";
 import { encryptToken } from "../../services/CryptoService";
+import { useAuth } from "../../components/Context/AuthContext";
 
 const AdminLogin = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -49,6 +51,7 @@ const AdminLogin = () => {
       localStorage.setItem("refreshToken", encryptedRefreshToken);
 
       navigate("/admin/foods");
+      login(userData);
     } catch (error) {
       // setErrorMessage(error.errors);
       // setErrorMessage("Email hoặc mật khẩu chưa chính xác!");

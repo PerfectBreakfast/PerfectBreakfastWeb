@@ -30,7 +30,7 @@ const CancelPayment = () => {
         <CancelIcon color="error" id="iconCancel" />
         <h2 className="text-red-500 font-bold text-lg">Thanh toán thất bại</h2>
         <p>Đơn hàng của quý khách không thể hoàn tất thanh toán.</p>
-        <Link to="/menu">
+        <Link to="/user/menu">
           <button className="bg-red-500 text-white py-2 px-2.5 rounded-xl hover:bg-red-700 transition-colors mt-2">
             Quay về trang chủ
           </button>

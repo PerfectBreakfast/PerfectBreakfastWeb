@@ -83,13 +83,13 @@ const OrderDetail = () => {
       } else {
         // Xử lý khi không có paymentUrl
         console.error("No paymentUrl found in the result:", result);
-        navigate("/cancel");
+        navigate("/user/cancel");
       }
     } catch (error) {
       setIsLoading(false);
       console.error("Error placing order:", error);
       // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi cho người dùng
-      navigate("/cancel");
+      navigate("/user/cancel");
     }
   };
 
