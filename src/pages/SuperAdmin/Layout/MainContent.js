@@ -37,6 +37,8 @@ import DailyOrderList from "../Screens/DailyOrder/DailyOrderList";
 import AdminProfile from "../../../components/Profile/AdminProfile";
 import AdminChangePassword from "../../../components/Profile/AdminChangePassword";
 import OrderListByDailyOrder from "../Screens/DailyOrder/OrderListByDailyOrder";
+import UserList from "../Screens/User/UserList";
+import UserByCompany from "../Screens/User/UserByCompany";
 
 const MainContent = () => {
   return (
@@ -76,6 +78,7 @@ const MainContent = () => {
       <Route path="company/create" element={<CreateCompany />} />
       <Route path="company/:id/edit" element={<EditCompany />} />
       <Route path="company/:id" element={<CompanyDetail />} />
+      <Route path="company/:id/user" element={<UserByCompany />} />
       <Route
         path="partner/create-management-user"
         element={<CreateManagementUser />}
@@ -90,6 +93,7 @@ const MainContent = () => {
       />
       <Route path="profile" element={<AdminProfile />} />
       <Route path="profile/change-password" element={<AdminChangePassword />} />
+      <Route path="user" element={<UserList />} />
     </Routes>
   );
 };

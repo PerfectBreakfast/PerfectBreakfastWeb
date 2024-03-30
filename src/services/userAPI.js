@@ -153,6 +153,29 @@ const userAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getUserByPagination: async (searchTerm, pageIndex) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/users/pagination?searchTerm=${searchTerm}&pageIndex=${pageIndex}&pageSize=5`
+      );
+
+      return response.data;
+    } catch (error) {
+      // Xử lý lỗi và ném lại thông báo lỗi
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getUserByCompany: async (companyId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/companies/${companyId}/users`
+      );
+      return response.data;
+    } catch (error) {
+      // Xử lý lỗi và ném lại thông báo lỗi
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default userAPI;
