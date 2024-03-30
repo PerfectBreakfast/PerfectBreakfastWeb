@@ -132,106 +132,106 @@ const AdminProfile = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex items-center mb-">
-        <h6 className="text-xl font-bold ml-4">Thay đổi thông tin</h6>
-      </div>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="grid grid-cols-5 border-1 border-gray-200 p-4 rounded-xl"
-      >
-        <div className="text-center mb-2">
-          <div className="relative inline-block mt-2.5">
-            {imagePreview ? (
-              <img
-                src={imagePreview}
-                alt="User"
-                className="w-32 h-32 rounded-full object-cover"
-              />
-            ) : (
-              <User className="w-24 h-24 rounded-full object-cover" />
-            )}
-
-            <label
-              htmlFor="image"
-              className="absolute bottom-0 right-0 bg-green-500 rounded-full p-2 cursor-pointer hover:bg-green-600"
-            >
-              {" "}
-              <Write className="h-4 w-4 text-white" />
-              <input
-                type="file"
-                id="image"
-                name="image"
-                className="hidden"
-                onChange={handleImageChange}
-              />
-            </label>
-          </div>
+      <div className="bg-white p-3 rounded-xl">
+        <div className="flex items-center">
+          <h6 className="text-xl font-bold ml-4">Thay đổi thông tin</h6>
         </div>
-        <div className="col-span-4">
-          <h6 className="text-base font-semibold text-gray-600 mb-2.5">
-            Thay đổi thông tin
-          </h6>
-          <div className="bg-white shadow rounded-lg px-4 pt-6 py-4 mb-6 grid gap-y-3">
-            {" "}
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Tên người dùng
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-                className="edit-user-input"
-              />
-              {formik.touched.name && formik.errors.name && (
-                <div className="formik-error-message">{formik.errors.name}</div>
+        <form onSubmit={formik.handleSubmit} className="grid grid-cols-5 p-4 ">
+          <div className="text-center mb-2">
+            <div className="relative inline-block mt-2.5">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="User"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
+              ) : (
+                <User className="w-24 h-24 rounded-full object-cover" />
               )}
-            </div>
-            <div>
+
               <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                htmlFor="image"
+                className="absolute bottom-0 right-0 bg-green-500 rounded-full p-2 cursor-pointer hover:bg-green-600"
               >
-                Email
+                {" "}
+                <Write className="h-4 w-4 text-white" />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
               </label>
-              <input
-                disabled
-                type="text"
-                id="email"
-                name="email"
-                value={formik.values.email}
-                className="mt-1 border-1 w-full rounded-xl p-2"
-              />
             </div>
-            <div>
-              <label
-                htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Số điện thoại
-              </label>
-              <input
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.phoneNumber}
-                className="edit-user-input"
-              />
-              {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                <div className="formik-error-message">
-                  {formik.errors.phoneNumber}
-                </div>
-              )}
-            </div>
-            {/* <button
+          </div>
+          <div className="col-span-4">
+            <h6 className="text-base font-semibold text-gray-600 mb-2.5">
+              Thay đổi thông tin
+            </h6>
+            <div className="bg-white shadow rounded-lg px-4 pt-6 py-4 mb-6 grid gap-y-3">
+              {" "}
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Tên người dùng
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.name}
+                  className="edit-user-input"
+                />
+                {formik.touched.name && formik.errors.name && (
+                  <div className="formik-error-message">
+                    {formik.errors.name}
+                  </div>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email
+                </label>
+                <input
+                  disabled
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={formik.values.email}
+                  className="mt-1 border-1 w-full rounded-xl p-2"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.phoneNumber}
+                  className="edit-user-input"
+                />
+                {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+                  <div className="formik-error-message">
+                    {formik.errors.phoneNumber}
+                  </div>
+                )}
+              </div>
+              {/* <button
               type="button"
               onClick={handleUpdateClick}
               disabled={!hasChanged}
@@ -241,53 +241,54 @@ const AdminProfile = () => {
             >
               Cập nhật
             </button> */}
-            <div className="justify-start">
-              <button
-                type="button"
-                onClick={handleUpdateClick}
-                disabled={!hasChanged}
-                className={`w-32 font-bold bg-green-500 text-white mt-2 py-2 rounded-xl hover:bg-green-600 ${
-                  hasChanged
-                    ? ""
-                    : "border-green-500 bg-green-300 cursor-not-allowed"
-                }`}
-              >
-                Cập nhật
-              </button>
+              <div className="justify-start">
+                <button
+                  type="button"
+                  onClick={handleUpdateClick}
+                  disabled={!hasChanged}
+                  className={`w-32 font-bold bg-green-500 text-white mt-2 py-2 rounded-xl hover:bg-green-600 ${
+                    hasChanged
+                      ? ""
+                      : "border-green-500 bg-green-300 cursor-not-allowed"
+                  }`}
+                >
+                  Cập nhật
+                </button>
+              </div>
             </div>
-          </div>
 
-          <h6 className="text-base font-semibold text-gray-600 mb-2.5">
-            Cài đặt tài khoản
-          </h6>
-          <div className="bg-white shadow rounded-lg p-4 mb-20">
-            <div className="flex flex-col space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Mật khẩu
-              </label>
+            <h6 className="text-base font-semibold text-gray-600 mb-2.5">
+              Cài đặt tài khoản
+            </h6>
+            <div className="bg-white shadow rounded-lg p-4 mb-20">
+              <div className="flex flex-col space-y-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Mật khẩu
+                </label>
 
-              <div
-                onClick={() => navigate("change-password")}
-                className="flex justify-between edit-user-input cursor-pointer" // Thêm relative ở đây
-              >
-                <input
-                  value="••••••••"
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="focus:outline-none w-full cursor-pointer " // Đảm bảo input chiếm toàn bộ chiều rộng
-                />
-                <span className=" flex items-center pr-3">
-                  <RightIcon className="h-5 w-5" />
-                </span>
+                <div
+                  onClick={() => navigate("change-password")}
+                  className="flex justify-between edit-user-input cursor-pointer" // Thêm relative ở đây
+                >
+                  <input
+                    value="••••••••"
+                    type="password"
+                    id="password"
+                    name="password"
+                    className="focus:outline-none w-full cursor-pointer " // Đảm bảo input chiếm toàn bộ chiều rộng
+                  />
+                  <span className=" flex items-center pr-3">
+                    <RightIcon className="h-5 w-5" />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
 
       <Modal
         isOpen={modalIsOpen}

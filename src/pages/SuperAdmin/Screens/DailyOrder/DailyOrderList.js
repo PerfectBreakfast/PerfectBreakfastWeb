@@ -135,8 +135,8 @@ const DailyOrderList = () => {
                 <th className="py-2.5 ">Ngày giao hàng</th>
                 <th className="py-2.5">Tên công ty</th>
                 <th className="py-2.5 ">Địa chỉ</th>
-                <th className="py-2.5">Bữa ăn</th>
-                <th className="py-2.5 text-center">Số lượng đơn đặt</th>
+                <th className="py-2.5 text-left w-20">Bữa ăn</th>
+                <th className="py-2.5 text-center w-28">Số lượng đơn đặt</th>
                 <th className="py-2.5 text-center">Trạng thái</th>
               </tr>
             </thead>
@@ -168,7 +168,7 @@ const DailyOrderList = () => {
                         <td className="py-2.5 px-3 text-left">
                           {company.address}
                         </td>
-                        <td className="py-2.5 px-3 text-left">
+                        <td className="py-2.5 w-28 text-left">
                           <button
                             className="text-green-500 hover:text-green-600 font-semibold"
                             onClick={() => handleDetailClick(order.id)}
@@ -179,7 +179,7 @@ const DailyOrderList = () => {
                         <td className="py-3 text-center font-semibold">
                           {order.orderQuantity}
                         </td>
-                        <td className="py-2.5 px-3 text-center">
+                        <td className="py-2.5 px-3 text-center min-w-48">
                           <DailyOrderStatus status={order.status} />
                         </td>
                       </tr>
