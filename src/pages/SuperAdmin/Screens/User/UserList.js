@@ -1,44 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { Pagination } from "@mui/material";
-import dishAPI from "../../../../services/dishAPI";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../Dish/Dish.css";
-import "../Table/Table.css";
+import React, { useEffect, useState } from "react";
+import userAPI from "../../../../services/userAPI";
 import { useNavigate } from "react-router-dom";
+import { Pagination } from "@mui/material";
 
-import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
-import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
-import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
-import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
-
-import Modal from "react-modal";
-import Loading from "../../../Loading/Loading";
-import FoodStatus from "../../../../components/Status/FoodStatus";
-
-Modal.setAppElement("#root"); // Tránh warning về accessibility
-
-const Dishes = () => {
-  const [dishes, setDishes] = useState([]);
+const UserList = () => {
+  const [userData, setUserData] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [dishToDelete, setDishToDelete] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDish();
+    fetchUserList();
   }, [pageIndex, searchTerm]);
-  const fetchDish = async () => {
+  const fetchUserList = async () => {
     setIsLoading(true);
     try {
-      const result = await dishAPI.getDishByPagination(searchTerm, pageIndex);
-      setDishes(result.items);
+      const result = await userAPI.getUserByPagination(searchTerm, pageIndex);
+      setUserData(result.items);
       setTotalPages(result.totalPagesCount);
       setIsLoading(false);
     } catch (error) {
@@ -54,59 +36,12 @@ const Dishes = () => {
     setSearchTerm(searchInput);
     setPageIndex(0);
   };
-
-  const handleDishClick = (dishId) => {
-    navigate(`/admin/food/${dishId}`);
-  };
-  const handleEditClick = (dishId) => {
-    navigate(`/admin/food/${dishId}/edit`);
-  };
-  const handleClickCreate = () => {
-    navigate(`/admin/food/create`);
-  };
-
-  const handleDeleteClick = (dishId) => {
-    setDishToDelete(dishId); // Lưu id món ăn cần xóa vào state
-    openModal(); // Mở modal xác nhận
-  };
-
-  // Hàm xử lý việc xóa món ăn
-  const handleDelete = async () => {
-    if (dishToDelete) {
-      setLoadingDelete(true);
-      closeModal();
-      try {
-        await dishAPI.deleteDishById(dishToDelete);
-        toast.success("Món ăn đã được xóa thành công!");
-        fetchDish();
-      } catch (error) {
-        console.error("Error deleting dish:", error);
-        toast.error(error.errors); // Thông báo lỗi
-      }
-      setLoadingDelete(false); // Ẩn loader
-      // Đóng modal
-    }
-  };
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   return (
     <div className="container mx-auto p-4">
-      <h4 className="text-2xl font-semibold mb-4">Danh sách món ăn</h4>
+      <h4 className="text-2xl font-semibold mb-4">Danh sách người dùng</h4>
       <div className="bg-white rounded-xl p-4 ">
-        <div className="flex justify-between items-center mb-4">
-          <button className="btn-add" type="button" onClick={handleClickCreate}>
-            <Plus />
-            Thêm món ăn
-          </button>
-
-          <div className="flex items-center">
+        <div className="flex justify-end items-center mb-4">
+          <div className="flex items-center ">
             <input
               type="text"
               className="input-search "
@@ -119,12 +54,6 @@ const Dishes = () => {
                 }
               }}
             />
-            {/* <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
-              onClick={handleSearch}
-            >
-              <Search />
-            </button> */}
           </div>
         </div>
 
@@ -132,13 +61,17 @@ const Dishes = () => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 px-3 w-1/6 font-extrabold">Hình ảnh</th>
-                <th className="py-2.5 px-3 w-2/6 font-extrabold">Tên món ăn</th>
-                <th className="py-2.5 px-3 text-left w-1/5 font-extrabold">
-                  Ghi chú
+                <th className="py-2.5 px-3 w-1/5 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-3 w-1/5 font-extrabold">
+                  Tên người dùng
                 </th>
-                <th className="py-2.5 px-3 w-1/6 font-extrabold">Đơn giá</th>
-                <th className="py-2.5 px-3 w-1/6"></th>
+                <th className="py-2.5 px-3 text-left w-1/5 font-extrabold">
+                  Email
+                </th>
+                <th className="py-2.5 px-3 w-1/5 font-extrabold">
+                  Số điện thoại
+                </th>
+                <th className="py-2.5 px-3 w-1/5"></th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -148,37 +81,33 @@ const Dishes = () => {
                     Đang tải...
                   </td>
                 </tr>
-              ) : dishes.length > 0 ? (
-                dishes.map((dish) => (
+              ) : userData.length > 0 ? (
+                userData.map((user) => (
                   <tr
-                    key={dish.id}
+                    key={user.id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
                     <td className="py-2.5 px-3 text-left">
                       <img
-                        src={dish.image}
-                        alt={dish.name}
-                        className="display-img"
+                        src={user.image}
+                        alt={user.name}
+                        className="w-10 h-10 rounded-full"
                       />
                     </td>
                     <td className="py-2.5 px-3 text-left max-w-xs whitespace-normal">
                       <span
                         className="text-name"
-                        onClick={() => handleDishClick(dish.id)}
+                        // onClick={() => handleDishClick(dish.id)}
                       >
-                        {dish.name}
+                        {user.name}
                       </span>
                     </td>
+                    <td className="py-2.5 px-3 text-left">{user.email}</td>
                     <td className="py-2.5 px-3 text-left">
-                      <FoodStatus status={dish.foodStatus} />
+                      {user.phoneNumber}
                     </td>
-                    <td className="py-2.5 px-3">
-                      {dish.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </td>
-                    <td className="py-2.5 px-3">
+
+                    {/* <td className="py-2.5 px-3">
                       <div className="flex justify-center">
                         <Write
                           onClick={() => handleEditClick(dish.id)}
@@ -189,7 +118,7 @@ const Dishes = () => {
                           className="delete-icon "
                         />
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
@@ -222,7 +151,7 @@ const Dishes = () => {
         </div>
       </div>
 
-      {loadingDelete && <Loading />}
+      {/* {loadingDelete && <Loading />}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -245,9 +174,9 @@ const Dishes = () => {
             </button>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
 
-export default Dishes;
+export default UserList;

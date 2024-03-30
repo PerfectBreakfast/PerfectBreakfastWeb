@@ -110,7 +110,13 @@ const CompanyDetail = () => {
             Địa chỉ: <strong>{companyData.address}</strong>
           </p>
           <p className="">
-            Số lượng tài khoản: <strong>{companyData.memberCount}</strong>
+            Số lượng tài khoản:{" "}
+            <strong
+              className="cursor-pointer hover:text-green-500"
+              onClick={() => navigate(`user`)}
+            >
+              {companyData.memberCount}
+            </strong>
           </p>
         </div>
       </div>
