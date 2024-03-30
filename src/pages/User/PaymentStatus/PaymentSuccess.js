@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
           Đơn hàng đã thanh toán thành công, vui lòng kiểm tra lại trong giỏ
           hàng.{" "}
         </p>
-        <Link to="/menu">
+        <Link to="/user/menu">
           <button className="bg-green-500 text-white py-2 px-2.5 rounded-xl hover:bg-green-700 transition-colors mt-2">
             Quay về trang chủ
           </button>

@@ -19,8 +19,8 @@ const MobileNavigation = () => {
 
   const navigationItems = [
     { icon: HomeIcon, route: "/menu" },
-    { icon: CartIcon, route: "/cart", badgeContent: totalItems }, // Include totalItems here
-    { icon: HistoryIcon, route: "/order-history" },
+    { icon: CartIcon, route: "/user/cart", badgeContent: totalItems }, // Include totalItems here
+    { icon: HistoryIcon, route: "/user/order-history" },
     { icon: UserIcon, route: "/user" },
   ];
 

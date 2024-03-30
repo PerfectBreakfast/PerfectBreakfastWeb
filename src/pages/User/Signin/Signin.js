@@ -17,8 +17,10 @@ import { ReactComponent as VisibilityOff } from "../../../assets/icons/Eye.svg";
 import { ReactComponent as Visibility } from "../../../assets/icons/Eye Closed.svg";
 
 import { encryptToken } from "../../../services/CryptoService";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -83,7 +85,7 @@ const Login = () => {
     setIsLoading(true); // Bắt đầu quá trình tải, set isLoading = true
     try {
       const userData = await userAPI.login(credentials);
-
+      login(userData);
       const accessToken = userData.accessToken;
       const refreshToken = userData.refreshToken;
       // Mã hóa tokens
@@ -93,7 +95,7 @@ const Login = () => {
       // Lưu vào localStorage
       localStorage.setItem("accessToken", encryptedAccessToken);
       localStorage.setItem("refreshToken", encryptedRefreshToken);
-      navigate("/menu");
+      navigate("/user/menu");
     } catch (error) {
       console.log(error);
       toast.error("Email hoặc mật khẩu không chính xác");

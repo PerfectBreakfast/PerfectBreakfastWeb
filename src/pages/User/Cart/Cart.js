@@ -110,7 +110,7 @@ function Cart() {
 
   const handleGoToCheckout = () => {
     // Include the selectedMealId when navigating
-    navigate("/checkout", { state: { selectedMealId } });
+    navigate("/user/checkout", { state: { selectedMealId } });
   };
   if (!mealData) {
     return <Loading />;
