@@ -96,25 +96,118 @@ const Sidebar = () => {
                 </Disclosure.Button>
               </div>
               <Disclosure.Panel className="px-2 pt-2 pb-3 space-y-1">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={item.href}
-                    className="flex items-center p-2 text-base font-medium rounded-md text-gray-400 hover:text-white hover:bg-gray-700"
-                  >
-                    <item.icon className="mr-3 h-6 w-6" aria-hidden="true" />
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
-                <button
-                  // onClick={handleLogout}
-                  onClick={handleLogoutConfirm}
-                  className="flex items-center p-2 w-full text-left text-base font-medium rounded-md text-red-600 hover:text-white hover:bg-red-800"
-                >
-                  <LogoutIcon className="mr-3 h-6 w-6" aria-hidden="true" />
-                  Đăng xuất
-                </button>
+                <div className="flex-1 flex flex-col overflow-y-auto">
+                  <nav className="flex-1 px-2 py-4  space-y-1">
+                    {navigation.map((item) =>
+                      item.children ? (
+                        <Disclosure
+                          as="div"
+                          key={item.name}
+                          className="space-y-1"
+                        >
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-white hover:bg-customHoverSidebar">
+                                <item.icon
+                                  className="mr-3 h-6 w-6 group-hover:text-mainTextColorButton"
+                                  aria-hidden="true"
+                                />
+                                {item.name}
+                                <svg
+                                  className={`ml-2.5 h-5 w-5 transform transition-transform duration-150 ${
+                                    open ? "rotate-180" : "rotate-0"
+                                  }`}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </Disclosure.Button>
+                              <Disclosure.Panel className="space-y-1 ml-9">
+                                {item.children.map((subItem) => (
+                                  <Link
+                                    key={subItem.name}
+                                    to={subItem.href}
+                                    className={`font-semibold group flex items-center px-2 py-2 text-sm rounded-md hover:text-mainColor pl-11 ${
+                                      isActive(subItem.href)
+                                        ? "text-customHoverSidebar"
+                                        : "text-gray-500"
+                                    }`}
+                                  >
+                                    {subItem.name}
+                                  </Link>
+                                ))}
+                              </Disclosure.Panel>
+                            </>
+                          )}
+                        </Disclosure>
+                      ) : (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-white hover:bg-customHoverSidebar 
+      ${
+        isActive(item.href)
+          ? "bg-customHoverSidebar text-mainTextColorButton"
+          : ""
+      }`}
+                        >
+                          <item.icon
+                            className={`mr-3 h-6 w-6 ${
+                              isActive(item.href)
+                                ? "text-mainTextColorButton"
+                                : "group-hover:text-mainTextColorButton"
+                            }`}
+                            aria-hidden="true"
+                          />
+
+                          {item.name}
+                        </Link>
+                      )
+                    )}
+                  </nav>
+                  {userData && (
+                    <div className="sticky bottom-0 w-full flex items-center py-2.5 justify-between bg-white px-2">
+                      {" "}
+                      {/* Added bg-white for visibility */}
+                      <div
+                        className="flex items-center cursor-pointer"
+                        onClick={() => navigate("profile")}
+                      >
+                        <img
+                          src={userData.image}
+                          alt="Avatar"
+                          className="h-11 w-11 rounded-full"
+                        />
+                        <div className="ml-2 ">
+                          <p className="text-base font-semibold text-gray-800">
+                            {userData.name}
+                          </p>
+                          <p className="text-xs font-medium text-gray-700">
+                            {userData.roles}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="">
+                        <button
+                          onClick={handleLogoutConfirm}
+                          className="h-full w-full flex justify-end items-center text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
+                        >
+                          <LogoutIcon
+                            className="mt-2 h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </Disclosure.Panel>
             </>
           )}
@@ -203,41 +296,42 @@ const Sidebar = () => {
                       </Link>
                     )
                   )}
-
-                  {userData && (
-                    <div className="absolute bottom-0 w-full flex items-center py-2.5 justify-between ">
-                      <div
-                        className="flex items-center cursor-pointer"
-                        onClick={() => navigate("profile")}
-                      >
-                        <img
-                          src={userData.image}
-                          alt="Avatar"
-                          className="h-11 w-11 rounded-full"
-                        />
-                        <div className="ml-2 ">
-                          <p className="text-base font-semibold text-gray-800">
-                            {userData.name}
-                          </p>
-                          <p className="text-xs font-medium text-gray-700">
-                            {userData.roles}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="">
-                        <button
-                          onClick={handleLogoutConfirm}
-                          className="h-full flex items-center w-full text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
-                        >
-                          <LogoutIcon
-                            className="mt-2 mr-4 h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        </button>
+                </nav>
+                {userData && (
+                  <div className="sticky bottom-0 w-full flex items-center py-2.5 justify-between bg-white px-2">
+                    {" "}
+                    {/* Added bg-white for visibility */}
+                    <div
+                      className="flex items-center cursor-pointer"
+                      onClick={() => navigate("profile")}
+                    >
+                      <img
+                        src={userData.image}
+                        alt="Avatar"
+                        className="h-11 w-11 rounded-full"
+                      />
+                      <div className="ml-2 ">
+                        <p className="text-base font-semibold text-gray-800">
+                          {userData.name}
+                        </p>
+                        <p className="text-xs font-medium text-gray-700">
+                          {userData.roles}
+                        </p>
                       </div>
                     </div>
-                  )}
-                </nav>
+                    <div className="">
+                      <button
+                        onClick={handleLogoutConfirm}
+                        className="h-full w-full flex justify-end items-center text-sm font-medium rounded-md text-gray-600 hover:text-red-500 "
+                      >
+                        <LogoutIcon
+                          className="mt-2 h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -245,7 +339,7 @@ const Sidebar = () => {
       </div>
 
       {showConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-10">
           <div className="bg-white rounded-lg p-6 shadow-lg">
             <h5 className="text-lg font-bold mb-6">
               Bạn có chắc chắn muốn đăng xuất không?
