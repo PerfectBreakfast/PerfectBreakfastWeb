@@ -16,6 +16,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 import Loading from "../../Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
+import menuAPI from "../../../services/menuAPI";
 
 function Cart() {
   const { cart, dispatch } = useCart();
@@ -24,6 +25,7 @@ function Cart() {
   const [itemToRemove, setItemToRemove] = useState(null);
   const [mealData, setMealData] = useState(null);
   const [selectedMealId, setSelectedMealId] = useState("");
+  const [menuDate, setMenuDate] = useState(null);
 
   useEffect(() => {
     const fetchMealData = async () => {
@@ -35,6 +37,17 @@ function Cart() {
         toast.error(error.errors);
       }
     };
+    const fetchMenu = async () => {
+      try {
+        const menu = await menuAPI.getMenu();
+
+        setMenuDate(menu.menuDate);
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      }
+    };
+
+    fetchMenu();
 
     fetchMealData();
   }, []);
@@ -110,7 +123,8 @@ function Cart() {
 
   const handleGoToCheckout = () => {
     // Include the selectedMealId when navigating
-    navigate("/user/checkout", { state: { selectedMealId } });
+    // navigate("/user/checkout", { state: { selectedMealId } });
+    navigate("/user/checkout", { state: { selectedMealId, menuDate } });
   };
   if (!mealData) {
     return <Loading />;

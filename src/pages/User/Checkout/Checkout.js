@@ -18,6 +18,7 @@ function Checkout() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const { selectedMealId } = location.state || {};
+  const { menuDate } = location.state || {};
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -48,10 +49,11 @@ function Checkout() {
     setIsLoading(true);
     try {
       // Tạo orderDetails dựa trên yêu cầu của API
-      const orderDetails = {
+      const orderData = {
         note,
         payment: paymentMethod,
-        mealId: selectedMealId,
+        menuDate: menuDate,
+        mealSubscriptionId: selectedMealId,
         orderDetails: cart.map((item) => {
           // Cấu trúc dữ liệu cho mỗi item trong giỏ hàng
           const detail = {
@@ -64,16 +66,13 @@ function Checkout() {
           } else if (item.type === "food") {
             detail.foodId = item.id;
           }
-          console("test data", orderDetails);
+
           return detail;
         }),
       };
 
-      console.log("orderDetails", orderDetails);
-      // Gọi API đặt hàng với thông tin đã chuẩn bị
-      const result = await orderAPI.orderFood(orderDetails);
+      const result = await orderAPI.orderFood(orderData);
 
-      // Kiểm tra và xử lý dựa trên kết quả trả về từ API
       if (result.paymentUrl) {
         // Nếu có URL thanh toán, chuyển hướng người dùng để thực hiện thanh toán
         window.location.href = result.paymentUrl;
