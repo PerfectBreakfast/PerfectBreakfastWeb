@@ -6,8 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
 import Loading from "../../Loading/Loading";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const StaffSetting = () => {
+  const { logout } = useAuth();
   const [userData, setUserData] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ const StaffSetting = () => {
     fetchUserData();
   }, []);
   const handleLogout = () => {
+    logout(userData);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/management/login");

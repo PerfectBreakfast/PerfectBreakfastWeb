@@ -87,16 +87,16 @@ function App() {
               }
             />
 
-            <Route path="/partner/*" element={<PartnerPageLayout />} />
+            {/* <Route path="/partner/*" element={<PartnerPageLayout />} /> */}
 
-            {/* <Route
+            <Route
               path="/partner/*"
               element={
                 <PrivateRoute allowedRoles={["PARTNER ADMIN"]}>
                   <PartnerPageLayout />
                 </PrivateRoute>
               }
-            /> */}
+            />
             <Route
               path="/supplier/*"
               element={

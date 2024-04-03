@@ -52,6 +52,8 @@ const Login = () => {
       try {
         const userData = await userAPI.externalLogin(codeResponse.code);
 
+        login(userData);
+
         const accessToken = userData.accessToken;
         const refreshToken = userData.refreshToken;
         // Mã hóa tokens

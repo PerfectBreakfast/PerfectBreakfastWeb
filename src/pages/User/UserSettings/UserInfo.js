@@ -6,11 +6,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ReactComponent as User } from "../../../assets/icons/User Circle.svg";
 import Loading from "../../Loading/Loading";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 function UserInfo() {
   const [userData, setUserData] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -26,6 +28,7 @@ function UserInfo() {
     fetchUserData();
   }, []);
   const handleLogout = () => {
+    logout(userData);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/login");
