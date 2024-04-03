@@ -55,60 +55,66 @@ const OrderHistoryDetail = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-2">Đơn hàng</h2>
+      <h2 className="text-2xl font-bold mb-4">Đơn hàng</h2>
 
       {orderData ? (
-        <div className="bg-white shadow-md rounded-lg p-4 mb-4">
-          <p className="mb-2">
-            Tên công ty:
-            <span className="font-bold"> {orderData.companyName}</span>
-          </p>
-          <p className="mb-2">
-            Số điện thoại<span className="font-bold"> {orderData.phone}</span>
-          </p>
-          <p className="mb-2">
-            Bữa ăn:<span className="font-bold"> {orderData.meal}</span>
-          </p>
-          <p className="mb-2">
-            Bữa ăn:
-            <span className="font-bold">
-              {""} <DailyOrderStatusText status={orderData.status} />
-            </span>
-          </p>
-          <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left">Tên món ăn</th>
-                <th className="py-3 px-6 text-right">Số lượng</th>
-              </tr>
-            </thead>
-            {orderData.totalFoodResponses &&
-            orderData.totalFoodResponses.length > 0 ? (
-              <tbody className="text-gray-600 text-sm font-light">
-                {orderData.totalFoodResponses.map((item, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
-                      {item.name}
-                    </td>
-                    <td className="py-3 px-6 text-right">
-                      {item.quantity} món
+        <>
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <p className="mb-2">
+              Tên công ty:
+              <span className="font-bold"> {orderData.companyName}</span>
+            </p>
+            <p className="mb-2">
+              Số điện thoại<span className="font-bold"> {orderData.phone}</span>
+            </p>
+            <p className="mb-2">
+              Bữa ăn:<span className="font-bold"> {orderData.meal}</span>
+            </p>
+            <p className="mb-2">
+              Bữa ăn:
+              <span className="font-bold">
+                {""} <DailyOrderStatusText status={orderData.status} />
+              </span>
+            </p>
+          </div>
+          <div className="bg-white rounded-xl p-4 mb-4">
+            <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>
+            <div className="overflow-x-auto max-h-96 mt-2">
+              <table className="w-full table-auto mb-4">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-200 text-gray-800 leading-normal">
+                    <th className="py-3 px-6 text-left">Tên món ăn</th>
+                    <th className="py-3 px-6 text-right">Số lượng</th>
+                  </tr>
+                </thead>
+                {orderData.totalFoodResponses &&
+                orderData.totalFoodResponses.length > 0 ? (
+                  <tbody className="text-gray-600 text-sm font-light">
+                    {orderData.totalFoodResponses.map((item, index) => (
+                      <tr
+                        key={index}
+                        className="border-b border-gray-200 hover:bg-gray-100"
+                      >
+                        <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
+                          {item.name}
+                        </td>
+                        <td className="py-3 px-6 text-right">
+                          {item.quantity} món
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-3 px-6">
+                      Không có món ăn
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center py-3 px-6">
-                  Không có món ăn
-                </td>
-              </tr>
-            )}{" "}
-          </table>
-        </div>
+                )}{" "}
+              </table>
+            </div>
+          </div>
+        </>
       ) : (
         <LoadingSkeleton />
       )}

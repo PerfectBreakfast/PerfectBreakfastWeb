@@ -22,7 +22,7 @@ const DeliveryPageLayout = () => {
       <Box sx={{ display: "flex" }}>
         <Sidebar />
 
-        <MainContainer>
+        <MainContainer className="bg-color">
           <div style={{ height: "64px" }} />{" "}
           {/* Adjust the height based on your Sidebar's height */}
           <DeliveryContent />

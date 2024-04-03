@@ -45,16 +45,16 @@ const DeliveryStaffList = () => {
     <>
       <div className="container mx-auto p-4">
         <h4 className="text-2xl font-semibold mb-4">Danh sách nhân viên</h4>
-
-        <div className="flex justify-between items-center mb-4">
-          <button
-            className="btn-add"
-            onClick={() => handleAddEmployeeClick(deliveryId)}
-          >
-            <Plus />
-            Thêm nhân viên
-          </button>
-          {/* 
+        <div className="bg-white rounded-xl p-4 ">
+          <div className="flex justify-between items-center mb-4">
+            <button
+              className="btn-add"
+              onClick={() => handleAddEmployeeClick(deliveryId)}
+            >
+              <Plus />
+              Thêm nhân viên
+            </button>
+            {/* 
           <div className="flex gap-2 items-center">
             <input
               type="text"
@@ -75,84 +75,92 @@ const DeliveryStaffList = () => {
               <Search />
             </button>
           </div> */}
-        </div>
+          </div>
 
-        <div className="bg-white shadow-md my-6 overflow-auto">
-          <table className="min-w-max w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 font-extrabold px-6">Hình ảnh</th>
-                <th className="py-2.5 font-extrabold px-6">Tên nhân viên</th>
-                <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
-                <th className="py-2.5 font-extrabold px-6">Email</th>
-                <th className="py-2.5 font-extrabold px-6"></th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600 text-sm font-light">
-              {isLoading ? (
-                <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
-                    Đang tải...
-                  </td>
+          <div>
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="bg-gray-200 text-gray-800 leading-normal">
+                  <th className="py-2.5 font-extrabold px-6">Hình ảnh</th>
+                  <th className="py-2.5 font-extrabold px-6">Tên nhân viên</th>
+                  <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
+                  <th className="py-2.5 font-extrabold px-6">Email</th>
+                  <th className="py-2.5 font-extrabold px-6"></th>
                 </tr>
-              ) : staffData.length > 0 ? (
-                staffData.map((staff) => (
-                  <tr
-                    key={staff.id}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-2.5 px-6 text-left">
-                      <img
-                        src={staff.image}
-                        alt={staff.name}
-                        className="display-img-user"
-                      />
-                    </td>
-                    <td className="p2.5-3 px-6 text-left">
-                      <span
-                        className="text-name "
-                        // onClick={() => handleDishClick(staff.id)}
-                      >
-                        {staff.name}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-6 text-left">
-                      {staff.phoneNumber}
-                    </td>
-                    <td className="py-2.5 px-6 text-left">{staff.email}</td>
-                    <td className="py-2.5 px-6">
-                      <div className="flex">
-                        <Write
-                          // onClick={() => handleEditClick(staff.id)}
-                          className="size-5 cursor-pointer"
-                        />
-                        <Delete
-                          // onClick={() => handleDeleteClick(staff.id)}
-                          className="size-5 cursor-pointer ml-4"
-                        />
-                      </div>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-light">
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="4" className="text-center py-3 px-6">
+                      Đang tải...
                     </td>
                   </tr>
-                ))
-              ) : (
+                ) : staffData.length > 0 ? (
+                  staffData.map((staff) => (
+                    <tr
+                      key={staff.id}
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                    >
+                      <td className="py-2.5 px-6 text-left">
+                        <img
+                          src={staff.image}
+                          alt={staff.name}
+                          className="display-img-user"
+                        />
+                      </td>
+                      <td className="p2.5-3 px-6 text-left">
+                        <span
+                          className="text-name "
+                          // onClick={() => handleDishClick(staff.id)}
+                        >
+                          {staff.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-6 text-left">
+                        {staff.phoneNumber}
+                      </td>
+                      <td className="py-2.5 px-6 text-left">{staff.email}</td>
+                      <td className="py-2.5 px-6">
+                        <div className="flex">
+                          <Write
+                            // onClick={() => handleEditClick(staff.id)}
+                            className="size-5 cursor-pointer"
+                          />
+                          <Delete
+                            // onClick={() => handleDeleteClick(staff.id)}
+                            className="size-5 cursor-pointer ml-4"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-3 px-6">
+                      Không có dữ liệu
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+              <tfoot>
                 <tr>
-                  <td colSpan="4" className="text-center py-3 px-6">
-                    Không có dữ liệu
+                  <td colspan="5">
+                    <div className="pagination-container">
+                      <Pagination
+                        componentName="div"
+                        count={totalPages}
+                        page={pageIndex + 1}
+                        onChange={handlePageChange}
+                        shape="rounded"
+                        showFirstButton
+                        showLastButton
+                      />
+                    </div>
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="pagination-container" style={{ marginTop: "20px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
+              </tfoot>
+            </table>
+          </div>
         </div>
       </div>
 

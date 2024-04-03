@@ -45,7 +45,7 @@ const DeliveryOrderFoodList = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
+      <h2 className="text-2xl font-semibold mb-4">Danh sách đơn hàng</h2>
 
       {/* <div className="flex justify-end items-center mb-4">
         <div className="flex gap-2 items-center">
@@ -59,92 +59,104 @@ const DeliveryOrderFoodList = () => {
           </button>
         </div>
       </div> */}
-      <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto table-dailyoder">
-          <thead>
-            <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 font-extrabold px-6">Ngày giao hàng</th>
-              <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
-              <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
-              <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
-              <th className="py-2.5 font-extrabold px-6">Số lượng</th>
-              <th className="py-2.5 font-extrabold px-6">Trạng thái</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {isLoading ? (
-              <tr>
-                <td colSpan="6" className="text-center py-3 px-6">
-                  Đang tải...
-                </td>
+      <div className="bg-white rounded-xl p-4 ">
+        <div className="">
+          <table className="w-full table-dailyoder">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold px-3">Ngày giao hàng</th>
+                <th className="py-2.5 font-extrabold px-3">Tên công ty</th>
+                <th className="py-2.5 font-extrabold px-3">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-3 w-24">Bữa ăn</th>
+                <th className="py-2.5 font-extrabold px-3 text-center w-24">
+                  Số lượng
+                </th>
+                <th className="py-2.5 font-extrabold px-3">Trạng thái</th>
               </tr>
-            ) : orders.length > 0 ? (
-              orders.flatMap((item) =>
-                item.companies.flatMap((company, companyIndex) =>
-                  company.dailyOrders.map((order, orderIndex) => (
-                    <tr key={order.id}>
-                      {companyIndex === 0 && orderIndex === 0 && (
-                        <td
-                          className="py-2.5 px-6"
-                          rowSpan={item.companies.reduce(
-                            (acc, cur) => acc + cur.dailyOrders.length,
-                            0
-                          )}
-                        >
-                          {formatDate(item.bookingDate)}
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-3">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
+                orders.flatMap((item) =>
+                  item.companies.flatMap((company, companyIndex) =>
+                    company.dailyOrders.map((order, orderIndex) => (
+                      <tr key={order.id}>
+                        {companyIndex === 0 && orderIndex === 0 && (
+                          <td
+                            className="py-2.5 px-3"
+                            rowSpan={item.companies.reduce(
+                              (acc, cur) => acc + cur.dailyOrders.length,
+                              0
+                            )}
+                          >
+                            {formatDate(item.bookingDate)}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-2.5 px-3 font-bold"
+                            rowSpan={company.dailyOrders.length}
+                          >
+                            {company.name}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3 font-bold"
+                            rowSpan={company.dailyOrders.length}
+                          >
+                            {company.name}
+                          </td>
+                        )}
+                        <td className="py-2.5 px-3">
+                          <button
+                            className="text-green-500 hover:text-green-600 font-semibold"
+                            onClick={() => handleDetailClick(order.id)}
+                          >
+                            {order.meal}
+                          </button>
                         </td>
-                      )}
-                      {orderIndex === 0 && (
-                        <td
-                          className="py-2.5 px-6 font-bold"
-                          rowSpan={company.dailyOrders.length}
-                        >
-                          {company.name}
+                        <td className="py-2.5 px-3 text-center">
+                          {order.orderQuantity}
                         </td>
-                      )}
-                      {orderIndex === 0 && (
-                        <td
-                          className="py-3 px-6 font-bold"
-                          rowSpan={company.dailyOrders.length}
-                        >
-                          {company.name}
+                        <td className="py-2.5 min-w-48">
+                          <DailyOrderStatus status={order.status} />
                         </td>
-                      )}
-                      <td className="py-2.5 px-6">
-                        <button
-                          className="text-green-500 hover:text-green-600 font-semibold"
-                          onClick={() => handleDetailClick(order.id)}
-                        >
-                          {order.meal}
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-6 text-center">
-                        {order.orderQuantity}
-                      </td>
-                      <td className="py-2.5 px-6">
-                        <DailyOrderStatus status={order.status} />
-                      </td>
-                    </tr>
-                  ))
+                      </tr>
+                    ))
+                  )
                 )
-              )
-            ) : (
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-3">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
+            </tbody>
+            <tfoot>
               <tr>
-                <td colSpan="6" className="text-center py-3 px-6">
-                  Không có dữ liệu
+                <td colspan="6">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
                 </td>
               </tr>
-            )}
-          </tbody>
-        </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
+            </tfoot>
+          </table>
         </div>
       </div>
 
