@@ -17,6 +17,7 @@ import { ReactComponent as Setting } from "../../../assets/icons/Settings.svg";
 
 import logo from "../../../assets/images/logo.png";
 import { useUser } from "../../../components/Context/UserContext";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const navigation = [
   { name: "Danh sách món ăn", href: "/admin/food", icon: FoodIcon },
@@ -46,6 +47,7 @@ const navigation = [
 ];
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   const { userData } = useUser(); // Destructure userData from the context
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,6 +55,7 @@ const Sidebar = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleLogout = () => {
+    logout(userData);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/management/login");

@@ -31,7 +31,8 @@ import { useAuth } from "./AuthContext";
 import { toast } from "react-toastify";
 
 const PrivateRoute = ({ allowedRoles, children }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
   const location = useLocation();
 
   if (!user) {
@@ -40,6 +41,7 @@ const PrivateRoute = ({ allowedRoles, children }) => {
       ? "/login"
       : "/management/login";
     toast.error("Vui lòng đăng nhập!");
+    logout(user);
     return <Navigate to={redirectTo} replace />;
   }
 
@@ -52,6 +54,8 @@ const PrivateRoute = ({ allowedRoles, children }) => {
     const redirectTo = location.pathname.startsWith("/user")
       ? "/login"
       : "/management/login";
+    logout(user);
+    toast.error("Vui lòng đăng nhập!");
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 

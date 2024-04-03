@@ -13,6 +13,7 @@ import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 
 import logo from "../../../assets/images/logo.png";
 import { useUser } from "../../../components/Context/UserContext";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const navigation = [
   { name: "Danh sách đơn hàng", href: "/delivery/order", icon: FoodIcon },
@@ -30,11 +31,13 @@ const navigation = [
 ];
 
 const DeliverySidebar = () => {
+  const { logout } = useAuth();
   const { userData } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const handleLogout = () => {
+    logout(userData);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/management/login");
