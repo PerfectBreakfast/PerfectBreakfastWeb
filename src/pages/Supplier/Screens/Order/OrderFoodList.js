@@ -123,124 +123,137 @@ const OrderFoodList = () => {
         Danh sách món ăn được phân phối
       </h2>
 
-      <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 px-6 font-extrabold">Ngày giao hàng</th>
-              <th className="py-2.5 px-6 text-center font-extrabold">Bữa ăn</th>
-              <th className="py-2.5 px-6 font-extrabold">Nhà cung cấp</th>
-              <th className="py-2.5 px-6 font-extrabold">
-                Thời gian giao hàng
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {foodData.length > 0 ? (
-              foodData.map((data, dataIndex) => {
-                // Tính tổng số hàng cho mỗi ngày giao hàng
-                const totalRowsPerDay = data.supplierDeliveryTimes.reduce(
-                  (acc, mealResponse) =>
-                    acc +
-                    mealResponse.foodAssignmentGroupByPartners.reduce(
-                      (acc2, supplier) =>
-                        acc2 + supplier.foodAssignmentResponses.length,
+      <div className="bg-white rounded-xl p-4 ">
+        <div>
+          <table className="w-full table-auto table-dailyoder">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 px-6 font-extrabold">Ngày giao hàng</th>
+                <th className="py-2.5 px-6 text-center font-extrabold">
+                  Bữa ăn
+                </th>
+                <th className="py-2.5 px-6 font-extrabold text-center">
+                  Đối tác
+                </th>
+                <th className="py-2.5 px-6 font-extrabold text-center">
+                  Thời gian giao hàng
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {foodData.length > 0 &&
+                foodData
+                  .map((day, dayIndex) => {
+                    let totalDayMeals = day.supplierDeliveryTimes.reduce(
+                      (acc, meal) =>
+                        acc +
+                        meal.foodAssignmentGroupByPartners.reduce(
+                          (acc2, partner) =>
+                            acc2 + partner.foodAssignmentResponses.length,
+                          0
+                        ),
                       0
-                    ),
-                  0
-                );
+                    );
 
-                return data.supplierDeliveryTimes.flatMap(
-                  (mealResponse, mealIndex) =>
-                    mealResponse.foodAssignmentGroupByPartners.flatMap(
-                      (supplier, supplierIndex) =>
-                        supplier.foodAssignmentResponses.map(
-                          (foodAssignment, foodIndex) => (
-                            <tr
-                              key={`${dataIndex}-${mealIndex}-${supplierIndex}-${foodIndex}`}
-                            >
-                              {/* Chỉ hiển thị ngày giao hàng ở hàng đầu tiên */}
-                              {mealIndex === 0 &&
-                              supplierIndex === 0 &&
-                              foodIndex === 0 ? (
-                                <td
-                                  className="py-2 px-6"
-                                  rowSpan={totalRowsPerDay}
-                                >
-                                  {data.date}
-                                </td>
-                              ) : null}
-                              {/* Chỉ hiển thị bữa ăn và nhà cung cấp ở hàng đầu tiên của mỗi nhóm */}
-                              {supplierIndex === 0 && foodIndex === 0 ? (
-                                <td
-                                  className="py-2 px-6 text-center"
-                                  rowSpan={
-                                    supplier.foodAssignmentResponses.length
-                                  }
-                                  onClick={() =>
-                                    handleClickDetail(
-                                      mealResponse.foodAssignmentGroupByPartners
-                                    )
-                                  }
-                                >
-                                  <button className="text-blue-500 hover:text-blue-700">
-                                    {mealResponse.deliveryTime}
-                                  </button>
-                                </td>
-                              ) : null}
-                              {foodIndex === 0 ? (
-                                <td
-                                  className="py-2 px-6"
-                                  rowSpan={
-                                    supplier.foodAssignmentResponses.length
-                                  }
-                                >
-                                  {supplier.partnerName}
-                                </td>
-                              ) : null}
-                              <td className="py-2 px-6">
-                                {new Date(
-                                  foodAssignment.deliveryDeadline
-                                ).toLocaleTimeString("vi-VN", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </td>
-                            </tr>
-                          )
-                        )
-                    )
-                );
-              })
-            ) : (
+                    return day.supplierDeliveryTimes
+                      .map((meal, mealIndex) => {
+                        let totalMealSuppliers =
+                          meal.foodAssignmentGroupByPartners.reduce(
+                            (acc, partner) =>
+                              acc + partner.foodAssignmentResponses.length,
+                            0
+                          );
+
+                        return meal.foodAssignmentGroupByPartners
+                          .map((partner, supplierIndex) => {
+                            let totalSupplierAssignments =
+                              partner.foodAssignmentResponses.length;
+
+                            return partner.foodAssignmentResponses.map(
+                              (assignment, assignmentIndex) => {
+                                return (
+                                  <tr
+                                    key={`${day.date}-${meal.deliveryTime}-${assignment.id}`}
+                                  >
+                                    {mealIndex === 0 &&
+                                      supplierIndex === 0 &&
+                                      assignmentIndex === 0 && (
+                                        <td
+                                          rowSpan={totalDayMeals}
+                                          className="py-2.5 px-6"
+                                        >
+                                          {formatDate(day.date)}
+                                        </td>
+                                      )}
+                                    {supplierIndex === 0 &&
+                                      assignmentIndex === 0 && (
+                                        <td
+                                          rowSpan={totalMealSuppliers}
+                                          className="py-2.5 px-6 text-center"
+                                        >
+                                          {meal.deliveryTime}
+                                        </td>
+                                      )}
+                                    {assignmentIndex === 0 && (
+                                      <td
+                                        rowSpan={totalSupplierAssignments}
+                                        className="py-2.5 px-6 text-center"
+                                        onClick={() =>
+                                          handleClickDetail(partner)
+                                        }
+                                      >
+                                        <button className="text-green-500 hover:text-green-700 font-semibold">
+                                          {partner.partnerName}
+                                        </button>
+                                      </td>
+                                    )}
+                                    <td className="py-2.5 px-6 text-center">
+                                      {new Date(
+                                        assignment.deliveryDeadline
+                                      ).toLocaleTimeString("vi-VN", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            );
+                          })
+                          .flat();
+                      })
+                      .flat();
+                  })
+                  .flat()}
+              {foodData.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+              )}
+            </tbody>
+
+            <tfoot>
               <tr>
-                <td colSpan="4" className="text-center py-4">
-                  Không có dữ liệu
+                <td colspan="4">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
                 </td>
               </tr>
-            )}
-          </tbody>
-
-          <tfoot>
-            <tr>
-              <td colspan="4">
-                <div className="pagination-container">
-                  <Pagination
-                    componentName="div"
-                    count={totalPages}
-                    page={pageIndex + 1}
-                    onChange={handlePageChange}
-                    shape="rounded"
-                    showFirstButton
-                    showLastButton
-                  />
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+            </tfoot>
+          </table>
+        </div>
       </div>
-
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

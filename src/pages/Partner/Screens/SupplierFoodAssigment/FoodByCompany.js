@@ -133,7 +133,7 @@ const FoodByCompany = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">
-        Danh sách nhà cung cấp được phân phối
+        Danh sách nhà cung cấp đã phân phối
       </h2>
 
       <div className="bg-white rounded-xl p-4 ">
