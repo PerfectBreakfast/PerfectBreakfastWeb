@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import Loading from "../../../Loading/Loading";
+import Modal from "react-modal";
 
 const SupplierFoodAssigment = () => {
   const { dailyOrderId } = useParams();
@@ -13,30 +14,7 @@ const SupplierFoodAssigment = () => {
   const [supplierData, setSupplierData] = useState(null);
   const [tempAssignments, setTempAssignments] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
-
-  // useEffect(() => {
-  //   const fetchOrderFoodData = async () => {
-  //     try {
-  //       const data = await dishAPI.getDailyOrderDetailById(dailyOrderId);
-  //       setOrderFoodData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching dish data:", error);
-  //     }
-  //   };
-
-  //   const fetchSupplier = async () => {
-  //     try {
-  //       const data = await supplierUnitAPI.getsAllSupplierByPartner();
-  //       setSupplierData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching supplier data:", error);
-  //     }
-  //   };
-
-  //   fetchSupplier();
-  //   fetchOrderFoodData();
-  // }, []);
-  // console.log("supplier", supplierData);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchOrderFoodData = async () => {
@@ -52,19 +30,47 @@ const SupplierFoodAssigment = () => {
     fetchOrderFoodData();
   }, []);
 
+  // const fetchSuppliersForFoods = async (foods) => {
+  //   const supplierDataByFoodId = {};
+  //   await Promise.all(
+  //     foods.map(async (food) => {
+  //       try {
+  //         const data = await supplierUnitAPI.getSuppliersForFood(food.id); // Giả định rằng API đã được cập nhật để nhận foodId
+  //         supplierDataByFoodId[food.id] = data;
+  //       } catch (error) {
+  //         console.error(`Error fetching suppliers for food ${food.id}:`, error);
+  //       }
+  //     })
+  //   );
+  //   setSupplierData(supplierDataByFoodId);
+  // };
+
   const fetchSuppliersForFoods = async (foods) => {
     const supplierDataByFoodId = {};
+    const newTempAssignments = {}; // Tạo danh sách phân công mới
+
     await Promise.all(
       foods.map(async (food) => {
         try {
-          const data = await supplierUnitAPI.getSuppliersForFood(food.id); // Giả định rằng API đã được cập nhật để nhận foodId
+          const data = await supplierUnitAPI.getSuppliersForFood(food.id);
           supplierDataByFoodId[food.id] = data;
+
+          // Nếu có nhà cung cấp, tạo phân công mặc định với nhà cung cấp đầu tiên và số lượng mặc định
+          if (data && data.length > 0) {
+            newTempAssignments[food.id] = [
+              {
+                supplierId: data[0].id, // ID của nhà cung cấp đầu tiên
+                amountCooked: food.quantity, // Hoặc một giá trị mặc định bạn muốn thiết lập
+              },
+            ];
+          }
         } catch (error) {
           console.error(`Error fetching suppliers for food ${food.id}:`, error);
         }
       })
     );
     setSupplierData(supplierDataByFoodId);
+    setTempAssignments(newTempAssignments); // Cập nhật danh sách phân công với giá trị mặc định
   };
 
   const submitAssignments = async () => {
@@ -76,7 +82,28 @@ const SupplierFoodAssigment = () => {
     if (!allSuppliersSelected) {
       // Nếu tìm thấy assignment nào chưa chọn nhà cung cấp, hiển thị thông báo lỗi và ngăn submit
       toast.error("Vui lòng chọn nhà cung cấp cho tất cả các món ăn.");
+
       return; // Dừng xử lý submit
+    }
+
+    const allAmountsValidAndComplete = Object.entries(tempAssignments).every(
+      ([foodId, assignments]) => {
+        const totalAmount = assignments.reduce(
+          (acc, cur) => acc + Number(cur.amountCooked),
+          0
+        );
+        const requiredAmount = orderFoodData.totalFoodResponses.find(
+          (item) => item.id === foodId
+        )?.quantity;
+        return totalAmount === requiredAmount;
+      }
+    );
+
+    if (!allAmountsValidAndComplete) {
+      toast.error(
+        "Vui lòng nhập đủ và chính xác số lượng cho tất cả các món ăn."
+      );
+      return;
     }
 
     // Biến đổi assignments hiện tại thành dạng đối tượng mới
@@ -95,9 +122,13 @@ const SupplierFoodAssigment = () => {
       // Gửi đối tượng mới đến API
       await SupplierFoodAssignmentAPI.FoodAssigment(assignmentsToSubmit);
       toast.success("Phân món ăn thành công!");
+      setIsOpen(false);
     } catch (error) {
       toast.error(error.errors);
+      setIsOpen(false);
       console.error("Error submitting assignments:", error);
+    } finally {
+      setIsOpen(false);
     }
   };
 
@@ -132,20 +163,31 @@ const SupplierFoodAssigment = () => {
           ?.quantity - totalAssigned;
 
       if (field === "amountCooked") {
-        // Đảm bảo giá trị nhập không làm tổng số lượng vượt quá số lượng còn lại
-        if (Number(value) > maxAllowed) {
-          // toast.error(
-          //   `Số lượng phân món không được vượt quá số lượng còn lại!`,
-          //   { toastId: "max-quantity-error" }
-          // );
+        if (value !== "") {
+          const isValidInteger = /^\d+$/.test(value);
+          if (!isValidInteger) {
+            setErrorMessages({
+              ...errorMessages,
+              [foodId]: `Số lượng phải là số nguyên dương.`,
+            });
+            return prev; // Dừng xử lý nếu giá trị không hợp lệ
+          } else {
+            // Nếu giá trị hợp lệ, xóa thông báo lỗi nếu có
+            const newErrorMessages = { ...errorMessages };
+            delete newErrorMessages[foodId];
+            setErrorMessages(newErrorMessages);
+          }
+        }
 
+        // Đảm bảo giá trị nhập không làm tổng số lượng vượt quá số lượng còn lại
+        if (value !== "" && Number(value) > maxAllowed) {
           setErrorMessages({
             ...errorMessages,
             [foodId]: `Số lượng phân món không được vượt quá ${maxAllowed}.`,
           });
           return prev; // Dừng và giữ nguyên trạng thái hiện tại nếu số lượng vượt quá
         } else {
-          // Nếu không vượt quá, xóa thông báo lỗi nếu có
+          // Nếu không vượt quá hoặc giá trị rỗng, xóa thông báo lỗi nếu có
           const newErrorMessages = { ...errorMessages };
           delete newErrorMessages[foodId];
           setErrorMessages(newErrorMessages);
@@ -167,17 +209,22 @@ const SupplierFoodAssigment = () => {
       0
     );
   };
-  if (!orderFoodData) {
-    return <Loading />;
+  // if (!orderFoodData) {
+  //   return <Loading />;
+  // }
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
   return (
-    <div className="container mx-auto px-4 pt-2 pb-8">
-      <h2 className="text-2xl font-bold mt-3 mb-2 text-gray-800">
-        Phân phối món ăn
-      </h2>
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mb-2">Phân phối món ăn</h2>
       {orderFoodData ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white rounded-xl p-4">
           {orderFoodData.totalFoodResponses.map((item, index) => (
             <div key={index} className="p-4 bg-white shadow rounded-lg mb-6">
               <div className="mb-4">
@@ -209,26 +256,6 @@ const SupplierFoodAssigment = () => {
                     key={idx}
                     className="flex flex-row items-center space-x-4"
                   >
-                    {/* <select
-                      className="input-form"
-                      value={assignment.supplierId}
-                      onChange={(e) =>
-                        handleAssignmentChange(
-                          item.id,
-                          idx,
-                          "supplierId",
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="">Chọn nhà cung cấp</option>
-                      {supplierData[item.id] &&
-                        supplierData[item.id].map((supplier) => (
-                          <option key={supplier.id} value={supplier.id}>
-                            {supplier.name}
-                          </option>
-                        ))}
-                    </select> */}
                     <select
                       className="input-form"
                       value={assignment.supplierId}
@@ -297,18 +324,35 @@ const SupplierFoodAssigment = () => {
               </div>
             </div>
           ))}
+          <div className="mt-6">
+            <button onClick={openModal} className="btn-add">
+              Phân phối
+            </button>
+          </div>
         </div>
       ) : (
-        <ClipLoader />
+        <Loading />
       )}
-      <div className="mt-6">
-        <button
-          onClick={submitAssignments}
-          className="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded shadow"
-        >
-          Phân phối
-        </button>
-      </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận"
+      >
+        <div className="bg-white rounded-lg p-6 max-w-sm mx-auto z-50">
+          <h2 className="text-lg font-semibold mb-4">Xác nhận</h2>
+          <p>Bạn có chắc chắn muốn phân chia món ăn này?</p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="btn-cancel" onClick={closeModal}>
+              Hủy bỏ
+            </button>
+            <button className="btn-confirm " onClick={submitAssignments}>
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

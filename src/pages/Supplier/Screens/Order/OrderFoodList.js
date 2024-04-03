@@ -112,108 +112,133 @@ const OrderFoodList = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleClickDetail = (data) => {
+    console.log("data gửi", data);
+    navigate("detail", { state: { data } });
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">
         Danh sách món ăn được phân phối
       </h2>
 
-      <div className="">
-        {foodData.map((dayData) => (
-          <div
-            className="bg-white shadow-md p-4 my-6 overflow-auto"
-            key={dayData.date}
-          >
-            <h3 className="text-lg font-semibold mb-2">
-              Ngày: {formatDate(dayData.date)}
-            </h3>
-            {dayData.foodAssignmentGroupByPartners.map((partnerData) => (
-              <div key={partnerData.supplierName}>
-                <div className="flex justify-between ">
-                  <h4 className="text-md font-semibold ">
-                    Đối tác: {partnerData.partnerName}
-                  </h4>
-                  <button
-                    className="btn-add"
-                    onClick={() => handleExport(dayData.date)}
-                  >
-                    <File /> Tải file
-                  </button>
+      <div className="bg-white shadow-md my-6 overflow-auto">
+        <table className="min-w-max w-full table-auto">
+          <thead>
+            <tr className="bg-gray-200 text-gray-800 leading-normal">
+              <th className="py-2.5 px-6 font-extrabold">Ngày giao hàng</th>
+              <th className="py-2.5 px-6 text-center font-extrabold">Bữa ăn</th>
+              <th className="py-2.5 px-6 font-extrabold">Nhà cung cấp</th>
+              <th className="py-2.5 px-6 font-extrabold">
+                Thời gian giao hàng
+              </th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 text-sm font-light">
+            {foodData.length > 0 ? (
+              foodData.map((data, dataIndex) => {
+                // Tính tổng số hàng cho mỗi ngày giao hàng
+                const totalRowsPerDay = data.supplierDeliveryTimes.reduce(
+                  (acc, mealResponse) =>
+                    acc +
+                    mealResponse.foodAssignmentGroupByPartners.reduce(
+                      (acc2, supplier) =>
+                        acc2 + supplier.foodAssignmentResponses.length,
+                      0
+                    ),
+                  0
+                );
+
+                return data.supplierDeliveryTimes.flatMap(
+                  (mealResponse, mealIndex) =>
+                    mealResponse.foodAssignmentGroupByPartners.flatMap(
+                      (supplier, supplierIndex) =>
+                        supplier.foodAssignmentResponses.map(
+                          (foodAssignment, foodIndex) => (
+                            <tr
+                              key={`${dataIndex}-${mealIndex}-${supplierIndex}-${foodIndex}`}
+                            >
+                              {/* Chỉ hiển thị ngày giao hàng ở hàng đầu tiên */}
+                              {mealIndex === 0 &&
+                              supplierIndex === 0 &&
+                              foodIndex === 0 ? (
+                                <td
+                                  className="py-2 px-6"
+                                  rowSpan={totalRowsPerDay}
+                                >
+                                  {data.date}
+                                </td>
+                              ) : null}
+                              {/* Chỉ hiển thị bữa ăn và nhà cung cấp ở hàng đầu tiên của mỗi nhóm */}
+                              {supplierIndex === 0 && foodIndex === 0 ? (
+                                <td
+                                  className="py-2 px-6 text-center"
+                                  rowSpan={
+                                    supplier.foodAssignmentResponses.length
+                                  }
+                                  onClick={() =>
+                                    handleClickDetail(
+                                      mealResponse.foodAssignmentGroupByPartners
+                                    )
+                                  }
+                                >
+                                  <button className="text-blue-500 hover:text-blue-700">
+                                    {mealResponse.deliveryTime}
+                                  </button>
+                                </td>
+                              ) : null}
+                              {foodIndex === 0 ? (
+                                <td
+                                  className="py-2 px-6"
+                                  rowSpan={
+                                    supplier.foodAssignmentResponses.length
+                                  }
+                                >
+                                  {supplier.partnerName}
+                                </td>
+                              ) : null}
+                              <td className="py-2 px-6">
+                                {new Date(
+                                  foodAssignment.deliveryDeadline
+                                ).toLocaleTimeString("vi-VN", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </td>
+                            </tr>
+                          )
+                        )
+                    )
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center py-4">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            )}
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <div className="pagination-container">
+                  <Pagination
+                    componentName="div"
+                    count={totalPages}
+                    page={pageIndex + 1}
+                    onChange={handlePageChange}
+                    shape="rounded"
+                    showFirstButton
+                    showLastButton
+                  />
                 </div>
-
-                {partnerData.supplierDeliveryTimes.map((mealData, index) => (
-                  <div key={index}>
-                    <h5 className="text-md font-semibold mb-2">
-                      Thời gian hoàn thành: {formatTime(mealData.deliveryTime)}
-                    </h5>
-
-                    <table className="min-w-max w-full table-auto">
-                      <thead>
-                        <tr className="bg-gray-200 text-gray-800 leading-normal">
-                          <th className="py-2.5 font-extrabold px-6">
-                            Tên món ăn
-                          </th>
-                          <th className="py-2.5 font-extrabold px-6 text-center">
-                            Số lượng
-                          </th>
-                          <th className="py-2.5 font-extrabold px-6 text-center">
-                            Trạng thái
-                          </th>
-                          <th className="py-2.5 font-extrabold px-6 text-center">
-                            Xác nhận đơn hàng
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-gray-600 text-sm font-light">
-                        {mealData.foodAssignmentResponses.map((foodItem) => (
-                          <tr
-                            key={foodItem.id}
-                            className="border-b border-gray-200 hover:bg-gray-100"
-                          >
-                            <td className="py-2.5 px-6 font-bold ">
-                              {foodItem.foodName}
-                            </td>
-                            <td className="py-2.5 px-6 text-center">
-                              {foodItem.amountCooked}
-                            </td>
-                            <td className="py-2.5 px-6 font-semibold text-center">
-                              <SupplierFoodAssigmentStatus
-                                status={foodItem.status}
-                              />
-                            </td>
-
-                            <td className="py-2.5 px-6 text-center">
-                              {foodItem.status === "Pending" && (
-                                <>
-                                  <button
-                                    className="btn-delete"
-                                    onClick={() =>
-                                      openModal(foodItem.id, "reject")
-                                    }
-                                  >
-                                    Từ chối
-                                  </button>
-                                  <button
-                                    className="btn-confirm ml-2"
-                                    onClick={() =>
-                                      openModal(foodItem.id, "confirm")
-                                    }
-                                  >
-                                    Xác nhận
-                                  </button>
-                                </>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        ))}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
 
       <Modal

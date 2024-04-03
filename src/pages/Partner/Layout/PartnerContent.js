@@ -3,13 +3,15 @@ import { Route, Routes } from "react-router-dom";
 import OrderList from "../Screens/Order/OrderList";
 import OrderDetailByCompany from "../Screens/Order/OrderDetailByCompany";
 
-import FoodByCompany from "../Screens/Order/FoodByCompany";
 import SupplierFoodAssigment from "../Screens/Order/TotalOrderFood";
 import CompanyList from "../Screens/Company/CompanyList";
 import SupplierList from "../Screens/Supplier/SupplierList";
 import DailyOrderHistory from "../Screens/Order/DailyOrderHistory";
 import AdminProfile from "../../../components/Profile/AdminProfile";
 import AdminChangePassword from "../../../components/Profile/AdminChangePassword";
+import FoodByCompany from "../Screens/SupplierFoodAssigment/FoodByCompany";
+import FoodAssigmentDetail from "../Screens/SupplierFoodAssigment/FoodAssigmentDetail";
+import PackageList from "../Screens/Package/PackageList";
 
 const PartnerContent = () => {
   return (
@@ -30,6 +32,9 @@ const PartnerContent = () => {
       />
 
       <Route path="food" element={<FoodByCompany />} />
+
+      <Route path="food/detail" element={<FoodAssigmentDetail />} />
+      <Route path="package" element={<PackageList />} />
       <Route path="company" element={<CompanyList />} />
       <Route path="supplier" element={<SupplierList />} />
       <Route path="profile" element={<AdminProfile />} />

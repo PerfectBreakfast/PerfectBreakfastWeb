@@ -42,59 +42,78 @@ const DailyOrderHistory = () => {
   };
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-2">Danh sách đơn hàng</h2>
+      <h2 className="text-2xl font-semibold mb-2">Lịch sử đơn hàng</h2>
 
-      <div className="bg-white shadow-md my-6 overflow-auto">
-        <table className="min-w-max w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200 text-gray-800 leading-normal">
-              <th className="py-2.5 font-extrabold px-6">Ngày giao hàng</th>
-              <th className="py-2.5 font-extrabold px-6">Tên công ty</th>
-              <th className="py-2.5 font-extrabold px-6">Địa chỉ</th>
-              <th className="py-2.5 font-extrabold px-6">Bữa ăn</th>
-              <th className="py-2.5 font-extrabold px-6">Số lượng</th>
-              <th className="py-2.5 font-extrabold px-6">Trạng thái</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {orders.map((item) =>
-              item.companies.map((company) =>
-                company.dailyOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="py-3 px-6">
-                      {" "}
-                      {formatDate(item.bookingDate)}
-                    </td>
-                    <td className="py-3 px-6 font-bold">{company.name}</td>
-                    <td className="py-3 px-6">{company.address}</td>
-                    <td className="py-3 px-6">
-                      <button
-                        className="text-green-500 hover:text-green-600 font-semibold"
-                        onClick={() => handleDetailClick(order.id)}
-                      >
-                        {order.meal}
-                      </button>
-                    </td>
-                    <td className="py-3 px-6 text-center">
-                      {order.orderQuantity}
-                    </td>
-                    <td className="py-3 px-6">
-                      <DailyOrderStatus status={order.status} />
-                    </td>
-                  </tr>
-                ))
-              )
-            )}
-          </tbody>
-        </table>
-        <div className="pagination-container" style={{ marginTop: "5px" }}>
-          <Pagination
-            componentName="div"
-            count={totalPages}
-            page={pageIndex + 1}
-            onChange={handlePageChange}
-            color="primary"
-          />
+      <div className="bg-white rounded-xl p-4 ">
+        <div>
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-2.5 font-extrabold w-36">Ngày giao hàng</th>
+                <th className="py-2.5 font-extrabold px-3 min-w-36">
+                  Tên công ty
+                </th>
+                <th className="py-2.5 font-extrabold px-3">Địa chỉ</th>
+                <th className="py-2.5 font-extrabold px-3 w-28">Bữa ăn</th>
+                <th className="py-2.5 font-extrabold px-3 w-28 text-center">
+                  Số lượng
+                </th>
+                <th className="py-2.5 font-extrabold px-3 text-center">
+                  Trạng thái
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {orders.map((item) =>
+                item.companies.map((company) =>
+                  company.dailyOrders.map((order) => (
+                    <tr
+                      key={order.id}
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                    >
+                      <td className="py-3 px-3">
+                        {" "}
+                        {formatDate(item.bookingDate)}
+                      </td>
+                      <td className="py-3 px-3 font-bold">{company.name}</td>
+                      <td className="py-3 px-3">{company.address}</td>
+                      <td className="py-3 px-3">
+                        <button
+                          className="text-green-500 hover:text-green-600 font-semibold"
+                          onClick={() => handleDetailClick(order.id)}
+                        >
+                          {order.meal}
+                        </button>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        {order.orderQuantity}
+                      </td>
+                      <td className="py-3 px-3 text-center min-w-48">
+                        <DailyOrderStatus status={order.status} />
+                      </td>
+                    </tr>
+                  ))
+                )
+              )}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                  <div className="pagination-container">
+                    <Pagination
+                      componentName="div"
+                      count={totalPages}
+                      page={pageIndex + 1}
+                      onChange={handlePageChange}
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
