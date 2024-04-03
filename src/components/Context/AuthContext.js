@@ -2,8 +2,8 @@ import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext({
   user: null, // Giá trị mặc định cho user
-  login: () => {}, // Hàm mặc định, để tránh lỗi khi gọi hàm mà không được định nghĩa
-  logout: () => {}, // Hàm mặc định
+  login: () => {},
+  logout: () => {},
 });
 
 export function useAuth() {

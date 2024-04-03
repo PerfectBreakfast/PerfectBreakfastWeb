@@ -17,7 +17,7 @@ const SupplierFoodAssignmentAPI = {
   getSupplierFoodAssignmentByPartner: async (pageIndex) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/supplierfoodassigments/partner?pageIndex=${pageIndex}&pageSize=20`
+        `${api}/v1/supplierfoodassigments/partner?pageIndex=${pageIndex}&pageSize=10`
       );
       return response.data;
     } catch (error) {
@@ -77,6 +77,28 @@ const SupplierFoodAssignmentAPI = {
         }
       );
       return response;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getSupplierFoodAssignmentDetailByPartner: async (packageData) => {
+    try {
+      const response = await axiosInstance.post(
+        `${api}/v1/supplierfoodassigments/partner/packages`,
+        packageData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  getSupplierFoodAssignmentDetailBySupplier: async (packageData) => {
+    try {
+      const response = await axiosInstance.post(
+        `${api}/v1/supplierfoodassigments/supplier/packages`,
+        packageData
+      );
+      return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
     }

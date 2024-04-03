@@ -65,77 +65,90 @@ const OrderDetailByCompany = () => {
   console.log("dalyorder", orderData);
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold">Đơn hàng</h2>
-      {isLoading ? ( // Sử dụng biến isLoading để quyết định hiển thị gì
+      <h2 className="text-2xl font-semibold mb-4">Chi tiết đơn hàng</h2>
+      {isLoading ? (
         <LoadingSkeleton />
       ) : (
         <>
-          <div className="flex justify-end items-center">
-            {orderData &&
-              orderData.totalFoodResponses &&
-              orderData.totalFoodResponses.length > 0 &&
-              orderData.status === "Processing" && (
-                <button onClick={() => handleAssignFood()} className="btn-add">
-                  Chọn nhà cung cấp
-                </button>
-              )}
-          </div>
-
           {orderData ? (
-            <div className="bg-white shadow-md rounded-lg pb-4 pt-3 px-4 mb-4">
-              <p className="mb-2">
-                Tên công ty:
-                <span className="font-bold"> {orderData.companyName}</span>
-              </p>
-              <p className="mb-2">
-                Số điện thoại
-                <span className="font-bold"> {orderData.phone}</span>
-              </p>
-              <p className="mb-2">
-                Bữa ăn:<span className="font-bold"> {orderData.meal}</span>
-              </p>
-              <p className="mb-2">
-                Trạng thái:
-                <span className="font-bold">
+            <>
+              <div className="bg-white rounded-xl p-4 mb-4">
+                {" "}
+                <p className="mb-2">
+                  Tên công ty:
+                  <span className="font-bold"> {orderData.companyName}</span>
+                </p>
+                <p className="mb-2">
+                  Số điện thoại
+                  <span className="font-bold"> {orderData.phone}</span>
+                </p>
+                <p className="mb-2">
+                  Bữa ăn:<span className="font-bold"> {orderData.meal}</span>
+                </p>
+                <p className="mb-2">
+                  Trạng thái:
+                  <span className="font-bold">
+                    {" "}
+                    {""}
+                    <DailyOrderStatusText status={orderData.status} />
+                  </span>
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-4 mb-4">
+                <p className="text-xl font-semibold text-gray-600 text-left mb-2">
                   {" "}
-                  {""}
-                  <DailyOrderStatusText status={orderData.status} />
-                </span>
-              </p>
-              <h2 className="text-xl font-semibold mb-3">Chi tiết đơn hàng</h2>
-              <table className="min-w-full table-auto">
-                <thead>
-                  <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th className="py-3 px-6 text-left">Tên món ăn</th>
-                    <th className="py-3 px-6 text-right">Số lượng</th>
-                  </tr>
-                </thead>
-                {orderData.totalFoodResponses &&
-                orderData.totalFoodResponses.length > 0 ? (
-                  <tbody className="text-gray-600 text-sm font-light">
-                    {orderData.totalFoodResponses.map((item, index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-gray-200 hover:bg-gray-100"
+                  Chi tiết món ăn
+                </p>
+                <div className="flex justify-between items-center mb-3">
+                  {orderData &&
+                    orderData.totalFoodResponses &&
+                    orderData.totalFoodResponses.length > 0 &&
+                    orderData.status === "Processing" && (
+                      <button
+                        onClick={() => handleAssignFood()}
+                        className="btn-add"
                       >
-                        <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
-                          {item.name}
-                        </td>
-                        <td className="py-3 px-6 text-right">
-                          {item.quantity} món
+                        Chọn nhà cung cấp
+                      </button>
+                    )}
+                </div>
+
+                <div className="overflow-x-auto max-h-96 mt-2">
+                  <table className="w-full table-auto mb-4">
+                    <thead className="sticky top-0">
+                      <tr className="bg-gray-200 text-gray-800 leading-normal">
+                        <th className="py-2.5 px-6 text-left">Tên món ăn</th>
+                        <th className="py-2.5 px-6 text-right">Số lượng món</th>
+                      </tr>
+                    </thead>
+                    {orderData.totalFoodResponses &&
+                    orderData.totalFoodResponses.length > 0 ? (
+                      <tbody className="text-gray-600 text-sm font-light">
+                        {orderData.totalFoodResponses.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-gray-200 hover:bg-gray-100"
+                          >
+                            <td className="py-2.5 px-6 text-left whitespace-nowrap font-bold">
+                              {item.name}
+                            </td>
+                            <td className="py-2.5 px-6 text-right">
+                              {item.quantity} món
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="text-center py-3 px-6">
+                          Không có món ăn
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                ) : (
-                  <tr>
-                    <td colSpan="4" className="text-center py-3 px-6">
-                      Không có món ăn
-                    </td>
-                  </tr>
-                )}{" "}
-              </table>
-            </div>
+                    )}{" "}
+                  </table>
+                </div>
+              </div>
+            </>
           ) : (
             <></>
           )}

@@ -18,7 +18,7 @@ const PartnerPageLayout = () => {
       <Box sx={{ display: "flex" }}>
         <PartnerSidebar />
 
-        <MainContainer>
+        <MainContainer className="bg-color">
           <div style={{ height: "64px" }} />{" "}
           {/* Adjust the height based on your Sidebar's height */}
           <PartnerContent />

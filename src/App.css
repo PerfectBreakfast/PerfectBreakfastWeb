@@ -73,7 +73,11 @@ input[type="number"] {
   @apply w-28 border-1 border-sky-400 hover:bg-sky-400 hover:text-white font-semibold h-8 gap-2 text-sky-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
 }
 .btn-replay {
-  @apply border-1 border-yellow-400 hover:bg-yellow-400 hover:text-white font-semibold h-10 gap-2 text-yellow-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+  @apply justify-center w-28 border-1 border-yellow-400 hover:bg-yellow-400 hover:text-white font-semibold h-10 gap-2 text-yellow-400 py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
+}
+
+.btn-confirm-action {
+  @apply justify-center w-28 font-semibold h-10 gap-2 bg-mainColor hover:bg-green-600 text-mainTextColorButton py-2 px-4 rounded-xl hover:shadow-xl transition ease-in-out duration-300 flex items-center;
 }
 
 .input-search {
@@ -215,6 +219,9 @@ input[type="number"] {
 /* @import "assets/css/datatables.css"; */
 
 .table-dailyoder td {
+  border: 1px solid #ddd; /* Thêm đường viền cho mỗi ô */
+}
+.table-dailyoder th {
   border: 1px solid #ddd; /* Thêm đường viền cho mỗi ô */
 }
 
