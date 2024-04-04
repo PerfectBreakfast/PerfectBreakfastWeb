@@ -128,6 +128,16 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getTotalFoodForPartner: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/foods/daily-order-id/partner/total-food/${dailyOrderId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default dishAPI;

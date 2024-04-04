@@ -118,6 +118,7 @@ const OrderDetailByCompany = () => {
                     <thead className="sticky top-0">
                       <tr className="bg-gray-200 text-gray-800 leading-normal">
                         <th className="py-2.5 px-6 text-left">Tên món ăn</th>
+                        <th className="py-2.5 px-6 text-left">Chi tiết</th>
                         <th className="py-2.5 px-6 text-right">Số lượng món</th>
                       </tr>
                     </thead>
@@ -131,6 +132,9 @@ const OrderDetailByCompany = () => {
                           >
                             <td className="py-2.5 px-6 text-left whitespace-nowrap font-bold">
                               {item.name}
+                            </td>
+                            <td className="py-2.5 px-6 text-left whitespace-nowrap">
+                              {item.foodName}
                             </td>
                             <td className="py-2.5 px-6 text-right">
                               {item.quantity} món

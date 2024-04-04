@@ -15,6 +15,11 @@ const DailyOrderStatus = ({ status }) => {
       styleClass =
         "border-1 border-amber-500 hover:bg-amber-50  text-amber-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
+    case "Divided":
+      statusText = "Đang chờ xác nhận";
+      styleClass =
+        "border-1 border-orange-500 hover:bg-orange-50  text-orange-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+      break;
     case "Cooking":
       statusText = "Đang nấu";
       styleClass =
@@ -30,6 +35,7 @@ const DailyOrderStatus = ({ status }) => {
       styleClass =
         "border-1 border-indigo-500 hover:bg-indigo-50  text-indigo-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
+
     case "Complete":
       statusText = "Hoàn thành";
       styleClass =

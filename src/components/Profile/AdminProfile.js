@@ -33,6 +33,7 @@ const AdminProfile = () => {
     initialValues: {
       image: "",
       name: "",
+      companyName: "",
       phoneNumber: "",
       email: "",
     },
@@ -70,6 +71,7 @@ const AdminProfile = () => {
         formik.setValues({
           ...formik.values,
           name: user.name,
+          companyName: user.companyName,
           phoneNumber: user.phoneNumber,
           email: user.email,
         });
@@ -192,6 +194,24 @@ const AdminProfile = () => {
                     {formik.errors.name}
                   </div>
                 )}
+              </div>
+              <div>
+                <label
+                  htmlFor="companyName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Công ty
+                </label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  disabled
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.companyName}
+                  className="mt-1 border-1 w-full rounded-xl p-2"
+                />
               </div>
               <div>
                 <label

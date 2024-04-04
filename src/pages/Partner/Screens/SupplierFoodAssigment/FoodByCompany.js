@@ -129,6 +129,33 @@ const FoodByCompany = () => {
     console.log("data gửi", data);
     navigate("detail", { state: { data } });
   };
+  // Định nghĩa lại FoodAssigmentStatus như một hàm
+  const FoodAssigmentStatus = (status) => {
+    switch (status) {
+      case 0:
+        return "text-yellow-500 hover:text-yellow-700";
+      case 1:
+        return "text-red-500 hover:text-red-700";
+      case 2:
+        return "text-blue-500 hover:text-blue-700";
+      case 3:
+        return "text-green-500 hover:text-green-700";
+      default:
+        return "text-gray-500 hover:text-gray-700";
+    }
+  };
+  const MealStatus = (meal) => {
+    switch (meal) {
+      case "Bữa Sáng":
+        return "text-yellow-500 hover:text-yellow-700";
+      case "Bữa trưa":
+        return "text-red-500 hover:text-red-700";
+      case "Bữa tối":
+        return "text-blue-500 hover:text-blue-700";
+      default:
+        return "text-gray-500 hover:text-gray-700";
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -146,7 +173,7 @@ const FoodByCompany = () => {
                   Bữa ăn
                 </th>
                 <th className="py-2.5 px-6 font-extrabold">Nhà cung cấp</th>
-                <th className="py-2.5 px-6 font-extrabold">
+                <th className="py-2.5 px-6 font-extrabold text-center">
                   Thời gian giao hàng
                 </th>
               </tr>
@@ -213,12 +240,17 @@ const FoodByCompany = () => {
                                           handleClickDetail(supplier)
                                         }
                                       >
-                                        <button className="text-green-500 hover:text-green-700 font-semibold">
+                                        <button
+                                          className={`${FoodAssigmentStatus(
+                                            supplier.status
+                                          )} font-semibold`}
+                                        >
                                           {supplier.supplierName}
                                         </button>
                                       </td>
                                     )}
-                                    <td className="py-2.5 px-6">
+
+                                    <td className="py-2.5 px-6 text-center">
                                       {new Date(
                                         assignment.deliveryDeadline
                                       ).toLocaleTimeString("vi-VN", {

@@ -19,7 +19,7 @@ const SupplierFoodAssigment = () => {
   useEffect(() => {
     const fetchOrderFoodData = async () => {
       try {
-        const data = await dishAPI.getDailyOrderDetailById(dailyOrderId);
+        const data = await dishAPI.getTotalFoodForPartner(dailyOrderId);
         setOrderFoodData(data);
         fetchSuppliersForFoods(data.totalFoodResponses); // Gọi hàm mới để fetch suppliers dựa trên foods
       } catch (error) {
@@ -289,7 +289,7 @@ const SupplierFoodAssigment = () => {
                       type="number"
                       className="number-input-form "
                       value={assignment.amountCooked}
-                      placeholder="Amount"
+                      placeholder="Số lượng"
                       min="0"
                       onChange={(e) =>
                         handleAssignmentChange(
