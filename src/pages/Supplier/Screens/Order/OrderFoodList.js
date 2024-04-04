@@ -116,6 +116,18 @@ const OrderFoodList = () => {
     console.log("data gửi", data);
     navigate("detail", { state: { data } });
   };
+  const MealStatus = (meal) => {
+    switch (meal) {
+      case "Bữa Sáng":
+        return "text-lime-500";
+      case "Bữa Trưa":
+        return "text-yellow-500";
+      case "Bữa Tối":
+        return "text-violet-500";
+      default:
+        return "text-gray-500";
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -189,7 +201,9 @@ const OrderFoodList = () => {
                                       assignmentIndex === 0 && (
                                         <td
                                           rowSpan={totalMealSuppliers}
-                                          className="py-2.5 px-6 text-center"
+                                          className={`${MealStatus(
+                                            meal.deliveryTime
+                                          )} py-2.5 px-6 text-center font-semibold`}
                                         >
                                           {meal.deliveryTime}
                                         </td>
@@ -202,7 +216,7 @@ const OrderFoodList = () => {
                                           handleClickDetail(partner)
                                         }
                                       >
-                                        <button className="text-green-500 hover:text-green-700 font-semibold">
+                                        <button className="font-bold text-gray-600 hover:text-gray-800">
                                           {partner.partnerName}
                                         </button>
                                       </td>

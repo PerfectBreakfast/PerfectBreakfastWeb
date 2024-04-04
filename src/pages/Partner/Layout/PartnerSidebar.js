@@ -16,6 +16,7 @@ import logo from "../../../assets/images/logo.png";
 
 import "../../SuperAdmin/Layout/Sidebar.css";
 import { useUser } from "../../../components/Context/UserContext";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const navigation = [
   {
@@ -31,7 +32,7 @@ const navigation = [
   // { name: "Đơn hàng cần xử lý", href: "/partner/order", icon: FoodIcon },
   // { name: "Danh sách phân phối", href: "/partner/food", icon: ComboIcon },
   {
-    name: "Danh sách gói hàng",
+    name: "Tổng hợp đơn hàng",
     href: "/partner/package",
     icon: OrderTotalIcon,
   },
@@ -55,12 +56,14 @@ const navigation = [
 ];
 const PartnerSidebar = () => {
   const { userData } = useUser();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleLogout = () => {
+    logout(userData);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/management/login");

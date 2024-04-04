@@ -13,6 +13,10 @@ const DailyOrderStatusText = ({ status }) => {
       statusText = "Đang chờ phân phối";
       styleClass = "text-amber-500";
       break;
+    case "Divided":
+      statusText = "Đang chờ xác nhận";
+      styleClass = "text-orange-500";
+      break;
     case "Cooking":
       statusText = "Đang nấu";
       styleClass = "text-yellow-500 text-sm";

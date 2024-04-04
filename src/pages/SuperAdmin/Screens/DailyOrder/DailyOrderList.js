@@ -109,6 +109,19 @@ const DailyOrderList = () => {
     navigate(`${dailyOrderId}`);
   };
 
+  const MealStatus = (meal) => {
+    switch (meal) {
+      case "Bữa Sáng":
+        return "text-lime-500 hover:text-lime-700";
+      case "Bữa Trưa":
+        return "text-yellow-500 hover:text-yellow-700";
+      case "Bữa Tối":
+        return "text-violet-500 hover:text-violet-700";
+      default:
+        return "text-gray-500 hover:text-gray-700";
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h4 className="text-2xl font-semibold mb-4">Tổng hợp đơn hàng</h4>
@@ -170,7 +183,9 @@ const DailyOrderList = () => {
                         </td>
                         <td className="py-2.5 w-28 text-left">
                           <button
-                            className="text-green-500 hover:text-green-600 font-semibold"
+                            className={`${MealStatus(
+                              order.meal
+                            )} font-semibold`}
                             onClick={() => handleDetailClick(order.id)}
                           >
                             {order.meal}

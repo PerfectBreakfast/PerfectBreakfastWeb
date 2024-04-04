@@ -28,6 +28,7 @@ function Cart() {
   const [menuDate, setMenuDate] = useState(null);
 
   useEffect(() => {
+    console.log("cart", cart);
     const fetchMealData = async () => {
       try {
         const data = await MealAPI.getMealByCustomer();
@@ -133,6 +134,14 @@ function Cart() {
     const [hours, minutes] = timeString.split(":");
     return `${hours}:${minutes}`;
   };
+
+  const handleComboClick = (comboId) => {
+    navigate(`/user/menu/combo/${comboId}`);
+  };
+  const handleFoodClick = (foodId) => {
+    navigate(`/user/menu/food/${foodId}`);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex items-center mb-4">
@@ -190,7 +199,12 @@ function Cart() {
           {cart.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl shadow flex flex-row p-3 h-24 cursor-pointer mb-3"
+              className="bg-white rounded-xl shadow flex flex-row py-1 px-3 h-24 cursor-pointer mb-3 items-center"
+              onClick={() =>
+                item.type === "combo"
+                  ? handleComboClick(item.id)
+                  : handleFoodClick(item.id)
+              }
             >
               {/* Image */}
               <img
@@ -201,10 +215,20 @@ function Cart() {
 
               {/* Name and Price */}
               <div className="flex flex-col flex-1 mx-4">
-                <span className="cart-food-name mb-2">{item.name}</span>
+                <p className="cart-food-name">{item.name}</p>
+                <p className="cart-food-name-detail text-gray-600 font-light text-sm mb-1">
+                  {item.foods}
+                </p>
                 <div className="flex items-center">
-                  <button
+                  {/* <button
                     onClick={() => handleDecreaseQuantity(item)}
+                    className="text-red-500 hover:text-white border-1 border-red-500 hover:bg-red-600 rounded-md "
+                  > */}
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDecreaseQuantity(item);
+                    }}
                     className="text-red-500 hover:text-white border-1 border-red-500 hover:bg-red-600 rounded-md "
                   >
                     {/* Replace with Tailwind-friendly icon */}
@@ -212,7 +236,10 @@ function Cart() {
                   </button>
                   <span className="mx-2.5 text-lg">{item.quantity}</span>
                   <button
-                    onClick={() => handleIncreaseQuantity(item)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleIncreaseQuantity(item);
+                    }}
                     className="text-green-500 hover:text-white border-1 border-green-500 hover:bg-green-600 rounded-md "
                   >
                     {/* Replace with Tailwind-friendly icon */}
@@ -227,7 +254,10 @@ function Cart() {
               <div className="flex flex-col items-end">
                 {" "}
                 <button
-                  onClick={() => handleRemoveItem(item)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleRemoveItem(item);
+                  }}
                   className="text-red-500 hover:text-red-600 mb-2"
                 >
                   {/* Replace with Tailwind-friendly icon */}

@@ -55,6 +55,7 @@ function ComboDetail() {
     const itemToAdd = {
       id: comboData.id,
       name: comboData.name,
+      foods: comboData.foods,
       image: comboData.image,
       quantity,
       price: comboData.comboPrice,

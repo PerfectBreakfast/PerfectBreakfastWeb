@@ -52,6 +52,18 @@ const PackageList = () => {
 
     return `${hours}:${minutes}, ${day}/${month}/${year}`;
   };
+  const MealStatus = (meal) => {
+    switch (meal) {
+      case "Bữa Sáng":
+        return "text-lime-500 hover:text-lime-700";
+      case "Bữa Trưa":
+        return "text-yellow-500 hover:text-yellow-700";
+      case "Bữa Tối":
+        return "text-violet-500 hover:text-violet-700";
+      default:
+        return "text-gray-500 hover:text-gray-700";
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -100,7 +112,9 @@ const PackageList = () => {
                           ) : null}
                           <td>
                             <button
-                              className="font-semibold hover:font-bold hover:text-green-700 text-green-500"
+                              className={`${MealStatus(
+                                meal.mealType
+                              )} font-semibold`}
                               onClick={() => openModal(meal.packageForMeals)}
                             >
                               {meal.mealType}

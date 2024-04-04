@@ -44,6 +44,19 @@ const OrderList = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const MealStatus = (meal) => {
+    switch (meal) {
+      case "Bữa Sáng":
+        return "text-lime-500 hover:text-lime-700";
+      case "Bữa Trưa":
+        return "text-yellow-500 hover:text-yellow-700";
+      case "Bữa Tối":
+        return "text-violet-500 hover:text-violet-700";
+      default:
+        return "text-gray-500 hover:text-gray-700";
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Đơn hàng cần xử lý</h2>
@@ -102,7 +115,7 @@ const OrderList = () => {
 
                       <td className="py-2.5  min-w-24">
                         <button
-                          className="text-green-500 hover:text-green-600 font-semibold"
+                          className={`${MealStatus(order.meal)} font-semibold`}
                           onClick={() => handleDetailClick(order.id)}
                         >
                           {order.meal}

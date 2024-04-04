@@ -206,6 +206,13 @@ input[type="number"] {
     white-space: nowrap; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
     max-width: 100px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
   }
+  .cart-food-name-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap; /* Đảm bảo rằng nội dung được hiển thị trên một dòng */
+    max-width: 100px; /* Hoặc một giá trị cụ thể tùy thuộc vào yêu cầu thiết kế của bạn */
+  }
   /* .delivery-order-name {
     overflow: hidden;
     white-space: nowrap;
