@@ -3,7 +3,7 @@ import dishAPI from "../../../../services/dishAPI";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
 import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignmentAPI";
 import { ToastContainer, toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import Loading from "../../../Loading/Loading";
 import Modal from "react-modal";
@@ -15,6 +15,7 @@ const SupplierFoodAssigment = () => {
   const [tempAssignments, setTempAssignments] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrderFoodData = async () => {
@@ -123,6 +124,7 @@ const SupplierFoodAssigment = () => {
       await SupplierFoodAssignmentAPI.FoodAssigment(assignmentsToSubmit);
       toast.success("Phân món ăn thành công!");
       setIsOpen(false);
+      navigate("/partner/order");
     } catch (error) {
       toast.error(error.errors);
       setIsOpen(false);

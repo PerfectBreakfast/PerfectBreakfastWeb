@@ -14,7 +14,7 @@ const OrderFoodDetail = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    fetchFoodList(foodAssignmentGroupByPartners); // Assuming we are dealing with the first supplier
+    fetchFoodList(foodAssignmentGroupByPartners);
   }, [foodAssignmentGroupByPartners]);
   console.log("data nhận", foodAssignmentGroupByPartners);
   const fetchFoodList = async (supplierData) => {
@@ -53,18 +53,19 @@ const OrderFoodDetail = () => {
         toast.success(
           `Đơn hàng đã được ${action === "confirm" ? "xác nhận" : "từ chối"}!`
         );
-        fetchFoodList(foodAssignmentGroupByPartners[0]); // Refetch the food list
+        fetchFoodList(foodAssignmentGroupByPartners); // Refetch the food list
         closeModal(); // Close modal
       } catch (error) {
         console.error(
           `Error ${action === "confirm" ? "confirming" : "rejecting"} order:`,
           error
         );
-        toast.error(
-          `Có lỗi xảy ra khi ${
-            action === "confirm" ? "xác nhận" : "từ chối"
-          } đơn hàng.`
-        );
+        // toast.error(
+        //   `Có lỗi xảy ra khi ${
+        //     action === "confirm" ? "xác nhận" : "từ chối"
+        //   } đơn hàng.`
+        // );
+        toast.error(error.errors);
       }
     }
   };
