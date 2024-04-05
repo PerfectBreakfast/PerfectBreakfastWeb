@@ -68,6 +68,16 @@ const orderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  getOrderHistoryByStaff: async (pageNumber) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/orders/deliverystaff/history?pageNumber=${pageNumber}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default orderAPI;

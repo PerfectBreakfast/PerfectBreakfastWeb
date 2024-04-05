@@ -58,6 +58,7 @@ import StaffInfo from "./pages/DeliveryStaff/Setting/StaffInfo";
 import StaffChangePassword from "./pages/DeliveryStaff/Setting/StaffChangePassword";
 import { AuthProvider } from "./components/Context/AuthContext";
 import PrivateRoute from "./components/Context/ProtectedRoute";
+import ShippingHistoryDetail from "./pages/DeliveryStaff/ShippingHistory/ShippingHistoryDetail";
 
 function App() {
   return (
@@ -200,6 +201,10 @@ function App() {
             >
               <Route path="order" element={<DailyOrderList />} />
               <Route path="/staff/history" element={<ShippingHistory />} />
+              <Route
+                path="/staff/history/:id"
+                element={<ShippingHistoryDetail />}
+              />
               <Route
                 path="order/:dailyOrderId"
                 element={<DailyOrderDetail />}
