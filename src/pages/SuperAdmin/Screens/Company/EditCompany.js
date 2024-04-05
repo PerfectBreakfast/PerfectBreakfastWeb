@@ -187,22 +187,34 @@ const EditCompany = () => {
   // Since deletion is not allowed, this function is not needed for EditCompany
   // Existing meals can only have their times modified
 
-  const handleMealSelectionChange = (mealId) => {
-    // Kiểm tra nếu là bữa ăn cố định thì không cho phép bỏ chọn
-    if (
-      fixedMealIds.has(mealId) &&
-      formik.values.selectedMeals.hasOwnProperty(mealId)
-    ) {
-      // Ngăn không cho phép bỏ chọn bằng cách không làm gì cả nếu bữa ăn là cố định
-      return;
-    }
+  // const handleMealSelectionChange = (mealId) => {
+  //   // Kiểm tra nếu là bữa ăn cố định thì không cho phép bỏ chọn
+  //   if (
+  //     fixedMealIds.has(mealId) &&
+  //     formik.values.selectedMeals.hasOwnProperty(mealId)
+  //   ) {
+  //     // Ngăn không cho phép bỏ chọn bằng cách không làm gì cả nếu bữa ăn là cố định
+  //     return;
+  //   }
 
+  //   const updatedSelection = { ...formik.values.selectedMeals };
+  //   if (updatedSelection[mealId]) {
+  //     // Cho phép bỏ chọn nếu không phải bữa ăn cố định
+  //     delete updatedSelection[mealId];
+  //   } else {
+  //     // Thêm bữa ăn mới
+  //     updatedSelection[mealId] = { startTime: "", endTime: "" };
+  //   }
+  //   formik.setFieldValue("selectedMeals", updatedSelection);
+  // };
+
+  const handleMealSelectionChange = (mealId) => {
     const updatedSelection = { ...formik.values.selectedMeals };
     if (updatedSelection[mealId]) {
-      // Cho phép bỏ chọn nếu không phải bữa ăn cố định
+      // Nếu bữa ăn đã được chọn, bỏ chọn bằng cách xóa khỏi danh sách
       delete updatedSelection[mealId];
     } else {
-      // Thêm bữa ăn mới
+      // Nếu bữa ăn chưa được chọn, thêm vào danh sách với thời gian mặc định
       updatedSelection[mealId] = { startTime: "", endTime: "" };
     }
     formik.setFieldValue("selectedMeals", updatedSelection);

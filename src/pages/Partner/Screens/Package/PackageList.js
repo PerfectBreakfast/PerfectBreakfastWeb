@@ -73,9 +73,14 @@ const PackageList = () => {
           <table className="w-full table-dailyoder">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 w-1/4">Ngày giao hàng</th>
-                <th className="py-2.5 w-2/4">Tên công ty</th>
-                <th className="py-2.5 w-1/4">Bữa ăn</th>
+                <th className="py-2.5">Ngày giao hàng</th>
+                <th className="py-2.5">Tên công ty</th>
+                <th className="py-2.5">Bữa ăn</th>
+                <th className="py-2.5 text-center">
+                  Số lượng món được phân bổ
+                </th>
+                <th className="py-2.5 text-center">Số lượng món thiếu</th>
+                <th className="py-2.5 text-center">Số lượng món hoàn thành</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -119,6 +124,15 @@ const PackageList = () => {
                             >
                               {meal.mealType}
                             </button>
+                          </td>
+                          <td className="text-center">
+                            {meal.packageForMeals[0].totalFoodAssignQuantity}
+                          </td>
+                          <td className="text-center">
+                            {meal.packageForMeals[0].missingQuantity}
+                          </td>
+                          <td className="text-center">
+                            {meal.packageForMeals[0].successfulQuantity}
                           </td>
                         </tr>
                       ))
