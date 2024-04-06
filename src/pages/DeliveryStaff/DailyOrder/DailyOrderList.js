@@ -67,7 +67,7 @@ const DailyOrderList = () => {
         {/* Date Picker */}
         <div className="menuDate flex justify-between items-center">
           {/* Access bookingDate from the nested dailyOrder object */}
-          <h6 className="text-green-600 text-xl font-bold">Đơn hàng</h6>
+          <h6 className="text-green-600 text-xl font-bold">Nhiệm vụ</h6>
           <div className="mb-2">
             <input
               type="date"
