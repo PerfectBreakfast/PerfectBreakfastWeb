@@ -9,6 +9,7 @@ import Loading from "../../../Loading/Loading";
 import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignmentAPI";
 import SupplierFoodAssigmentStatus from "../../../../components/Status/SupplierFoodAssigmentStatus";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
+import { ReactComponent as AlertIcon } from "../../../../assets/icons/alert-circle.svg";
 
 const FoodByCompany = () => {
   const [foodData, setFoodData] = useState([]);
@@ -133,27 +134,15 @@ const FoodByCompany = () => {
   const FoodAssigmentStatus = (status) => {
     switch (status) {
       case 0:
-        return "text-yellow-500 hover:text-yellow-700";
+        return "text-yellow-500 hover:text-yellow-600";
       case 1:
-        return "text-red-500 hover:text-red-700";
+        return "text-red-500 hover:text-red-600";
       case 2:
-        return "text-blue-500 hover:text-blue-700";
+        return "text-blue-500 hover:text-blue-600";
       case 3:
-        return "text-green-500 hover:text-green-700";
+        return "text-green-500 hover:text-green-600";
       default:
-        return "text-gray-500 hover:text-gray-700";
-    }
-  };
-  const MealStatus = (meal) => {
-    switch (meal) {
-      case "Bữa Sáng":
-        return "text-yellow-500 hover:text-yellow-700";
-      case "Bữa trưa":
-        return "text-red-500 hover:text-red-700";
-      case "Bữa tối":
-        return "text-blue-500 hover:text-blue-700";
-      default:
-        return "text-gray-500 hover:text-gray-700";
+        return "text-gray-500 hover:text-gray-600";
     }
   };
 
@@ -240,13 +229,29 @@ const FoodByCompany = () => {
                                           handleClickDetail(supplier)
                                         }
                                       >
-                                        <button
-                                          className={`${FoodAssigmentStatus(
-                                            supplier.status
-                                          )} font-semibold`}
-                                        >
-                                          {supplier.supplierName}
-                                        </button>
+                                        <div className="flex justify-between">
+                                          <button className="py-2.5 px-6 font-semibold">
+                                            {supplier.supplierName}
+                                          </button>
+                                          {supplier.status === 0 ||
+                                          supplier.status === 1 ||
+                                          supplier.status === 2 ? (
+                                            <div>
+                                              <AlertIcon
+                                                className={`${FoodAssigmentStatus(
+                                                  supplier.status
+                                                )} cursor-pointer`}
+                                                title={
+                                                  supplier.status === 0
+                                                    ? "Đơn hàng đang chờ xác nhận"
+                                                    : supplier.status === 1
+                                                    ? "Đơn hàng đang chờ phân phối lại"
+                                                    : "Đơn hàng đang cần xác nhận"
+                                                }
+                                              />
+                                            </div>
+                                          ) : null}
+                                        </div>
                                       </td>
                                     )}
 

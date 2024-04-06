@@ -13,15 +13,19 @@ const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchOrderList = async () => {
+      setIsLoading(true);
       try {
         const result = await DailyOrderAPI.getDailyOrderForPartner(pageIndex);
         setOrders(result.items);
         setTotalPages(result.totalPagesCount);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
     fetchOrderList();
@@ -80,56 +84,72 @@ const OrderList = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {orders.map((item) =>
-                item.companies.flatMap((company, companyIndex) =>
-                  company.dailyOrders.map((order, orderIndex) => (
-                    <tr key={order.id}>
-                      {companyIndex === 0 && orderIndex === 0 && (
-                        <td
-                          className="py-2.5"
-                          rowSpan={item.companies.reduce(
-                            (acc, cur) => acc + cur.dailyOrders.length,
-                            0
-                          )}
-                        >
-                          {formatDate(item.bookingDate)}
-                        </td>
-                      )}
-                      {orderIndex === 0 && (
-                        <td
-                          className="py-2.5 font-bold"
-                          rowSpan={company.dailyOrders.length}
-                        >
-                          {company.name}
-                        </td>
-                      )}
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
+                orders.map((item) =>
+                  item.companies.flatMap((company, companyIndex) =>
+                    company.dailyOrders.map((order, orderIndex) => (
+                      <tr key={order.id}>
+                        {companyIndex === 0 && orderIndex === 0 && (
+                          <td
+                            className="py-2.5"
+                            rowSpan={item.companies.reduce(
+                              (acc, cur) => acc + cur.dailyOrders.length,
+                              0
+                            )}
+                          >
+                            {formatDate(item.bookingDate)}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-2.5 font-bold"
+                            rowSpan={company.dailyOrders.length}
+                          >
+                            {company.name}
+                          </td>
+                        )}
 
-                      {orderIndex === 0 && (
-                        <td
-                          className="py-2.5  font-semibold"
-                          rowSpan={company.dailyOrders.length}
-                        >
-                          {company.address}
-                        </td>
-                      )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-2.5  font-semibold"
+                            rowSpan={company.dailyOrders.length}
+                          >
+                            {company.address}
+                          </td>
+                        )}
 
-                      <td className="py-2.5  min-w-24">
-                        <button
-                          className={`${MealStatus(order.meal)} font-semibold`}
-                          onClick={() => handleDetailClick(order.id)}
-                        >
-                          {order.meal}
-                        </button>
-                      </td>
-                      <td className="py-2.5 text-center">
-                        {order.orderQuantity}
-                      </td>
-                      <td className="py-2.5 min-w-48">
-                        <DailyOrderStatus status={order.status} />
-                      </td>
-                    </tr>
-                  ))
+                        <td className="py-2.5  min-w-24">
+                          <button
+                            className={`${MealStatus(
+                              order.meal
+                            )} font-semibold`}
+                            onClick={() => handleDetailClick(order.id)}
+                          >
+                            {order.meal}
+                          </button>
+                        </td>
+                        <td className="py-2.5 text-center">
+                          {order.orderQuantity}
+                        </td>
+                        <td className="py-2.5 min-w-48">
+                          <DailyOrderStatus status={order.status} />
+                        </td>
+                      </tr>
+                    ))
+                  )
                 )
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
               )}
             </tbody>
             <tfoot>
