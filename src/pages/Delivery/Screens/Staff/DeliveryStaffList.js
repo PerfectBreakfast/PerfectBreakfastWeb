@@ -85,7 +85,7 @@ const DeliveryStaffList = () => {
                   <th className="py-2.5 font-extrabold px-6">Tên nhân viên</th>
                   <th className="py-2.5 font-extrabold px-6">Số điện thoại</th>
                   <th className="py-2.5 font-extrabold px-6">Email</th>
-                  <th className="py-2.5 font-extrabold px-6"></th>
+                  {/* <th className="py-2.5 font-extrabold px-6"></th> */}
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -120,7 +120,7 @@ const DeliveryStaffList = () => {
                         {staff.phoneNumber}
                       </td>
                       <td className="py-2.5 px-6 text-left">{staff.email}</td>
-                      <td className="py-2.5 px-6">
+                      {/* <td className="py-2.5 px-6">
                         <div className="flex">
                           <Write
                             // onClick={() => handleEditClick(staff.id)}
@@ -131,7 +131,7 @@ const DeliveryStaffList = () => {
                             className="size-5 cursor-pointer ml-4"
                           />
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 ) : (

@@ -17,11 +17,14 @@ const OrderFoodList = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState(null);
   const [confirmFoodId, setConfirmFoodId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchFoodList();
   }, [pageIndex]);
 
   const fetchFoodList = async () => {
+    setIsLoading(true);
     try {
       const result =
         await SupplierFoodAssignmentAPI.getSupplierFoodAssignmentBySupplier(
@@ -29,8 +32,10 @@ const OrderFoodList = () => {
         );
       setFoodData(result.items);
       setTotalPages(result.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setIsLoading(false);
     }
   };
 
@@ -157,10 +162,8 @@ const OrderFoodList = () => {
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
                 <th className="py-2.5 px-6 font-extrabold">Ngày giao hàng</th>
-                <th className="py-2.5 px-6 text-center font-extrabold">
-                  Bữa ăn
-                </th>
-                <th className="py-2.5 px-6 font-extrabold text-center">
+                <th className="py-2.5 px-6 text-left font-extrabold">Bữa ăn</th>
+                <th className="py-2.5 px-6 font-extrabold text-left">
                   Đối tác
                 </th>
                 <th className="py-2.5 px-6 font-extrabold text-center">
@@ -169,7 +172,13 @@ const OrderFoodList = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {foodData.length > 0 &&
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : foodData.length > 0 ? (
                 foodData
                   .map((day, dayIndex) => {
                     let totalDayMeals = day.supplierDeliveryTimes.reduce(
@@ -219,7 +228,7 @@ const OrderFoodList = () => {
                                           rowSpan={totalMealSuppliers}
                                           className={`${MealStatus(
                                             meal.deliveryTime
-                                          )} py-2.5 px-6 text-center font-semibold`}
+                                          )} py-2.5 px-6 text-left font-semibold`}
                                         >
                                           {meal.deliveryTime}
                                         </td>
@@ -234,7 +243,7 @@ const OrderFoodList = () => {
                                       >
                                         <div className="flex justify-between">
                                           {" "}
-                                          <button className="font-bold text-gray-600 hover:text-gray-800">
+                                          <button className="font-bold text-green-500 hover:text-green-700">
                                             {partner.partnerName}
                                           </button>
                                           {partner.status === 0 ||
@@ -275,10 +284,10 @@ const OrderFoodList = () => {
                       })
                       .flat();
                   })
-                  .flat()}
-              {foodData.length === 0 && (
+                  .flat()
+              ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-4">
+                  <td colSpan="4" className="text-center py-2.5">
                     Không có dữ liệu
                   </td>
                 </tr>
