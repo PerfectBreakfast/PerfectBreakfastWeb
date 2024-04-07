@@ -70,7 +70,7 @@ const Login = () => {
           // Lưu vào localStorage
           localStorage.setItem("accessToken", encryptedAccessToken);
           localStorage.setItem("refreshToken", encryptedRefreshToken);
-          navigate("/menu");
+          navigate("/user/menu");
         }
       } catch (error) {
         console.log(error);
