@@ -110,7 +110,7 @@ const DeliveryOrderFoodList = () => {
                             className="py-3 px-3 font-bold"
                             rowSpan={company.dailyOrders.length}
                           >
-                            {company.name}
+                            {company.address}
                           </td>
                         )}
                         <td className="py-2.5 px-3">

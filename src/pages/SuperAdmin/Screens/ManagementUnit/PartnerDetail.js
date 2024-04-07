@@ -56,33 +56,43 @@ const PartnerDetail = () => {
                   <tr className="bg-gray-200 text-gray-800 leading-normal">
                     <th className="py-2.5 px-3 w-2/6">Tên công ty</th>
                     <th className="py-2.5 px-3 w-2/6 text-left">Địa chỉ</th>
-                    <th className="py-2.5 px-3 w-1/6 text-left">
+                    <th className="py-2.5 px-3 w-1/6">Email</th>
+                    <th className="py-2.5 px-3 w-1/6 text-right">
                       Số điện thoại
                     </th>
-                    <th className="py-2.5 px-3 w-1/6">Email</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                  {partnerData.companies.map((company) => (
-                    <tr key={company.id} className="border-b">
-                      <td className="py-2.5 px-3 text-left">
-                        {" "}
-                        <span
-                          className="font-medium cursor-pointer hover:text-green-500"
-                          onClick={() => handleCompanyClick(company.id)}
-                        >
-                          {company.name}
-                        </span>
+                  {partnerData && partnerData.companies.length > 0 ? (
+                    partnerData.companies.map((company) => (
+                      <tr key={company.id} className="border-b">
+                        <td className="py-2.5 px-3 text-left">
+                          {" "}
+                          <span
+                            className="font-medium cursor-pointer hover:text-green-500"
+                            onClick={() => handleCompanyClick(company.id)}
+                          >
+                            {company.name}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {company.address}
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {company.email}
+                        </td>
+                        <td className="py-2.5 px-3 text-right">
+                          {company.phoneNumber}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="py-2.5 px-3 text-center" colSpan="4">
+                        Không có dữ liệu
                       </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {company.address}
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {company.phoneNumber}
-                      </td>
-                      <td className="py-2.5 px-3 text-left">{company.email}</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -105,25 +115,33 @@ const PartnerDetail = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                  {partnerData.supplierDTO.map((supplier) => (
-                    <tr key={supplier.id} className="border-b">
-                      <td className="py-2.5 px-3 text-left ">
-                        {" "}
-                        <span
-                          className="font-medium cursor-pointer hover:text-green-500"
-                          onClick={() => handleSupplierClick(supplier.id)}
-                        >
-                          {supplier.name}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {supplier.address}
-                      </td>
-                      <td className="py-2.5 px-3 text-center">
-                        {supplier.phoneNumber}
+                  {partnerData && partnerData.supplierDTO.length > 0 ? (
+                    partnerData.supplierDTO.map((supplier) => (
+                      <tr key={supplier.id} className="border-b">
+                        <td className="py-2.5 px-3 text-left ">
+                          {" "}
+                          <span
+                            className="font-medium cursor-pointer hover:text-green-500"
+                            onClick={() => handleSupplierClick(supplier.id)}
+                          >
+                            {supplier.name}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {supplier.address}
+                        </td>
+                        <td className="py-2.5 px-3 text-center">
+                          {supplier.phoneNumber}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="py-2.5 px-3 text-center" colSpan="3">
+                        Không có dữ liệu
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

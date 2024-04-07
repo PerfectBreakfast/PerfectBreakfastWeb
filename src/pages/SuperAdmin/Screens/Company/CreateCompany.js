@@ -309,8 +309,16 @@ const CreateCompany = () => {
                   {meal.mealType}
                 </label>
                 {formik.values.selectedMeals[meal.id] && (
-                  <div>
+                  <div class="flex flex-col my-1">
+                    <label
+                      for={`start-time-${meal.id}`}
+                      class="min-w-max italic text-sm mb-1"
+                    >
+                      Thời gian bắt đầu
+                    </label>
                     <input
+                      id={`start-time-${meal.id}`}
+                      class="time-input-form mb-2"
                       required
                       type="time"
                       name={`selectedMeals.${meal.id}.startTime`}
@@ -326,7 +334,16 @@ const CreateCompany = () => {
                       }
                       placeholder="Thời gian bắt đầu"
                     />
+
+                    <label
+                      for={`end-time-${meal.id}`}
+                      class="min-w-max italic text-sm mb-1"
+                    >
+                      Thời gian kết thúc
+                    </label>
                     <input
+                      id={`end-time-${meal.id}`}
+                      class="time-input-form"
                       required
                       type="time"
                       name={`selectedMeals.${meal.id}.endTime`}

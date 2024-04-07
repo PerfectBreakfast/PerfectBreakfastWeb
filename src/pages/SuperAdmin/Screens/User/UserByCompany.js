@@ -43,7 +43,7 @@ const UserByCompany = () => {
                 <th className="py-2.5 px-3 w-1/5 font-extrabold">
                   Số điện thoại
                 </th>
-                <th className="py-2.5 px-3 w-1/5"></th>
+                {/* <th className="py-2.5 px-3 w-1/5"></th> */}
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">

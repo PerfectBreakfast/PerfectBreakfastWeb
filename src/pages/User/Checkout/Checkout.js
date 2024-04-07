@@ -178,7 +178,7 @@ function Checkout() {
                 </label>
 
                 {/* Radio option for e-wallet */}
-                <label className="flex items-center">
+                {/* <label className="flex items-center">
                   <input
                     type="radio"
                     value="wallet"
@@ -189,12 +189,12 @@ function Checkout() {
                   />
                   <div className="ml-3 flex items-center">
                     <div className="flex-shrink-0 w-6 h-6 rounded-full mr-2">
-                      {/* WalletIcon here with classes */}
+                
                       <Wallet />
                     </div>
                     <span className="text-lg">Ví điện tử</span>
                   </div>
-                </label>
+                </label> */}
               </div>
             </fieldset>
           </form>

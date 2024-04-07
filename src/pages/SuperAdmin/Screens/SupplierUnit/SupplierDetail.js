@@ -132,30 +132,43 @@ const SupplierDetail = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                  {supplierData.managementUnitDtos.map((unit) => (
-                    <tr key={unit.id} className="border-b">
-                      <td className="py-2.5 px-3 text-left">
-                        {" "}
-                        <span
-                          className="font-medium cursor-pointer hover:text-green-500"
-                          onClick={() => handleDetailClick(unit.id)}
-                        >
-                          {unit.name}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-3 text-left">{unit.address}</td>
-                      <td className="py-2.5 px-3 text-left">
-                        {unit.phoneNumber}
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {" "}
-                        <Delete
-                          onClick={() => handleDeleteClick(unit.id, "partner")}
-                          className="delete-icon"
-                        />
+                  {supplierData &&
+                  supplierData.managementUnitDtos.length > 0 ? (
+                    supplierData.managementUnitDtos.map((unit) => (
+                      <tr key={unit.id} className="border-b">
+                        <td className="py-2.5 px-3 text-left">
+                          {" "}
+                          <span
+                            className="font-medium cursor-pointer hover:text-green-500"
+                            onClick={() => handleDetailClick(unit.id)}
+                          >
+                            {unit.name}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {unit.address}
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {unit.phoneNumber}
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {" "}
+                          <Delete
+                            onClick={() =>
+                              handleDeleteClick(unit.id, "partner")
+                            }
+                            className="delete-icon"
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="py-2.5 px-3 text-center" colSpan="4">
+                        Không có dữ liệu
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -188,49 +201,57 @@ const SupplierDetail = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                  {supplierData.commissionRates.map((commissionRate) => (
-                    <tr key={commissionRate.id} className="border-b">
-                      <td className="py-2.5 px-3 text-left">
-                        <img
-                          src={commissionRate.food.image}
-                          alt={commissionRate.food.name}
-                          className="w-10 h-10 rounded-full"
-                        />
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {" "}
-                        <span
-                          className="font-medium cursor-pointer hover:text-green-500"
-                          // onClick={() => handleDetailClick(commissionRate.id)}
-                        >
-                          {commissionRate.food.name}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        <FoodStatusText
-                          status={commissionRate.food.foodStatus}
-                        />
-                      </td>
-                      <td className="py-2.5 px-3 text-left">
-                        {commissionRate.commissionRate}%
-                      </td>
-                      <td className="py-2.5 px-3 text-center">
-                        <div className="flex">
-                          <Write
-                            onClick={() => handleEditClick(commissionRate.id)}
-                            className="size-5 cursor-pointer"
+                  {supplierData && supplierData.commissionRates.length > 0 ? (
+                    supplierData.commissionRates.map((commissionRate) => (
+                      <tr key={commissionRate.id} className="border-b">
+                        <td className="py-2.5 px-3 text-left">
+                          <img
+                            src={commissionRate.food.image}
+                            alt={commissionRate.food.name}
+                            className="w-10 h-10 rounded-full"
                           />
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {" "}
+                          <span
+                            className="font-medium cursor-pointer hover:text-green-500"
+                            // onClick={() => handleDetailClick(commissionRate.id)}
+                          >
+                            {commissionRate.food.name}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          <FoodStatusText
+                            status={commissionRate.food.foodStatus}
+                          />
+                        </td>
+                        <td className="py-2.5 px-3 text-left">
+                          {commissionRate.commissionRate}%
+                        </td>
+                        <td className="py-2.5 px-3 text-center">
+                          <div className="flex">
+                            <Write
+                              onClick={() => handleEditClick(commissionRate.id)}
+                              className="size-5 cursor-pointer"
+                            />
 
-                          <Delete
-                            onClick={() =>
-                              handleDeleteClick(commissionRate.id, "food")
-                            }
-                            className="delete-icon"
-                          />
-                        </div>
+                            <Delete
+                              onClick={() =>
+                                handleDeleteClick(commissionRate.id, "food")
+                              }
+                              className="delete-icon"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="py-2.5 px-3 text-center" colSpan="5">
+                        Không có dữ liệu
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

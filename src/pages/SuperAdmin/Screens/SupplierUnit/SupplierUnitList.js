@@ -346,10 +346,10 @@ const SupplierUnitList = () => {
         contentLabel="Assign Manager Modal"
       >
         <div className="flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">Gán đối tác</h2>
+          <h2 className="text-xl font-semibold mb-2.5">Gán quán lý</h2>
           <div className="mb-1">
             <label htmlFor="managementUnitSelect" className="label-input">
-              Chọn công ty đối tác
+              Chọn công ty quản lý
             </label>
             <select
               id="managementUnitSelect"
@@ -375,7 +375,7 @@ const SupplierUnitList = () => {
               Hủy
             </button>
             <button className="btn-confirm" onClick={handleAssignManager}>
-              Gán quản lý
+              Xác nhận
             </button>
           </div>
         </div>

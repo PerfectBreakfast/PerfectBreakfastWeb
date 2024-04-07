@@ -9,18 +9,22 @@ const DailyOrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrderList = async () => {
+      setIsLoading(true);
       try {
         const result = await DailyOrderAPI.getDailyOrderHistoryForDelivery(
           pageIndex
         );
         setOrders(result.items);
         setTotalPages(result.totalPagesCount);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
     fetchOrderList();
@@ -66,16 +70,50 @@ const DailyOrderHistory = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {orders.length > 0 ? (
-                orders.map((item) =>
-                  item.companies.map((company) =>
-                    company.dailyOrders.map((order) => (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
+                orders.map((item, itemIndex) => {
+                  // Calculate the total orders for the item.
+                  let totalOrdersForItem = item.companies.reduce(
+                    (acc, cur) => acc + cur.dailyOrders.length,
+                    0
+                  );
+
+                  return item.companies.flatMap((company, companyIndex) => {
+                    // Calculate the total orders for the company.
+                    let totalOrdersForCompany = company.dailyOrders.length;
+
+                    return company.dailyOrders.map((order, orderIndex) => (
                       <tr key={order.id}>
-                        <td className="py-3 px-3">
-                          {formatDate(item.bookingDate)}
-                        </td>
-                        <td className="py-3 px-3 font-bold">{company.name}</td>
-                        <td className="py-3 px-3">{company.address}</td>
+                        {companyIndex === 0 && orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3"
+                            rowSpan={totalOrdersForItem}
+                          >
+                            {formatDate(item.bookingDate)}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3 font-bold"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            {company.name}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            {company.address}
+                          </td>
+                        )}
                         <td className="py-3 px-3">
                           <button
                             className="text-green-500 hover:text-green-600 font-semibold"
@@ -91,17 +129,18 @@ const DailyOrderHistory = () => {
                           <DailyOrderStatus status={order.status} />
                         </td>
                       </tr>
-                    ))
-                  )
-                )
+                    ));
+                  });
+                })
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-3 px-3">
-                    Không có lịch sử đơn hàng
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Không có dữ liệu
                   </td>
                 </tr>
               )}
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="6">
