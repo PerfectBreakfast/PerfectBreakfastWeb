@@ -142,7 +142,7 @@ const DailyOrderList = () => {
       )}
       <div className="bg-white rounded-xl p-4 ">
         <div>
-          <table className="w-full table-auto">
+          <table className="w-full table-auto table-dailyoder">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
                 <th className="py-2.5 ">Ngày giao hàng</th>
@@ -161,26 +161,45 @@ const DailyOrderList = () => {
                   </td>
                 </tr>
               ) : orders.length > 0 ? (
-                orders.map((item) =>
-                  item.companies.map((company) =>
-                    company.dailyOrders.map((order) => (
-                      <tr
-                        className="border-b border-gray-200 hover:bg-gray-100"
-                        key={order.id}
-                      >
-                        <td className="py-2.5 px-3 text-left">
-                          {/* {item.bookingDate} */}
-                          {formatDate(item.bookingDate)}
-                        </td>
-                        <td className="py-2.5 px-3 text-left">
-                          <span className=" font-semibold">
-                            {" "}
-                            {company.name}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-3 text-left">
-                          {company.address}
-                        </td>
+                orders.map((item, itemIndex) => {
+                  // Calculate total orders for the item.
+                  let totalOrdersForItem = item.companies.reduce(
+                    (acc, cur) => acc + cur.dailyOrders.length,
+                    0
+                  );
+
+                  return item.companies.flatMap((company, companyIndex) => {
+                    // Calculate total orders for the company.
+                    let totalOrdersForCompany = company.dailyOrders.length;
+
+                    return company.dailyOrders.map((order, orderIndex) => (
+                      <tr key={order.id}>
+                        {companyIndex === 0 && orderIndex === 0 && (
+                          <td
+                            className="py-2.5 px-3 text-left"
+                            rowSpan={totalOrdersForItem}
+                          >
+                            {formatDate(item.bookingDate)}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-2.5 px-3 text-left"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            <span className="font-semibold">
+                              {company.name}
+                            </span>
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-2.5 px-3 text-left"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            {company.address}
+                          </td>
+                        )}
                         <td className="py-2.5 w-28 text-left">
                           <button
                             className={`${MealStatus(
@@ -198,9 +217,9 @@ const DailyOrderList = () => {
                           <DailyOrderStatus status={order.status} />
                         </td>
                       </tr>
-                    ))
-                  )
-                )
+                    ));
+                  });
+                })
               ) : (
                 <tr>
                   <td colSpan="6" className="text-center py-3 px-3">
@@ -252,7 +271,7 @@ const DailyOrderList = () => {
         contentLabel="Assign Manager Modal"
       >
         <div className="flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-3">
             Thay đổi thời gian chốt đơn hàng
           </h2>
           <div className="mb-1">
