@@ -21,6 +21,7 @@ const FoodByCompany = () => {
   const [confirmFoodId, setConfirmFoodId] = useState(null);
   const [distributeModalIsOpen, setDistributeModalIsOpen] = useState(false);
   const [selectedSupplierId, setSelectedSupplierId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchFoodList();
@@ -28,14 +29,17 @@ const FoodByCompany = () => {
 
   const fetchFoodList = async () => {
     try {
+      setIsLoading(true);
       const result =
         await SupplierFoodAssignmentAPI.getSupplierFoodAssignmentByPartner(
           pageIndex
         );
       setFoodData(result.items);
       setTotalPages(result.totalPagesCount);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setIsLoading(false);
     }
   };
   const fetchSupplier = async (foodId) => {
@@ -168,7 +172,13 @@ const FoodByCompany = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {foodData.length > 0 &&
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : foodData.length > 0 ? (
                 foodData
                   .map((day, dayIndex) => {
                     let totalDayMeals = day.partnerFoodMealResponses.reduce(
@@ -230,7 +240,7 @@ const FoodByCompany = () => {
                                         }
                                       >
                                         <div className="flex justify-between">
-                                          <button className="py-2.5 px-6 font-semibold">
+                                          <button className="py-2.5 px-6 font-semibold text-green-500 hover:text-green-700">
                                             {supplier.supplierName}
                                           </button>
                                           {supplier.status === 0 ||
@@ -272,10 +282,10 @@ const FoodByCompany = () => {
                       })
                       .flat();
                   })
-                  .flat()}
-              {foodData.length === 0 && (
+                  .flat()
+              ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-4">
+                  <td colSpan="4" className="text-center py-2.5">
                     Không có dữ liệu
                   </td>
                 </tr>

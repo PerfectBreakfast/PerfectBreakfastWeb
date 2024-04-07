@@ -86,11 +86,11 @@ const PackageList = () => {
             <tbody className="text-gray-600 text-sm font-light">
               {isLoading ? (
                 <tr>
-                  <td colSpan="3" className="text-center py-3 px-3">
+                  <td colSpan="6" className="text-center py-3 px-3">
                     Đang tải...
                   </td>
                 </tr>
-              ) : (
+              ) : packageList.length > 0 ? (
                 packageList.map((packageItem, index) =>
                   packageItem.companyForPackages.flatMap(
                     (company, companyIndex) =>
@@ -138,6 +138,12 @@ const PackageList = () => {
                       ))
                   )
                 )
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>

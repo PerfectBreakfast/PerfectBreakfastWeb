@@ -10,16 +10,20 @@ const DailyOrderHistory = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchOrderList = async () => {
+      setIsLoading(true);
       try {
         const result = await DailyOrderAPI.getDailyOrderHistoryForPartner(
           pageIndex
         );
         setOrders(result.items);
         setTotalPages(result.totalPagesCount);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
     fetchOrderList();
@@ -58,7 +62,7 @@ const DailyOrderHistory = () => {
 
       <div className="bg-white rounded-xl p-4 ">
         <div>
-          <table className="w-full table-auto">
+          <table className="w-full table-dailyoder">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
                 <th className="py-2.5 font-extrabold w-36">Ngày giao hàng</th>
@@ -76,38 +80,77 @@ const DailyOrderHistory = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {orders.map((item) =>
-                item.companies.map((company) =>
-                  company.dailyOrders.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="border-b border-gray-200 hover:bg-gray-100"
-                    >
-                      <td className="py-3 px-3">
-                        {" "}
-                        {formatDate(item.bookingDate)}
-                      </td>
-                      <td className="py-3 px-3 font-bold">{company.name}</td>
-                      <td className="py-3 px-3">{company.address}</td>
-                      <td className="py-3 px-3">
-                        <button
-                          className={`${MealStatus(order.meal)} font-semibold`}
-                          onClick={() => handleDetailClick(order.id)}
-                        >
-                          {order.meal}
-                        </button>
-                      </td>
-                      <td className="py-3 px-3 text-center">
-                        {order.orderQuantity}
-                      </td>
-                      <td className="py-3 px-3 text-center min-w-48">
-                        <DailyOrderStatus status={order.status} />
-                      </td>
-                    </tr>
-                  ))
-                )
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Đang tải...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
+                orders.map((item, itemIndex) => {
+                  let totalOrdersForItem = item.companies.reduce(
+                    (acc, cur) => acc + cur.dailyOrders.length,
+                    0
+                  );
+
+                  return item.companies.flatMap((company, companyIndex) => {
+                    let totalOrdersForCompany = company.dailyOrders.length;
+
+                    return company.dailyOrders.map((order, orderIndex) => (
+                      <tr key={order.id}>
+                        {companyIndex === 0 && orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3"
+                            rowSpan={totalOrdersForItem}
+                          >
+                            {formatDate(item.bookingDate)}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3 font-bold"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            {company.name}
+                          </td>
+                        )}
+                        {orderIndex === 0 && (
+                          <td
+                            className="py-3 px-3"
+                            rowSpan={totalOrdersForCompany}
+                          >
+                            {company.address}
+                          </td>
+                        )}
+                        <td className="py-3 px-3">
+                          <button
+                            className={`${MealStatus(
+                              order.meal
+                            )} font-semibold`}
+                            onClick={() => handleDetailClick(order.id)}
+                          >
+                            {order.meal}
+                          </button>
+                        </td>
+                        <td className="py-3 px-3 text-center">
+                          {order.orderQuantity}
+                        </td>
+                        <td className="py-3 px-3 text-center min-w-48">
+                          <DailyOrderStatus status={order.status} />
+                        </td>
+                      </tr>
+                    ));
+                  });
+                })
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-3 px-6">
+                    Không có dữ liệu
+                  </td>
+                </tr>
               )}
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="6">
