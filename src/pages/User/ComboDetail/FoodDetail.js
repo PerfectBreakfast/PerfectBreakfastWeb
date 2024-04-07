@@ -129,7 +129,7 @@ const FoodDetail = () => {
                 currency: "VND",
               })}
             </h6>
-            <p class="text-base">{foodData.content}</p>
+            <p class="text-base">{foodData.description}</p>
           </div>
         </div>
         <div className="container">
