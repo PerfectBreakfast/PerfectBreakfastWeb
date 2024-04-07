@@ -127,6 +127,12 @@ function App() {
               }
             >
               {/* Định nghĩa các Route con dành cho User sử dụng relative paths */}
+
+              {/* <Route
+                path="register-external/:id"
+                element={<SignupExternal />}
+              /> */}
+
               <Route path="menu" element={<Homepage />} />
               <Route path="menu/combo/:id" element={<ComboDetail />} />
               <Route path="menu/food/:id" element={<FoodDetail />} />
@@ -148,8 +154,9 @@ function App() {
               <Route path="FAQ" element={<FaqPage />} />
             </Route>
 
-            {/* <Route path="/register-external/:id" element={<SignupExternal />} />
-            <Route path="/menu" element={<Homepage />} />
+            <Route path="/register-external/:id" element={<SignupExternal />} />
+
+            {/*   <Route path="/menu" element={<Homepage />} />
             <Route path="/menu/combo/:id" element={<ComboDetail />} />
             <Route path="/menu/food/:id" element={<FoodDetail />} />
             <Route path="/cart" element={<Cart />} />
