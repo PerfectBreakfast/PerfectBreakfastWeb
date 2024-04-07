@@ -193,6 +193,7 @@ const EditFood = () => {
               Loại món ăn
             </label>
             <select
+              disabled
               id="foodStatus"
               className="input-form"
               name="foodStatus"
