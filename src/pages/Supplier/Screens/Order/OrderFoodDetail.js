@@ -4,10 +4,11 @@ import SupplierFoodAssignmentAPI from "../../../../services/SupplierFoodAssignme
 import { ToastContainer, toast } from "react-toastify";
 import Modal from "react-modal";
 import SupplierFoodAssigmentStatus from "../../../../components/Status/SupplierFoodAssigmentStatus";
+import { ReactComponent as FileIcon } from "../../../../assets/icons/File.svg";
 
 const OrderFoodDetail = () => {
   const location = useLocation();
-  const { data: foodAssignmentGroupByPartners } = location.state || {};
+  const { data: foodAssignmentGroupByPartners, date } = location.state || {};
   const [foodData, setFoodData] = useState([]);
   const [confirmFoodId, setConfirmFoodId] = useState(null);
   const [action, setAction] = useState(null);
@@ -16,7 +17,7 @@ const OrderFoodDetail = () => {
   useEffect(() => {
     fetchFoodList(foodAssignmentGroupByPartners);
   }, [foodAssignmentGroupByPartners]);
-  console.log("data nhận", foodAssignmentGroupByPartners);
+  console.log("data nhận", foodAssignmentGroupByPartners, "date", date);
   const fetchFoodList = async (supplierData) => {
     try {
       const packageIds = supplierData.packageIds;
@@ -69,6 +70,38 @@ const OrderFoodDetail = () => {
       }
     }
   };
+
+  const handleExport = async () => {
+    try {
+      const packageData = {
+        bookingDate: date,
+        packageIds: foodAssignmentGroupByPartners.packageIds,
+      };
+      // Make the API call to get the file data
+      const response =
+        await SupplierFoodAssignmentAPI.downloadFileFoodForSupplier(
+          packageData
+        );
+
+      // Tạo URL cho tệp tải xuống
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", `Danh sách món ăn ngày ${date}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      return response;
+    } catch (error) {
+      toast.error(error.errors);
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const hours = date.getHours().toString().padStart(2, "0");
@@ -82,13 +115,20 @@ const OrderFoodDetail = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-2">Danh sách món ăn</h2>
+      <h2 className="text-2xl font-semibold mb-3">Danh sách món ăn</h2>
+      <div className="flex justify-between items-center mb-3">
+        <button type="button" className="btn-add" onClick={handleExport}>
+          <FileIcon />
+          Tải file
+        </button>
+      </div>
       {foodData.map((company, index) => (
         <div key={index} className="bg-white rounded-xl p-4 mb-4">
           {/* <p className="text-xl font-semibold text-gray-600 text-left">
             {" "}
             Công ty: {company.companyName}
           </p> */}
+
           <div className="overflow-x-auto max-h-96 mt-2">
             <table className="w-full table-auto mb-4">
               <thead className="sticky top-0">

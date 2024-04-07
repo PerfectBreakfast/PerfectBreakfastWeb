@@ -68,10 +68,11 @@ const SupplierFoodAssignmentAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  downloadFileFoodForSupplier: async (dateTime) => {
+  downloadFileFoodForSupplier: async (assignmentData) => {
     try {
-      const response = await axiosInstance.get(
-        `${api}/v1/supplierfoodassigments/download-excel?bookingDate=${dateTime}`,
+      const response = await axiosInstance.post(
+        `${api}/v1/supplierfoodassigments/download-excel`,
+        assignmentData,
         {
           responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
         }
