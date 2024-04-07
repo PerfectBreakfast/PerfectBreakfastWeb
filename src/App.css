@@ -87,6 +87,9 @@ input[type="number"] {
 .input-form {
   @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
 }
+.time-input-form {
+  @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block min-w-28 max-w-32 p-2.5;
+}
 
 .display-img {
   @apply w-16 h-12 rounded-xl;

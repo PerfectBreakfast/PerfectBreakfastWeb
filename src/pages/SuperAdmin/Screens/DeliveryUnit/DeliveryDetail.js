@@ -90,20 +90,28 @@ const DeliveryDetail = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {deliveryData.assignedCompanies.map((company) => (
-                <tr key={company.id} className="border-b">
-                  <td className="py-2.5 px-3 text-left">
-                    {" "}
-                    <span
-                      className="font-medium cursor-pointer hover:text-green-500"
-                      onClick={() => handleDetailClick(company.id)}
-                    >
-                      {company.name}
-                    </span>
+              {deliveryData && deliveryData.assignedCompanies.length > 0 ? (
+                deliveryData.assignedCompanies.map((company) => (
+                  <tr key={company.id} className="border-b">
+                    <td className="py-2.5 px-3 text-left">
+                      {" "}
+                      <span
+                        className="font-medium cursor-pointer hover:text-green-500"
+                        onClick={() => handleDetailClick(company.id)}
+                      >
+                        {company.name}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-left">{company.address}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="py-2.5 px-3 text-center" colSpan="2">
+                    Không có dữ liệu
                   </td>
-                  <td className="py-2.5 px-3 text-left">{company.address}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

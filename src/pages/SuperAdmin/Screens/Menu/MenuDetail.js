@@ -146,33 +146,41 @@ const MenuDetail = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {menuDetail.comboFoodResponses.map((combo) => (
-                  <tr key={combo.id} className="border-b">
-                    <td className="py-2.5 px-3 text-left">
-                      <img
-                        src={combo.image}
-                        alt={combo.name}
-                        className="w-10 h-10 rounded-full"
-                      />
-                    </td>
-                    <td className="py-2.5 px-3 text-left">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={() => handleDetailClick(combo.id)}
-                      >
-                        {combo.name}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-3 text-left">{combo.foods}</td>
-                    <td className="py-2.5 px-3 text-right">
-                      {combo.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
+                {menuDetail && menuDetail.comboFoodResponses.length > 0 ? (
+                  menuDetail.comboFoodResponses.map((combo) => (
+                    <tr key={combo.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left">
+                        <img
+                          src={combo.image}
+                          alt={combo.name}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          onClick={() => handleDetailClick(combo.id)}
+                        >
+                          {combo.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-left">{combo.foods}</td>
+                      <td className="py-2.5 px-3 text-right">
+                        {combo.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="py-2.5 px-3 text-center" colSpan="4">
+                      Không có dữ liệu
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -193,33 +201,41 @@ const MenuDetail = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {menuDetail.foodResponses.map((food) => (
-                  <tr key={food.id} className="border-b">
-                    <td className="py-2.5 px-3 text-left">
-                      <img
-                        src={food.image}
-                        alt={food.name}
-                        className="w-10 h-10 rounded-full"
-                      />
-                    </td>
-                    <td className="py-2.5 px-3 text-left">
-                      {" "}
-                      <span
-                        className="font-medium cursor-pointer hover:text-green-500"
-                        onClick={() => handleFoodDetailClick(food.id)}
-                      >
-                        {food.name}
-                      </span>
-                    </td>
+                {menuDetail && menuDetail.foodResponses.length > 0 ? (
+                  menuDetail.foodResponses.map((food) => (
+                    <tr key={food.id} className="border-b">
+                      <td className="py-2.5 px-3 text-left">
+                        <img
+                          src={food.image}
+                          alt={food.name}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </td>
+                      <td className="py-2.5 px-3 text-left">
+                        {" "}
+                        <span
+                          className="font-medium cursor-pointer hover:text-green-500"
+                          onClick={() => handleFoodDetailClick(food.id)}
+                        >
+                          {food.name}
+                        </span>
+                      </td>
 
-                    <td className="py-2.5 px-3 text-right">
-                      {food.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
+                      <td className="py-2.5 px-3 text-right">
+                        {food.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="py-2.5 px-3 text-center" colSpan="3">
+                      Không có dữ liệu
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

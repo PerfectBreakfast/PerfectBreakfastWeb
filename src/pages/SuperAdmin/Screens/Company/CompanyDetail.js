@@ -118,6 +118,9 @@ const CompanyDetail = () => {
               {companyData.memberCount}
             </strong>
           </p>
+          <button onClick={() => navigate(`user`)} className="btn-open">
+            Danh sách người dùng
+          </button>
         </div>
       </div>
 
@@ -166,13 +169,21 @@ const CompanyDetail = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {companyData.meals.map((meal) => (
-                <tr key={meal.id} className="border-b">
-                  <td className="py-3 px-6 text-left">{meal.mealType}</td>
-                  <td className="py-3 px-6 text-left">{meal.startTime}</td>
-                  <td className="py-3 px-6 text-left">{meal.endTime}</td>
+              {companyData && companyData.meals.length > 0 ? (
+                companyData.meals.map((meal) => (
+                  <tr key={meal.id} className="border-b">
+                    <td className="py-3 px-6 text-left">{meal.mealType}</td>
+                    <td className="py-3 px-6 text-left">{meal.startTime}</td>
+                    <td className="py-3 px-6 text-left">{meal.endTime}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="py-2.5 px-3 text-center" colSpan="3">
+                    Không có dữ liệu
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import userAPI from "../../../../services/userAPI";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "@mui/material";
+import { ReactComponent as UserIcon } from "../../../../assets/icons/User Circle.svg";
 
 const UserList = () => {
   const [userData, setUserData] = useState([]);
@@ -36,6 +37,21 @@ const UserList = () => {
     setSearchTerm(searchInput);
     setPageIndex(0);
   };
+
+  const displayRoleName = (roleName) => {
+    const roleTranslations = {
+      "SUPER ADMIN": "Quản trị viên hệ thống",
+      "PARTNER ADMIN": "Quản trị viên đối tác",
+      "SUPPLIER ADMIN": "Quản trị viên nhà cung cấp",
+      "DELIVERY ADMIN": "Quản trị viên giao hàng",
+      "DELIVERY STAFF": "Nhân viên giao hàng",
+      CUSTOMER: "Khách hàng",
+      // Thêm các vai trò khác tại đây nếu cần
+    };
+
+    return roleTranslations[roleName] || roleName; // Trả về tên đã dịch hoặc giữ nguyên nếu không tìm thấy
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h4 className="text-2xl font-semibold mb-4">Danh sách người dùng</h4>
@@ -61,17 +77,12 @@ const UserList = () => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 px-3 w-1/5 font-extrabold">Hình ảnh</th>
-                <th className="py-2.5 px-3 w-1/5 font-extrabold">
-                  Tên người dùng
-                </th>
-                <th className="py-2.5 px-3 text-left w-1/5 font-extrabold">
-                  Email
-                </th>
-                <th className="py-2.5 px-3 w-1/5 font-extrabold">
-                  Số điện thoại
-                </th>
-                <th className="py-2.5 px-3 w-1/5"></th>
+                <th className="py-2.5 px-3 font-extrabold">Hình ảnh</th>
+                <th className="py-2.5 px-3 font-extrabold">Tên người dùng</th>
+                <th className="py-2.5 px-3 text-left font-extrabold">Email</th>
+                <th className="py-2.5 px-3font-extrabold">Số điện thoại</th>
+                <th className="py-2.5 px-3 font-extrabold">Vai trò</th>
+                {/* <th className="py-2.5 px-3 "></th> */}
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -88,11 +99,15 @@ const UserList = () => {
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
                     <td className="py-2.5 px-3 text-left">
-                      <img
-                        src={user.image}
-                        alt={user.name}
-                        className="w-10 h-10 rounded-full"
-                      />
+                      {user.image ? (
+                        <img
+                          src={user.image}
+                          alt={user.name}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      ) : (
+                        <UserIcon className="w-10 h-10 rounded-full" />
+                      )}
                     </td>
                     <td className="py-2.5 px-3 text-left max-w-xs whitespace-normal">
                       <span
@@ -105,6 +120,9 @@ const UserList = () => {
                     <td className="py-2.5 px-3 text-left">{user.email}</td>
                     <td className="py-2.5 px-3 text-left">
                       {user.phoneNumber}
+                    </td>
+                    <td className="py-2.5 px-3 text-left">
+                      {displayRoleName(user.roles)}
                     </td>
 
                     {/* <td className="py-2.5 px-3">
