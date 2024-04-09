@@ -11,22 +11,22 @@ const DailyOrderStatus = ({ status }) => {
         "border-1 border-gray-500 hover:bg-gray-50  text-gray-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Processing":
-      statusText = "Đang chờ phân phối";
+      statusText = "Chờ phân phối";
       styleClass =
-        "border-1 border-amber-500 hover:bg-amber-50  text-amber-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "border-1 border-yellow-500 hover:bg-yellow-50  text-yellow-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Divided":
-      statusText = "Đang chờ xác nhận";
+      statusText = "Chờ xác nhận";
       styleClass =
         "border-1 border-orange-500 hover:bg-orange-50  text-orange-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Cooking":
       statusText = "Đang nấu";
       styleClass =
-        "border-1 border-yellow-500 hover:bg-yellow-50  text-yellow-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "border-1 border-amber-500 hover:bg-amber-50  text-amber-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Waiting":
-      statusText = "Đang chờ giao hàng";
+      statusText = "Chờ lấy hàng";
       styleClass =
         "border-1 border-blue-500 hover:bg-blue-50  text-blue-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
@@ -39,7 +39,7 @@ const DailyOrderStatus = ({ status }) => {
     case "Complete":
       statusText = "Hoàn thành";
       styleClass =
-        "border-1 border-green-500 hover:bg-green-50  text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "border-1 border-green-500 hover:bg-white text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     default:
       statusText = "Không xác định";

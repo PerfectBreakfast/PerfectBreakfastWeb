@@ -49,7 +49,7 @@ const DailyOrderHistory = () => {
       case "Bữa Sáng":
         return "text-lime-500 hover:text-lime-700";
       case "Bữa Trưa":
-        return "text-yellow-500 hover:text-yellow-700";
+        return "text-green-500 hover:text-green-700";
       case "Bữa Tối":
         return "text-violet-500 hover:text-violet-700";
       default:

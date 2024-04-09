@@ -124,15 +124,25 @@ function ComboDetail() {
             />
           </div>
 
-          <div class="text-center mt-5">
+          <div class="text-center mt-4">
             <h4 class="text-2xl font-bold mb-2">{comboData.name}</h4>
-            <h6 class="text-xl font-semibold mb-2">
+            <h6 class="text-xl font-semibold mb-2 text-mainColor">
               {comboData.comboPrice.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
               })}
             </h6>
-            <p class="text-base">{comboData.content}</p>
+          </div>
+          <div>
+            <div className="mb-2">
+              {" "}
+              <h6 className="font-bold text-lg">Món ăn</h6>
+              <p class="text-base text-gray-600">{comboData.foods}</p>
+            </div>
+            <div>
+              <h6 className="font-bold text-lg">Mô tả</h6>
+              <p class="text-base text-gray-600">{comboData.content} </p>
+            </div>
           </div>
         </div>
         <div className="container">

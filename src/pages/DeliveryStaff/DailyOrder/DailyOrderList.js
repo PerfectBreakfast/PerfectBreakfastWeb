@@ -90,11 +90,11 @@ const DailyOrderList = () => {
                 {/* Since your data structure changed, you directly access the details of a single order */}
                 <div
                   onClick={() => handleComboClick(orderItem.dailyOrder.id)} // Assuming you want to pass the id of the outer object now
-                  className="grid grid-cols-1 gap-2 mb-3 bg-gray-100 p-4 rounded-lg shadow cursor-pointer"
+                  className="grid grid-cols-1 gap-2 mb-4 bg-gray-100 p-4 rounded-lg shadow cursor-pointer"
                 >
                   <div className="flex justify-between mb-2">
                     <div className="font-semibold">
-                      Bữa ăn: {orderItem.dailyOrder.meal}
+                      {orderItem.dailyOrder.meal}
                     </div>
                     <div>
                       <DailyOrderStatusDelivery status={orderItem.status} />
@@ -111,7 +111,7 @@ const DailyOrderList = () => {
                     {orderItem.dailyOrder.partner.address}
                   </div>
                   <div className="ml-7 font-semibold text-gray-600">
-                    Thời gian nhận hàng: {""}
+                    Thời gian lấy hàng: {""}
                     {convertTimeFormat(orderItem.dailyOrder.pickupTime)}
                   </div>
 
@@ -125,7 +125,7 @@ const DailyOrderList = () => {
                     {orderItem.dailyOrder.company.address}
                   </div>
                   <div className="ml-7 font-semibold text-gray-600">
-                    Thời gian giao hàng: {""}
+                    Thời gian phát hàng: {""}
                     {convertTimeFormat(orderItem.dailyOrder.handoverTime)}
                   </div>
                 </div>

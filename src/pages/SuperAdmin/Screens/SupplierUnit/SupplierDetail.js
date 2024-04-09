@@ -195,7 +195,7 @@ const SupplierDetail = () => {
                   <tr className="bg-gray-200 text-gray-800 leading-normal">
                     <th className="py-2.5 px-3 w-2/6">Hình ảnh</th>
                     <th className="py-2.5 px-3 w-2/6">Tên món ăn</th>
-                    <th className="py-2.5 px-3 w-1/6">Ghi chú</th>
+                    <th className="py-2.5 px-3 w-1/6">Phân loại</th>
                     <th className="py-2.5 px-3 w-1/6">Tỷ lệ</th>
                     <th className="py-2.5 px-3 w-1/6"></th>
                   </tr>

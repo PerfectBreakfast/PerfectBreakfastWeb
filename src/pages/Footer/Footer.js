@@ -18,7 +18,7 @@ const MobileNavigation = () => {
   const totalItems = cart.length;
 
   const navigationItems = [
-    { icon: HomeIcon, route: "/menu" },
+    { icon: HomeIcon, route: "/user/menu" },
     { icon: CartIcon, route: "/user/cart", badgeContent: totalItems }, // Include totalItems here
     { icon: HistoryIcon, route: "/user/order-history" },
     { icon: UserIcon, route: "/user" },

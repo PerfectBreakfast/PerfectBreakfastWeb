@@ -36,6 +36,16 @@ const ShippingOrderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  finishShippingOrderByStaff: async (dailyOrderId) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/shippingorders/end/${dailyOrderId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
   getShippingOrderHistoryForDeliveryStaff: async () => {
     try {
       const response = await axiosInstance.get(
