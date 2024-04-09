@@ -27,10 +27,28 @@ const DailyOrderDetail = () => {
     }
   };
 
+  // const handleConfirm = async () => {
+  //   try {
+  //     await ShippingOrderAPI.confirmShippingOrderByStaff(dailyOrderId);
+  //     toast.success("Đơn hàng đã được xác nhận!");
+  //     fetchOrderDetail();
+  //   } catch (error) {
+  //     console.error("Error confirming order:", error.errors);
+  //     toast.error(error.errors);
+  //   } finally {
+  //     closeModal();
+  //   }
+  // };
   const handleConfirm = async () => {
     try {
-      await ShippingOrderAPI.confirmShippingOrderByStaff(dailyOrderId);
-      toast.success("Đơn hàng đã được xác nhận!");
+      if (orderData.status === "Waiting") {
+        await ShippingOrderAPI.confirmShippingOrderByStaff(dailyOrderId);
+        toast.success("Đơn hàng đã được xác nhận!");
+      } else if (orderData.status === "Delivering") {
+        await ShippingOrderAPI.finishShippingOrderByStaff(dailyOrderId);
+        toast.success("Ca làm việc đã được đóng!");
+        navigate(-1);
+      }
       fetchOrderDetail();
     } catch (error) {
       console.error("Error confirming order:", error.errors);
@@ -91,7 +109,7 @@ const DailyOrderDetail = () => {
       </div>
 
       {orderData ? (
-        <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+        <div className="bg-white shadow-md rounded-lg p-4 mb-24">
           <p className="mb-2">
             Tên công ty:
             <span className="font-bold"> {orderData.companyName}</span>
@@ -140,7 +158,7 @@ const DailyOrderDetail = () => {
       ) : (
         <LoadingSkeleton />
       )}
-      {orderData && orderData.status === "Waiting" && (
+      {/* {orderData && orderData.status === "Waiting" && (
         <div className="fixed bottom-0 left-0 right-0 w-full">
           <div className="flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
             <button
@@ -151,9 +169,25 @@ const DailyOrderDetail = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
+      {orderData &&
+        (orderData.status === "Waiting" ||
+          orderData.status === "Delivering") && (
+          <div className="fixed bottom-0 left-0 right-0 w-full">
+            <div className="flex flex-col mt-4 px-2 pt-4 pb-1 shadow-lg bg-white rounded-t-2xl">
+              <button
+                className="bg-green-500 text-white  py-2.5  mb-2 rounded-xl hover:bg-green-600 transition-colors"
+                onClick={openModal}
+              >
+                {orderData.status === "Waiting"
+                  ? "Xác nhận đã nhận hàng"
+                  : "Đóng ca"}
+              </button>
+            </div>
+          </div>
+        )}
       {/* Modal xác nhận */}
-      <Modal
+      {/* <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
@@ -172,7 +206,47 @@ const DailyOrderDetail = () => {
             </button>
           </div>
         </div>
+      </Modal> */}
+
+      {/* Modal xác nhận */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.5)" } }}
+        className="fixed inset-0 flex items-center justify-center"
+        contentLabel="Xác nhận cập nhật"
+      >
+        <div className="confirm-modal">
+          <h2 className="text-lg font-semibold mb-2">Xác nhận</h2>
+          {orderData && orderData.status === "Waiting" && (
+            <>
+              <p>Bạn có chắc chắn xác nhận đã nhận đơn hàng này?</p>
+              <div className="flex justify-end gap-2 mt-4">
+                <button className="btn-cancel" onClick={closeModal}>
+                  Hủy bỏ
+                </button>
+                <button className="btn-confirm" onClick={handleConfirm}>
+                  Xác nhận nhận hàng
+                </button>
+              </div>
+            </>
+          )}
+          {orderData && orderData.status === "Delivering" && (
+            <>
+              <p>Bạn có chắc chắn muốn đóng ca làm việc này?</p>
+              <div className="flex justify-end gap-2 mt-4">
+                <button className="btn-cancel" onClick={closeModal}>
+                  Hủy bỏ
+                </button>
+                <button className="btn-confirm" onClick={handleConfirm}>
+                  Xác nhận đóng ca
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </Modal>
+
       <ToastContainer />
     </div>
   );

@@ -121,7 +121,7 @@ const FoodDetail = () => {
             />
           </div>
 
-          <div class="text-center mt-5">
+          <div class="text-center mt-4">
             <h4 class="text-2xl font-bold mb-2">{foodData.name}</h4>
             <h6 class="text-xl font-semibold mb-2">
               {foodData.price.toLocaleString("vi-VN", {
@@ -129,7 +129,10 @@ const FoodDetail = () => {
                 currency: "VND",
               })}
             </h6>
-            <p class="text-base">{foodData.description}</p>
+          </div>
+          <div>
+            <h6 className="font-bold text-lg">Mô tả</h6>
+            <p class="text-base text-gray-600">{foodData.description} </p>
           </div>
         </div>
         <div className="container">
