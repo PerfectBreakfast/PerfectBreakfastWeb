@@ -8,27 +8,27 @@ const SupplierFoodAssigmentStatus = ({ status }) => {
     case "Pending":
       statusText = "Chờ xác nhận";
       styleClass =
-        "border-1 border-yellow-500 hover:bg-yellow-50  text-yellow-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-yellow-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Confirmed":
       statusText = "Đã xác nhận";
       styleClass =
-        "border-1 border-blue-500 hover:bg-blue-50  text-blue-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-blue-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Declined":
       statusText = "Đã từ chối";
       styleClass =
-        "border-1 border-red-500 hover:bg-red-50  text-red-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-red-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Complete":
       statusText = "Hoàn thành";
       styleClass =
-        "border-1 border-green-500 hover:bg-green-50  text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-green-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     default:
       statusText = "Không xác định";
       styleClass =
-        "border-1 border-gray-500 hover:bg-gray-50  text-gray-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-gray-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
   }
 
