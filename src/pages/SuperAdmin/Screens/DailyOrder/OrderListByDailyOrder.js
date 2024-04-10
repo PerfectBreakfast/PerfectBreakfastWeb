@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 import orderAPI from "../../../../services/orderAPI";
 import Loading from "../../../Loading/Loading";
+import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
+import OrderStatus from "../../../../components/Status/OrderStatus";
 
 Modal.setAppElement("#root"); // Adjust according to your project setup
 
@@ -11,6 +13,7 @@ const OrderListByDailyOrder = () => {
   const [orderListData, setOrderListData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState([]);
+  const [staffData, setStaffData] = useState(null);
 
   useEffect(() => {
     const fetchOrderFoodData = async () => {
@@ -22,7 +25,17 @@ const OrderListByDailyOrder = () => {
       }
     };
 
+    const fetchStaffByOder = async () => {
+      try {
+        const data = await ShippingOrderAPI.getStaffByDailyOrder(id);
+        setStaffData(data);
+      } catch (error) {
+        console.error("Error fetching dish data:", error);
+      }
+    };
+
     fetchOrderFoodData();
+    fetchStaffByOder();
   }, [id]);
 
   const openModal = (orderDetails) => {
@@ -47,11 +60,12 @@ const OrderListByDailyOrder = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="bg-white p-4 rounded-xl min-h-screen">
-        <h4 className="text-2xl font-semibold mb-4">Danh sách đơn đặt</h4>
-        <div className="bg-white shadow-md my-6 overflow-auto">
-          <table className="min-w-max w-full table-auto">
-            <thead>
+      <h4 className="text-2xl font-semibold mb-4">Danh sách đơn đặt</h4>
+      <div className="bg-white rounded-xl p-4 mb-4">
+        <h4 className="text-xl font-semibold mb-2.5">Chi tiết đơn hàng</h4>
+        <div className="overflow-x-auto max-h-96 mt-2">
+          <table className="w-full table-auto mb-4">
+            <thead className="sticky top-0">
               <tr className="bg-gray-200 text-gray-800 leading-normal">
                 <th>Mã đơn hàng</th>
                 <th>Thời gian</th>
@@ -84,7 +98,7 @@ const OrderListByDailyOrder = () => {
                     </td>
                     {/* <td>{order.orderStatus}</td> */}
                     <td className="text-green-500 font-semibold">
-                      Đã thanh toán
+                      <OrderStatus status={order.orderStatus} />
                     </td>
                   </tr>
                 ))
@@ -92,6 +106,51 @@ const OrderListByDailyOrder = () => {
                 <Loading />
               )}
             </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl p-4 mb-4">
+        <h2 className="text-xl font-semibold mb-2.5">Nhân viên giao hàng</h2>
+        <div className="overflow-x-auto max-h-96 mt-2">
+          <table className="w-full table-auto mb-4">
+            <thead className="sticky top-0">
+              <tr className="bg-gray-200 text-gray-800 leading-normal">
+                <th className="py-3 px-6 text-left">Hình ảnh</th>
+                <th className="py-3 px-6 ">Tên nhân viên</th>
+                <th className="py-3 px-6 ">Email</th>
+                <th className="py-3 px-6 text-right">Số điện thoại</th>
+              </tr>
+            </thead>
+            {staffData && staffData.length > 0 ? (
+              <tbody className="text-gray-600 text-sm font-light">
+                {staffData.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-gray-200 hover:bg-gray-100"
+                  >
+                    <td>
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="display-img-user"
+                      />
+                    </td>
+                    <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
+                      {item.name}
+                    </td>
+                    <td className="py-3 px-6 text-left">{item.email}</td>
+                    <td className="py-3 px-6 text-right">{item.phoneNumber}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center py-3 px-6">
+                  Chưa có nhân viên giao hàng
+                </td>
+              </tr>
+            )}{" "}
           </table>
         </div>
       </div>

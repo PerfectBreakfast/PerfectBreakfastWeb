@@ -155,11 +155,14 @@ const OrderFoodDetail = () => {
                           key={index}
                           className="border-b border-gray-200 hover:bg-gray-100"
                         >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="display-img-user"
-                          />
+                          <td>
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="display-img-user"
+                            />
+                          </td>
+
                           <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
                             {item.name}
                           </td>
