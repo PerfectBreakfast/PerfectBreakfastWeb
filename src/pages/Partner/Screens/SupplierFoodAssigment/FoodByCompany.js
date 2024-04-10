@@ -130,9 +130,8 @@ const FoodByCompany = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const handleClickDetail = (data) => {
-    console.log("data gửi", data);
-    navigate("detail", { state: { data } });
+  const handleClickDetail = (supplierData, date) => {
+    navigate("detail", { state: { data: supplierData, date } });
   };
   // Định nghĩa lại FoodAssigmentStatus như một hàm
   const FoodAssigmentStatus = (status) => {
@@ -236,7 +235,7 @@ const FoodByCompany = () => {
                                         rowSpan={totalSupplierAssignments}
                                         className="py-2.5 px-6"
                                         onClick={() =>
-                                          handleClickDetail(supplier)
+                                          handleClickDetail(supplier, day.date)
                                         }
                                       >
                                         <div className="flex justify-between">

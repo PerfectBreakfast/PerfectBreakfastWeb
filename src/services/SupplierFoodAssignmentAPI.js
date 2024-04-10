@@ -104,6 +104,20 @@ const SupplierFoodAssignmentAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  downloadFileFoodForPartner: async (assignmentData) => {
+    try {
+      const response = await axiosInstance.post(
+        `${api}/v1/supplierfoodassigments/partner/download-excel`,
+        assignmentData,
+        {
+          responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default SupplierFoodAssignmentAPI;

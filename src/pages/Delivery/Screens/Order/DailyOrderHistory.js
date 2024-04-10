@@ -3,14 +3,19 @@ import { useNavigate } from "react-router-dom";
 import DailyOrderAPI from "../../../../services/DailyOrderAPI";
 import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 import { Pagination } from "@mui/material";
-import { ToastContainer } from "react-toastify";
-
+import { ToastContainer, toast } from "react-toastify";
+import { ReactComponent as FileIcon } from "../../../../assets/icons/File.svg";
+import Modal from "react-modal";
 const DailyOrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const [modalExportOpen, setModalExportOpen] = useState(false);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   useEffect(() => {
     const fetchOrderList = async () => {
@@ -46,10 +51,62 @@ const DailyOrderHistory = () => {
     return `${day}/${month}/${year}`;
   };
 
+  function openExportModal() {
+    setToDate(null);
+    setFromDate(null);
+    setModalExportOpen(true);
+  }
+
+  function closeExportModal() {
+    setModalExportOpen(false);
+  }
+
+  const handleExport = async () => {
+    closeExportModal();
+    try {
+      if (!fromDate || !toDate) {
+        toast.error("Vui lòng chọn ngày!");
+        return;
+      }
+
+      const response = await DailyOrderAPI.exportDailyOrder(fromDate, toDate);
+
+      // Tạo URL cho tệp tải xuống
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute(
+        "download",
+        `Tổng hợp đơn hàng từ ngày ${fromDate} tới ngày ${toDate}.xlsx`
+      );
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      setToDate(null);
+      setFromDate(null);
+      return response;
+    } catch (error) {
+      toast.error(error.errors);
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Lịch sử đơn hàng</h2>
-
+      <div className="flex justify-end items-center mb-3">
+        <button
+          type="button"
+          className="btn-add"
+          onClick={() => openExportModal()}
+        >
+          <FileIcon />
+          Tải file
+        </button>
+      </div>
       <div className="bg-white rounded-xl p-4 ">
         <div className="">
           <table className="w-full table-dailyoder">
@@ -161,6 +218,63 @@ const DailyOrderHistory = () => {
           </table>
         </div>
       </div>
+      <Modal
+        isOpen={modalExportOpen}
+        onRequestClose={() => setModalExportOpen(false)}
+        style={{
+          overlay: { backgroundColor: "rgba(0,0,0,0.5)" },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            padding: "2rem",
+            borderRadius: "0.5rem",
+            maxWidth: "500px",
+            width: "90%",
+          },
+        }}
+        contentLabel="Assign Manager Modal"
+      >
+        <div className="flex flex-col">
+          <h2 className="text-xl font-semibold mb-3">Chọn ngày xuất file</h2>
+          <div className="mb-2.5">
+            <label htmlFor="fromDate" className="label-input">
+              Từ ngày
+            </label>
+            <input
+              id="fromDate"
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+          </div>
+          <div className="mb-1">
+            <label htmlFor="toDate" className="label-input">
+              Tới ngày
+            </label>
+            <input
+              id="toDate"
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-3">
+            <button
+              className="btn-cancel"
+              onClick={() => setModalExportOpen(false)}
+            >
+              Hủy
+            </button>
+            <button className="btn-confirm" onClick={handleExport}>
+              Xuất file
+            </button>
+          </div>
+        </div>
+      </Modal>
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );

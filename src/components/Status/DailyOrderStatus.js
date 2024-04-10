@@ -8,43 +8,43 @@ const DailyOrderStatus = ({ status }) => {
     case "Initial":
       statusText = "Chờ đặt đơn";
       styleClass =
-        "border-1 border-gray-500 hover:bg-gray-50  text-gray-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-gray-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Processing":
       statusText = "Chờ phân phối";
       styleClass =
-        "border-1 border-yellow-500 hover:bg-yellow-50  text-yellow-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-yellow-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Divided":
       statusText = "Chờ xác nhận";
       styleClass =
-        "border-1 border-orange-500 hover:bg-orange-50  text-orange-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-orange-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Cooking":
       statusText = "Đang nấu";
       styleClass =
-        "border-1 border-amber-500 hover:bg-amber-50  text-amber-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-amber-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Waiting":
       statusText = "Chờ lấy hàng";
       styleClass =
-        "border-1 border-blue-500 hover:bg-blue-50  text-blue-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-blue-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     case "Delivering":
       statusText = "Đang giao hàng";
       styleClass =
-        "border-1 border-indigo-500 hover:bg-indigo-50  text-indigo-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-indigo-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
 
     case "Complete":
       statusText = "Hoàn thành";
       styleClass =
-        "border-1 border-green-500 hover:bg-white text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-green-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
       break;
     default:
       statusText = "Không xác định";
       styleClass =
-        "border-1 border-red-500 hover:bg-red-50  text-red-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
+        "bg-red-500 text-white hover:shadow-xl cursor-pointer text-sm font-semibold mr-2 px-2.5 py-0.5 rounded";
   }
 
   return <span className={`${styleClass}`}>{statusText}</span>;

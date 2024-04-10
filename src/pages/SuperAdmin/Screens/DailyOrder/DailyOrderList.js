@@ -8,6 +8,7 @@ import DailyOrderAPI from "../../../../services/DailyOrderAPI";
 import DailyOrderStatus from "../../../../components/Status/DailyOrderStatus";
 import settingAPI from "../../../../services/SettingAPI";
 
+import { ReactComponent as FileIcon } from "../../../../assets/icons/File.svg";
 import { ReactComponent as Setting } from "../../../../assets/icons/Settings.svg";
 
 import Modal from "react-modal";
@@ -21,7 +22,12 @@ const DailyOrderList = () => {
 
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  const [modalExportOpen, setModalExportOpen] = useState(false);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -87,6 +93,49 @@ const DailyOrderList = () => {
     setIsOpen(false);
   }
 
+  function openExportModal() {
+    setToDate(null);
+    setFromDate(null);
+    setModalExportOpen(true);
+  }
+
+  function closeExportModal() {
+    setModalExportOpen(false);
+  }
+
+  const handleExport = async () => {
+    closeExportModal();
+    try {
+      if (!fromDate || !toDate) {
+        toast.error("Vui lòng chọn ngày!");
+        return;
+      }
+
+      const response = await DailyOrderAPI.exportDailyOrder(fromDate, toDate);
+
+      // Tạo URL cho tệp tải xuống
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute(
+        "download",
+        `Tổng hợp đơn hàng từ ngày ${fromDate} tới ngày ${toDate}.xlsx`
+      );
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      setToDate(null);
+      setFromDate(null);
+      return response;
+    } catch (error) {
+      toast.error(error.errors);
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+
   const handleConfirmSetting = async () => {
     if (settingId && newTime) {
       closeModal();
@@ -125,21 +174,32 @@ const DailyOrderList = () => {
   return (
     <div className="container mx-auto p-4">
       <h4 className="text-2xl font-semibold mb-4">Tổng hợp đơn hàng</h4>
-      {settingData ? (
-        <div className="w-fit bg-white shadow-sm px-4 py-3 rounded-xl flex items-center mb-4">
-          <p className="font-semibold text-gray-700">
-            Thời gian chốt đơn hàng: {formatTime(settingData.time)}
-          </p>
-          <button
-            className="ml-4 border-1 p-1 border-gray-300 rounded-xl"
-            onClick={() => handleOpenModal(settingData.id)}
-          >
-            <Setting />
-          </button>
-        </div>
-      ) : (
-        <p></p>
-      )}
+      <div className="flex justify-between items-center">
+        {settingData ? (
+          <div className="w-fit bg-white shadow-sm px-4 py-3 rounded-xl flex items-center mb-4">
+            <p className="font-semibold text-gray-700">
+              Thời gian chốt đơn hàng: {formatTime(settingData.time)}
+            </p>
+            <button
+              className="ml-4 border-1 p-1 border-gray-300 rounded-xl"
+              onClick={() => handleOpenModal(settingData.id)}
+            >
+              <Setting />
+            </button>
+          </div>
+        ) : (
+          <p></p>
+        )}
+        <button
+          type="button"
+          className="btn-add"
+          onClick={() => openExportModal()}
+        >
+          <FileIcon />
+          Tải file
+        </button>
+      </div>
+
       <div className="bg-white rounded-xl p-4 ">
         <div>
           <table className="w-full table-auto table-dailyoder">
@@ -291,6 +351,64 @@ const DailyOrderList = () => {
             </button>
             <button className="btn-confirm" onClick={handleConfirmSetting}>
               Xác nhận
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={modalExportOpen}
+        onRequestClose={() => setModalExportOpen(false)}
+        style={{
+          overlay: { backgroundColor: "rgba(0,0,0,0.5)" },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            padding: "2rem",
+            borderRadius: "0.5rem",
+            maxWidth: "500px",
+            width: "90%",
+          },
+        }}
+        contentLabel="Assign Manager Modal"
+      >
+        <div className="flex flex-col">
+          <h2 className="text-xl font-semibold mb-3">Chọn ngày xuất file</h2>
+          <div className="mb-2.5">
+            <label htmlFor="fromDate" className="label-input">
+              Từ ngày
+            </label>
+            <input
+              id="fromDate"
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+          </div>
+          <div className="mb-1">
+            <label htmlFor="toDate" className="label-input">
+              Tới ngày
+            </label>
+            <input
+              id="toDate"
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-3">
+            <button
+              className="btn-cancel"
+              onClick={() => setModalExportOpen(false)}
+            >
+              Hủy
+            </button>
+            <button className="btn-confirm" onClick={handleExport}>
+              Xuất file
             </button>
           </div>
         </div>
