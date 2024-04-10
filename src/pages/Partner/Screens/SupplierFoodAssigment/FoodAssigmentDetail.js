@@ -6,10 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import supplierUnitAPI from "../../../../services/supplierUnitAPI";
 import SupplierFoodAssigmentStatus from "../../../../components/Status/SupplierFoodAssigmentStatus";
 import Loading from "../../../Loading/Loading";
+import { ReactComponent as FileIcon } from "../../../../assets/icons/File.svg";
 
 const FoodAssigmentDetail = () => {
   const location = useLocation();
-  const { data: foodAssignmentGroupBySuppliers } = location.state || {};
+  const { data: foodAssignmentGroupBySuppliers, date } = location.state || {};
   const [foodData, setFoodData] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -128,9 +129,45 @@ const FoodAssigmentDetail = () => {
     return `${hours}:${minutes}, ${day}/${month}/${year}`;
   };
 
+  const handleExport = async () => {
+    try {
+      const packageData = {
+        bookingDate: date,
+        packageIds: foodAssignmentGroupBySuppliers.packageIds,
+        supplierId: foodAssignmentGroupBySuppliers.supplierId,
+      };
+      // Make the API call to get the file data
+      const response =
+        await SupplierFoodAssignmentAPI.downloadFileFoodForPartner(packageData);
+
+      // Tạo URL cho tệp tải xuống
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", `Danh sách món ăn ngày ${date}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      return response;
+    } catch (error) {
+      toast.error(error.errors);
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách món ăn</h2>
+      <div className="flex justify-between items-center mb-3">
+        <button type="button" className="btn-add" onClick={handleExport}>
+          <FileIcon />
+          Tải file
+        </button>
+      </div>
       <div>
         {foodData.map((company, index) => (
           <div key={index} className="bg-white rounded-xl p-4 mb-4">
