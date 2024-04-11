@@ -52,8 +52,17 @@ const DailyOrderHistory = () => {
   };
 
   function openExportModal() {
-    setToDate(null);
-    setFromDate(null);
+    // setToDate(null);
+    // setFromDate(null);
+    const today = new Date();
+    const sevenDaysAgo = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+
+    setToDate(today.toISOString().split("T")[0]);
+    setFromDate(sevenDaysAgo.toISOString().split("T")[0]);
     setModalExportOpen(true);
   }
 

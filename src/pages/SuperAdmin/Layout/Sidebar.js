@@ -12,6 +12,7 @@ import { ReactComponent as CompanyIcon } from "../../../assets/icons/enterprise.
 import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import { ReactComponent as OrderIcon } from "../../../assets/icons/total-commander.svg";
 import { ReactComponent as UserIcon } from "../../../assets/icons/user-group-accounts.svg";
+import { ReactComponent as DashboardIcon } from "../../../assets/icons/dashboard-square.svg";
 
 import { ReactComponent as Setting } from "../../../assets/icons/Settings.svg";
 
@@ -20,6 +21,7 @@ import { useUser } from "../../../components/Context/UserContext";
 import { useAuth } from "../../../components/Context/AuthContext";
 
 const navigation = [
+  { name: "Dashboard", href: "/admin/dashboard", icon: DashboardIcon },
   { name: "Danh sách món ăn", href: "/admin/food", icon: FoodIcon },
   { name: "Danh sách combo", href: "/admin/combo", icon: ComboIcon },
   { name: "Danh sách menu", href: "/admin/menu", icon: MenuIcon },

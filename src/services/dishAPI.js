@@ -118,10 +118,10 @@ const dishAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getFoodRegistrationSupplier: async (supplierId) => {
+  getFoodRegistrationSupplier: async (supplierId, searchTerm) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/foods/supplier/${supplierId}`
+        `${api}/v1/foods/supplier/${supplierId}?searchTerm=${searchTerm}`
       );
       return response.data;
     } catch (error) {

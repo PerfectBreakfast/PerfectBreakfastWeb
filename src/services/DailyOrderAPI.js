@@ -34,16 +34,35 @@ const DailyOrderAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
-  getDailyOrderForSuperAdmin: async (pageIndex) => {
+  // getDailyOrderForSuperAdmin: async (status, pageIndex) => {
+  //   try {
+  //     const response = await axiosInstance.get(
+  //       `${api}/v1/daily-orders/pagination?pageIndex=${pageIndex}&pageSize=10`
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     throw error.response ? error.response.data : error.message;
+  //   }
+  // },
+
+  getDailyOrderForSuperAdmin: async (pageIndex, status) => {
     try {
-      const response = await axiosInstance.get(
-        `${api}/v1/daily-orders/pagination?pageIndex=${pageIndex}&pageSize=10`
-      );
+      // Build the base URL
+      let url = `${api}/v1/daily-orders/pagination?pageIndex=${pageIndex}&pageSize=10`;
+
+      // Check if status is a number within the expected range (0-8)
+      if (status !== undefined && status >= 0 && status <= 8) {
+        url += `&status=${status}`;
+      }
+      console.log(url);
+      const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {
+      // Throw the error message or the error response data
       throw error.response ? error.response.data : error.message;
     }
   },
+
   getDailyOrderHistoryForPartner: async (pageIndex) => {
     try {
       const response = await axiosInstance.get(
@@ -67,7 +86,20 @@ const DailyOrderAPI = {
   exportDailyOrder: async (fromDate, toDate) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/daily-orders/Statistic?fromDate=${fromDate}&toDate=${toDate}`,
+        `${api}/v1/daily-orders/statistic?fromDate=${fromDate}&toDate=${toDate}`,
+        {
+          responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  exportDailyOrderForAdmin: async (fromDate, toDate) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/daily-orders/statistic/super-admin?fromDate=${fromDate}&toDate=${toDate}`,
         {
           responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
         }

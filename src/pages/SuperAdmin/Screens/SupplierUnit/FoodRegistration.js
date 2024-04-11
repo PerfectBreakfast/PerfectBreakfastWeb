@@ -14,18 +14,30 @@ const FoodRegistration = () => {
   const [foodData, setFoodData] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+
   const navigate = useNavigate();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const foodData = await dishAPI.getFoodRegistrationSupplier(id);
-        setFoodData(foodData);
-      } catch (error) {
-        // toast.error("Failed to fetch data.");
-      }
-    };
     fetchData();
-  }, []);
+  }, [id, searchTerm]);
+
+  const handleSearch = async () => {
+    setSearchTerm(searchInput);
+  };
+
+  const fetchData = async () => {
+    try {
+      const foodData = await dishAPI.getFoodRegistrationSupplier(
+        id,
+        searchTerm
+      );
+      setFoodData(foodData);
+    } catch (error) {
+      // toast.error("Failed to fetch data.");
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -89,11 +101,29 @@ const FoodRegistration = () => {
   return (
     <div className="mx-auto bg-white p-8 shadow-xl rounded-2xl my-4 h-fit w-5/6">
       <form onSubmit={formik.handleSubmit}>
-        <h2 className="text-2xl font-semibold mb-4">Đăng ký món ăn</h2>
+        <h2 className="text-2xl font-semibold mb-3">Đăng ký món ăn</h2>
         {/* Name field */}
         <div className="flex flex-col gap-3">
           <div>
-            <label className="label-input">Lựa chọn món ăn</label>
+            <div className="flex justify-between items-center mb-2">
+              {" "}
+              <label className="label-input">Lựa chọn món ăn</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  className="input-search "
+                  placeholder="Tìm kiếm món ăn"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                />
+              </div>
+            </div>
+
             <div className="overflow-x-auto max-h-96">
               {foodData.length > 0 ? (
                 <table className="min-w-full table-auto">

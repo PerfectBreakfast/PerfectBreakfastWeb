@@ -10,8 +10,10 @@ import settingAPI from "../../../../services/SettingAPI";
 
 import { ReactComponent as FileIcon } from "../../../../assets/icons/File.svg";
 import { ReactComponent as Setting } from "../../../../assets/icons/Settings.svg";
+import { ReactComponent as FilterIcon } from "../../../../assets/icons/filter.svg";
 
 import Modal from "react-modal";
+import { Menu } from "@headlessui/react";
 
 const DailyOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -23,6 +25,9 @@ const DailyOrderList = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [status, setStatus] = useState();
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const [modalExportOpen, setModalExportOpen] = useState(false);
@@ -33,23 +38,25 @@ const DailyOrderList = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    const fetchOrderList = async () => {
-      setIsLoading(true);
-      try {
-        const result = await DailyOrderAPI.getDailyOrderForSuperAdmin(
-          pageIndex
-        );
-        setOrders(result.items);
-        setTotalPages(result.totalPagesCount);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchOrderList();
     fetchData();
-  }, [pageIndex]);
+  }, [pageIndex, status]);
+  const fetchOrderList = async () => {
+    console.log(pageIndex, status);
+    setIsLoading(true);
+    try {
+      const result = await DailyOrderAPI.getDailyOrderForSuperAdmin(
+        pageIndex,
+        status
+      );
+      setOrders(result.items);
+      setTotalPages(result.totalPagesCount);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
   };
@@ -93,9 +100,24 @@ const DailyOrderList = () => {
     setIsOpen(false);
   }
 
+  const formatDateTime = (isoDateString) => {
+    if (!isoDateString) return "";
+    const [year, month, day] = isoDateString.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   function openExportModal() {
-    setToDate(null);
-    setFromDate(null);
+    // setToDate(null);
+    // setFromDate(null);
+    const today = new Date();
+    const sevenDaysAgo = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+
+    setToDate(today.toISOString().split("T")[0]);
+    setFromDate(sevenDaysAgo.toISOString().split("T")[0]);
     setModalExportOpen(true);
   }
 
@@ -111,7 +133,10 @@ const DailyOrderList = () => {
         return;
       }
 
-      const response = await DailyOrderAPI.exportDailyOrder(fromDate, toDate);
+      const response = await DailyOrderAPI.exportDailyOrderForAdmin(
+        fromDate,
+        toDate
+      );
 
       // Tạo URL cho tệp tải xuống
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -205,12 +230,52 @@ const DailyOrderList = () => {
           <table className="w-full table-auto table-dailyoder">
             <thead>
               <tr className="bg-gray-200 text-gray-800 leading-normal">
-                <th className="py-2.5 ">Ngày giao hàng</th>
+                <th className="py-2.5 w-36">Ngày giao hàng</th>
                 <th className="py-2.5">Tên công ty</th>
                 <th className="py-2.5 ">Địa chỉ</th>
                 <th className="py-2.5 text-left w-20">Bữa ăn</th>
                 <th className="py-2.5 text-center w-28">Số lượng đơn đặt</th>
-                <th className="py-2.5 text-center">Trạng thái</th>
+                {/* <th className="py-2.5 text-center">Trạng thái</th> */}
+                <th
+                  className="py-2.5 text-center"
+                  // onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                >
+                  <Menu as="div" className="relative">
+                    <Menu.Button className="py-2.5 text-center">
+                      <div className=" flex justify-center items-center hover:font-bold">
+                        Trạng thái <FilterIcon className="w-4 mx-1" />
+                      </div>
+                    </Menu.Button>
+                    <Menu.Items className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-1 z-10">
+                      {[
+                        { label: "Tất cả", value: "" },
+                        { label: "Chờ đặt đơn", value: 0 },
+                        { label: "Chờ phân phối", value: 1 },
+                        { label: "Chờ xác nhận", value: 2 },
+                        { label: "Đang nấu", value: 3 },
+                        { label: "Chờ lấy hàng", value: 4 },
+                        { label: "Đang giao hàng", value: 5 },
+                        { label: "Hoàn thành", value: 6 },
+                      ].map((statusOption) => (
+                        <Menu.Item key={statusOption.value}>
+                          {({ active }) => (
+                            <div
+                              className={`${
+                                active ? "bg-gray-100" : ""
+                              } px-4 py-2 cursor-pointer`}
+                              onClick={() => {
+                                setStatus(statusOption.value.toString()); // Adjust this function to your needs
+                                // Add your logic for hiding dropdown or any other side effects
+                              }}
+                            >
+                              {statusOption.label}
+                            </div>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Menu>
+                </th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
