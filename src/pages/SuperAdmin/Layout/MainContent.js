@@ -39,10 +39,12 @@ import AdminChangePassword from "../../../components/Profile/AdminChangePassword
 import OrderListByDailyOrder from "../Screens/DailyOrder/OrderListByDailyOrder";
 import UserList from "../Screens/User/UserList";
 import UserByCompany from "../Screens/User/UserByCompany";
+import AdminDashboard from "../Screens/Dashboard/AdminDashboard";
 
 const MainContent = () => {
   return (
     <Routes>
+      <Route path="dashboard" element={<AdminDashboard />} />
       <Route path="combo" element={<Combos />} />
       <Route path="food" element={<Dishes />} />
       <Route path="menu" element={<Menu />} />

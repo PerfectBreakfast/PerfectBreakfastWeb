@@ -133,7 +133,10 @@ const DailyOrderList = () => {
         return;
       }
 
-      const response = await DailyOrderAPI.exportDailyOrder(fromDate, toDate);
+      const response = await DailyOrderAPI.exportDailyOrderForAdmin(
+        fromDate,
+        toDate
+      );
 
       // Tạo URL cho tệp tải xuống
       const url = window.URL.createObjectURL(new Blob([response.data]));

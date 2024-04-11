@@ -86,7 +86,20 @@ const DailyOrderAPI = {
   exportDailyOrder: async (fromDate, toDate) => {
     try {
       const response = await axiosInstance.get(
-        `${api}/v1/daily-orders/Statistic?fromDate=${fromDate}&toDate=${toDate}`,
+        `${api}/v1/daily-orders/statistic?fromDate=${fromDate}&toDate=${toDate}`,
+        {
+          responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  exportDailyOrderForAdmin: async (fromDate, toDate) => {
+    try {
+      const response = await axiosInstance.get(
+        `${api}/v1/daily-orders/statistic/super-admin?fromDate=${fromDate}&toDate=${toDate}`,
         {
           responseType: "blob", // Đây là điểm quan trọng để xử lý dữ liệu nhị phân
         }
