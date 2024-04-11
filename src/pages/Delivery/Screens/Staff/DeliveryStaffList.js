@@ -9,6 +9,7 @@ import { ReactComponent as Search } from "../../../../assets/icons/search.svg";
 import { ReactComponent as Write } from "../../../../assets/icons/write.svg";
 import { ReactComponent as Delete } from "../../../../assets/icons/delete.svg";
 import { ReactComponent as Plus } from "../../../../assets/icons/plus.svg";
+import { ReactComponent as UserIcon } from "../../../../assets/icons/User Circle.svg";
 
 const DeliveryStaffList = () => {
   const [staffData, setStaffData] = useState([]);
@@ -102,11 +103,21 @@ const DeliveryStaffList = () => {
                       className="border-b border-gray-200 hover:bg-gray-100"
                     >
                       <td className="py-2.5 px-6 text-left">
-                        <img
+                        {/* <img
                           src={staff.image}
                           alt={staff.name}
                           className="display-img-user"
-                        />
+                        /> */}
+
+                        {staff.image ? (
+                          <img
+                            src={staff.image}
+                            alt={staff.name}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        ) : (
+                          <UserIcon className="w-10 h-10 rounded-full" />
+                        )}
                       </td>
                       <td className="p2.5-3 px-6 text-left">
                         <span

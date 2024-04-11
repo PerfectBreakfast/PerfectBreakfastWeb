@@ -6,6 +6,8 @@ import Loading from "../../../Loading/Loading";
 import ShippingOrderAPI from "../../../../services/ShippingOrderAPI";
 import OrderStatus from "../../../../components/Status/OrderStatus";
 
+import { ReactComponent as UserIcon } from "../../../../assets/icons/User Circle.svg";
+
 Modal.setAppElement("#root"); // Adjust according to your project setup
 
 const OrderListByDailyOrder = () => {
@@ -130,11 +132,20 @@ const OrderListByDailyOrder = () => {
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
                     <td>
-                      <img
+                      {/* <img
                         src={item.image}
                         alt={item.name}
                         className="display-img-user"
-                      />
+                      /> */}
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      ) : (
+                        <UserIcon className="w-10 h-10 rounded-full" />
+                      )}
                     </td>
                     <td className="py-3 px-6 text-left whitespace-nowrap font-bold">
                       {item.name}
