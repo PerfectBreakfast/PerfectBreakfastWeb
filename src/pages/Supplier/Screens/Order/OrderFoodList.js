@@ -246,7 +246,7 @@ const OrderFoodList = () => {
                                           <button className="font-bold text-green-500 hover:text-green-700">
                                             {partner.partnerName}
                                           </button>
-                                          {partner.status === 0 ||
+                                          {/* {partner.status === 0 ||
                                           partner.status === 1 ||
                                           partner.status === 2 ? (
                                             <div>
@@ -261,6 +261,16 @@ const OrderFoodList = () => {
                                                     ? "Đơn hàng đang chờ phân phối lại"
                                                     : "Đơn hàng đang cần xác nhận"
                                                 }
+                                              />
+                                            </div>
+                                          ) : null} */}
+                                          {partner.status === 0 ? (
+                                            <div>
+                                              <AlertIcon
+                                                className={FoodAssigmentStatus(
+                                                  partner.status
+                                                )}
+                                                title="Đơn hàng đang chờ xác nhận"
                                               />
                                             </div>
                                           ) : null}

@@ -67,7 +67,7 @@ const ManagementLogin = () => {
 
       // Kiểm tra và điều hướng dựa trên vai trò
       if (roles.includes("SUPER ADMIN")) {
-        navigate("/admin/food");
+        navigate("/admin/dashboard");
       } else if (roles.includes("PARTNER ADMIN")) {
         navigate("/partner/order");
       } else if (roles.includes("SUPPLIER ADMIN")) {
