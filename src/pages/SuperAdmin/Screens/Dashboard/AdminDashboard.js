@@ -178,7 +178,9 @@ const AdminDashboard = () => {
                   <th className="py-2.5 px-3 text-left font-extrabold">
                     Chi tiết
                   </th>
-                  <th className="py-2.5 px-3 font-extrabold">Số lượng</th>
+                  <th className="py-2.5 px-3 font-extrabold text-center">
+                    Số lượng
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -216,7 +218,9 @@ const AdminDashboard = () => {
                       </td>
 
                       <td className="py-2.5 px-3">{food.foods}</td>
-                      <td className="py-2.5 px-3">{food.quantity}</td>
+                      <td className="py-2.5 px-3 text-center">
+                        {food.quantity}
+                      </td>
                     </tr>
                   ))
                 ) : (
@@ -241,7 +245,7 @@ const AdminDashboard = () => {
                   <th className="py-2.5 px-3 font-extrabold">#</th>
                   <th className="py-2.5 px-3 font-extrabold">Tên công ty</th>
                   <th className="py-2.5 px-3font-extrabold text-center">
-                    Số lượng
+                    Số lượng đơn
                   </th>
                 </tr>
               </thead>
