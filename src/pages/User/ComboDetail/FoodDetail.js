@@ -123,7 +123,7 @@ const FoodDetail = () => {
 
           <div class="text-center mt-4">
             <h4 class="text-2xl font-bold mb-2">{foodData.name}</h4>
-            <h6 class="text-xl font-semibold mb-2">
+            <h6 class="text-xl font-semibold mb-2 text-mainColor">
               {foodData.price.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",

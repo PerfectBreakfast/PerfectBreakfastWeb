@@ -137,7 +137,7 @@ const OrderFoodDetail = () => {
                   <th>Số lượng</th>
                   <th>Thời gian hoàn thành</th>
                   <th>Trạng thái</th>
-                  <th className="w-64 text-center">Xác nhận đơn hàng</th>
+                  <th className="w-64 text-center">Xác nhận món ăn</th>
                 </tr>
               </thead>
               <tbody>
