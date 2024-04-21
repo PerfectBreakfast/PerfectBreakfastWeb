@@ -20,6 +20,9 @@ const FoodAssigmentDetail = () => {
   const [supplierData, setSupplierData] = useState(null);
   const [selectedSupplierId, setSelectedSupplierId] = useState("");
 
+  const [confirmAll, setConfirmAll] = useState(false);
+  const [currentCompany, setCurrentCompany] = useState(null);
+
   console.log("data nhận", foodAssignmentGroupBySuppliers);
   useEffect(() => {
     fetchFoodList(foodAssignmentGroupBySuppliers); // Assuming we are dealing with the first supplier
@@ -62,17 +65,52 @@ const FoodAssigmentDetail = () => {
 
   console.log("món ăn", foodData);
 
-  const openModal = (foodId) => {
-    setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận
+  // const openModal = (foodId) => {
+  //   setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận
+  //   setIsOpen(true);
+  // };
+
+  const openModal = (foodId, allConfirm = false, company = null) => {
+    setConfirmFoodId(foodId);
     setIsOpen(true);
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-    setConfirmFoodId(null); // Reset ID sau khi đóng modal
+    setConfirmAll(allConfirm);
+    setCurrentCompany(company); // Store the current company data
   };
 
+  // const closeModal = () => {
+  //   setIsOpen(false);
+  //   setConfirmFoodId(null); // Reset ID sau khi đóng modal
+  // };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setConfirmFoodId(null);
+    setCurrentCompany(null); // Reset the current company data
+  };
+
+  // const handleConfirm = async () => {
+  //   if (confirmFoodId) {
+  //     try {
+  //       await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentByPartner(
+  //         confirmFoodId
+  //       );
+  //       toast.success("Đơn hàng đã được xác nhận!");
+  //       fetchFoodList(foodAssignmentGroupBySuppliers); // Refetch the food list to update the UI
+  //       closeModal(); // Đóng modal sau khi xác nhận thành công
+  //     } catch (error) {
+  //       console.error("Error confirming order:", error);
+  //       toast.error(error.errors);
+  //     }
+  //   }
+  // };
+
   const handleConfirm = async () => {
-    if (confirmFoodId) {
+    if (confirmAll && currentCompany) {
+      // Confirm all items using the current company data
+      handleConfirmAll(currentCompany);
+      closeModal();
+    } else if (confirmFoodId) {
+      // Confirm a single item logic remains the same
       try {
         await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentByPartner(
           confirmFoodId
@@ -83,6 +121,7 @@ const FoodAssigmentDetail = () => {
       } catch (error) {
         console.error("Error confirming order:", error);
         toast.error(error.errors);
+        closeModal();
       }
     }
   };
@@ -172,10 +211,10 @@ const FoodAssigmentDetail = () => {
   //   }
   // };
   const handleConfirmAll = async (company) => {
-    const packageId = company.id; // Use the company id as packageId
+    const packageId = company.id;
     const foodAssignmentIds = company.foodAssignmentResponses
-      .filter((food) => food.status === "Confirmed") // Only include confirmed foods
-      .map((food) => food.id); // Collect the ids
+      .filter((food) => food.status === "Confirmed")
+      .map((food) => food.id);
 
     if (foodAssignmentIds.length === 0) {
       toast.error("Không có đơn hàng nào để xác nhận cho công ty này.");
@@ -194,11 +233,12 @@ const FoodAssigmentDetail = () => {
       toast.success(
         `Đã xác nhận tất cả đơn hàng cho công ty ${company.companyName}!`
       );
-      fetchFoodList(foodAssignmentGroupBySuppliers); // Refresh the list after confirming
+      fetchFoodList(foodAssignmentGroupBySuppliers);
     } catch (error) {
       console.error("Error confirming all orders:", error);
       toast.error(error.errors);
     }
+    closeModal(); // Close modal after operation
   };
 
   return (
@@ -285,17 +325,26 @@ const FoodAssigmentDetail = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="5">
-                      {company.foodAssignmentResponses.some(
-                        (food) => food.status === "Confirmed"
-                      ) && (
-                        <button
-                          className="btn-confirm ml-2"
-                          onClick={() => handleConfirmAll(company)} // Pass the current company object
-                        >
-                          Xác nhận tất cả
-                        </button>
-                      )}
+                    <td colSpan="4"></td>
+                    <td colSpan="1" className="flex py-2.5 justify-center">
+                      <div className="">
+                        {company.foodAssignmentResponses.some(
+                          (food) => food.status === "Confirmed"
+                        ) && (
+                          // <button
+                          //   className="btn-confirm ml-2"
+                          //   onClick={() => handleConfirmAll(company)} // Pass the current company object
+                          // >
+                          //   Xác nhận tất cả
+                          // </button>
+                          <button
+                            className="btn-confirm ml-2"
+                            onClick={() => openModal(null, true, company)} // Now also passing the current company data
+                          >
+                            Xác nhận tất cả
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 </tfoot>
@@ -371,7 +420,7 @@ const FoodAssigmentDetail = () => {
         </div>
       </Modal>
 
-      <ToastContainer position="top-right" autoClose={2000} />
+      {/* <ToastContainer position="top-right" autoClose={2000} /> */}
     </div>
   );
 };

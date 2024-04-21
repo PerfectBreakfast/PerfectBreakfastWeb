@@ -265,7 +265,7 @@ const OrderFoodList = () => {
                                             </div>
                                           ) : null} */}
                                           {partner.status === 0 ? (
-                                            <div>
+                                            <div className="cursor-pointer">
                                               <AlertIcon
                                                 className={FoodAssigmentStatus(
                                                   partner.status
