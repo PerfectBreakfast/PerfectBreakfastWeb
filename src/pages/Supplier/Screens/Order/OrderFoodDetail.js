@@ -13,6 +13,7 @@ const OrderFoodDetail = () => {
   const [confirmFoodId, setConfirmFoodId] = useState(null);
   const [action, setAction] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [confirmAll, setConfirmAll] = useState(false);
 
   useEffect(() => {
     fetchFoodList(foodAssignmentGroupByPartners);
@@ -31,9 +32,15 @@ const OrderFoodDetail = () => {
     }
   };
   console.log("data", foodData);
-  const openModal = (foodId, action) => {
-    setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận hoặc từ chối
-    setAction(action); // Lưu hành động được chọn
+  // const openModal = (foodId, action) => {
+  //   setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận hoặc từ chối
+  //   setAction(action); // Lưu hành động được chọn
+  //   setIsOpen(true);
+  // };
+  const openModal = (foodId, action, confirmAll = false) => {
+    setConfirmFoodId(foodId); // Save the ID of the food item or company for action
+    setAction(action); // Save the chosen action
+    setConfirmAll(confirmAll); // Indicates whether the confirmation is for all items
     setIsOpen(true);
   };
 
@@ -43,30 +50,68 @@ const OrderFoodDetail = () => {
     setAction(null); // Reset action khi đóng modal
   };
 
+  // const handleAction = async () => {
+  //   const status = action === "confirm" ? 1 : 0; // Chuyển đổi hành động thành status tương ứng
+  //   if (confirmFoodId) {
+  //     try {
+  //       await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentBySupplier(
+  //         confirmFoodId,
+  //         status
+  //       );
+  //       toast.success(
+  //         `Đơn hàng đã được ${action === "confirm" ? "xác nhận" : "từ chối"}!`
+  //       );
+  //       fetchFoodList(foodAssignmentGroupByPartners); // Refetch the food list
+  //       closeModal(); // Close modal
+  //     } catch (error) {
+  //       console.error(
+  //         `Error ${action === "confirm" ? "confirming" : "rejecting"} order:`,
+  //         error
+  //       );
+  //       // toast.error(
+  //       //   `Có lỗi xảy ra khi ${
+  //       //     action === "confirm" ? "xác nhận" : "từ chối"
+  //       //   } đơn hàng.`
+  //       // );
+  //       toast.error(error.errors);
+  //     }
+  //   }
+  // };
+
   const handleAction = async () => {
-    const status = action === "confirm" ? 1 : 0; // Chuyển đổi hành động thành status tương ứng
-    if (confirmFoodId) {
+    if (confirmAll) {
       try {
-        await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentBySupplier(
-          confirmFoodId,
-          status
+        await SupplierFoodAssignmentAPI.confirmAllSupplierFoodAssignmentBySupplier(
+          confirmFoodId
         );
-        toast.success(
-          `Đơn hàng đã được ${action === "confirm" ? "xác nhận" : "từ chối"}!`
-        );
-        fetchFoodList(foodAssignmentGroupByPartners); // Refetch the food list
+        toast.success("Đã xác nhận tất cả đơn hàng!");
+        fetchFoodList(foodAssignmentGroupByPartners); // Refresh the list after confirming
         closeModal(); // Close modal
       } catch (error) {
-        console.error(
-          `Error ${action === "confirm" ? "confirming" : "rejecting"} order:`,
-          error
-        );
-        // toast.error(
-        //   `Có lỗi xảy ra khi ${
-        //     action === "confirm" ? "xác nhận" : "từ chối"
-        //   } đơn hàng.`
-        // );
+        console.error("Error confirming all orders:", error);
         toast.error(error.errors);
+      }
+    } else {
+      // Existing logic for single item confirmation
+      const status = action === "confirm" ? 1 : 0;
+      if (confirmFoodId) {
+        try {
+          await SupplierFoodAssignmentAPI.confirmSupplierFoodAssignmentBySupplier(
+            confirmFoodId,
+            status
+          );
+          toast.success(
+            `Đơn hàng đã được ${action === "confirm" ? "xác nhận" : "từ chối"}!`
+          );
+          fetchFoodList(foodAssignmentGroupByPartners); // Refetch the food list
+          closeModal(); // Close modal
+        } catch (error) {
+          console.error(
+            `Error ${action === "confirm" ? "confirming" : "rejecting"} order:`,
+            error
+          );
+          toast.error(error.errors);
+        }
       }
     }
   };
@@ -150,7 +195,7 @@ const OrderFoodDetail = () => {
                   <th>Số lượng</th>
                   <th>Thời gian hoàn thành</th>
                   <th>Trạng thái</th>
-                  <th className="w-64 text-center">Xác nhận món ăn</th>
+                  <th className="text-center">Xác nhận món ăn</th>
                 </tr>
               </thead>
               <tbody>
@@ -166,7 +211,7 @@ const OrderFoodDetail = () => {
                       {" "}
                       <SupplierFoodAssigmentStatus status={food.status} />
                     </td>
-                    <td className="py-2.5 w-64 justify-center">
+                    <td className="py-2.5 flex min-w-64 justify-center">
                       {food.status === "Pending" && (
                         <div className="justify-center">
                           <button
@@ -189,17 +234,27 @@ const OrderFoodDetail = () => {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan="5">
-                    {company.foodAssignmentResponses.some(
-                      (food) => food.status === "Pending"
-                    ) && (
-                      <button
-                        className="btn-confirm ml-2"
-                        onClick={() => handleConfirmAll(company.id)}
-                      >
-                        Xác nhận tất cả
-                      </button>
-                    )}
+                  <td colSpan="4"></td>
+                  <td colSpan="1" className="flex py-2.5 justify-center">
+                    <div className="">
+                      {" "}
+                      {company.foodAssignmentResponses.some(
+                        (food) => food.status === "Pending"
+                      ) && (
+                        // <button
+                        //   className="btn-confirm ml-2"
+                        //   onClick={() => handleConfirmAll(company.id)}
+                        // >
+                        //   Xác nhận tất cả
+                        // </button>
+                        <button
+                          className="btn-confirm ml-2"
+                          onClick={() => openModal(company.id, "confirm", true)} // True indicates this is a bulk confirmation
+                        >
+                          Xác nhận tất cả
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tfoot>
@@ -217,13 +272,25 @@ const OrderFoodDetail = () => {
       >
         <div className="bg-white rounded-lg p-6 max-w-sm mx-auto">
           <h2 className="text-lg font-semibold mb-4">Xác nhận món ăn</h2>
-          <p>
+          {/* <p>
             Bạn có chắc chắn{" "}
             {action === "confirm"
               ? "xác nhận thông tin"
               : "muốn từ chối thực hiện"}{" "}
             món ăn này?
+          </p> */}
+          <p>
+            Bạn có chắc chắn{" "}
+            {confirmAll
+              ? "xác nhận thông tin tất cả món ăn"
+              : `${
+                  action === "confirm"
+                    ? "xác nhận thông tin"
+                    : "muốn từ chối thực hiện"
+                } món ăn này`}
+            ?
           </p>
+
           <div className="flex justify-end gap-4 mt-4">
             <button
               className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-black"
