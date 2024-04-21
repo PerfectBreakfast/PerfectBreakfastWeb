@@ -30,7 +30,7 @@ const OrderFoodDetail = () => {
       console.error("Error fetching data:", error);
     }
   };
-
+  console.log("data", foodData);
   const openModal = (foodId, action) => {
     setConfirmFoodId(foodId); // Lưu ID của món ăn cần xác nhận hoặc từ chối
     setAction(action); // Lưu hành động được chọn
@@ -113,6 +113,19 @@ const OrderFoodDetail = () => {
     return `${hours}:${minutes}, ${day}/${month}/${year}`;
   };
 
+  const handleConfirmAll = async (packageId) => {
+    try {
+      await SupplierFoodAssignmentAPI.confirmAllSupplierFoodAssignmentBySupplier(
+        packageId
+      );
+      toast.success("Đã xác nhận tất cả đơn hàng!");
+      fetchFoodList(foodAssignmentGroupByPartners); // Refresh the list after confirming
+    } catch (error) {
+      console.error("Error confirming all orders:", error);
+      toast.error(error.errors);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-3">Danh sách món ăn</h2>
@@ -174,6 +187,22 @@ const OrderFoodDetail = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan="5">
+                    {company.foodAssignmentResponses.some(
+                      (food) => food.status === "Pending"
+                    ) && (
+                      <button
+                        className="btn-confirm ml-2"
+                        onClick={() => handleConfirmAll(company.id)}
+                      >
+                        Xác nhận tất cả
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

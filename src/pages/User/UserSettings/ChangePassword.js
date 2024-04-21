@@ -11,6 +11,7 @@ import { ReactComponent as Visibility } from "../../../assets/icons/Eye Closed.s
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import Modal from "react-modal";
+import { useAuth } from "../../../components/Context/AuthContext";
 
 const ChangePassword = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -21,6 +22,8 @@ const ChangePassword = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const { user, logout } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -46,11 +49,18 @@ const ChangePassword = () => {
           newPassword: values.password,
           confirmNewPassword: values.confirmPassword,
         });
-        toast.success("Thay đổi mật khẩu thành công!");
-        // Wait for 1 second before logging out
-        // setTimeout(() => {
-        handleLogout(); // Call the handleLogout function to log the user out
-        // }, 1000);
+        if (response === true) {
+          // toast.success("Thay đổi mật khẩu thành công!");
+          // handleLogout();
+          setIsOpen(false);
+          toast.success("Thay đổi mật khẩu thành công!");
+          setTimeout(() => {
+            handleLogout();
+          }, 1500);
+        } else {
+          setIsOpen(false);
+          toast.error("Mật khẩu hiện tại không chính xác!");
+        }
       } catch (error) {
         setIsOpen(false);
         console.log(error.errors);
@@ -64,6 +74,7 @@ const ChangePassword = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    logout(user);
     navigate("/login");
   };
 
