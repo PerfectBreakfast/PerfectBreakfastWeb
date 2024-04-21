@@ -159,6 +159,48 @@ const FoodAssigmentDetail = () => {
     }
   };
 
+  // const handleConfirmAll = async (packageData) => {
+  //   try {
+  //     await SupplierFoodAssignmentAPI.confirmAllSupplierFoodAssignmentByPartner(
+  //       packageData
+  //     );
+  //     toast.success("Đã xác nhận tất cả đơn hàng!");
+  //     fetchFoodList(foodAssignmentGroupBySuppliers); // Refresh the list after confirming
+  //   } catch (error) {
+  //     console.error("Error confirming all orders:", error);
+  //     toast.error(error.errors);
+  //   }
+  // };
+  const handleConfirmAll = async (company) => {
+    const packageId = company.id; // Use the company id as packageId
+    const foodAssignmentIds = company.foodAssignmentResponses
+      .filter((food) => food.status === "Confirmed") // Only include confirmed foods
+      .map((food) => food.id); // Collect the ids
+
+    if (foodAssignmentIds.length === 0) {
+      toast.error("Không có đơn hàng nào để xác nhận cho công ty này.");
+      return;
+    }
+
+    const packageData = {
+      packageId,
+      foodAssignmentIds,
+    };
+
+    try {
+      await SupplierFoodAssignmentAPI.confirmAllSupplierFoodAssignmentByPartner(
+        packageData
+      );
+      toast.success(
+        `Đã xác nhận tất cả đơn hàng cho công ty ${company.companyName}!`
+      );
+      fetchFoodList(foodAssignmentGroupBySuppliers); // Refresh the list after confirming
+    } catch (error) {
+      console.error("Error confirming all orders:", error);
+      toast.error(error.errors);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-2">Danh sách món ăn</h2>
@@ -241,6 +283,22 @@ const FoodAssigmentDetail = () => {
                     </tr>
                   )}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="5">
+                      {company.foodAssignmentResponses.some(
+                        (food) => food.status === "Confirmed"
+                      ) && (
+                        <button
+                          className="btn-confirm ml-2"
+                          onClick={() => handleConfirmAll(company)} // Pass the current company object
+                        >
+                          Xác nhận tất cả
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>

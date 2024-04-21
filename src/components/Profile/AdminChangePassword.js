@@ -11,6 +11,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import Modal from "react-modal";
 import userAPI from "../../services/userAPI";
+import { useAuth } from "../Context/AuthContext";
 
 const AdminChangePassword = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -19,6 +20,8 @@ const AdminChangePassword = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  const { user, logout } = useAuth();
 
   const navigate = useNavigate();
 
@@ -46,11 +49,20 @@ const AdminChangePassword = () => {
           newPassword: values.password,
           confirmNewPassword: values.confirmPassword,
         });
-        toast.success("Thay đổi mật khẩu thành công!");
-        // Wait for 1 second before logging out
-        // setTimeout(() => {
-        handleLogout(); // Call the handleLogout function to log the user out
-        // }, 1000);
+        // Kiểm tra trạng thái trả về từ API
+
+        if (response === true) {
+          // toast.success("Thay đổi mật khẩu thành công!");
+          // handleLogout();
+          setIsOpen(false);
+          toast.success("Thay đổi mật khẩu thành công!");
+          setTimeout(() => {
+            handleLogout();
+          }, 1500);
+        } else {
+          setIsOpen(false);
+          toast.error("Mật khẩu hiện tại không chính xác!");
+        }
       } catch (error) {
         setIsOpen(false);
         console.log(error.errors);
@@ -64,7 +76,8 @@ const AdminChangePassword = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    navigate("/login");
+    logout(user);
+    navigate("/management/login");
   };
 
   const toggleCurrentPasswordVisibility = () => {
@@ -86,7 +99,6 @@ const AdminChangePassword = () => {
   const closeModal = () => setIsOpen(false);
 
   const handleUpdateClick = async () => {
-    // Đánh dấu tất cả các trường là đã chạm vào, bao gồm cả selectedImage
     formik.setTouched({
       currentPassword: true,
       password: true,
@@ -98,7 +110,6 @@ const AdminChangePassword = () => {
 
     // Kiểm tra xem form có lỗi không
     if (Object.keys(errors).length === 0) {
-      // Nếu không có lỗi, mở modal xác nhận
       openModal();
     }
   };
@@ -259,7 +270,6 @@ const AdminChangePassword = () => {
           </div>
         </div>
       </Modal>
-      <ToastContainer autoClose={700} />
     </div>
   );
 };

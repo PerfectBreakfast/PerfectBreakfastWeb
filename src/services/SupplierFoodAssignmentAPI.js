@@ -118,6 +118,27 @@ const SupplierFoodAssignmentAPI = {
       throw error.response ? error.response.data : error.message;
     }
   },
+  confirmAllSupplierFoodAssignmentBySupplier: async (packageId) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/supplierfoodassigments/status-confirmations-all/${packageId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
+  confirmAllSupplierFoodAssignmentByPartner: async (packageData) => {
+    try {
+      const response = await axiosInstance.put(
+        `${api}/v1/supplierfoodassigments/status-confirmations-all-partner`,
+        packageData
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  },
 };
 
 export default SupplierFoodAssignmentAPI;
