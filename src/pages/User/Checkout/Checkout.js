@@ -178,23 +178,24 @@ function Checkout() {
                 </label>
 
                 {/* Radio option for e-wallet */}
-                { <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="wallet"
-                    name="paymentMethod"
-                    className="form-radio h-5 w-5 text-green-500"
-                    checked={paymentMethod === "momo"}
-                    onChange={handlePaymentMethodChange}
-                  />
-                  <div className="ml-3 flex items-center">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full mr-2">
-                
-                      <Wallet />
+                {
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="momo"
+                      name="paymentMethod"
+                      className="form-radio h-5 w-5 text-green-500"
+                      checked={paymentMethod === "momo"}
+                      onChange={handlePaymentMethodChange}
+                    />
+                    <div className="ml-3 flex items-center">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full mr-2">
+                        <Wallet />
+                      </div>
+                      <span className="text-lg">Momo</span>
                     </div>
-                    <span className="text-lg">Momo</span>
-                  </div>
-                </label> }
+                  </label>
+                }
               </div>
             </fieldset>
           </form>
