@@ -8,13 +8,13 @@ import CancelIcon from "@mui/icons-material/Cancel";
 const MomoReturn = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const orderCode = queryParams.get("orderCode");
+  const orderId = queryParams.get("orderId");
   const resultCode = queryParams.get("resultCode");
   const isSuccess = resultCode === "0";
   useEffect(() => {
     const handleCancel = async () => {
       try {
-        const result = await orderAPI.cancelOrder(orderCode);
+        const result = await orderAPI.cancelOrder(orderId);
         console.log("Order canceled:", result);
       } catch (error) {
         console.error("Error canceling order:", error);
