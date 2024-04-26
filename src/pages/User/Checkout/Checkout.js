@@ -72,13 +72,35 @@ function Checkout() {
       };
 
       const result = await orderAPI.orderFood(orderData);
+      // if (result.paymentUrl) {
+      //   // Nếu có URL thanh toán, chuyển hướng người dùng để thực hiện thanh toán
+      //   window.location.href = result.paymentUrl;
+      // } else {
+      //   // Nếu không có URL thanh toán, xử lý lỗi tương ứng
+      //   console.error("No paymentUrl found in the result:", result);
+      //   navigate("/user/cancel");
+      // }
 
-      if (result.paymentUrl) {
-        // Nếu có URL thanh toán, chuyển hướng người dùng để thực hiện thanh toán
+      if (paymentMethod === "banking" && result.paymentUrl) {
         window.location.href = result.paymentUrl;
+      } else if (paymentMethod === "momo") {
+        // Check both paymentUrl and deepLink for Momo
+        if (result.paymentUrl && result.deepLink) {
+          const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+          if (isMobile) {
+            // If on mobile, use deepLink to open the app
+            window.location.href = result.deepLink;
+          } else {
+            // On web, redirect as usual
+            window.location.href = result.paymentUrl;
+          }
+        } else {
+          console.error("Missing payment URL or deep link for Momo:", result);
+          navigate("/user/cancel");
+        }
       } else {
-        // Nếu không có URL thanh toán, xử lý lỗi tương ứng
-        console.error("No paymentUrl found in the result:", result);
+        // If no valid payment URL is found
+        console.error("No valid payment URL found:", result);
         navigate("/user/cancel");
       }
     } catch (error) {
