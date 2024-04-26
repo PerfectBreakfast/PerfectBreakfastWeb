@@ -59,6 +59,7 @@ import StaffChangePassword from "./pages/DeliveryStaff/Setting/StaffChangePasswo
 import { AuthProvider } from "./components/Context/AuthContext";
 import PrivateRoute from "./components/Context/ProtectedRoute";
 import ShippingHistoryDetail from "./pages/DeliveryStaff/ShippingHistory/ShippingHistoryDetail";
+import MomoReturn from "./pages/User/PaymentStatus/MomoReturn";
 
 function App() {
   return (
@@ -144,6 +145,7 @@ function App() {
                 path="order-history/detail/:orderId"
                 element={<OrderDetail />}
               />
+              <Route path="momo-return" element={<MomoReturn />} />
               <Route path="success" element={<PaymentSuccess />} />
               <Route path="cancel" element={<CancelPayment />} />
               <Route path="" element={<UserInfo />} />
