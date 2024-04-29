@@ -253,10 +253,18 @@ const FoodAssigmentDetail = () => {
       <div>
         {foodData.map((company, index) => (
           <div key={index} className="bg-white rounded-xl p-4 mb-4">
-            <p className="text-xl font-semibold text-gray-600 text-left">
+            <div className="flex justify-between">
               {" "}
-              Công ty: {company.companyName}
-            </p>
+              <p className="text-xl font-semibold text-gray-800 text-left">
+                {" "}
+                Công ty: {company.companyName}
+              </p>
+              <p className="text-sm font-medium text-gray-600 text-left">
+                {" "}
+                Mã phân chia: {company.id}
+              </p>
+            </div>
+
             <div className="overflow-x-auto max-h-96 mt-2">
               <table className="w-full table-auto mb-4">
                 <thead className="sticky top-0">

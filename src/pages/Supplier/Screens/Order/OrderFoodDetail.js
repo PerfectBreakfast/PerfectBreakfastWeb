@@ -186,6 +186,12 @@ const OrderFoodDetail = () => {
             {" "}
             Công ty: {company.companyName}
           </p> */}
+          <div className="flex justify-end">
+            <p className="text-sm font-medium text-gray-600 text-left">
+              {" "}
+              Mã phân chia: {company.id}
+            </p>
+          </div>
 
           <div className="overflow-x-auto max-h-96 mt-2">
             <table className="w-full table-auto mb-4">
