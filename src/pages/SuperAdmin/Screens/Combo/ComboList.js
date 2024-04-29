@@ -70,7 +70,7 @@ const Combos = () => {
         fetchCombo(); // Gọi lại hàm fetchCombo để cập nhật danh sách combo
       } catch (error) {
         console.error("Error deleting combo:", error);
-        toast.error("Có lỗi xảy ra khi xóa combo."); // Thông báo lỗi
+        toast.error(error.errors); // Thông báo lỗi
       }
       setLoadingDelete(false); // Ẩn loader
       // Đóng modal
