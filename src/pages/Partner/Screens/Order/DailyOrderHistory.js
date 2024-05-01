@@ -119,7 +119,7 @@ const DailyOrderHistory = () => {
   };
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-2">Lịch sử đơn hàng</h2>
+      <h2 className="text-2xl font-semibold mb-2">Trạng thái đơn hàng</h2>
       <div className="flex justify-end mb-3">
         {" "}
         <button

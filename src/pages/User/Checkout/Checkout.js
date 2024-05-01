@@ -149,7 +149,7 @@ function Checkout() {
           {userData ? (
             <div>
               <p className="text-lg mb-2">Tên người dùng: {userData.name}</p>
-              <p className="text-lg mb-2">Địa chỉ: {userData.companyName}</p>
+              <p className="text-lg mb-2">Công ty: {userData.companyName}</p>
               <div className="bg-gray-400"> {/* Custom Divider */}</div>
               <p className="text-lg mb-2">
                 Số điện thoại: {userData.phoneNumber}

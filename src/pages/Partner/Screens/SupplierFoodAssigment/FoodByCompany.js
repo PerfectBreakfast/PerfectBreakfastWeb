@@ -293,7 +293,26 @@ const FoodByCompany = () => {
 
             <tfoot>
               <tr>
-                <td colspan="4">
+                <td colspan="3">
+                  <div className="flex justify-between items-center px-2">
+                    <div className="flex text-yellow-500 cursor-pointer">
+                      {" "}
+                      <AlertIcon className="text-yellow-500  mr-1" />
+                      Đơn hàng đang chờ xác nhận
+                    </div>
+                    <div className="flex text-red-500 cursor-pointer">
+                      {" "}
+                      <AlertIcon className="text-red-500 mr-1 " />
+                      Đơn hàng đang chờ phân phối lại
+                    </div>
+                    <div className="flex text-blue-500 cursor-pointer">
+                      {" "}
+                      <AlertIcon className="text-blue-500 mr-1" />
+                      Đơn hàng đang cần xác nhận
+                    </div>
+                  </div>
+                </td>
+                <td colspan="1">
                   <div className="pagination-container">
                     <Pagination
                       componentName="div"
