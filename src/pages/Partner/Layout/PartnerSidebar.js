@@ -37,7 +37,7 @@ const navigation = [
     icon: OrderTotalIcon,
   },
   {
-    name: "Lịch sử đơn hàng",
+    name: "Trạng thái đơn hàng",
     href: "/partner/order-history",
     icon: OrderHistoryIcon,
   },

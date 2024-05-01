@@ -306,7 +306,17 @@ const OrderFoodList = () => {
 
             <tfoot>
               <tr>
-                <td colspan="4">
+                {" "}
+                <td colspan="3">
+                  <div className="flex justify-between items-center px-2">
+                    <div className="flex text-yellow-500 cursor-pointer">
+                      {" "}
+                      <AlertIcon className="text-yellow-500  mr-1" />
+                      Đơn hàng đang chờ xác nhận
+                    </div>
+                  </div>
+                </td>
+                <td colspan="1">
                   <div className="pagination-container">
                     <Pagination
                       componentName="div"

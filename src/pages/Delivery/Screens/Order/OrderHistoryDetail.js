@@ -71,7 +71,7 @@ const OrderHistoryDetail = () => {
               Bữa ăn:<span className="font-bold"> {orderData.meal}</span>
             </p>
             <p className="mb-2">
-              Bữa ăn:
+              Trạng thái:
               <span className="font-bold">
                 {""} <DailyOrderStatusText status={orderData.status} />
               </span>
